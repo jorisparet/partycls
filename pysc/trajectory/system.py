@@ -20,7 +20,7 @@ class System:
         if isinstance(particle, Particle):
             self.particle.append(particle)
         else:
-            raise TypeError
+            raise TypeError('can only add an instance of `Particle`')
     
     @property
     def number_of_dimensions(self):
@@ -35,6 +35,9 @@ class System:
         
     @property
     def number_of_particles(self):
+        """
+        Total number of particles in the `System`.
+        """
         return len(self.particle)
         
     @property
@@ -75,6 +78,9 @@ class System:
 
     @property
     def pairs_of_species_id(self):
+        """
+        Array of all the possible pairs of species ID.
+        """
         pairs = []
         for i in range(self.number_of_species):
             for j in range(self.number_of_species):
@@ -83,6 +89,9 @@ class System:
     
     @property
     def chemical_fractions(self):
+        """
+        Array of the chemical fractions of each species in the `System`.
+        """
         species = self.dump('species')
         fractions = numpy.empty(self.number_of_species)
         for i, species_i in enumerate(self.distinct_species):
@@ -99,15 +108,18 @@ class System:
         The following aliases are allowed:
         - `pos` (`particle.position`)
         - `position` (particle.position)
+        - `x` (`particle.position_x`)
+        - `y` (`particle.position_y`)
+        - `z` (`particle.position_z`)
         - `spe` (`particle.species`)
         - `species` (`particle.species`)
         - `species_id` (`particle._species_id`)
         - `rad` (`particle.radius`)
         - `radius` (`particle.radius`)
-        - `box` (`cell.side`)
         - `id` (`particle.index`)
         - `index` (`particle.index`)
         - `label` (`particle.label`)
+        - `box` (`cell.side`)
         """
 
         if what in aliases:
