@@ -19,6 +19,13 @@ class Trajectory:
     def __len__(self):
         return len(self._systems)
 
+    def __str__(self):
+        rep = 'Trajectory(filename="{}", number_of_frames={})'
+        return rep.format(self.filename, self.__len__())
+    
+    def __repr__(self):
+        return self.__str__()
+
     def add_system(self, system):
         self._systems.append(system)
         

@@ -42,7 +42,8 @@ class Particle:
     def __str__(self):
         rep = 'Particle('
         for attr, value in self.__dict__.items():
-            rep += '{}={}, '.format(attr, value)
+            if not attr.startswith('_'):
+                rep += '{}={}, '.format(attr, value)
         rep = rep[:-2]+')'
         return rep
     
