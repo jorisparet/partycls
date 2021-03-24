@@ -134,3 +134,13 @@ class System:
         else:
             raise ValueError('Unknown attribute %s' % what)
         return data
+
+    def __str__(self):
+        rep = 'System(number_of_particles={}, species={}, chemical_fractions={}, cell={})'
+        return rep.format(self.number_of_particles,
+                          self.distinct_species,
+                          self.chemical_fractions,
+                          self.cell.side)
+    
+    def __repr__(self):
+        return self.__str__()
