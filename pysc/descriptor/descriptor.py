@@ -5,7 +5,7 @@ import re
 
 def _standardize_condition(condition):
     """
-    Check that the condition is correctly formated (i.e <attr> operator <val>).
+    Check that the condition is correctly formated (i.e <attr> _operator_ <val>).
     """
     regexp = re.search('(\w+)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"])', condition)
     if regexp:
@@ -17,12 +17,12 @@ def _standardize_condition(condition):
             if attr in aliases:
                 attr = aliases[attr]
             else:
-                print('alias is not recognized')
+                raise ValueError('attribute "{}" is not recognized'.format(attr))
         # reformat condition
         condition = '{} {} {}'.format(attr, operator, value)
         return condition
     else:
-        print('condition is not recognized')
+        raise ValueError('"{}" is not a valid condition'.format(condition))
 
 class StructuralDescriptor:
     
@@ -66,7 +66,12 @@ class StructuralDescriptor:
         where:
         - <attribute> is a particle property (accepts aliases) ;
         - _operator_ is a logical operator (<, <=, ==, >=, >) ;
-        - <value> is the corresponding value of <attribute> with the proper type ;        
+        - <value> is the corresponding value of <attribute> with the proper type ;
+        
+        Examples:
+        ---------
+        - "particle.radius < 0.5", "radius < 0.5" and "rad < 0.5" are all valid conditions ;
+        - "particle.species == 'A'", "species == 'A'" and "spe == 'A'" are all valid conditions ;        
         """
         condition = _standardize_condition(condition)
         self.active_filters.append((condition, group))
@@ -188,6 +193,9 @@ class StructuralDescriptor:
     
     @property
     def average(self):
+        """
+        Average feature vector of the descriptor.
+        """
         return numpy.mean(self.features, axis=0)
     
     def compute(self):
