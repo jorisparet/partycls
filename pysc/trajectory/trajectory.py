@@ -5,18 +5,6 @@ from .particle import Particle
 from .cell import Cell
 import numpy
 
-def tipify(s):
-    """
-    Convert a string into the best matching type.
-    """
-    try:
-        return int(s)
-    except ValueError:
-        try:
-            return float(s)
-        except ValueError:
-            return s
-
 class Trajectory:
     
     def __init__(self, filename, fmt='xyz', first=0, last=None, step=1):
@@ -120,7 +108,6 @@ class Trajectory:
                 for p in range(n_particles):
                     line = trajectory.readline().split()                    
                     # particle type
-                    #TODO: should we tipify() the species
                     p_type = line[0]
                     # position (2D or 3D)
                     if dimension == 2:
@@ -207,7 +194,6 @@ class Trajectory:
                 for p in range(n_particles):
                     line = trajectory.readline().split()                    
                     # particle type
-                    #TODO: should we tipify() the species?
                     p_type = line[0]
                     # position (2D or 3D)
                     if dimension == 2:
