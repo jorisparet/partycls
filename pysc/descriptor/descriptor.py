@@ -24,7 +24,38 @@ def _standardize_condition(condition):
     else:
         raise ValueError('"{}" is not a valid condition'.format(condition))
 
-class StructuralDescriptor:
+class StructuralDescriptor:    
+    """
+    Base class for structural descriptors.
+    
+    The descriptor is calculated for the provided trajectory `trajectory`. This can be:
+    - an object implementing the `Trajectory` interface ;
+    - the path to a trajectory file in a format recognized by pyscl ;
+    
+    A structural descriptor S(x) is a collection of N individual empirical correlation 
+    functions {s_i(x)} at the particle level, defined over a grid {x_j} of M features.
+    These are stored in the `features` array as a matrix usually refered to as the "data set":
+    
+    s_0(x_0) s_0(x_1) ... s_0(x_M)
+    s_1(x_0) s_1(x_1) ... s_1(x_M)
+    ...      ...          ...
+    s_N(x_0) s_N(x_1) ... s_N(x_M)
+    
+    The `features` array is None by default and is computed only when the `compute()` method is called.
+    
+    The correlations can be calculated between two arbitrary subsets of particles called "groups":
+    - group 0 is the main group, i.e. particles for which the correlations are being calculated ;
+    - group 1 is the secondary group, i.e. particles that are being considered when calculating the correlations ;
+    These groups are formed by adding filters on particles' properties (species, radius, position, etc.).
+    Examples:
+    ---------
+    - self.add_filter("species == 'A'", group=0)
+    - self.add_filter("species == 'B'", group=1)
+    It is then possible to access to the particles' properties of each group separately.
+    The active filters are stored in the `active_filters` attribute.
+    Active filters on a given group can be cleared using the method `clear_filters`.
+    Active filters on both groups can be cleared using the method `clear_all_filters`. 
+    """
     
     def __init__(self, trajectory):
         # Trajectory
@@ -47,13 +78,16 @@ class StructuralDescriptor:
         self.features = None
 
     def _group_init(self, group):
+        """
+        Initialize the group `group` with all the particles by default.
+        """
         self._groups[group].clear()
         for system in self.trajectory:
             frame = []
             for particle in system.particle:
                 frame.append(particle)
             self._groups[group].append(frame.copy())
-            
+    
     def add_filter(self, condition, group=0):
         """
         Add a filter on the group (0 or 1) to select the subset of particles
@@ -202,6 +236,22 @@ class StructuralDescriptor:
         pass
 
 class AngularStructuralDescriptor(StructuralDescriptor):
+    """
+    Base class for angular structural descriptors.
+    
+    Descriptors that exploit angular correlations and require nearest-neighbors information 
+    will inherit of this class. Two methods to identify nearest-neighbors are available:
+    - "Fixed cutoff" (symbol: 'FC'): uses the partial radial distribution functions to compute
+      the cutoffs between each possible pair of species (s1, s2) ;
+    - "Solid-Angle based Nearest Neighbors" (symbol: 'SANN'): see van Meel et al. (https://doi.org/10.1063/1.4729313)
+    
+    The nearest-neighbors method can be changed by modifying the attribute `nearest_neighbors_method`
+    to 'FC' (default) or 'SANN'.
+    
+    When using the 'FC' method, it is also possible to specify the cutoffs manually
+    for a pair of species (s1, s2) by using the method `set_cutoff`. The cutoffs
+    that were not set manually will be computed automatically.
+    """
     
     def __init__(self, trajectory):
         StructuralDescriptor.__init__(self, trajectory)
@@ -210,16 +260,18 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         # 'SANN' = Solid Angle Nearest Neighbors
         self.nearest_neighbors_method = 'FC'
         
-    def set_cutoff(self, s1, s2, rcut):
+    def set_cutoff(self, s1, s2, rcut, mirror=True):
         """
         Set the nearest-neighbor cutoff for the pair of species (s1, s2).
-        The mirror pair (s2, s1) is also set automatically.
+        The cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
+        parameter is True (default).
         """
         pairs = self.trajectory[0].pairs_of_species
         idx_12 = pairs.index((s1, s2))
-        idx_21 = pairs.index((s2, s1))
         self.cutoffs[idx_12] = rcut
-        self.cutoffs[idx_21] = rcut    
+        if mirror:
+            idx_21 = pairs.index((s2, s1))
+            self.cutoffs[idx_21] = rcut    
 
     #TODO: let the user choose the nearest-neighbor method
     #TODO: if fixed-cutoff method, let the user choose `dr`
