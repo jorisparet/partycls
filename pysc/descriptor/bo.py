@@ -10,9 +10,9 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     symbol = 'bo'
     
     def __init__(self, trajectory, lmax=10):
-        if trajectory[0].number_of_dimensions == 2:
-            raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
         AngularStructuralDescriptor.__init__(self, trajectory)
+        if self.trajectory[0].number_of_dimensions == 2:
+            raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
         self.grid = numpy.array(range(0, lmax))
 
     @property
@@ -20,55 +20,23 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         return len(self.grid)  
         
     def compute(self):
-        # compute cutoffs if not provided
-        if None in self.cutoffs:
-            self._compute_cutoffs()
-        
         # all relevant arrays
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)
-        idx_1 = self.group_indices(1)
-        idx_all = self.trajectory.dump('index')
-        spe_0 = self.group_species_id(0)
-        spe_1 = self.group_species_id(1)
         pos_0 = self.group_positions(0)
         pos_1 = self.group_positions(1)
-        pos_all = self.trajectory.dump('position')
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         box = self.trajectory[0].cell.side
-        cutoffs = numpy.asarray(self.cutoffs)
-        rmax = 1.5*max(cutoffs)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
+        # compute nearest neighbors
+        self.nearest_neighbors(method=self.nearest_neighbors_method)
         for n in range(n_frames):
             for i in range(len(idx_0[n])):
-                
-                # Find nearest neighbors
-                #  - fixed cutoff (FC)
-                if self.nearest_neighbors_method == 'FC':
-                    neigh_i = compute.nearest_neighbors(idx_0[n][i], numpy.array(idx_1[n]),
-                                                        numpy.array(pos_0[n][i]), numpy.array(pos_1[n]).T,
-                                                        spe_0[n][i], numpy.array(spe_1[n]),
-                                                        pairs, box, cutoffs)
-                    
-                #  - Solid Angle Nearest Neighbors (SANN)
-                #  This will find all neighbors of `i`
-                #  (including particles not in group=1)
-                if self.nearest_neighbors_method == 'SANN':
-                    neigh_i = compute.sann(numpy.array(pos_0[n][i]), numpy.array(pos_all[n]).T,
-                                           idx_0[n][i], numpy.array(idx_all[n]), numpy.array(idx_1[n]),
-                                           rmax, box)
-                
-                # remove -1 spaces (non-neighbors) in the array
-                # /!\ indices in the `neigh_i` array are not the same
-                #      as self.group_indices()
-                neigh_i = neigh_i[neigh_i >= 0]
-                
                 # compute BO parameters for particle `i`
+                neigh_i = self.neighbors[n][i]
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for l in self.grid:
                     hist_n_i[l] = self._q_l(l, i, neigh_i, pos_0[n][i], pos_1[n], box)
-                
                 features[row] = hist_n_i
                 row += 1      
         self.features = features
@@ -114,15 +82,10 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         BondOrientationalDescriptor.__init__(self, trajectory, lmax=lmax)
 
     def compute(self):
-        # compute cutoffs if not provided
-        if None in self.cutoffs:
-            self._compute_cutoffs()
-        
         # all relevant arrays
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)
         idx_1 = self.group_indices(1)
-        spe_0 = self.group_species_id(0)
         spe_1 = self.group_species_id(1)
         pos_0 = self.group_positions(0)
         pos_1 = self.group_positions(1)
@@ -131,34 +94,24 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         cutoffs = numpy.asarray(self.cutoffs)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
+        # compute nearest neighbors
+        self.nearest_neighbors(method=self.nearest_neighbors_method)
         for n in range(n_frames):
             for i in range(len(idx_0[n])):
-                
-                # find nearest neighbors
-                neigh_i = compute.nearest_neighbors(idx_0[n][i], numpy.array(idx_1[n]),
-                                                    numpy.array(pos_0[n][i]), numpy.array(pos_1[n]).T,
-                                                    spe_0[n][i], numpy.array(spe_1[n]),
-                                                    pairs, box, cutoffs)
-                # remove -1 spaces (non-neighbors) in the array
-                # /!\ indices in the `neigh_i` array are not the same
-                #      as self.group_indices()
-                neigh_i = numpy.asarray(neigh_i[neigh_i >= 0])
-
                 # neighbors of neighbors of i
+                neigh_i = self.neighbors[n][i]
                 neigh_neigh_i = []
                 for j in neigh_i:
-                    neigh_j = compute.nearest_neighbors(idx_1[n][j], numpy.array(idx_1[n]),
-                                                        numpy.array(pos_1[n][j]), numpy.array(pos_1[n]).T,
-                                                        spe_1[n][j], numpy.array(spe_1[n]),
+                    neigh_j = compute.nearest_neighbors(idx_1[n][j], idx_1[n],
+                                                        pos_1[n][j], pos_1[n].T,
+                                                        spe_1[n][j], spe_1[n],
                                                         pairs, box, cutoffs)
                     neigh_j = numpy.asarray(neigh_j[neigh_j >= 0])
-                    neigh_neigh_i.append(neigh_j)
-                
+                    neigh_neigh_i.append(neigh_j)           
                 # compute BO parameters for particle `i`
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for l in self.grid:
                     hist_n_i[l] = self._qbar_l(l, i, neigh_i, neigh_neigh_i, pos_0[n][i], pos_1[n], box)
-                
                 features[row] = hist_n_i
                 row += 1      
         self.features = features

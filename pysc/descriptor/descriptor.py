@@ -1,5 +1,6 @@
 from pysc.trajectory import Trajectory
 from pysc.trajectory.particle import aliases
+from .realspace_wrap import compute
 import numpy
 import re
 
@@ -273,7 +274,58 @@ class AngularStructuralDescriptor(StructuralDescriptor):
             idx_21 = pairs.index((s2, s1))
             self.cutoffs[idx_21] = rcut    
 
-    #TODO: let the user choose the nearest-neighbor method
+    def nearest_neighbors(self, method='FC'):
+        """
+        Compute the nearest neighbors of particles in group=0 using one of the
+        following methods:
+        - "Fixed cutoff" (method='FC'): uses the partial radial distribution functions 
+          to compute the cutoffs between each possible pair of species (s1, s2) ;
+        - "Solid-Angle based Nearest Neighbors" (method='SANN'): see  
+           van Meel et al. (https://doi.org/10.1063/1.4729313) ;
+        """
+        # indices
+        idx_0, idx_1 = self.group_indices(0), self.group_indices(1)
+        idx_all = self.trajectory.dump('index')
+        # species
+        spe_0, spe_1 = self.group_species_id(0), self.group_species_id(1)
+        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
+        # positions
+        pos_0, pos_1 = self.group_positions(0), self.group_positions(1)
+        pos_all = self.trajectory.dump('position')
+        # compute all/missing cutoffs
+        if None in self.cutoffs: self._compute_cutoffs()
+        cutoffs = numpy.array(self.cutoffs)
+        # boundaries
+        n_frames = len(self._groups[0])
+        box = self.trajectory[0].cell.side
+        # list of neighbors
+        self.neighbors = [[] for n in range(n_frames)]
+        
+        # Fixed cutoff
+        if method == 'FC':
+            for n in range(n_frames):
+                for i in range(len(idx_0[n])):
+                        neigh_i = compute.nearest_neighbors(idx_0[n][i], idx_1[n],
+                                                            pos_0[n][i], pos_1[n].T,
+                                                            spe_0[n][i], spe_1[n],
+                                                            pairs, box, cutoffs)
+                        neigh_i = neigh_i[neigh_i >= 0]
+                        self.neighbors[n].append(neigh_i)
+
+        #  Solid Angle Nearest Neighbors (SANN)
+        #   This will find all neighbors of `i`
+        #   (including particles not in group=1)            
+        if method == 'SANN':
+            # scaling factor for first guess as trying neighbors
+            rmax = 1.5 * numpy.max(cutoffs)
+            for n in range(n_frames):
+                for i in range(len(idx_0[n])):
+                    neigh_i = compute.sann(pos_0[n][i], pos_all[n].T,
+                                           idx_0[n][i], idx_all[n], idx_1[n],
+                                           rmax, box)
+                    neigh_i = neigh_i[neigh_i >= 0]
+                    self.neighbors[n].append(neigh_i)
+
     #TODO: if fixed-cutoff method, let the user choose `dr`
     def _compute_cutoffs(self):
         from .gr import RadialDescriptor

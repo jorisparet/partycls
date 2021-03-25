@@ -1,5 +1,4 @@
 from .descriptor import AngularStructuralDescriptor
-from .helpers import cartesian_to_spherical, pbc
 import numpy
 from .realspace_wrap import compute
 
@@ -17,54 +16,25 @@ class AngularDescriptor(AngularStructuralDescriptor):
     def n_features(self):
         return len(self.grid)
     
-    def compute(self):
-        # compute cutoffs if not provided
-        if None in self.cutoffs:
-            self._compute_cutoffs()
+    def compute(self):         
         # all relevant arrays
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)
-        idx_1 = self.group_indices(1)
-        idx_all = self.trajectory.dump('index')
-        spe_0 = self.group_species_id(0)
-        spe_1 = self.group_species_id(1)
-        pos_0 = self.group_positions(0)
-        pos_1 = self.group_positions(1)
-        pos_all = self.trajectory.dump('position')
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
+        pos_0, pos_1 = self.group_positions(0), self.group_positions(1)
         box = self.trajectory[0].cell.side
-        cutoffs = numpy.asarray(self.cutoffs)
-        rmax = 1.5*max(cutoffs)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
         row = 0
+        # compute nearest neighbors
+        self.nearest_neighbors(method=self.nearest_neighbors_method)   
         for n in range(n_frames):
-            for i in range(len(idx_0[n])):
-                
-                # Find nearest neighbors
-                #  - fixed cutoff (FC)
-                if self.nearest_neighbors_method == 'FC':
-                    neigh_i = compute.nearest_neighbors(idx_0[n][i], numpy.array(idx_1[n]),
-                                                        numpy.array(pos_0[n][i]), numpy.array(pos_1[n]).T,
-                                                        spe_0[n][i], numpy.array(spe_1[n]),
-                                                        pairs, box, cutoffs)
-                    
-                #  - Solid Angle Nearest Neighbors (SANN)
-                #  This will find all neighbors of `i`
-                #  (including particles not in group=1)
-                if self.nearest_neighbors_method == 'SANN':
-                    neigh_i = compute.sann(numpy.array(pos_0[n][i]), numpy.array(pos_all[n]).T,
-                                           idx_0[n][i], numpy.array(idx_all[n]), numpy.array(idx_1[n]),
-                                           rmax, box)
-                    
-                # remove -1 spaces (non-neighbors) in the array
-                # /!\ indices in the `neigh_i` array are not the same
-                #      as self.group_indices()
-                neigh_i = neigh_i[neigh_i >= 0]
-
+            for i in range(len(idx_0[n])):  
                 # individual bond-angle distribution using nearest-neighbors
+                neigh_i = self.neighbors[n][i]
                 hist_n_i = compute.angular_histogram(idx_0[n][i],
-                                                     numpy.array(pos_0[n][i]), numpy.array(pos_1[n]).T,
-                                                     neigh_i, box, self.n_features, self.dtheta)
+                                                     pos_0[n][i], pos_1[n].T,
+                                                     neigh_i, box, 
+                                                     self.n_features, 
+                                                     self.dtheta)
                 features[row] = hist_n_i
                 row += 1   
         self.features = features
