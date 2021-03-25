@@ -15,7 +15,7 @@ aliases = {'pos': 'particle.position',
            'position_y': 'particle.position_y',
            'position_z': 'particle.position_z',
            'species': 'particle.species',
-           'species_id': 'particle._species_id',
+           'species_id': 'particle.species_id',
            'radius': 'particle.radius',
            'index': 'particle.index',
            'label': 'particle.label'}
@@ -37,7 +37,7 @@ class Particle:
         self.index = Particle.index
         Particle.index += 1
         # Numeral id of the species (given in a trajectory)
-        self._species_id = None
+        self.species_id = None
         
     def __str__(self):
         rep = 'Particle('

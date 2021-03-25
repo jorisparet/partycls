@@ -113,7 +113,7 @@ class System:
         - `z` (`particle.position_z`)
         - `spe` (`particle.species`)
         - `species` (`particle.species`)
-        - `species_id` (`particle._species_id`)
+        - `species_id` (`particle.species_id`)
         - `rad` (`particle.radius`)
         - `radius` (`particle.radius`)
         - `id` (`particle.index`)

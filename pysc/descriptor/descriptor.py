@@ -8,7 +8,7 @@ def _standardize_condition(condition):
     """
     Check that the condition is correctly formated (i.e <attr> _operator_ <val>).
     """
-    regexp = re.search('(\w+)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"])', condition)
+    regexp = re.search('(\w+)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"]?)', condition)
     if regexp:
         attr = regexp.group(1)
         operator = regexp.group(2)
@@ -200,7 +200,7 @@ class StructuralDescriptor:
         for frame in self._groups[group]:
             _species_frame = numpy.empty(len(frame), dtype=numpy.int64)
             for n, particle in enumerate(frame):
-                _species_frame[n] = particle._species_id
+                _species_frame[n] = particle.species_id
             _species_id.append(_species_frame)
         return _species_id
     
