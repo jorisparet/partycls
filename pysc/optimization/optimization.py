@@ -62,26 +62,31 @@ class Optimization:
             self.clustering = clustering
             
         # Default output metadata
-        self.output_metadata = {'trajectory': {'writer':self.write_trajectory,
+        self.output_metadata = {'trajectory': {'enable':True,
+                                               'writer':self.write_trajectory,
                                                'filename':None,
                                                'fmt':'xyz',
-                                               'enable':True,
                                                'fields':[],
                                                'precision':6},
     
-                                'log': {'writer':self.write_log,
+                                'log': {'enable':True,
+                                        'writer':self.write_log,
                                         'filename':None,
-                                        'enable':True,
                                         'precision':6},
                                         
-                                'centroids': {'writer':self.write_centroids,
+                                'centroids': {'enable':True,
+                                              'writer':self.write_centroids,
                                               'filename':None,
-                                              'enable':True,
                                               'precision':6},
                                 
-                                'labels': {'writer':self.write_labels,
-                                           'filename':None,
-                                           'enable':False}}
+                                'labels': {'enable':False,
+                                           'writer':self.write_labels,
+                                           'filename':None},
+                                           
+                                'dataset': {'enable':False,
+                                            'writer':self.write_dataset,
+                                            'filename':None,
+                                            'precision':6}}
                                 
         # Internal
         self._has_run = False
@@ -234,6 +239,16 @@ class Optimization:
             file.write(self._get_header())
             for ki in self.labels:
                 file.write('{} \n'.format(ki))
+                
+    def write_dataset(self, filename=None, precision=6, **kwargs):
+        if filename is None:
+            filename = self._output_file('dataset')
+        with open(filename, 'w') as file:
+            file.write('# title: data set matrix \n')
+            file.write(self._get_header())
+            for vector in self.descriptor.features:
+                line = ''.join(['{:.{}f} '.format(vi, precision) for vi in vector]) + '\n'
+                file.write(line)
    
     def _get_header(self):
         # Time
