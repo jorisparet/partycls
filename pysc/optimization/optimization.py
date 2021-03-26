@@ -14,7 +14,8 @@ ci_version = '0.1'
 # Databases
 descriptor_db = {'gr': RadialDescriptor,
                  'ba': AngularDescriptor,
-                 'bo': BondOrientationalDescriptor}
+                 'bo': BondOrientationalDescriptor,
+                 'ld': LechnerDellagoDescriptor}
 scaling_db = {'zscore': ZScore,
               'minmax': MinMax}
 dim_redux_db = {'pca': PCA,
@@ -61,21 +62,25 @@ class Optimization:
             self.clustering = clustering
             
         # Default output metadata
-        self.output_metadata = {'trajectory': {'filename':None,
+        self.output_metadata = {'trajectory': {'writer':self.write_trajectory,
+                                               'filename':None,
                                                'fmt':'xyz',
                                                'enable':True,
                                                'fields':[],
                                                'precision':6},
     
-                                'log': {'filename':None,
+                                'log': {'writer':self.write_log,
+                                        'filename':None,
                                         'enable':True,
                                         'precision':6},
                                         
-                                'centroids': {'filename':None,
-                                               'enable':True,
-                                               'precision':6},
+                                'centroids': {'writer':self.write_centroids,
+                                              'filename':None,
+                                              'enable':True,
+                                              'precision':6},
                                 
-                                'labels': {'filename':None,
+                                'labels': {'writer':self.write_labels,
+                                           'filename':None,
                                            'enable':False}}
                                 
         # Internal
@@ -129,31 +134,11 @@ class Optimization:
         self._time = self._end - self._start
         
         # Outputs
-        #  trajectory
-        filename = self.output_metadata['trajectory']['filename']
-        fmt = self.output_metadata['trajectory']['fmt']
-        enable = self.output_metadata['trajectory']['enable']
-        fields = self.output_metadata['trajectory']['fields']
-        precision = self.output_metadata['trajectory']['precision']
-        if enable:
-            self.write_trajectory(filename, precision=precision, fields=fields, fmt=fmt)
-        #  log
-        filename = self.output_metadata['log']['filename']
-        enable = self.output_metadata['log']['enable']
-        precision = self.output_metadata['log']['precision']
-        if enable:
-            self.write_log(filename, precision=precision)
-        #  centroids
-        filename = self.output_metadata['centroids']['filename']
-        enable = self.output_metadata['centroids']['enable']
-        precision = self.output_metadata['centroids']['precision']
-        if enable:
-            self.write_centroids(filename, precision=precision)
-        #  labels
-        filename = self.output_metadata['labels']['filename']
-        enable = self.output_metadata['labels']['enable']        
-        if enable:
-            self.write_labels(filename)
+        for filetype in self.output_metadata.keys():
+            enable = self.output_metadata[filetype]['enable']
+            if enable:
+                writer = self.output_metadata[filetype]['writer']
+                writer(**self.output_metadata[filetype])
 
     @property
     def labels(self):
@@ -185,7 +170,7 @@ class Optimization:
         for key in self.output_metadata.keys():
             self.output_metadata[key]['enable'] = False
 
-    def write_trajectory(self, filename=None, fmt='xyz', fields=[], precision=6):
+    def write_trajectory(self, filename=None, fmt='xyz', fields=[], precision=6, **kwargs):
         """
         Write trajectory to file.
         """
@@ -194,7 +179,7 @@ class Optimization:
         self.trajectory._write(filename, fmt=fmt, fields=fields, precision=precision)
 
     # TODO: more info needed in the log?
-    def write_log(self, filename=None, precision=6):
+    def write_log(self, filename=None, precision=6, **kwargs):
         """
         Write a log file with all relevant information about the optimization.
         The log file can be written only if the optimization has been run.
@@ -222,7 +207,7 @@ class Optimization:
                     for fltr in filters:
                         file.write('- group: {}, filter: {} \n'.format(fltr[1], fltr[0]))
 
-    def write_centroids(self, filename=None, precision=6):
+    def write_centroids(self, filename=None, precision=6, **kwargs):
         """
         Later.
         """
@@ -241,7 +226,7 @@ class Optimization:
                 line = g + ''.join(['{:.{}f} '.format(C_k[k, n], precision) for k in range(n_clusters)]) + '\n'
                 file.write(line)
                 
-    def write_labels(self, filename=None):
+    def write_labels(self, filename=None, **kwargs):
         if filename is None:
             filename = self._output_file('labels')
         with open(filename, 'w') as file:
@@ -297,13 +282,14 @@ class Optimization:
                                    method=self.clustering.symbol,
                                    kind=kind)
     
-    # TODO
     def __str__(self):
-        rep = 'Optimization({})'
-        rep = rep.format(self.trajectory.filename)
-#        for attr, value in self.__dict__.items():
-#            rep += '{}={}, '.format(attr, value)
-#        rep = rep[:-2]+')'
+        rep = 'Optimization(filename="{}", descriptor="{}", scaling="{}", dim_redux="{}", clustering="{}", has_run={})'
+        rep = rep.format(self.trajectory.filename,
+                         self.descriptor.symbol,
+                         self.scaling.symbol if self.scaling is not None else None,
+                         self.dim_redux.symbol if self.dim_redux is not None else None,
+                         self.clustering.symbol,
+                         self._has_run)
         return rep
     
     def __repr__(self):
