@@ -163,9 +163,9 @@ class Trajectory:
                     # set the additional fields
                     if self.additional_fields:
                         if read_cluster_field and has_cluster_field:
-                            particle.label = line[starting_idx+cidx]
+                            particle.label = int(line[starting_idx+cidx])
                         for field_name, field_idx in zip(fields_to_read, fields_to_read_idx):
-                            val = line[starting_idx+field_idx]
+                            val = tipify(line[starting_idx+field_idx])
                             particle.__setattr__(field_name, val)                  
                     
                     # add the particle to the system
