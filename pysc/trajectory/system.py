@@ -114,11 +114,10 @@ class System:
         - `spe` (`particle.species`)
         - `species` (`particle.species`)
         - `species_id` (`particle.species_id`)
-        - `rad` (`particle.radius`)
         - `radius` (`particle.radius`)
-        - `id` (`particle.index`)
-        - `index` (`particle.index`)
         - `label` (`particle.label`)
+        - `index` (`particle.index`)
+        - `mass` (`particle.mass`)
         - `box` (`cell.side`)
         """
 

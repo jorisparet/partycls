@@ -66,7 +66,7 @@ class Optimization:
                                                'writer':self.write_trajectory,
                                                'filename':None,
                                                'fmt':'xyz',
-                                               'fields':[],
+                                               'additional_fields':[],
                                                'precision':6},
     
                                 'log': {'enable':True,
@@ -175,13 +175,15 @@ class Optimization:
         for key in self.output_metadata.keys():
             self.output_metadata[key]['enable'] = False
 
-    def write_trajectory(self, filename=None, fmt='xyz', fields=[], precision=6, **kwargs):
+    def write_trajectory(self, filename=None, fmt='xyz', additional_fields=[], precision=6, **kwargs):
         """
         Write trajectory to file.
         """
         if filename is None:
             filename = self._output_file(fmt)
-        self.trajectory._write(filename, fmt=fmt, fields=fields, precision=precision)
+        self.trajectory._write(filename, fmt=fmt, 
+                               additional_fields=['label']+additional_fields, 
+                               precision=precision)
 
     # TODO: more info needed in the log?
     def write_log(self, filename=None, precision=6, **kwargs):

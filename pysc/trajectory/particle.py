@@ -3,28 +3,27 @@
 import numpy
 
 # Aliases for particles' properties
-aliases = {'pos': 'particle.position',
-           'x': 'particle.position_x',
-           'y': 'particle.position_y',
-           'z': 'particle.position_z',
-           'spe': 'particle.species',
-           'rad': 'particle.radius',
-           'id': 'particle.index',
-           'position': 'particle.position',
+aliases = {'position': 'particle.position',
+           'pos': 'particle.position',
            'position_x': 'particle.position_x',
+           'x': 'particle.position_x',
            'position_y': 'particle.position_y',
+           'y': 'particle.position_y',
            'position_z': 'particle.position_z',
+           'z': 'particle.position_z',
            'species': 'particle.species',
+           'spe': 'particle.species',
            'species_id': 'particle.species_id',
-           'radius': 'particle.radius',
+           'label': 'particle.label',
            'index': 'particle.index',
-           'label': 'particle.label'}
+           'mass': 'particle.mass',
+           'radius': 'particle.radius'}
 
 class Particle:
     
     index = 0
     
-    def __init__(self, position=None, species='A', label=-1, radius=0.5):
+    def __init__(self, position=None, species='A', label=-1):
         if position is None:
             self.position = numpy.zeros(3)
         else:
@@ -32,7 +31,6 @@ class Particle:
         self.species = species
         # Cluster label
         self.label = label
-        self.radius = radius
         # Index of the particle
         self.index = Particle.index
         Particle.index += 1
