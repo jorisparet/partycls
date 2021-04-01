@@ -28,7 +28,7 @@ A Python framework allowing to perform a clustering on a condensed matter system
 
 # Statement of need
 
-Some equations and figures.
+Some equations and figures. Reference test [@paret_assessing_2020]. See [JOSS documentation](https://joss.readthedocs.io/en/latest/submitting.html#example-paper-and-bibliography) for guidelines on how to format the paper.
 
 # Acknowledgements
 
