@@ -4,8 +4,36 @@ from .particle import Particle, aliases
 import numpy
 
 class System:
+    """
+    A system is composed of a collection of particles that lie within a
+    rectangular cell.
     
-    """System class."""
+    Parameters
+    ----------
+    
+    particle : list of `Particle`, optional, default: None
+        A list of instances of `Particle`.
+    
+    cell : Cell, optional, default: None
+        The rectangular cell (simulation box).
+    
+    Attributes
+    ----------
+        
+    particle : list of `Particle`
+        All the particles in the system.
+        
+    cell : Cell
+        The rectangular cell where all the particles lie.
+    
+    Examples
+    --------
+    
+    >>> p = [Particle(position=[0.0, 0.0, 0.0], species='A'),
+             Particle(position=[1.0, 1.0, 1.0], species='B')]
+    >>> c = Cell(side = [5.0, 5.0, 5.0])
+    >>> sys = System(particle=p, cell=c)
+    """
     
     def __init__(self, particle=None, cell=None):
         if particle is None:
@@ -25,7 +53,7 @@ class System:
     @property
     def number_of_dimensions(self):
         """
-        Number of spatial dimensions, guessed from the length of
+        Return the number of spatial dimensions, guessed from the length of
         `particle[0].position`.
         """
         if len(self.particle) > 0:
@@ -36,14 +64,14 @@ class System:
     @property
     def number_of_particles(self):
         """
-        Total number of particles in the `System`.
+        Return the total number of particles in the system.
         """
         return len(self.particle)
         
     @property
     def density(self):
         """
-        Density of the system.
+        Return the number density of the system.
 
         It will raise a ValueException if `cell` is None.
         """
@@ -54,21 +82,21 @@ class System:
     @property
     def distinct_species(self):
         """
-        Sorted array of all the distinct species in the `System`.
+        Return a sorted numpy array of all the distinct species in the system.
         """
         return numpy.array(sorted(set(self.dump('species'))))
     
     @property
     def number_of_species(self):
         """
-        Number of distinct species in the system.
+        Return the number of distinct species in the system.
         """
         return len(self.distinct_species)
     
     @property
     def pairs_of_species(self):
         """
-        Array of all the possible pairs of species.
+        Return a list of all the possible pairs of species.
         """
         pairs = []
         for s1 in self.distinct_species:
@@ -79,7 +107,7 @@ class System:
     @property
     def pairs_of_species_id(self):
         """
-        Array of all the possible pairs of species ID.
+        Return a list of all the possible pairs of species ID.
         """
         pairs = []
         for i in range(self.number_of_species):
@@ -90,7 +118,8 @@ class System:
     @property
     def chemical_fractions(self):
         """
-        Array of the chemical fractions of each species in the `System`.
+        Return a numpy array of the chemical fractions of each species 
+        in the system.
         """
         species = self.dump('species')
         fractions = numpy.empty(self.number_of_species)
@@ -99,28 +128,48 @@ class System:
         return fractions
 
     def dump(self, what):
-        """
-        Return a numpy array with the system propety specified by `what`.
-        
-        `what` must be of the form 
-        `particle.<attribute>` or `cell.<attribute>`. 
-        
-        The following aliases are allowed:
-        - `pos` (`particle.position`)
-        - `position` (particle.position)
-        - `x` (`particle.position_x`)
-        - `y` (`particle.position_y`)
-        - `z` (`particle.position_z`)
-        - `spe` (`particle.species`)
-        - `species` (`particle.species`)
-        - `species_id` (`particle.species_id`)
-        - `radius` (`particle.radius`)
-        - `label` (`particle.label`)
-        - `index` (`particle.index`)
-        - `mass` (`particle.mass`)
-        - `box` (`cell.side`)
-        """
 
+        """
+        Return a numpy array with the system property specified by `what`.
+        
+        Parameters
+        ----------
+        
+        what : str
+            Requested system property.
+        
+            `what` must be of the form 
+            "particle.<attribute>" or "cell.<attribute>". 
+            
+            The following aliases are allowed:
+            - "pos" ("particle.position")
+            - "position" ("particle.position")
+            - "x" ("particle.position_x")
+            - "y" ("particle.position_y")
+            - "z" ("particle.position_z")
+            - "spe" ("particle.species")
+            - "species" ("particle.species")
+            - "species_id" ("particle.species_id")
+            - "radius" ("particle.radius")
+            - "label" ("particle.label")
+            - "index" ("particle.index")
+            - "mass" ("particle.mass")
+            - "box" ("cell.side")
+        
+        Returns
+        -------
+        
+        to_dump : ndarray
+            Array of the requested system property.
+        
+        Examples
+        --------
+        
+        >>> traj = Trajectory('trajectory.xyz')
+        >>> sys = traj[0]
+        >>> pos_0 = sys.dump('position')
+        >>> spe_0 = sys.dump('species')
+        """
         if what in aliases:
             what = aliases[what]
         

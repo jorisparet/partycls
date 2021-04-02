@@ -26,6 +26,87 @@ clustering_db = {'kmeans': KMeans,
                  'cinf': CommunityInference}
 
 class Optimization:
+    """
+    An optimization is a workflow that goes through the following steps:
+    - compute a structural descriptor on a given trajectory ;
+    - (optional) apply a feature scaling on the previously computed structural features ;
+    - (optional) apply a dimensionality reduction on the (raw/scaled) features ;
+    - run a clustering algorithm to partition particles into structurally different clusters ;
+    
+    Parameters
+    ----------
+    
+    trajectory : Trajectory, or str
+        An instance of `Trajectory` or path to trajectory file to read.
+        
+    descriptor : {'gr', 'ba', 'bo', 'ld', or an instance of StructuralDescriptor}
+        Structural descriptor to be computed on the trajectory.
+        
+        'gr' : radial distribution of particles around a central particle.
+        
+        'ba' : angular distribution of pairs of nearest neighbors of a central particle.
+        
+        'bo' : Steinhardt bond-orientational order parameter (see https://doi.org/10.1103/PhysRevB.28.784)
+        
+        'ld' : Lechner-Dellago cond-orientational order parameter (see https://doi.org/10.1063/1.2977970)
+        
+    scaling : {'zscore', 'minmax', None, or an object with the proper interface}, optional, default: None
+        Feature scaling method.
+        
+        'zscore' : standardize features by removing the mean and scaling to unit variance
+            
+        'minmax' : scale and translate each feature individually such that it 
+        is in the given range on the training set, e.g. between zero and one
+            
+    dim_redux : {'pca', 'tsne', 'lle', 'ae', None, or an object with the proper interface}, optional, default: None
+        Dimensionality reduction method.
+        
+        'pca' : Principal Component Analysis.
+        
+        'tsne' : t-distributed Stochastic Neighbor Embedding.
+        
+        'lle' : Locally Linear Embedding.
+        
+        'ae' : neural network Auto-Encoder.
+        
+    clustering : {'kmeans', 'gmm', 'cinf'}, default: 'kmeans'
+        Clustering algorithm.
+        
+        'kmeans' : K-Means algorithm.
+        
+        'gmm' : Gaussian Mixture Model.
+        
+        'cinf' : Community Inference (see https://doi.org/10.1063/5.0004732).
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        The trajectory file as read by the Trajectory class.
+        
+    descriptor : StructuralDescriptor
+        Structural descriptor associated to the trajectory.
+        
+    scaling : ZScore, MinMax
+        Feature scaling.
+        
+    dim_redux : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
+        Dimensionality reduction.
+        
+    clustering : Clustering
+        Clustering method.
+        
+    output_metadata : dict
+        Dictionnary that controls the writing process and 
+        the properties of all the output files.
+        
+    Examples
+    --------
+    
+    >>> from pysc.optimization import Optimization
+    >>> opt = Optimization('trajectory.xyz', descriptor='ba', scaling='zscore')
+    >>> opt.run()
+    """
     
     def __init__(self, trajectory, descriptor='gr', scaling=None, dim_redux=None, clustering='kmeans'):
         
@@ -96,9 +177,14 @@ class Optimization:
         
     def run(self):
         """
-        Run the optimization.
+        Compute the clustering and write the output files according to the
+        defined workflow :
+        - compute the descriptor ;
+        - (optional) apply feature scaling ;
+        - (optional) apply dimensionality reduction ;
+        - compute the clustering ;
+        - (optional) write the output files ;
         """
-
         # Start the timer
         self._start = time.time()
 
@@ -163,7 +249,21 @@ class Optimization:
 
     def set_output_metadata(self, what, **kwargs):
         """
-        Later.
+        Change the output properties.
+        
+        Parameters
+        ----------
+        what : {'trajectory', 'log', 'centroids', 'labels', or 'dataset'}
+            Type of output file to change.
+            
+        kwargs : keywords arguments (specific to each type of file)
+        
+        Examples
+        --------
+        >>> opt = Optimisation('trajectory.xyz')
+        >>> opt.set_output_metadata('log', enable=False) # do not write the log file
+        >>> opt.set_output_metadata('trajectory', filename='awesome_trajectory.xyz') # change the default output name
+        >>> opt.run('dataset', enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
         """
         for key, val in kwargs.items():
             self.output_metadata[what][key] = val
@@ -177,7 +277,32 @@ class Optimization:
 
     def write_trajectory(self, filename=None, fmt='xyz', additional_fields=[], precision=6, **kwargs):
         """
-        Write trajectory to file.
+        Write the trajectory file with cluster labels (default) and other
+        additional fields (if any).
+        
+        Parameters
+        ----------
+        filename : str, optional, default: None
+            Filename of the output trajectory. Uses a default naming convention
+            if not specified.
+            
+        fmt : {'xyz', 'rumd'}, default: 'xyz'
+            Output trajectory format.
+            
+        additional_fields : list of str, optional, default: []
+            Additional fields (i.e. particle properties) to write in the
+            output trajectory. Note that all the `Particle` objects should
+            have the specified properties as attributes.
+            
+        precision : int, optional, default: 6
+            Number of decimals when writing the output trajectory.
+            
+        Examples
+        --------
+        >>> opt = Optimisation('trajectory.xyz')
+        >>> opt.write_trajectory(fmt='rumd')
+        >>> opt.write_trajectory(additional_field=['particle.mass']) # `Particle` must have the attribute `mass`.
+        >>> opt.write_trajectory(filename='my_custom_name', precision=8)
         """
         if filename is None:
             filename = self._output_file(fmt)
@@ -189,7 +314,17 @@ class Optimization:
     def write_log(self, filename=None, precision=6, **kwargs):
         """
         Write a log file with all relevant information about the optimization.
-        The log file can be written only if the optimization has been run.
+        The log file can be written only if the optimization has been run at
+        least once with the method `Optimization.run`.
+        
+        Parameters
+        ----------
+        filename : str, optional, default: None
+            Filename of the log file. Uses a default naming convention
+            if not specified.   
+            
+        precision : int, optional, default: 6
+            Number of decimals when writing the log file. 
         """
         if filename is None:
             filename = self._output_file('log')
@@ -216,7 +351,17 @@ class Optimization:
 
     def write_centroids(self, filename=None, precision=6, **kwargs):
         """
-        Later.
+        Write the coordinates of the clusters' centroids using the raw features
+        from the descriptor (i.e. nor scaled or reduced).
+        
+        Parameters
+        ----------
+        filename : str, optional, default: None
+            Filename of the centroids file. Uses a default naming convention
+            if not specified.   
+            
+        precision : int, optional, default: 6
+            Number of decimals when writing the centroids file. 
         """
         if filename is None:
             filename = self._output_file('centroids')
@@ -234,6 +379,15 @@ class Optimization:
                 file.write(line)
                 
     def write_labels(self, filename=None, **kwargs):
+        """
+        Write the clusters' labels only.
+        
+        Parameters
+        ----------
+        filename : str, optional, default: None
+            Filename of the labels file. Uses a default naming convention
+            if not specified.   
+        """
         if filename is None:
             filename = self._output_file('labels')
         with open(filename, 'w') as file:
@@ -243,6 +397,19 @@ class Optimization:
                 file.write('{} \n'.format(ki))
                 
     def write_dataset(self, filename=None, precision=6, **kwargs):
+        """
+        Write the full raw dataset from the descriptor as an array (i.e. all 
+        the individual raw features of each particle).
+        
+        Parameters
+        ----------
+        filename : str, optional, default: None
+            Filename of the dataset file. Uses a default naming convention
+            if not specified.   
+            
+        precision : int, optional, default: 6
+            Number of decimals when writing the dataset file. 
+        """
         if filename is None:
             filename = self._output_file('dataset')
         with open(filename, 'w') as file:

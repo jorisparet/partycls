@@ -20,6 +20,48 @@ aliases = {'position': 'particle.position',
            'radius': 'particle.radius'}
 
 class Particle:
+    """
+    A particle is defined by its position, its type, and an optional cluster
+    label (default is -1).
+    
+    Parameters
+    ----------
+    
+    position : list of float or float array, optional, default: None
+        The position of the particle. 
+        If not given, it will be set to [0.0, 0.0, 0.0].
+        
+    species : str, optional, default: "A"
+        Particle type / species.
+    
+    label : int, optional, default: -1
+        Cluster label of the particle. 
+        Default is -1 (i.e. not belonging to any cluster).
+    
+    Attributes
+    ----------
+    
+    position : float array
+        The position of the particle.
+        
+    species : str
+        Particle type / species.
+        
+    species_id : int
+        A numeral ID for the species. Automatically given in the context
+        of a trajectory.
+        
+    label : int
+        Cluster label of the particle. 
+        
+    index : int
+        A unique index to identify the particle.
+    
+    Examples
+    --------
+    
+    
+    """
     
     index = 0
     

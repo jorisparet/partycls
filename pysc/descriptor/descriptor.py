@@ -48,14 +48,45 @@ class StructuralDescriptor:
     - group 0 is the main group, i.e. particles for which the correlations are being calculated ;
     - group 1 is the secondary group, i.e. particles that are being considered when calculating the correlations ;
     These groups are formed by adding filters on particles' properties (species, radius, position, etc.).
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+    
     Examples:
     ---------
-    - self.add_filter("species == 'A'", group=0)
-    - self.add_filter("species == 'B'", group=1)
-    It is then possible to access to the particles' properties of each group separately.
-    The active filters are stored in the `active_filters` attribute.
-    Active filters on a given group can be cleared using the method `clear_filters`.
-    Active filters on both groups can be cleared using the method `clear_all_filters`. 
+    
+    >>> D = StructuralDescriptor('trajectory.xyz')
+    >>> D.add_filter("species == 'A'", group=0)
+    >>> D.add_filter("species == 'B'", group=1)
+    >>> D.active_filters
+    [("particle.species == 'A'", 0), ("particle.species == 'B'", 1)]
+    >>> D.clear_filters(0)
+    >>> D.active_filters
+    [("particle.species == 'B'", 1)]
     """
     
     def __init__(self, trajectory):
@@ -153,7 +184,7 @@ class StructuralDescriptor:
             
     def group_indices(self, group):
         """
-        Returns the indices of the particles included in `group`.
+        Return the indices of the particles included in `group`.
         Keeps the trajectory format (frames).
         """
         group_idx = []
@@ -166,8 +197,8 @@ class StructuralDescriptor:
     
     def group_positions(self, group):
         """
-        Returns the positions of the particles in `group`.
-        Keeps the trajectory format (frames).
+        Return the positions of the particles in `group`.
+        Keeps the trajectory format (i.e. list structure).
         """
         _pos = []
         for frame in self._groups[group]:
@@ -179,8 +210,8 @@ class StructuralDescriptor:
 
     def group_species(self, group):
         """
-        Returns the species of the particles in `group`.
-        Keeps the trajectory format (frames).
+        Return the species of the particles in `group`.
+        Keeps the trajectory format (i.e. list structure).
         """
         _species = []
         dtype_species = type(self.trajectory[0].particle[0].species)
@@ -193,8 +224,8 @@ class StructuralDescriptor:
     
     def group_species_id(self, group):
         """
-        Returns the species' ID of the particles in `group`.
-        Keeps the trajectory format (frames).
+        Return the species' ID of the particles in `group`.
+        Keeps the trajectory format (i.e. list structure).
         """
         _species_id = []
         for frame in self._groups[group]:
@@ -206,7 +237,7 @@ class StructuralDescriptor:
     
     def group_fraction(self, group):
         """
-        Fraction of particles inside `group` over the whole trajectory.
+        Return the fraction of particles inside `group` over the whole trajectory.
         """
         N_group = self.group_size(group)
         N_tot = numpy.sum([sys.number_of_particles for sys in self.trajectory])
@@ -252,6 +283,26 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     When using the 'FC' method, it is also possible to specify the cutoffs manually
     for a pair of species (s1, s2) by using the method `set_cutoff`. The cutoffs
     that were not set manually will be computed automatically.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+    
+    Attributes
+    ----------
+    
+    cutoffs : list of float
+        List of cutoff distances to identify the nearest neighbors using
+        the fixed-cutoff ('FC') method.
+        
+    nearest_neighbors_method : str, default: 'FC'
+        Nearest neighbor method, 'FC' or 'SANN'.
+    
+    Examples:
+    ---------
+    
     """
     
     def __init__(self, trajectory):
@@ -274,6 +325,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
             idx_21 = pairs.index((s2, s1))
             self.cutoffs[idx_21] = rcut    
 
+    #TODO: define self.neighbors as an attribute for the class
     def nearest_neighbors(self, method='FC'):
         """
         Compute the nearest neighbors of particles in group=0 using one of the

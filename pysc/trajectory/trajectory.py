@@ -19,6 +19,56 @@ def tipify(s):
 
 
 class Trajectory:
+    """
+    A trajectory is composed by one or several frames, each frame being an 
+    instance of `System`. Trajectory instances are iterable. By default, only
+    the positions and particle types are being read from the trajectory file.
+    Additional particle properties in the file can be read using the 
+    `additional_fields` parameter.
+    
+    Parameters
+    ----------
+    
+    filename : str
+        Path to the trajectory file to read.
+        
+    fmt : str, optional, default: 'xyz'
+        Format of the trajectory.
+        
+    additional_fields : list of str, optional, default: []
+        Additional fields (i.e. particle properties) to read from the trajectory.   
+        
+    first : int, optional, default: 0
+        Index of the first frame to consider in the trajectory. Starts at zero.
+        
+    last : int, optional, default: None
+        Index of the last frame to consider in the trajectory. Default is the 
+        last frame.
+        
+    step : int, optional, default: 1
+        Step between each frame to consider in the trajectory. For example,
+        if `step=2`, one every two frames is read.
+        
+    
+    Attributes
+    ----------
+    
+    filename : str
+        Name of the original trajectory file.
+        
+    fmt : str, optional, default: "xyz"
+        Format of the original trajectory file.
+        
+    additional_fields : list, optional, default: []
+        List of additional particle properties that were extracted from the
+        original trajectory file.
+    
+    Examples
+    --------
+    
+    >>> from pysc.trajectory import Trajectory
+    >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
+    """
     
     def __init__(self, filename, fmt='xyz', additional_fields=[], first=0, last=None, step=1):
         self.filename = filename
@@ -41,12 +91,60 @@ class Trajectory:
         return self.__str__()
 
     def add_system(self, system):
+        """
+        Add an instance of `System` to the trajectory.
+        """
         self._systems.append(system)
         
-    def remove(self, item):
-        self._systems.pop(item)
+    def remove(self, frame):
+        """
+        Remove the system at position `frame` from the trajectory.
+        """
+        self._systems.pop(frame)
     
     def dump(self, what):
+        """
+        Return a list of numpy arrays with the system property specified by 
+        `what`. The list size is the number of systems in the trajectory.
+        
+        Parameters
+        ----------
+        
+        what : str
+            Requested system property.
+        
+            `what` must be of the form 
+            "particle.<attribute>" or "cell.<attribute>". 
+            
+            The following aliases are allowed:
+            - "pos" ("particle.position")
+            - "position" ("particle.position")
+            - "x" ("particle.position_x")
+            - "y" ("particle.position_y")
+            - "z" ("particle.position_z")
+            - "spe" ("particle.species")
+            - "species" ("particle.species")
+            - "species_id" ("particle.species_id")
+            - "radius" ("particle.radius")
+            - "label" ("particle.label")
+            - "index" ("particle.index")
+            - "mass" ("particle.mass")
+            - "box" ("cell.side")
+        
+        Returns
+        -------
+        
+        to_dump : list of ndarrays with a size equal to the number of systems.
+            List of the requested system property. Each element of the list
+            is a ndarray from a frame (system) in the trajectory.
+        
+        Examples
+        --------
+        
+        >>> traj = Trajectory('trajectory.xyz')
+        >>> pos = traj.dump('position')
+        >>> spe = traj.dump('species')
+        """
         to_dump = []
         for system in self._systems:
             to_dump.append(system.dump(what))
@@ -262,7 +360,6 @@ class Trajectory:
                 self.add_system(system)
 
     #TODO: check if actually readable by RUMD
-    #TODO: allow to write radii
     def _write_rumd(self, output_path, fields, precision):
         import gzip
         if not output_path.endswith('.xyz.gz'):
