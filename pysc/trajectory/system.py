@@ -149,7 +149,6 @@ class System:
             - "z" ("particle.position_z")
             - "spe" ("particle.species")
             - "species" ("particle.species")
-            - "species_id" ("particle.species_id")
             - "radius" ("particle.radius")
             - "label" ("particle.label")
             - "index" ("particle.index")

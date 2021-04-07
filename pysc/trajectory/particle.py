@@ -13,7 +13,6 @@ aliases = {'position': 'particle.position',
            'z': 'particle.position_z',
            'species': 'particle.species',
            'spe': 'particle.species',
-           'species_id': 'particle.species_id',
            'label': 'particle.label',
            'index': 'particle.index',
            'mass': 'particle.mass',
@@ -47,10 +46,6 @@ class Particle:
     species : str
         Particle type / species.
         
-    species_id : int
-        A numeral ID for the species. Automatically given in the context
-        of a trajectory.
-        
     label : int
         Cluster label of the particle. 
         
@@ -60,10 +55,9 @@ class Particle:
     Examples
     --------
     
-    
+    >>> p = Particle([0.0, 0.0, 0.0], species='A')
+    >>> p = Particle([0.0, 0.0], species='B')
     """
-    
-    index = 0
     
     def __init__(self, position=None, species='A', label=-1):
         if position is None:
@@ -74,10 +68,7 @@ class Particle:
         # Cluster label
         self.label = label
         # Index of the particle
-        self.index = Particle.index
-        Particle.index += 1
-        # Numeral id of the species (given in a trajectory)
-        self.species_id = None
+        self.index = id(self)
         
     def __str__(self):
         rep = 'Particle('

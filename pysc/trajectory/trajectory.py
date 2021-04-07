@@ -160,9 +160,6 @@ class Trajectory:
         else:
             pass
         
-        # Add numeral ID to each species (1 to N_species)
-        self._make_species_numeral()
-        
         # Sanity checks
         #  constant number of particles
         n_particles = set([sys.number_of_particles for sys in self._systems])
@@ -381,17 +378,6 @@ class Trajectory:
                     line += '{} '.format(particle.label)
                     line += '\n'
                     file.write(line)
-        
-    def _make_species_numeral(self):
-        """
-        Standardize the names of the species to [1, ..., N_species] by
-        changing the attribute `particle.species_id` of each particle in
-        the trajectory.
-        """
-        for system in self._systems:
-            distinct_species = list(system.distinct_species)
-            for particle in system.particle:
-                particle.species_id = distinct_species.index(particle.species) + 1
 
     # TODO: check if always working
     # TODO: handle fractions
