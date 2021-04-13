@@ -16,8 +16,7 @@ CONTAINS
           d_ij = d_ij - SIGN(box ,d_ij)
       END WHERE
   END SUBROUTINE pbc
-
-
+  
   SUBROUTINE radial_histogram(pos_0, pos_1, idx_0, idx_1, box, r, dr, hist)
     ! Parameters
     REAL(8), INTENT(in)     :: pos_0(:,:), pos_1(:,:), box(:), r(:), dr
@@ -104,7 +103,174 @@ CONTAINS
     END DO
   END SUBROUTINE
 
+
+  !!!!!!!!!! PBC !!!!!!!!!!
+  ! Can be optimized
+  SUBROUTINE pbc_(r, box)
+    REAL(8), INTENT(inout) :: r(:,:)
+    REAL(8), INTENT(in)    :: box(:)
+    INTEGER(8)             :: i, j
+    REAL(8)                :: hbox(SIZE(box))
+    hbox = box/2.0    
+    DO i=1,SIZE(box)
+      DO j=1,SIZE(r,2)
+        IF (ABS(r(i,j)) > hbox(i)) THEN
+          r(i,j) = r(i,j) - SIGN(box(i), r(i,j)) 
+        END IF    
+      END DO    
+    END DO
+  END SUBROUTINE
   
+  !!!!!!!!!! CARTESIAN TO SPHERICAL !!!!!!!!!!
+  FUNCTION cartesian_to_spherical(r_xyz) RESULT(r_sph)
+    REAL(8), INTENT(in) :: r_xyz(:,:)
+    REAL(8)             :: xy(SIZE(r_xyz,2))
+    REAL(8)             :: r_sph(SIZE(r_xyz,1),SIZE(r_xyz,2))
+    xy = r_xyz(1,:)**2 + r_xyz(2,:)**2
+    r_sph(1,:) = SQRT( xy + r_xyz(3,:)**2 ) ! module
+    r_sph(2,:) = ATAN2( r_xyz(2,:), r_xyz(1,:) ) ! longitude
+    r_sph(3,:) = ATAN2( SQRT(xy), r_xyz(3,:) ) ! latitude 
+  END FUNCTION cartesian_to_spherical
+
+  !!!!!!!!!! FACTORIAL !!!!!!!!!!
+  RECURSIVE FUNCTION factorial(n) RESULT(fact)
+    INTEGER(8) :: n, fact
+    IF (n == 0) THEN
+       fact = 1
+    ELSE
+       fact = n * factorial(n-1)
+    END IF
+  END FUNCTION factorial
+  
+  !!!!!!!! LEGENDRE FUNCTION !!!!!!!!!!
+  FUNCTION plm(l, m, x) RESULT(plmx)
+    INTEGER(8), INTENT(in) :: l ! degree
+    INTEGER(8)             :: m ! order
+    REAL(8), INTENT(in)    :: x ! argument (must have |x| <= 1)
+    REAL(8)                :: plmx ! value of the associated Legendre function
+    INTEGER(8)             :: i, ll
+    REAL(8)                :: fact, pll, pmm, pmmp1, somx2
+    LOGICAL                :: neg
+    neg = (m < 0)
+    m = ABS(m)
+    pmm = 1.0 ! compute P^m_m
+    IF (m > 0) THEN
+       somx2 = SQRT( (1.0-x)*(1.0+x) )
+       fact = 1.0
+       DO i=1,m
+          pmm = -pmm * fact * somx2
+          fact = fact + 2.0
+       END DO
+    END IF
+    IF (l == m) THEN
+      plmx = pmm
+    ELSE
+      pmmp1 = x * (2*m+1) * pmm ! compute P^m_m+1
+      IF (l == m+1) THEN
+        plmx = pmmp1
+      ELSE ! compute P^m_l, l > m+1
+        DO ll=m+2,l
+          pll = (x * (2*ll-1) * pmmp1 - (ll+m-1) * pmm) / (ll-m)
+          pmm = pmmp1
+          pmmp1 = pll
+        END DO
+        plmx = pll
+      END IF  
+   END IF
+   ! handle negative m
+    IF (neg) THEN
+      plmx = (-1.0)**m * REAL(factorial(l-m))/REAL(factorial(l+m)) * plmx
+    END IF
+  END FUNCTION plm
+
+  !!!!!!!!!! SPHERICAL HARMONICS !!!!!!!!!!
+  FUNCTION ylm(l, m, theta, phi)
+    INTEGER(8), INTENT(in) :: l, m
+    REAL(8), INTENT(in)    :: theta, phi
+    COMPLEX(8)             :: ylm
+    REAL(8)                :: up, down
+    up = (2*l+1)*factorial(l-m)
+    down = 4.0*pi*factorial(l+m)
+    !ylm = SQRT(up/down) * plm(l, m, COS(theta)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*phi), 0.0))
+    ylm = SQRT(up/down) * plm(l, m, COS(phi)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*theta), 0.0))
+  END FUNCTION ylm
+
+  !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
+  FUNCTION qlm(l, neigh_i, pos_i, pos_j, box)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+    COMPLEX(8)             :: qlm(2*l+1), harm
+    REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
+    INTEGER(8)             :: j, ni, m
+    qlm(:) = (0.0, 0.0)
+    ! r_ij (cartesian)
+    DO j=1,SIZE(neigh_i)
+      ni = neigh_i(j)+1 ! python index shift 
+      r_xyz(:,j) = pos_j(:,ni)
+    END DO
+    r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
+    r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
+    r_xyz(3,:) = r_xyz(3,:) - pos_i(3)
+    CALL pbc_(r_xyz, box)
+    ! r_ij (spherical)
+    r_sph = cartesian_to_spherical(r_xyz)
+    DO m=0,2*l
+      DO j=1,SIZE(neigh_i)
+        harm = ylm(l, m-l, r_sph(2,j), r_sph(3,j))
+        qlm(m+1) = qlm(m+1) + harm
+      END DO
+    END DO
+    qlm = qlm / SIZE(neigh_i)
+  END FUNCTION qlm
+
+  !!!!!!!!!! ROTATIONAL INVARIANT OF ORDER l !!!!!!!!!!
+  ! difference at the ~8th digit compared to Python 
+  FUNCTION rotational_invariant(l, q_lm) RESULT(q_l)
+    INTEGER(8), INTENT(in) :: l
+    COMPLEX(8), INTENT(in) :: q_lm(:)
+    REAL(8)                :: s, q_l
+    s = REAL( SUM(q_lm * CONJG(q_lm)) )
+    q_l = SQRT( 4.0*pi / REAL(2*l+1) * s )
+  END FUNCTION rotational_invariant
+    
+  !!!!!!!!!! STEINHARDT !!!!!!!!!!
+  FUNCTION ql(l, neigh_i, pos_i, pos_j, box) RESULT(q_l)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)    
+    COMPLEX(8)             :: q_lm(2*l+1)
+    REAL(8)                :: q_l
+    q_lm = qlm(l, neigh_i, pos_i, pos_j, box)
+    q_l = rotational_invariant(l, q_lm)  
+  END FUNCTION ql
+
+  !!!!!!!!!! AVERAGE COMPLEX VECTORS !!!!!!!!!!
+  FUNCTION qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), neigh_neigh_i(:,:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+    INTEGER(8)             :: nbar_b, kn, k
+    COMPLEX(8)             :: q_lm_i(2*l+1), q_lm_k(SIZE(neigh_i), 2*l+1), qbarlm(2*l+1)
+    nbar_b = SIZE(neigh_i) + 1
+    q_lm_i = qlm(l, neigh_i, pos_i, pos_j, box)
+    DO kn=1,SIZE(neigh_i)
+      k = neigh_i(kn)+1 ! python index shift
+      q_lm_k(kn,:) = qlm(l, neigh_neigh_i(kn,:), pos_j(:,k), pos_j, box)
+    END DO
+    qbarlm = q_lm_i + SUM(q_lm_k)
+    qbarlm = qbarlm / nbar_b
+  END FUNCTION qbarlm
+
+  !!!!!!!!!! LECHNER-DELLAGO !!!!!!!!!!
+  FUNCTION qbarl(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box) RESULT(qbar_l)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), neigh_neigh_i(:,:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+    COMPLEX(8)             :: qbar_lm(2*l+1)
+    REAL(8)                :: qbar_l
+    WRITE(*,*) "HERE"
+    qbar_lm = qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
+    qbar_l = rotational_invariant(l, qbar_lm)
+  END FUNCTION qbarl
+  
+    
   SUBROUTINE nearest_neighbors(idx_i, idx_1, pos_i, pos_1, spe_i, spe_1, pairs, box, cutoffs, neigh_i)
     ! Parameters
     INTEGER(8), INTENT(in)     :: idx_i, idx_1(:)
