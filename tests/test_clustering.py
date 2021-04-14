@@ -5,9 +5,7 @@ import os
 
 from pysc.trajectory import Trajectory
 from pysc.descriptor import AngularDescriptor, RadialDescriptor
-from pysc.processing import ZScore, PCA, KMeans, CommunityInference
-from pysc.optimization import Optimization
-
+from pysc import Optimization, ZScore, PCA, KMeans, CommunityInference
 
 class Test(unittest.TestCase):
 

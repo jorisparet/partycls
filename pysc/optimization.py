@@ -1,8 +1,8 @@
 from pysc.trajectory import Trajectory
 from pysc.descriptor import AngularDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
-from pysc.processing import KMeans, GaussianMixture, CommunityInference
-from pysc.processing import PCA, TSNE, AutoEncoder
-from pysc.processing import ZScore, MinMax
+from .clustering import KMeans, GaussianMixture, CommunityInference
+from .dim_redux import PCA, TSNE, AutoEncoder
+from .feature_scaling import ZScore, MinMax
 import time, datetime
 
 # Code name
@@ -103,7 +103,7 @@ class Optimization:
     Examples
     --------
     
-    >>> from pysc.optimization import Optimization
+    >>> from pysc import Optimization
     >>> opt = Optimization('trajectory.xyz', descriptor='ba', scaling='zscore')
     >>> opt.run()
     """
