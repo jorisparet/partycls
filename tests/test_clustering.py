@@ -4,7 +4,7 @@ import unittest
 import os
 
 from pysc.trajectory import Trajectory
-from pysc.descriptor import AngularDescriptor, RadialDescriptor
+from pysc.descriptor import BondAngleDescriptor, RadialDescriptor
 from pysc import Optimization, ZScore, PCA, KMeans, CommunityInference
 
 class Test(unittest.TestCase):
@@ -15,7 +15,7 @@ class Test(unittest.TestCase):
         self.cutoffs = [1.25]
 
     def test_angular_zscore_pca_kmeans(self):
-        D = AngularDescriptor(self.traj)
+        D = BondAngleDescriptor(self.traj)
         D.cutoffs = self.cutoffs
         X = D.compute()
         scaler = ZScore()

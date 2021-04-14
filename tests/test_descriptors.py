@@ -4,7 +4,7 @@ import unittest
 import os
 
 from pysc.trajectory import Trajectory
-from pysc.descriptor import RadialDescriptor, AngularDescriptor
+from pysc.descriptor import RadialDescriptor, BondAngleDescriptor
 from pysc.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
 
 from numpy import float32
@@ -31,7 +31,7 @@ class Test(unittest.TestCase):
                          'wrong average value at the first peak of g(r)')
 
     def test_angular(self):
-        D = AngularDescriptor(self.traj, dtheta=3.0)
+        D = BondAngleDescriptor(self.traj, dtheta=3.0)
         D.cutoffs = self.cutoffs
         self._compute(D)
         q = D.normalize_sin(D.average)

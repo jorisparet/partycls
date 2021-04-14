@@ -1,5 +1,5 @@
 from pysc.trajectory import Trajectory
-from pysc.descriptor import AngularDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
+from pysc.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, AutoEncoder
 from .feature_scaling import ZScore, MinMax
@@ -13,7 +13,7 @@ ci_version = '0.1'
 
 # Databases
 descriptor_db = {'gr': RadialDescriptor,
-                 'ba': AngularDescriptor,
+                 'ba': BondAngleDescriptor,
                  'bo': BondOrientationalDescriptor,
                  'ld': LechnerDellagoDescriptor}
 scaling_db = {'zscore': ZScore,
@@ -37,7 +37,7 @@ class Optimization:
     ----------
     
     trajectory : Trajectory, or str
-        An instance of `Trajectory` or path to trajectory file to read.
+        An instance of `Trajectory` path to trajectory file to read.
         
     descriptor : {'gr', 'ba', 'bo', 'ld', or an instance of StructuralDescriptor}
         Structural descriptor to be computed on the trajectory.
@@ -111,12 +111,10 @@ class Optimization:
     def __init__(self, trajectory, descriptor='gr', scaling=None, dim_redux=None, clustering='kmeans'):
         
         # Trajectory
-        if isinstance(trajectory, Trajectory):
-            self.trajectory = trajectory
-        elif isinstance(trajectory, str):
+        if isinstance(trajectory, str):
             self.trajectory = Trajectory(trajectory)
         else:
-            raise TypeError('`trajectory` should be an instance of `str` or `Trajectory`.')
+            self.trajectory = trajectory
 
         # Descriptor
         if isinstance(descriptor, str):
@@ -205,12 +203,10 @@ class Optimization:
             X_red = self.dim_redux.reduce(X_scaled)
 
         # Clustering
-        if self.clustering.symbol == 'cinf':
-            # TODO: fix that. Not pretty and not practical!
-            print('Warning: community inference is using the whole descriptor.')
-            self.clustering.fit(self.descriptor)
-        else:
-            self.clustering.fit(X_red)
+        if self.clustering.symbol == 'cinf' and (self.scaling is not None or self.dim_redux is not None):
+            raise ValueError('community inference is not meant to run with feature-scaling or dimensionality reduction')
+        # run
+        self.clustering.fit(X_red)
         #  give its predicted label to each selected `Particle` in the trajectory.
         n = 0
         for frame in self.descriptor._groups[0]:

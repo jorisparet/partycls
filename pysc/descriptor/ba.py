@@ -2,9 +2,9 @@ from .descriptor import AngularStructuralDescriptor
 import numpy
 from .realspace_wrap import compute
 
-class AngularDescriptor(AngularStructuralDescriptor):
+class BondAngleDescriptor(AngularStructuralDescriptor):
     
-    name = 'angular'
+    name = 'bond-angle'
     symbol = 'ba'
         
     def __init__(self, trajectory, dtheta=3.0):
