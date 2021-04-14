@@ -7,16 +7,23 @@ class RadialDescriptor(StructuralDescriptor):
     name = 'radial'
     symbol = 'gr'
     
-    #TODO: allow to change `rlim` after creation
     def __init__(self, trajectory, dr=0.1, n_shells=3, rlim=None):
         StructuralDescriptor.__init__(self, trajectory)
         self.dr = dr
         self.n_shells = n_shells
         # set the grid automatically using coordination shells (`n_shells`)
         #  or user-defined limits (`rlim`) if provided
-        self.grid, self.rlim = self._bounds(rlim)
+        self.grid, self._rlim = self._bounds(rlim)
 #        # default normalization (r**2*g(r))
 #        self.normalize = self.squared_distance_RDF_normalization
+
+    @property
+    def rlim(self):
+        return self._rlim
+    
+    @rlim.setter
+    def rlim(self, value):
+        self.grid, self._rlim = self._bounds(value)
             
     @property
     def n_features(self):
@@ -55,7 +62,7 @@ class RadialDescriptor(StructuralDescriptor):
             const = 4.0 / 3.0 * numpy.pi * self.dr**3
         const = const * rho * x_1
         g_b = numpy.empty_like(self.grid)
-        b_min = numpy.floor(self.rlim[0]/self.dr) # if r_min != 0
+        b_min = numpy.floor(self._rlim[0]/self.dr) # if r_min != 0
         for m in range(self.n_features):
             b = b_min + m + 1
             wb = (b**3 - (b-1)**3)
@@ -90,7 +97,7 @@ class RadialDescriptor(StructuralDescriptor):
         if rlim is None:
             # first define full grid
             r = numpy.arange(self.dr/2, L/2, self.dr, dtype=numpy.float64)
-            self.rlim = (r[0], r[-1]) # temporary
+            self._rlim = (r[0], r[-1]) # temporary
             self.grid = r # temporary
             # arrays
             pos_0 = self.group_positions(0)
