@@ -115,8 +115,6 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
                     hist_n_i[l] = self._qbar_l(l, i, neigh_i, neigh_neigh_i, pos_0[n][i], pos_1[n], box)
                     #TODO: fix the shape of neigh_neigh_i to pass it to qbarl()
                     #hist_n_i[l] = compute.qbarl(l, numpy.array(neigh_i), numpy.array(neigh_neigh_i).T, pos_0[n][i], pos_1[n].T, box)
-                    if n==0 and i ==0:
-                        print(hist_n_i[l])
                 features[row] = hist_n_i
                 row += 1      
         self.features = features
