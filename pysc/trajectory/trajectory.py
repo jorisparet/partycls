@@ -308,6 +308,9 @@ class Trajectory:
                 if re_cols:
                     fields = re_cols.group(1).split(',')
                 # search cell
+                # TODO: the following line does not work on 3.6... but it does like this
+                # re_cell = re.search('^(sim_box|boxLengths)=(\w+),(.+)$', p)
+                # and then shifts groups below
                 re_cell = re.search('^[sim_box|boxLengths]=(\w+),(.+)$', p)
                 if re_cell:
                     assert('Rectangular' in re_cell.group(1)), 'simulation box must be rectangular.'
