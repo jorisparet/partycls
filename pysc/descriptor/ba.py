@@ -9,9 +9,18 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         
     def __init__(self, trajectory, dtheta=3.0):
         AngularStructuralDescriptor.__init__(self, trajectory)
-        self.dtheta = dtheta
+        self._dtheta = dtheta
         self.grid = numpy.arange(dtheta/2.0, 180.0, dtheta, dtype=numpy.float64)
         
+    @property
+    def dtheta(self):
+        return self._dtheta
+    
+    @dtheta.setter
+    def dtheta(self, value):
+        self._dtheta = value
+        self.grid = numpy.arange(value/2.0, 180.0, value, dtype=numpy.float64)
+    
     @property
     def n_features(self):
         return len(self.grid)
