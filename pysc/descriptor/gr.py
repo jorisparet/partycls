@@ -9,11 +9,10 @@ class RadialDescriptor(StructuralDescriptor):
     
     def __init__(self, trajectory, dr=0.1, n_shells=3, rlim=None):
         StructuralDescriptor.__init__(self, trajectory)
-        self.dr = dr
         self.n_shells = n_shells
         # set the grid automatically using coordination shells (`n_shells`)
         #  or user-defined limits (`rlim`) if provided
-        self.grid, self._rlim = self._bounds(rlim)
+        self._bounds(dr, rlim)
 #        # default normalization (r**2*g(r))
 #        self.normalize = self.squared_distance_RDF_normalization
 
@@ -23,7 +22,15 @@ class RadialDescriptor(StructuralDescriptor):
     
     @rlim.setter
     def rlim(self, value):
-        self.grid, self._rlim = self._bounds(value)
+        self._bounds(self._dr, value)
+        
+    @property
+    def dr(self):
+        return self._dr
+    
+    @dr.setter
+    def dr(self, value):
+        self._bounds(value, self._rlim)
             
     @property
     def n_features(self):
@@ -91,12 +98,13 @@ class RadialDescriptor(StructuralDescriptor):
             
     #TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     #TODO: duplicate code with `compute()`
-    def _bounds(self, rlim):
+    def _bounds(self, dr, rlim):
         L = numpy.min(self.trajectory[0].cell.side)
         # use `n_shells`
+        self._dr = dr
         if rlim is None:
             # first define full grid
-            r = numpy.arange(self.dr/2, L/2, self.dr, dtype=numpy.float64)
+            r = numpy.arange(self._dr/2, L/2, self._dr, dtype=numpy.float64)
             self._rlim = (r[0], r[-1]) # temporary
             self.grid = r # temporary
             # arrays
@@ -112,7 +120,7 @@ class RadialDescriptor(StructuralDescriptor):
                 # pos_x arrays need to be transposed to be used with fortran
                 hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T, 
                                                   idx_0[n], idx_1[n], box,
-                                                  r, self.dr)
+                                                  r, self._dr)
                 # fill the array of features
                 for hist_n_i in hist_n:
                     all_hist[row] = hist_n_i
@@ -127,12 +135,17 @@ class RadialDescriptor(StructuralDescriptor):
                 first_max = numpy.argmax(g_tmp)
                 first_min = numpy.argmin(g_tmp[first_max:]) + first_max
                 index += first_min   
-            return r[0:index+1], (r[0], r[index])
+            # set grid and bounds
+            self.grid = r[0:index+1]
+            self._rlim = (r[0], r[index])
+        
         # use user-defined limits if provided
         else:
             if len(rlim) == 2 and rlim[0] < rlim[1] and rlim[1] <= L/2:
                 rmin, rmax = rlim
-                r = numpy.arange(rmin+(self.dr/2), rmax, self.dr, dtype=numpy.float64)
-                return r, (r[0], r[-1])
+                r = numpy.arange(rmin+(self._dr/2), rmax, self._dr, dtype=numpy.float64)
+                # set grid and bounds
+                self.grid = r
+                self._rlim = (r[0], r[-1])
             else:
                 raise ValueError('`rlim` is not correctly defined.')
