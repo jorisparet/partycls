@@ -1,4 +1,7 @@
-# Reference to atooms
+"""
+This class is inspired by the `atooms` framework authored by Daniele Coslovich
+See https://framagit.org/atooms/atooms 
+"""
 
 import numpy
 
