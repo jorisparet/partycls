@@ -73,9 +73,10 @@ class Trajectory:
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
     
-    def __init__(self, filename, fmt='xyz', additional_fields=[], first=0, last=None, step=1):
+    def __init__(self, filename, fmt='xyz', backend=None, additional_fields=[], first=0, last=None, step=1):
         self.filename = filename
         self.fmt = fmt
+        self.backend = backend
         self.additional_fields = additional_fields
         self._systems = []
         self._read(first, last, step)
@@ -155,13 +156,26 @@ class Trajectory:
     
     def _read(self, first, last, step):
         
-        # Select the correct parser to read the file
-        if self.fmt == 'xyz':
-            self._parser_xyz()
-        elif self.fmt == 'rumd':
-            self._parser_rumd()
+        # formats recognized by defaults
+        if self.backend is None:
+            if self.fmt == 'xyz':
+                self._parser_xyz()
+            elif self.fmt == 'rumd':
+                self._parser_rumd()
+            else:
+                raise ValueError('"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
+                
+        # atooms backend
+        elif self.backend == 'atooms':
+            self._parser_atooms()
+        
+        # MDTraj backend
+        elif self.backend == 'mdtraj':
+            self._parser_mdtraj()
+        
+        # wrong backend
         else:
-            pass
+            raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
         
         # Sanity checks
         #  constant number of particles
@@ -297,7 +311,7 @@ class Trajectory:
         Read the trajectory from a RUMD file and put 
         the different frames in a list of `System`.
         """
-        
+
         import gzip
         
         def _system_info(info):
@@ -384,6 +398,40 @@ class Trajectory:
                     line += '{} '.format(particle.label)
                     line += '\n'
                     file.write(line)
+
+    def _parser_atooms(self):
+        
+        try:
+            from atooms.trajectory import Trajectory as _Trajectory
+            with _Trajectory(self.filename, fmt=self.fmt) as atooms_traj:
+                for atooms_sys in atooms_traj:
+                    cell = Cell(atooms_sys.cell.side)
+                    system = System(cell=cell)
+                    for atooms_p in atooms_sys.particle:
+                        pos = atooms_p.position.copy()
+                        spe = atooms_p.species
+                        particle = Particle(position=pos, species=spe)
+                        system.add_particle(particle)
+                    self.add_system(system)
+        except ModuleNotFoundError:
+            print('No `atooms` module found.')
+                
+    def _parser_mdtraj(self):
+        
+        try:
+            import mdtraj as md
+            md_traj = md.load(self.filename, top=self.fmt)
+            for frame in range(md_traj.n_frames):
+                cell = Cell(side=md_traj.unitcell_lengths[frame])
+                system = System(cell=cell)
+                for atom in range(md_traj.n_atoms):
+                    pos = md_traj.xyz[frame, atom]
+                    spe = md_traj[frame].topology.atom(atom).element.symbol
+                    particle = Particle(position=pos, species=spe)
+                    system.add_particle(particle)
+                self.add_system(system)
+        except ModuleNotFoundError:
+            print('No `mdtraj` module found.')
 
     # TODO: check if always working
     # TODO: handle fractions
