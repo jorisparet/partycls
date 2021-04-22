@@ -383,15 +383,17 @@ class Trajectory:
             atooms_traj.close()
                 
         except ModuleNotFoundError:
-            print('No `atooms` module found.')
+            raise ModuleNotFoundError('No `atooms` module found.')
 
     def _parser_mdtraj(self):
         
         try:
             import mdtraj as md
-            md_traj = md.load(self.filename, top=self.fmt)
+            md_traj = md.load(self.filename)
             for frame in range(md_traj.n_frames):
-                cell = Cell(side=md_traj.unitcell_lengths[frame])
+                input_cell = md_traj.unitcell_lengths
+                assert input_cell is not None, 'cell dimensions are needed to read the trajectory'
+                cell = Cell(side=input_cell[frame])
                 system = System(cell=cell)
                 for atom in range(md_traj.n_atoms):
                     pos = md_traj.xyz[frame, atom]
@@ -399,8 +401,10 @@ class Trajectory:
                     particle = Particle(position=pos, species=spe)
                     system.add_particle(particle)
                 self.add_system(system)
+        except ValueError:
+            raise ValueError('formats that require a topology argument cannot be opened')
         except ModuleNotFoundError:
-            print('No `mdtraj` module found.')
+            raise ModuleNotFoundError('No `mdtraj` module found.')
 
     def _write(self, output_path, fmt='xyz', backend=None, additional_fields=[], precision=6):
 
