@@ -187,15 +187,6 @@ class Trajectory:
         
         # Slice the trajectory
         self._slice(first, last, step)
-
-    def _write(self, output_path, fmt='xyz', additional_fields=[], precision=6):
-        # Select the method matching `fmt` to write the file
-        if fmt == 'xyz':
-            self._write_xyz(output_path, additional_fields, precision)
-        elif fmt == 'rumd':
-            self._write_rumd(output_path, additional_fields, precision)
-        else:
-            raise ValueError('Unknown trajectory format "{}"'.format(fmt))
         
     def _parser_xyz(self):
         """
@@ -286,26 +277,6 @@ class Trajectory:
                 # Add system to trajectory
                 self.add_system(system)
 
-    def _write_xyz(self, output_path, additional_fields, precision):
-        if not output_path.endswith('.xyz'):
-            output_path += '.xyz'
-        with open(output_path, 'w') as file:
-            for system in self._systems:
-                file.write('{}\n'.format(system.number_of_particles))
-                columns = 'columns:id,pos,'
-                for field in additional_fields:
-                    columns += '{},'.format(field)
-                columns = columns[:-1]
-                header = columns + ' cell:{}\n'
-                file.write(header.format(','.join('{:.{}f}'.format(L, precision) for L in system.cell.side)))
-                for particle in system.particle:
-                    line = '{} '.format(particle.species)
-                    line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
-                    for field in additional_fields:
-                        line += '{} '.format(particle.__getattribute__(field))
-                    line += '\n'
-                    file.write(line)
-
     def _parser_rumd(self):
         """
         Read the trajectory from a RUMD file and put 
@@ -376,6 +347,100 @@ class Trajectory:
                 # Add system to trajectory
                 self.add_system(system)
 
+    def _parser_atooms(self):
+        
+        try:
+            from atooms.trajectory import Trajectory as AtoomsTrajectory
+            
+            _Trajectory = AtoomsTrajectory.formats[self.fmt]
+            
+            # Read additional fields if the trajectory format allows 
+            if self.additional_fields:
+                try:
+                    atooms_traj = _Trajectory(self.filename, fields=['id', 'pos']+self.additional_fields)
+                except TypeError:
+                    print('This trajectory format does not support additional fields')
+                    print('Warning: ignoring additional fields.')
+                    self.additional_fields = []
+                    atooms_traj = _Trajectory(self.filename)
+            else:
+                atooms_traj = _Trajectory(self.filename)
+
+            # Fill the native Trajectory using atooms Trajectory
+            for atooms_sys in atooms_traj:
+                cell = Cell(atooms_sys.cell.side)
+                system = System(cell=cell)
+                for atooms_p in atooms_sys.particle:
+                    pos = atooms_p.position.copy()
+                    spe = atooms_p.species
+                    particle = Particle(position=pos, species=spe)
+                    # additional fields
+                    for field in self.additional_fields:
+                        value = atooms_p.__getattribute__(field)
+                        particle.__setattr__(field, value)
+                    system.add_particle(particle)
+                self.add_system(system)
+            atooms_traj.close()
+                
+        except ModuleNotFoundError:
+            print('No `atooms` module found.')
+
+    def _parser_mdtraj(self):
+        
+        try:
+            import mdtraj as md
+            md_traj = md.load(self.filename, top=self.fmt)
+            for frame in range(md_traj.n_frames):
+                cell = Cell(side=md_traj.unitcell_lengths[frame])
+                system = System(cell=cell)
+                for atom in range(md_traj.n_atoms):
+                    pos = md_traj.xyz[frame, atom]
+                    spe = md_traj[frame].topology.atom(atom).element.symbol
+                    particle = Particle(position=pos, species=spe)
+                    system.add_particle(particle)
+                self.add_system(system)
+        except ModuleNotFoundError:
+            print('No `mdtraj` module found.')
+
+    def _write(self, output_path, fmt='xyz', backend=None, additional_fields=[], precision=6):
+
+        # formats recognized by defaults
+        if backend is None:
+            if fmt == 'xyz':
+                self._write_xyz(output_path, additional_fields, precision)
+            elif fmt == 'rumd':
+                self._write_rumd(output_path, additional_fields, precision)
+            else:
+                raise ValueError('"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
+                
+        # atooms backend
+        elif backend == 'atooms':
+            self._write_atooms(output_path, fmt, additional_fields, precision)
+        
+        # MDTraj backend
+        elif backend == 'mdtraj':
+            self._write_mdtraj(output_path, fmt, additional_fields, precision)
+
+    def _write_xyz(self, output_path, additional_fields, precision):
+        if not output_path.endswith('.xyz'):
+            output_path += '.xyz'
+        with open(output_path, 'w') as file:
+            for system in self._systems:
+                file.write('{}\n'.format(system.number_of_particles))
+                columns = 'columns:id,pos,'
+                for field in additional_fields:
+                    columns += '{},'.format(field)
+                columns = columns[:-1]
+                header = columns + ' cell:{}\n'
+                file.write(header.format(','.join('{:.{}f}'.format(L, precision) for L in system.cell.side)))
+                for particle in system.particle:
+                    line = '{} '.format(particle.species)
+                    line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
+                    for field in additional_fields:
+                        line += '{} '.format(particle.__getattribute__(field))
+                    line += '\n'
+                    file.write(line)
+
     #TODO: check if actually readable by RUMD
     def _write_rumd(self, output_path, fields, precision):
         import gzip
@@ -398,40 +463,39 @@ class Trajectory:
                     line += '{} '.format(particle.label)
                     line += '\n'
                     file.write(line)
+            
+    def _write_atooms(self, output_path, fmt, fields, precision):
+        try:
+            from atooms.trajectory import Trajectory as AtoomsTrajectory
+            from atooms.system import System as _System
+            from atooms.system import Particle as _Particle
+            from atooms.system import Cell as _Cell
+            
+            _Trajectory = AtoomsTrajectory.formats[fmt]
 
-    def _parser_atooms(self):
+            # Write additional fields if the trajectory format allows 
+            try:
+                with _Trajectory(output_path, 'w', fields=['id', 'pos']+fields) as atooms_traj:
+                    for n, system in enumerate(self._systems):
+                        new_cell = _Cell(side=system.cell.side)
+                        new_system = _System(cell=new_cell)
+                        for particle in system.particle:
+                            pos = particle.position
+                            spe = particle.species
+                            label = particle.label
+                            new_particle = _Particle(species=spe, position=pos)
+                            new_particle.label = label
+                            new_system.particle.append(new_particle)
+                        atooms_traj.write(new_system, step=n)
+                        
+            except TypeError:
+                print('This trajectory format does not support additional fields (e.g. cluster labels)')
         
-        try:
-            from atooms.trajectory import Trajectory as _Trajectory
-            with _Trajectory(self.filename, fmt=self.fmt) as atooms_traj:
-                for atooms_sys in atooms_traj:
-                    cell = Cell(atooms_sys.cell.side)
-                    system = System(cell=cell)
-                    for atooms_p in atooms_sys.particle:
-                        pos = atooms_p.position.copy()
-                        spe = atooms_p.species
-                        particle = Particle(position=pos, species=spe)
-                        system.add_particle(particle)
-                    self.add_system(system)
         except ModuleNotFoundError:
-            print('No `atooms` module found.')
-                
-    def _parser_mdtraj(self):
-        
-        try:
-            import mdtraj as md
-            md_traj = md.load(self.filename, top=self.fmt)
-            for frame in range(md_traj.n_frames):
-                cell = Cell(side=md_traj.unitcell_lengths[frame])
-                system = System(cell=cell)
-                for atom in range(md_traj.n_atoms):
-                    pos = md_traj.xyz[frame, atom]
-                    spe = md_traj[frame].topology.atom(atom).element.symbol
-                    particle = Particle(position=pos, species=spe)
-                    system.add_particle(particle)
-                self.add_system(system)
-        except ModuleNotFoundError:
-            print('No `mdtraj` module found.')
+            print('No `atooms` module found.')        
+            
+    def _write_mdtraj(self, output_path, fmt, fields, precision):
+        raise NotImplementedError('Writing output trajectories with the MDTraj backend is currently impossible')
 
     # TODO: check if always working
     # TODO: handle fractions

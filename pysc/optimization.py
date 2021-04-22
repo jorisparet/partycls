@@ -145,6 +145,7 @@ class Optimization:
                                                'writer':self.write_trajectory,
                                                'filename':None,
                                                'fmt':'xyz',
+                                               'backend': None,
                                                'additional_fields':[],
                                                'precision':6},
     
@@ -271,7 +272,7 @@ class Optimization:
         for key in self.output_metadata.keys():
             self.output_metadata[key]['enable'] = False
 
-    def write_trajectory(self, filename=None, fmt='xyz', additional_fields=[], precision=6, **kwargs):
+    def write_trajectory(self, filename=None, fmt='xyz', backend=None, additional_fields=[], precision=6, **kwargs):
         """
         Write the trajectory file with cluster labels (default) and other
         additional fields (if any).
@@ -302,7 +303,7 @@ class Optimization:
         """
         if filename is None:
             filename = self._output_file(fmt)
-        self.trajectory._write(filename, fmt=fmt, 
+        self.trajectory._write(filename, fmt=fmt, backend=backend,
                                additional_fields=['label']+additional_fields, 
                                precision=precision)
 
