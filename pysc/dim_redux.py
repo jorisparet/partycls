@@ -34,8 +34,7 @@ class AutoEncoder(MLPRegressor):
     full_name = 'Neural-Network Auto-Encoder (AE)'
     
     def __init__(self, layers=(2,), activation='relu'):
-        MLPRegressor.__init__(hidden_layer_sizes=layers,
-                              activation=activation)
+        MLPRegressor.__init__(self, hidden_layer_sizes=layers, activation=activation)
     
     def reduce(self, X):
         """
@@ -47,8 +46,10 @@ class AutoEncoder(MLPRegressor):
         
         # Mean absolute error
         Y_pred = self.predict(X)
-        err = numpy.abs(Y_pred - X).mean()
-        self.mean_abs_error = err
+        MAE = numpy.abs(Y_pred - X).mean()
+        self.mean_abs_error = MAE
+        MSD = ((X - X.mean(axis=1).reshape(X.shape[0], 1))**2).mean()
+        self.mean_squared_deviation = MSD
         
         # Weights and biases
         W = self.coefs_
