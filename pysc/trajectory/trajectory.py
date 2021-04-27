@@ -352,6 +352,9 @@ class Trajectory:
         try:
             from atooms.trajectory import Trajectory as AtoomsTrajectory
             
+            supported = list(AtoomsTrajectory.formats.keys())
+            assert self.fmt in supported, 'the current version of atooms only supports the following formats: {}'.format(supported)
+            
             _Trajectory = AtoomsTrajectory.formats[self.fmt]
             
             # Read additional fields if the trajectory format allows 
