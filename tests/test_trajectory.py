@@ -5,14 +5,19 @@ import os
 
 from pysc.trajectory import Trajectory
 from pysc.descriptor import BondAngleDescriptor
-from pysc import Optimization, ZScore, PCA, KMeans, CommunityInference
+from pysc import Optimization, ZScore, PCA, KMeans
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
-        self.traj = Trajectory(os.path.join(data, 'dislocation.xyz'), first=0, last=0, fmt='xyz')
+        self.traj = Trajectory(os.path.join(data, 'dislocation.xyz'), fmt='xyz')
         self.cutoffs = [1.45, 1.25, 1.25, 1.075]
+
+    def test_xyz(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'dislocation.xyz'), fmt='xyz')
+        self.assertEqual(traj[0].number_of_particles, 27)
 
     def test_angular_zscore_pca_kmeans(self):
         D = BondAngleDescriptor(self.traj)
@@ -22,8 +27,9 @@ class Test(unittest.TestCase):
         scaler = ZScore()
         X = scaler.scale(X)        
         reducer = PCA(n_components=3)
+        Xred = reducer.reduce(X)
         clustering = KMeans(n_clusters=2, n_init=100)
-        clustering.fit(X)
+        clustering.fit(Xred)
         print('Fractions :', clustering.fractions, '(clustering alone)')
         
         # Same via optimization
@@ -36,7 +42,6 @@ class Test(unittest.TestCase):
         opt.disable_output()
         opt.run()
         print('Fractions :', clustering.fractions, '(via optimization)')
-        
         self.assertEqual(set(clustering.fractions), set(opt.fractions))
         
 if __name__ == '__main__':
