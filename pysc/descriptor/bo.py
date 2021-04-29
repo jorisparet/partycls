@@ -1,4 +1,4 @@
-from .descriptor import AngularStructuralDescriptor
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 #from .helpers import cartesian_to_spherical, pbc
 import numpy
 #from scipy.special import sph_harm
@@ -20,6 +20,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         return len(self.grid)  
         
     def compute(self):
+        StructuralDescriptor.sanity_checks(self)
         # all relevant arrays
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)
@@ -83,6 +84,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         BondOrientationalDescriptor.__init__(self, trajectory, lmax=lmax)
 
     def compute(self):
+        StructuralDescriptor.sanity_checks(self)
         # all relevant arrays
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)

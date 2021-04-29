@@ -244,6 +244,9 @@ class StructuralDescriptor:
     
     def compute(self):
         pass
+        
+    def sanity_checks(self):
+        assert (self.group_size(0) > 0 and self.group_size(1) > 0), 'groups cannot be empty.'
 
 class AngularStructuralDescriptor(StructuralDescriptor):
     """

@@ -37,6 +37,7 @@ class RadialDescriptor(StructuralDescriptor):
         return len(self.grid)
         
     def compute(self):
+        StructuralDescriptor.sanity_checks(self)
         n_frames = len(self._groups[0])
         pos_0 = self.group_positions(0)
         pos_1 = self.group_positions(1)

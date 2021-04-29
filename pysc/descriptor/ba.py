@@ -1,4 +1,4 @@
-from .descriptor import AngularStructuralDescriptor
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 import numpy
 from .realspace_wrap import compute
 
@@ -25,7 +25,8 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     def n_features(self):
         return len(self.grid)
     
-    def compute(self):         
+    def compute(self):      
+        StructuralDescriptor.sanity_checks(self)
         # all relevant arrays
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)
