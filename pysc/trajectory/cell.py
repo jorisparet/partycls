@@ -41,3 +41,9 @@ class Cell:
         Return the volume of the cell.
         """
         return numpy.prod(self.side)
+    
+    def __str__(self):
+        return 'Cell(side={}, volume={})'.format(self.side, self.volume)
+    
+    def __repr__(self):
+        return self.__str__()
