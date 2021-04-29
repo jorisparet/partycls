@@ -154,6 +154,15 @@ class Trajectory:
             to_dump.append(system.dump(what))
         return to_dump
     
+    def set_property(self, what, value, subset=None):
+        if not isinstance(value, (list, numpy.ndarray)):
+            for system in self._systems:
+                system.set_property(what, value, subset=subset)
+        else:
+            assert len(value) == self.__len__(), '`value` should have the same length than the Trajectory.'
+            for frame, system in enumerate(self._systems):
+                system.set_property(what, value[frame], subset=subset)
+    
     def _read(self, first, last, step):
         
         # formats recognized by defaults

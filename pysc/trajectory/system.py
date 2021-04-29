@@ -4,6 +4,7 @@ See https://framagit.org/atooms/atooms
 """
 
 from .particle import Particle, aliases
+from pysc.core.utils import _standardize_condition
 import numpy
 
 class System:
@@ -184,6 +185,25 @@ class System:
         else:
             raise ValueError('Unknown attribute %s' % what)
         return data
+    
+    def set_property(self, what, value, subset=None):
+        # Set the property to a given subset?
+        if subset is not None:
+            condition = _standardize_condition(subset)
+        else:
+            condition = 'True'
+        # Set the same scalar value to each selected particle
+        if not isinstance(value, (list, numpy.ndarray)):
+            for particle in self.particle:
+                if eval(condition):
+                    setattr(particle, what, value)
+        # Set a specific value to each particle with a list/array
+        else:
+            c = 0
+            for particle in self.particle:
+                if eval(condition):
+                    setattr(particle, what, value[c])
+                    c += 1
 
     def __str__(self):
         rep = 'System(number_of_particles={}, species={}, chemical_fractions={}, cell={})'
