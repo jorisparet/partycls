@@ -177,6 +177,9 @@ class Trajectory:
         else:
             raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
         
+        # # Standardize the species by giving each a numeral ID
+        self._make_species_numeral()
+        
         # Sanity checks
         #  constant number of particles
         n_particles = set([sys.number_of_particles for sys in self._systems])
@@ -296,14 +299,10 @@ class Trajectory:
                 if re_cols:
                     fields = re_cols.group(1).split(',')
                 # search cell
-                # TODO: the following line does not work on 3.6... but it does like this
-                # re_cell = re.search('^(sim_box|boxLengths)=(\w+),(.+)$', p)
-                # and then shifts groups below
-                re_cell = re.search('^[sim_box|boxLengths]=(\w+),(.+)$', p)
+                re_cell = re.search('^(sim_box|boxLengths)=(.+)$', p)
                 if re_cell:
-                    assert('Rectangular' in re_cell.group(1)), 'simulation box must be rectangular.'
                     cell = re_cell.group(2).split(',')
-                    cell = [float(L) for L in cell]
+                    cell = [float(L) for L in cell if L[0].isdigit()]
             # look for community/cluster field
             cluster_field = 'community' in fields or 'cluster' in fields
             return cell, cluster_field
@@ -360,7 +359,7 @@ class Trajectory:
             # Read additional fields if the trajectory format allows 
             if self.additional_fields:
                 try:
-                    atooms_traj = _Trajectory(self.filename, fields=['id', 'pos']+self.additional_fields)
+                    atooms_traj = _Trajectory(self.filename, mode='r', fields=['id', 'pos']+self.additional_fields)
                 except TypeError:
                     print('This trajectory format does not support additional fields')
                     print('Warning: ignoring additional fields.')
@@ -448,26 +447,31 @@ class Trajectory:
                     line += '\n'
                     file.write(line)
 
-    #TODO: check if actually readable by RUMD
+    # /!\ RUMD does not seem to accept additional fields
     def _write_rumd(self, output_path, fields, precision):
         import gzip
         if not output_path.endswith('.xyz.gz'):
             output_path += '.xyz.gz'
         with gzip.open(output_path, 'wt') as file:
-            for system in self._systems:
+            for frame, system in enumerate(self._systems):
                 file.write('{}\n'.format(system.number_of_particles))
-                header = 'ioformat=1 boxLengths={} '
+                header = 'ioformat=1 dt=0.001 timeStepIndex={} boxLengths={} '
                 dimension = system.number_of_dimensions
                 if dimension == 2:
-                    columns = 'columns=type,x,y,cluster\n'
+                    columns = 'columns=type,x,y\n'
                 if dimension == 3:
-                    columns = 'columns=type,x,y,z,cluster\n'
+                    columns = 'columns=type,x,y,z\n'
+                header = header + 'numTypes={} mass={} '
                 header = header + columns
-                file.write(header.format(','.join('{:.{}f}'.format(L, precision) for L in system.cell.side)))
+                file.write(header.format(frame,
+                                         ','.join('{:.{}f}'.format(L, precision) for L in system.cell.side),
+                                         len(system.distinct_species),
+                                         ','.join('1.0' for s in system.distinct_species)))
                 for particle in system.particle:
                     line = '{} '.format(particle.species_id-1)
                     line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
-                    line += '{} '.format(particle.label)
+                    # no additional field
+                    #line += '{} '.format(particle.label)
                     line += '\n'
                     file.write(line)
             
@@ -522,3 +526,14 @@ class Trajectory:
             kept_systems.append(self._systems[frame])
         # Owerwrite non-sliced list
         self._systems = kept_systems
+
+    def _make_species_numeral(self):
+        """
+        Standardize the names of the species to [1, ..., N_species] by
+        changing the attribute `particle.species_id` of each particle in
+        the trajectory.
+        """
+        for system in self._systems:
+            distinct_species = list(system.distinct_species)
+            for particle in system.particle:
+                particle.species_id = distinct_species.index(particle.species) + 1
