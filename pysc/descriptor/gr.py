@@ -43,10 +43,10 @@ class RadialDescriptor(StructuralDescriptor):
         pos_1 = self.group_positions(1)
         idx_0 = self.group_indices(0)
         idx_1 = self.group_indices(1)
-        box = self.trajectory[0].cell.side
         features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
         row = 0
         for n in range(n_frames):
+            box = self.trajectory[n].cell.side
             # pos_x arrays need to be transposed to be used with fortran
             hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T, 
                                               idx_0[n], idx_1[n], box,
@@ -100,7 +100,9 @@ class RadialDescriptor(StructuralDescriptor):
     #TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     #TODO: duplicate code with `compute()`
     def _bounds(self, dr, rlim):
-        L = numpy.min(self.trajectory[0].cell.side)
+        # take the smallest side as maximal upper bound for the grid
+        sides = numpy.array(self.trajectory.dump('cell.side'))
+        L = numpy.min(sides)
         # use `n_shells`
         self._dr = dr
         if rlim is None:

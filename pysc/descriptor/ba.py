@@ -31,12 +31,12 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         n_frames = len(self._groups[0])
         idx_0 = self.group_indices(0)
         pos_0, pos_1 = self.group_positions(0), self.group_positions(1)
-        box = self.trajectory[0].cell.side
         features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
         row = 0
         # compute nearest neighbors
         self.nearest_neighbors(method=self.nearest_neighbors_method)   
         for n in range(n_frames):
+            box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):  
                 # individual bond-angle distribution using nearest-neighbors
                 neigh_i = self.neighbors[n][i]

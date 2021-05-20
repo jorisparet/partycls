@@ -187,9 +187,6 @@ class Trajectory:
         #  constant number of particles
         n_particles = set([len(sys.particle) for sys in self._systems])
         assert(len(n_particles) == 1), 'the number of particles should be kept constant in the trajectory.'
-        #  constant volume
-        volumes = set([tuple(sys.cell.side) for sys in self._systems])
-        assert(len(volumes) == 1), 'the volume of the cell should be kept constant in the trajectory.'
         
         # Slice the trajectory
         self._slice(first, last, step)
