@@ -69,10 +69,11 @@ class StructuralDescriptor:
     
     def __init__(self, trajectory):
         # Trajectory
-        if isinstance(trajectory, Trajectory):
-            self.trajectory = trajectory
-        elif isinstance(trajectory, str):
+        # TODO: we can't change format or backend when passing a string
+        if isinstance(trajectory, str):
             self.trajectory = Trajectory(trajectory)
+        else:
+            self.trajectory = trajectory
         # Default: consider all particles for the correlation
         self._groups = ([], [])
         self._group_init(0)
