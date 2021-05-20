@@ -91,13 +91,6 @@ class System:
         return numpy.array(sorted(set(self.dump('species'))))
     
     @property
-    def number_of_species(self):
-        """
-        Return the number of distinct species in the system.
-        """
-        return len(self.distinct_species)
-    
-    @property
     def pairs_of_species(self):
         """
         Return a list of all the possible pairs of species.
@@ -114,8 +107,8 @@ class System:
         Return a list of all the possible pairs of species ID.
         """
         pairs = []
-        for i in range(self.number_of_species):
-            for j in range(self.number_of_species):
+        for i in range(len(self.distinct_species)):
+            for j in range(len(self.distinct_species)):
                 pairs.append((i+1, j+1))
         return pairs
     
@@ -126,7 +119,7 @@ class System:
         in the system.
         """
         species = self.dump('species')
-        fractions = numpy.empty(self.number_of_species)
+        fractions = numpy.empty(len(self.distinct_species))
         for i, species_i in enumerate(self.distinct_species):
             fractions[i] = numpy.sum(species == species_i) / self.number_of_particles
         return fractions
