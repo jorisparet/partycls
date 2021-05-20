@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
     def test_xyz(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'dislocation.xyz'), fmt='xyz')
-        self.assertEqual(traj[0].number_of_particles, 27)
+        self.assertEqual(len(traj[0].particle), 27)
 
     def test_angular_zscore_pca_kmeans(self):
         D = BondAngleDescriptor(self.traj)

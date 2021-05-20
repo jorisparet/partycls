@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 101)
-        self.assertEqual(traj[0].number_of_particles, 150)
+        self.assertEqual(len(traj[0].particle), 150)
         self.assertEqual(list(traj[0].distinct_species), ['A', 'B'])
         self.assertEqual(list(traj[0].cell.side), [5.0, 5.0, 5.0])
 
@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 1)
-        self.assertEqual(traj[0].number_of_particles, 256)
+        self.assertEqual(len(traj[0].particle), 256)
         self.assertEqual(list(traj[0].distinct_species), ['0', '1'])
         self.assertEqual(list(traj[0].cell.side), [6.0, 6.0, 6.0])
 
@@ -46,7 +46,7 @@ class Test(unittest.TestCase):
         # Sanity checks
         self.assertEqual(len(traj), 19)
         print('Why 19 and not 27?')
-        self.assertEqual(traj[0].number_of_particles, 303)
+        self.assertEqual(len(traj[0].particle), 303)
         self.assertEqual(list(traj[0].distinct_species), ['0', '1', '2'])
         self.assertEqual(list(traj[0].cell.side), [6.32053, 6.32053, 6.32053])
         
@@ -57,7 +57,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 6)
-        self.assertEqual(traj[0].number_of_particles, 256)
+        self.assertEqual(len(traj[0].particle), 256)
         self.assertEqual(list(traj[0].distinct_species), ['1'])
         self.assertEqual(list(traj[0].cell.side), [6.3496, 6.3496, 6.3496])
 
@@ -68,7 +68,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 3)
-        self.assertEqual(traj[0].number_of_particles, 256)
+        self.assertEqual(len(traj[0].particle), 256)
         self.assertEqual(list(traj[0].distinct_species), ['1'])
         self.assertEqual(list(traj[0].cell.side), [6.3496, 6.3496, 6.3496])
         

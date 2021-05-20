@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 1)
-        self.assertEqual(traj[0].number_of_particles, 193)
+        self.assertEqual(len(traj[0].particle), 193)
         self.assertEqual(list(traj[0].distinct_species), ['C', 'H', 'N', 'O'])
         self.assertEqual(list(traj[0].cell.side), [3.34809, 3.37095, 3.38426])
 
@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 501)
-        self.assertEqual(traj[0].number_of_particles, 22)
+        self.assertEqual(len(traj[0].particle), 22)
         self.assertEqual(set(traj[0].distinct_species), set(['C', 'H', 'N', 'O']))
         self.assertEqual(list(traj[0].cell.side), [1.0, 1.0, 1.0])
 
@@ -45,7 +45,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 501)
-        self.assertEqual(traj[0].number_of_particles, 22)
+        self.assertEqual(len(traj[0].particle), 22)
         self.assertEqual(set(traj[0].distinct_species), set(['C', 'H', 'N', 'O']))
         self.assertEqual(list(traj[0].cell.side), [1.0, 1.0, 1.0])
 
@@ -56,7 +56,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 501)
-        self.assertEqual(traj[0].number_of_particles, 22)
+        self.assertEqual(len(traj[0].particle), 22)
         self.assertEqual(set(traj[0].distinct_species), set(['C', 'H', 'N', 'O']))
         self.assertEqual(list(traj[0].cell.side), [1.0, 1.0, 1.0])
         
@@ -67,7 +67,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 50)
-        self.assertEqual(traj[0].number_of_particles, 212)
+        self.assertEqual(len(traj[0].particle), 212)
         self.assertEqual(list(traj[0].distinct_species), ['N'])
         self.assertEqual(list(traj[0].cell.side), [1.8273600339889526]*3)
 
@@ -78,7 +78,7 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 1)
-        self.assertEqual(traj[0].number_of_particles, 302)
+        self.assertEqual(len(traj[0].particle), 302)
         self.assertEqual(list(traj[0].distinct_species), ['VS'])
         print('/!\ Reads the types incorrectly')
         self.assertEqual(list(traj[0].cell.side), [52.62300129979849,

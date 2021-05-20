@@ -66,13 +66,6 @@ class System:
             return 0
         
     @property
-    def number_of_particles(self):
-        """
-        Return the total number of particles in the system.
-        """
-        return len(self.particle)
-        
-    @property
     def density(self):
         """
         Return the number density of the system.
@@ -121,7 +114,7 @@ class System:
         species = self.dump('species')
         fractions = numpy.empty(len(self.distinct_species))
         for i, species_i in enumerate(self.distinct_species):
-            fractions[i] = numpy.sum(species == species_i) / self.number_of_particles
+            fractions[i] = numpy.sum(species == species_i) / len(self.particle)
         return fractions
 
     def dump(self, what):
@@ -200,7 +193,7 @@ class System:
 
     def __str__(self):
         rep = 'System(number_of_particles={}, species={}, chemical_fractions={}, cell={})'
-        return rep.format(self.number_of_particles,
+        return rep.format(len(self.particle),
                           self.distinct_species,
                           self.chemical_fractions,
                           self.cell.side)

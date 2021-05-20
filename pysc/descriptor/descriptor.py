@@ -219,7 +219,7 @@ class StructuralDescriptor:
         Return the fraction of particles inside `group` over the whole trajectory.
         """
         N_group = self.group_size(group)
-        N_tot = numpy.sum([sys.number_of_particles for sys in self.trajectory])
+        N_tot = numpy.sum([len(sys.particle) for sys in self.trajectory])
         return N_group / N_tot
     
     @property

@@ -191,7 +191,7 @@ class Trajectory:
         
         # Sanity checks
         #  constant number of particles
-        n_particles = set([sys.number_of_particles for sys in self._systems])
+        n_particles = set([len(sys.particle) for sys in self._systems])
         assert(len(n_particles) == 1), 'the number of particles should be kept constant in the trajectory.'
         #  constant volume
         volumes = set([tuple(sys.cell.side) for sys in self._systems])
@@ -441,7 +441,7 @@ class Trajectory:
             output_path += '.xyz'
         with open(output_path, 'w') as file:
             for system in self._systems:
-                file.write('{}\n'.format(system.number_of_particles))
+                file.write('{}\n'.format(len(system.particle)))
                 columns = 'columns:id,pos,'
                 for field in additional_fields:
                     columns += '{},'.format(field)
@@ -463,7 +463,7 @@ class Trajectory:
             output_path += '.xyz.gz'
         with gzip.open(output_path, 'wt') as file:
             for frame, system in enumerate(self._systems):
-                file.write('{}\n'.format(system.number_of_particles))
+                file.write('{}\n'.format(len(system.particle)))
                 header = 'ioformat=1 dt=0.001 timeStepIndex={} boxLengths={} '
                 dimension = system.number_of_dimensions
                 if dimension == 2:
