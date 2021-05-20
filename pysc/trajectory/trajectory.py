@@ -93,12 +93,6 @@ class Trajectory:
     
     def __repr__(self):
         return self.__str__()
-
-    def add_system(self, system):
-        """
-        Add an instance of `System` to the trajectory.
-        """
-        self._systems.append(system)
         
     def remove(self, frame):
         """
@@ -287,7 +281,7 @@ class Trajectory:
                     system.particle.append(particle)
                     
                 # Add system to trajectory
-                self.add_system(system)
+                self._systems.append(system)
 
     def _parser_rumd(self):
         """
@@ -353,7 +347,7 @@ class Trajectory:
                     system.particle.append(particle)
                     
                 # Add system to trajectory
-                self.add_system(system)
+                self._systems.append(system)
 
     def _parser_atooms(self):
         
@@ -390,7 +384,7 @@ class Trajectory:
                         value = atooms_p.__getattribute__(field)
                         particle.__setattr__(field, value)
                     system.particle.append(particle)
-                self.add_system(system)
+                self._systems.append(system)
             atooms_traj.close()
                 
         except ModuleNotFoundError:
@@ -411,7 +405,7 @@ class Trajectory:
                     spe = md_traj[frame].topology.atom(atom).element.symbol
                     particle = Particle(position=pos, species=spe)
                     system.particle.append(particle)
-                self.add_system(system)
+                self._systems.append(system)
         except ValueError:
             raise ValueError('formats that require a topology argument cannot be opened')
         except ModuleNotFoundError:
