@@ -36,7 +36,8 @@ class Optimization:
     ----------
     
     trajectory : Trajectory, or str
-        An instance of `Trajectory` path to trajectory file to read.
+        An instance of `Trajectory` a path to trajectory file to read, or 
+        an instance of a class with compatible interface.
         
     descriptor : {'gr', 'ba', 'bo', 'ld', or an instance of StructuralDescriptor}
         Structural descriptor to be computed on the trajectory.

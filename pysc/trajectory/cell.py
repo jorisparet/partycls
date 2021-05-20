@@ -7,7 +7,7 @@ import numpy
 
 class Cell:
     """
-    Rectangular bidimensional or tridimensional cell.
+    Orthorhombic cell.
     
     Parameters
     ----------

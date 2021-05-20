@@ -9,8 +9,8 @@ from pysc.core.utils import _standardize_condition
 
 class System:
     """
-    A system is composed of a collection of particles that lie within a
-    rectangular cell.
+    A system is composed of a collection of particles that lie within an
+    orthorhombic cell.
     
     Parameters
     ----------
@@ -19,7 +19,7 @@ class System:
         A list of instances of `Particle`.
     
     cell : Cell, optional, default: None
-        The rectangular cell (simulation box).
+        The cell (simulation box).
     
     Attributes
     ----------
@@ -28,7 +28,7 @@ class System:
         All the particles in the system.
         
     cell : Cell
-        The rectangular cell where all the particles lie.
+        The cell where all the particles lie.
     
     Examples
     --------
