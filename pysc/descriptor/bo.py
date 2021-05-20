@@ -20,10 +20,6 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     @orders.setter
     def orders(self, values):
         self._bounds(0, 8, values)
-
-    @property
-    def n_features(self):
-        return len(self.grid)  
         
     def compute(self):
         StructuralDescriptor.sanity_checks(self)

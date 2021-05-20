@@ -21,10 +21,6 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         self._dtheta = value
         self.grid = numpy.arange(value/2.0, 180.0, value, dtype=numpy.float64)
     
-    @property
-    def n_features(self):
-        return len(self.grid)
-    
     def compute(self):      
         StructuralDescriptor.sanity_checks(self)
         # all relevant arrays

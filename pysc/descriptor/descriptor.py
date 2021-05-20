@@ -234,7 +234,7 @@ class StructuralDescriptor:
         """
         Number of features of the descriptor.
         """
-        pass
+        return len(self.grid)
     
     @property
     def average(self):

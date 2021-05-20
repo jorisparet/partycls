@@ -31,10 +31,6 @@ class RadialDescriptor(StructuralDescriptor):
     @dr.setter
     def dr(self, value):
         self._bounds(value, self._rlim)
-            
-    @property
-    def n_features(self):
-        return len(self.grid)
         
     def compute(self):
         StructuralDescriptor.sanity_checks(self)
