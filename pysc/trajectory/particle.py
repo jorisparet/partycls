@@ -8,12 +8,12 @@ import numpy
 # Aliases for particles' properties
 aliases = {'position': 'particle.position',
            'pos': 'particle.position',
-           'position_x': 'particle.position_x',
-           'x': 'particle.position_x',
-           'position_y': 'particle.position_y',
-           'y': 'particle.position_y',
-           'position_z': 'particle.position_z',
-           'z': 'particle.position_z',
+           'position_x': 'particle.position_x[0]',
+           'x': 'particle.position_x[0]',
+           'position_y': 'particle.position_y[1]',
+           'y': 'particle.position_y[1]',
+           'position_z': 'particle.position_z[2]',
+           'z': 'particle.position_z[2]',
            'species': 'particle.species',
            'spe': 'particle.species',
            'label': 'particle.label',
@@ -83,15 +83,3 @@ class Particle:
     
     def __repr__(self):
         return self.__str__()
-    
-    @property
-    def position_x(self):
-        return self.position[0]
-
-    @property
-    def position_y(self):
-        return self.position[1]
-    
-    @property
-    def position_z(self):
-        return self.position[2]
