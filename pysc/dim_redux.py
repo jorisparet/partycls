@@ -4,6 +4,8 @@ from sklearn.manifold import LocallyLinearEmbedding as _LocallyLinearEmbedding
 from sklearn.neural_network import MLPRegressor
 import numpy
 
+__all__ = ['PCA', 'TSNE', 'LocallyLinearEmbedding', 'AutoEncoder']
+
 class PCA(_PCA):
     
     symbol = 'pca'

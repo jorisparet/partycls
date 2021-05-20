@@ -1,4 +1,4 @@
 from .optimization import Optimization
-from .clustering import Clustering, KMeans, GaussianMixture, CommunityInference
-from .dim_redux import PCA, TSNE, AutoEncoder
-from .feature_scaling import ZScore, MinMax
+from .clustering import *
+from .dim_redux import *
+from .feature_scaling import *

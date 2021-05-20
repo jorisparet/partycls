@@ -1,6 +1,8 @@
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 
+__all__ = ['ZScore', 'MinMax']
+
 class ZScore(StandardScaler):
     
     symbol = 'zscore'
