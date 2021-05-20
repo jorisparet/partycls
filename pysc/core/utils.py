@@ -1,10 +1,6 @@
 import re
 
 from pysc.trajectory.particle import aliases
-from ._version import __version__
-
-# Code version
-version = __version__
 
 def _standardize_condition(condition):
     """

@@ -3,13 +3,11 @@ from pysc.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientati
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax
+from pysc.core import __version__ as version
 import time, datetime
 
 # Code name
 _output_path = '{filename}.pysc.{mode}.{method}.{kind}'
-
-# Code version
-ci_version = '0.1'
 
 # Databases
 descriptor_db = {'gr': RadialDescriptor,
@@ -428,7 +426,7 @@ class Optimization:
                                                                        s=now.second)
 
         # Version
-        version = '# version: {} \n'.format(ci_version)
+        version = '# version: {} \n'.format(version)
         
         # Parent
         parent = '# parent: {} \n'.format(self.trajectory.filename)
