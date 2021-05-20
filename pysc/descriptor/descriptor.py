@@ -144,6 +144,7 @@ class StructuralDescriptor:
             # Actually remove them
             for p_to_rem in to_remove:
                 frame.remove(p_to_rem)
+        self.sanity_checks()
                 
     def clear_filters(self, group=0):
         """
