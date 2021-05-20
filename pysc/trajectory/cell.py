@@ -38,7 +38,7 @@ class Cell:
     @property
     def volume(self):
         """
-        Return the volume of the cell.
+        Volume of the cell.
         """
         return numpy.prod(self.side)
     

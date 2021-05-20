@@ -4,6 +4,22 @@ from pysc.trajectory.particle import aliases
 def _standardize_condition(condition):
     """
     Check that the condition is correctly formated (i.e <attr> _operator_ <val>).
+
+    Parameters
+    ----------
+    condition : str
+        condition.
+
+    Raises
+    ------
+    ValueError
+        If condition is not valid or if the <attr> is not recognized).
+
+    Returns
+    -------
+    condition : str
+        A standardized condition.
+
     """
     regexp = re.search('(\w+)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"]?)', condition)
     if regexp:

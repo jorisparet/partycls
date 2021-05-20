@@ -3,6 +3,9 @@ from .descriptor import StructuralDescriptor
 from .realspace_wrap import compute
 
 class RadialDescriptor(StructuralDescriptor):
+    """
+    Structural descriptor based on radial correlations between particles.
+    """
 
     name = 'radial'
     symbol = 'gr'
@@ -18,6 +21,9 @@ class RadialDescriptor(StructuralDescriptor):
 
     @property
     def bounds(self):
+        """
+        Lower and upper bounds to describe the radial correlations.
+        """
         return self._bounds
     
     @bounds.setter
@@ -26,6 +32,9 @@ class RadialDescriptor(StructuralDescriptor):
         
     @property
     def dr(self):
+        """
+        Grid spacing.
+        """
         return self._dr
     
     @dr.setter
@@ -33,6 +42,16 @@ class RadialDescriptor(StructuralDescriptor):
         self._set_bounds(value, self._bounds)
         
     def compute(self):
+        """
+        Compute the radial correlations for the particles in group=0 in the 
+        range of distances given by `bounds`.
+
+        Returns
+        -------
+        features : numpy.ndarray
+            Radial correlations.
+
+        """
         StructuralDescriptor.sanity_checks(self)
         n_frames = len(self._groups[0])
         pos_0 = self.group_positions(0)

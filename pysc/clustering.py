@@ -8,6 +8,22 @@ __all__ = ['KMeans', 'GaussianMixture', 'CommunityInference']
 class Clustering:
     
     def __init__(self, n_clusters=2, method='kmeans', n_init=1):
+        """
+        Parameters
+        ----------
+        n_clusters : int, optional
+            Number of clusters. The default is 2.
+        method : str, optional
+            Name of the clustering algorithm. The default is 'kmeans'.
+        n_init : TYPE, optional
+            Number of time the clustering will be run with different seeds. 
+            The default is 1.
+
+        Returns
+        -------
+        None.
+
+        """
         self.n_clusters = n_clusters
         self.method = method
         self.n_init = n_init

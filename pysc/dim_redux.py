@@ -12,6 +12,21 @@ class PCA(_PCA):
     full_name = 'Principal Component Analysis (PCA)'
     
     def reduce(self, X):
+        """
+        Project the input features onto a reduced space using principal
+        component analysis.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Features in the original space.
+
+        Returns
+        -------
+        numpy.ndarray
+            Features in the reduced space.
+
+        """
         return self.fit_transform(X)
 
 class TSNE(_TSNE):
@@ -20,6 +35,21 @@ class TSNE(_TSNE):
     full_name = 't-distributed Stochastic Neighbor Embedding (t-SNE)'
 
     def reduce(self, X):
+        """
+        Project the input features onto a reduced space using t-distributed 
+        stochastic neighbor embedding.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Features in the original space.
+
+        Returns
+        -------
+        numpy.ndarray
+            Features in the reduced space.
+
+        """
         return self.fit_transform(X)
     
 class LocallyLinearEmbedding(_LocallyLinearEmbedding):
@@ -28,6 +58,21 @@ class LocallyLinearEmbedding(_LocallyLinearEmbedding):
     full_name = 'Locally Linear Embedding (LLE)'
     
     def reduce(self, X):
+        """
+        Project the input features onto a reduced space using locally
+        linear embedding.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Features in the original space.
+
+        Returns
+        -------
+        numpy.ndarray
+            Features in the reduced space.
+
+        """
         return self.fit_transform(X)
 
 class AutoEncoder(MLPRegressor):
@@ -40,7 +85,20 @@ class AutoEncoder(MLPRegressor):
     
     def reduce(self, X):
         """
-        Neural-network-based auto-encoder.
+        Project the input features onto a reduced space using a neural network
+        autoencoder. The dimension of the reduced space is the number of 
+        nodes in the bottleneck layer.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Features in the original space.
+
+        Returns
+        -------
+        numpy.ndarray
+            Features in the reduced space.
+
         """
         
         # Train the network to reproduce its input as output

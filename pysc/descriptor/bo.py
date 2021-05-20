@@ -3,6 +3,10 @@ from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 class BondOrientationalDescriptor(AngularStructuralDescriptor):
+    """
+    Structural descriptor based on bond order parameters as defined by
+    Steinhardt et. al (https://doi.org/10.1103%2FPhysRevB.28.784).
+    """
 
     name = 'bond-orientational'
     symbol = 'bo'
@@ -55,6 +59,10 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
             self.grid = numpy.array(orders)
     
 class LechnerDellagoDescriptor(BondOrientationalDescriptor):
+    """
+    Structural descriptor based on locally averaged bond order parameters as
+    defined by Lechner & Dellago (https://doi.org/10.1063/1.2977970).
+    """
 
     name = 'lechner-dellago'
     symbol = 'ld'

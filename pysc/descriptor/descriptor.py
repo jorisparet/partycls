@@ -103,20 +103,34 @@ class StructuralDescriptor:
         """
         Add a filter on the group (0 or 1) to select the subset of particles
         that respects the provided condition.
-        
-        `condition` should have the following format:
+
+        Parameters
+        ----------
+        condition : str
+            The condition should have the following format:
+    
+            <attribute> _operator_ <value>
             
-        <attribute> _operator_ <value>
+            where:
+            - <attribute> is a particle property (accepts aliases) ;
+            - _operator_ is a logical operator (<, <=, ==, >=, >) ;
+            - <value> is the corresponding value of <attribute> with the proper type ;
         
-        where:
-        - <attribute> is a particle property (accepts aliases) ;
-        - _operator_ is a logical operator (<, <=, ==, >=, >) ;
-        - <value> is the corresponding value of <attribute> with the proper type ;
+        group : int, optional
+            Index of the group to which the filter must be applied.
+            The default is 0.
+
+        Returns
+        -------
+        None.
         
         Examples:
         ---------
-        - "particle.radius < 0.5", "radius < 0.5" and "rad < 0.5" are all valid conditions ;
-        - "particle.species == 'A'", "species == 'A'" and "spe == 'A'" are all valid conditions ;        
+        >>> S = StructuralDescriptor('trajectory.xyz')
+        >>> S.add_filter("particle.radius < 0.5")
+        >>> S.add_filter("species == 'A'", group=1)
+        >>> S.add_filter("x < 0", group=0) # particles on the left side of the box
+      
         """
         condition = _standardize_condition(condition)
         self.active_filters.append((condition, group))
@@ -134,7 +148,17 @@ class StructuralDescriptor:
     def clear_filters(self, group=0):
         """
         Clear all active filters on `group`.
-        All particles are included again in `group`.
+        All particles are included again in `group`.        
+
+        Parameters
+        ----------
+        group : int, optional
+            Index of the group on which to clear the filters. The default is 0.
+
+        Returns
+        -------
+        None.
+
         """
         # Reset `group` with all the particles
         self._group_init(group)
@@ -146,7 +170,12 @@ class StructuralDescriptor:
     def clear_all_filters(self):
         """
         Clear all active filters in both groups.
-        All particles are included in both groups again.
+        All particles are included in both groups again.        
+
+        Returns
+        -------
+        None.
+
         """
         self._group_init(0)
         self._group_init(1)
@@ -281,10 +310,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         
     nearest_neighbors_method : str, default: 'FC'
         Nearest neighbor method, 'FC' or 'SANN'.
-    
-    Examples:
-    ---------
-    
+        
     """
     
     def __init__(self, trajectory):
@@ -298,7 +324,23 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         """
         Set the nearest-neighbor cutoff for the pair of species (s1, s2).
         The cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
-        parameter is True (default).
+        parameter is True (default).        
+
+        Parameters
+        ----------
+        s1 : str
+            Symbol of the first species.
+        s2 : str
+            Symbol of the second species.
+        rcut : float
+            Value of the cutoff for the pair (s1,s2).
+        mirror : bool, optional
+            Set the cutoff for the mirror pair (s2,s1). The default is True.
+
+        Returns
+        -------
+        None.
+
         """
         pairs = self.trajectory[0].pairs_of_species
         idx_12 = pairs.index((s1, s2))
@@ -315,7 +357,18 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         - "Fixed cutoff" (method='FC'): uses the partial radial distribution functions 
           to compute the cutoffs between each possible pair of species (s1, s2) ;
         - "Solid-Angle based Nearest Neighbors" (method='SANN'): see  
-           van Meel et al. (https://doi.org/10.1063/1.4729313) ;
+           van Meel et al. (https://doi.org/10.1063/1.4729313) ;        
+
+        Parameters
+        ----------
+        method : str, optional
+            Method to identify nearest neighbors. Must be 'FC' or 'SANN'.
+            The default is 'FC'.
+
+        Returns
+        -------
+        None.
+
         """
         # indices
         idx_0, idx_1 = self.group_indices(0), self.group_indices(1)
@@ -392,14 +445,6 @@ class DummyDescriptor(StructuralDescriptor):
     def __init__(self):
         self.grid = [0, 1]
         self.features = None
-
-    @property
-    def size(self):
-        return self.features.shape[0]
-        
-    @property
-    def n_features(self):
-        return self.features.shape[1]
     
     def normalize(self, dist):
         return dist * (1.0 / numpy.sum(dist))

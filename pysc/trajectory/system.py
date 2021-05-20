@@ -48,7 +48,7 @@ class System:
     @property
     def number_of_dimensions(self):
         """
-        Return the number of spatial dimensions, guessed from the length of
+        Number of spatial dimensions, guessed from the length of
         `particle[0].position`.
         """
         if len(self.particle) > 0:
@@ -59,7 +59,7 @@ class System:
     @property
     def density(self):
         """
-        Return the number density of the system.
+        Number density of the system.
 
         It will raise a ValueException if `cell` is None.
         """
@@ -70,14 +70,14 @@ class System:
     @property
     def distinct_species(self):
         """
-        Return a sorted numpy array of all the distinct species in the system.
+        Sorted numpy array of all the distinct species in the system.
         """
         return numpy.array(sorted(set(self.dump('species'))))
     
     @property
     def pairs_of_species(self):
         """
-        Return a list of all the possible pairs of species.
+        List of all the possible pairs of species.
         """
         pairs = []
         for s1 in self.distinct_species:
@@ -88,7 +88,7 @@ class System:
     @property
     def pairs_of_species_id(self):
         """
-        Return a list of all the possible pairs of species ID.
+        List of all the possible pairs of species ID.
         """
         pairs = []
         for i in range(len(self.distinct_species)):
@@ -99,8 +99,7 @@ class System:
     @property
     def chemical_fractions(self):
         """
-        Return a numpy array of the chemical fractions of each species 
-        in the system.
+        Numpy array with the chemical fractions of each species in the system.
         """
         species = self.dump('species')
         fractions = numpy.empty(len(self.distinct_species))
@@ -109,13 +108,11 @@ class System:
         return fractions
 
     def dump(self, what):
-
         """
         Return a numpy array with the system property specified by `what`.
         
         Parameters
         ----------
-        
         what : str
             Requested system property.
         
@@ -125,11 +122,15 @@ class System:
             The following aliases are allowed:
             - "pos" ("particle.position")
             - "position" ("particle.position")
-            - "x" ("particle.position_x")
-            - "y" ("particle.position_y")
-            - "z" ("particle.position_z")
+            - "position_x" ("particle.position[0]")
+            - "x" ("particle.position[0]")
+            - "position_y" ("particle.position[1]")
+            - "y" ("particle.position[1]")
+            - "position_z" ("particle.position[2]")
+            - "z" ("particle.position[2]")
             - "spe" ("particle.species")
             - "species" ("particle.species")
+            - "species_id" ("particle.species_id")
             - "radius" ("particle.radius")
             - "label" ("particle.label")
             - "index" ("particle.index")
@@ -138,13 +139,11 @@ class System:
         
         Returns
         -------
-        
-        to_dump : ndarray
+        to_dump : numpy.ndarray
             Array of the requested system property.
         
         Examples
         --------
-        
         >>> traj = Trajectory('trajectory.xyz')
         >>> sys = traj[0]
         >>> pos_0 = sys.dump('position')
@@ -164,6 +163,37 @@ class System:
         return data
     
     def set_property(self, what, value, subset=None):
+        """
+        Set a property `what` to `value` for all the particles in the 
+        system or for a given subset of particles specified by `subset`.
+        
+
+        Parameters
+        ----------
+        what : str
+            Name of the property to set.
+        value : int, float, list, or numpy.ndarray
+            Value(s) of the property to set. An instance of `int` or `float`
+            will set the same value for all concerned particles. An instance
+            of `list` or `numpy.ndarray` will assign a specific value to each
+            particle. In this case, the size of `value` should respect the
+            number of concerned particles.
+        subset : str, optional
+            Particles to which the property must be set. The default is None.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        >>> sys.set_property('mass', 1.0)
+        >>> sys.set_property('radius', 0.5, "species == 'A'")
+        >>> labels = [0, 1, 0] # 3 particles in the subset
+        >>> sys.set_property('label', labels, "species == 'B'")
+
+        """
+        
         # Set the property to a given subset?
         if subset is not None:
             condition = _standardize_condition(subset)

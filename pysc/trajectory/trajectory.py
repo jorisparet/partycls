@@ -10,7 +10,18 @@ from .cell import Cell
 
 def tipify(s):
     """
-    Convert a string into the best matching type.
+    Convert a string `s` into the best matching type.
+
+    Parameters
+    ----------
+    s : str
+        String to convert
+
+    Returns
+    -------
+    int, float, or str
+        Best-matching type for the input string `s`.
+
     """
     try:
         return int(s)
@@ -97,6 +108,16 @@ class Trajectory:
     def remove(self, frame):
         """
         Remove the system at position `frame` from the trajectory.
+
+        Parameters
+        ----------
+        frame : int
+            Index of the frame to remove from the trajectory.
+
+        Returns
+        -------
+        None.
+
         """
         self._systems.pop(frame)
     
@@ -104,22 +125,24 @@ class Trajectory:
         """
         Return a list of numpy arrays with the system property specified by 
         `what`. The list size is the number of systems in the trajectory.
-        
+
         Parameters
         ----------
-        
         what : str
             Requested system property.
-        
+            
             `what` must be of the form 
             "particle.<attribute>" or "cell.<attribute>". 
             
             The following aliases are allowed:
             - "pos" ("particle.position")
             - "position" ("particle.position")
-            - "x" ("particle.position_x")
-            - "y" ("particle.position_y")
-            - "z" ("particle.position_z")
+            - "position_x" ("particle.position[0]")
+            - "x" ("particle.position[0]")
+            - "position_y" ("particle.position[1]")
+            - "y" ("particle.position[1]")
+            - "position_z" ("particle.position[2]")
+            - "z" ("particle.position[2]")
             - "spe" ("particle.species")
             - "species" ("particle.species")
             - "species_id" ("particle.species_id")
@@ -128,20 +151,20 @@ class Trajectory:
             - "index" ("particle.index")
             - "mass" ("particle.mass")
             - "box" ("cell.side")
-        
+
         Returns
         -------
-        
-        to_dump : list of ndarrays with a size equal to the number of systems.
-            List of the requested system property. Each element of the list
-            is a ndarray from a frame (system) in the trajectory.
-        
+        to_dump : list
+            List of the requested system property with length equal to the 
+            number of frames in the trajectory. Each element of the list is a
+            numpy.ndarray of the requested system property.
+            
         Examples
         --------
-        
         >>> traj = Trajectory('trajectory.xyz')
         >>> pos = traj.dump('position')
         >>> spe = traj.dump('species')
+        
         """
         to_dump = []
         for system in self._systems:
@@ -149,6 +172,38 @@ class Trajectory:
         return to_dump
     
     def set_property(self, what, value, subset=None):
+        """
+        Set a property `what` to `value` for all the particles in the 
+        trajectory or for a given subset of particles specified by `subset`.
+        
+
+        Parameters
+        ----------
+        what : str
+            Name of the property to set.
+        value : int, float, list, or numpy.ndarray
+            Value(s) of the property to set. An instance of `int` or `float`
+            will set the same value for all concerned particles. An instance
+            of `list` or `numpy.ndarray` will assign a specific value to each
+            particle. In this case, the shape of `value` should respect the
+            number of frames in the trajectory and the number of concerned
+            particles.
+        subset : str, optional
+            Particles to which the property must be set. The default is None.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        >>> traj.set_property('mass', 1.0)
+        >>> traj.set_property('radius', 0.5, "species == 'A'")
+        >>> labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
+                      [1, 1, 0]]
+        >>> traj.set_property('label', labels, "species == 'B'")
+
+        """
         if not isinstance(value, (list, numpy.ndarray)):
             for system in self._systems:
                 system.set_property(what, value, subset=subset)

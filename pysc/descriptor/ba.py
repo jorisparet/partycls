@@ -3,6 +3,9 @@ from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 class BondAngleDescriptor(AngularStructuralDescriptor):
+    """
+    Structural descriptor based on bond angles between particles.
+    """
     
     name = 'bond-angle'
     symbol = 'ba'

@@ -3,7 +3,7 @@ from pysc.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientati
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax
-from pysc.core import __version__ as version
+from pysc.core import __version__ as _version
 import time, datetime
 
 # Code name
@@ -182,7 +182,18 @@ class Optimization:
         - (optional) apply feature scaling ;
         - (optional) apply dimensionality reduction ;
         - compute the clustering ;
-        - (optional) write the output files ;
+        - (optional) write the output files ;        
+
+        Raises
+        ------
+        ValueError
+            If a community inference clustering is attempted with feature
+            scaling or dimensionality reduction.
+
+        Returns
+        -------
+        None.
+
         """
         # Start the timer
         self._start = time.time()
@@ -247,13 +258,17 @@ class Optimization:
     def set_output_metadata(self, what, **kwargs):
         """
         Change the output properties.
-        
+
         Parameters
         ----------
         what : {'trajectory', 'log', 'centroids', 'labels', or 'dataset'}
-            Type of output file to change.
-            
-        kwargs : keywords arguments (specific to each type of file)
+            Type of output file to change..
+        **kwargs : keywords arguments (specific to each type of file)
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
         
         Examples
         --------
@@ -261,6 +276,7 @@ class Optimization:
         >>> opt.set_output_metadata('log', enable=False) # do not write the log file
         >>> opt.set_output_metadata('trajectory', filename='awesome_trajectory.xyz') # change the default output name
         >>> opt.run('dataset', enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
+        
         """
         for key, val in kwargs.items():
             self.output_metadata[what][key] = val
@@ -268,6 +284,11 @@ class Optimization:
     def disable_output(self):
         """
         Disable all outputs.
+
+        Returns
+        -------
+        None.
+        
         """
         for key in self.output_metadata.keys():
             self.output_metadata[key]['enable'] = False
@@ -275,31 +296,36 @@ class Optimization:
     def write_trajectory(self, filename=None, fmt='xyz', backend=None, additional_fields=[], precision=6, **kwargs):
         """
         Write the trajectory file with cluster labels (default) and other
-        additional fields (if any).
-        
+        additional fields (if any).        
+
         Parameters
         ----------
-        filename : str, optional, default: None
+        filename : str, optional
             Filename of the output trajectory. Uses a default naming convention
-            if not specified.
-            
-        fmt : {'xyz', 'rumd'}, default: 'xyz'
-            Output trajectory format.
-            
-        additional_fields : list of str, optional, default: []
+            if not specified. The default is None.
+        fmt : str, optional
+            Output trajectory format. The default is 'xyz'.
+        backend : str, optional
+            Name of the backend to use to write the trajectory. Must be either
+            'atooms' or 'mdtraj'. The default is None.
+        additional_fields : list, optional
             Additional fields (i.e. particle properties) to write in the
             output trajectory. Note that all the `Particle` objects should
-            have the specified properties as attributes.
-            
-        precision : int, optional, default: 6
-            Number of decimals when writing the output trajectory.
-            
+            have the specified properties as attributes. The default is [].
+        precision : int, optional
+            Number of decimals when writing the output trajectory. The default is 6.
+
+        Returns
+        -------
+        None.
+
         Examples
         --------
         >>> opt = Optimisation('trajectory.xyz')
         >>> opt.write_trajectory(fmt='rumd')
         >>> opt.write_trajectory(additional_field=['particle.mass']) # `Particle` must have the attribute `mass`.
         >>> opt.write_trajectory(filename='my_custom_name', precision=8)
+        
         """
         if filename is None:
             filename = self._output_file(fmt)
@@ -313,15 +339,21 @@ class Optimization:
         Write a log file with all relevant information about the optimization.
         The log file can be written only if the optimization has been run at
         least once with the method `Optimization.run`.
-        
+
         Parameters
         ----------
-        filename : str, optional, default: None
+        filename : str, optional
             Filename of the log file. Uses a default naming convention
-            if not specified.   
-            
-        precision : int, optional, default: 6
-            Number of decimals when writing the log file. 
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the log file. The default is 6.
+        **kwargs : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+        
         """
         if filename is None:
             filename = self._output_file('log')
@@ -350,15 +382,20 @@ class Optimization:
         """
         Write the coordinates of the clusters' centroids using the raw features
         from the descriptor (i.e. nor scaled or reduced).
-        
+
         Parameters
         ----------
-        filename : str, optional, default: None
+        filename : str, optional
             Filename of the centroids file. Uses a default naming convention
-            if not specified.   
-            
-        precision : int, optional, default: 6
-            Number of decimals when writing the centroids file. 
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the centroids file. The default is 6.
+
+
+        Returns
+        -------
+        None.
+        
         """
         if filename is None:
             filename = self._output_file('centroids')
@@ -378,12 +415,17 @@ class Optimization:
     def write_labels(self, filename=None, **kwargs):
         """
         Write the clusters' labels only.
-        
+
         Parameters
         ----------
-        filename : str, optional, default: None
+        filename : str, optional
             Filename of the labels file. Uses a default naming convention
-            if not specified.   
+            if not specified. The default is None.
+
+        Returns
+        -------
+        None.
+        
         """
         if filename is None:
             filename = self._output_file('labels')
@@ -397,15 +439,19 @@ class Optimization:
         """
         Write the full raw dataset from the descriptor as an array (i.e. all 
         the individual raw features of each particle).
-        
+
         Parameters
         ----------
-        filename : str, optional, default: None
+        filename : str, optional
             Filename of the dataset file. Uses a default naming convention
-            if not specified.   
-            
-        precision : int, optional, default: 6
-            Number of decimals when writing the dataset file. 
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the dataset file. The default is 6.
+
+        Returns
+        -------
+        None.
+
         """
         if filename is None:
             filename = self._output_file('dataset')
@@ -427,7 +473,7 @@ class Optimization:
                                                                        s=now.second)
 
         # Version
-        version = '# version: {} \n'.format(version)
+        version = '# version: {} \n'.format(_version)
         
         # Parent
         parent = '# parent: {} \n'.format(self.trajectory.filename)
