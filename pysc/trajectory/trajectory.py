@@ -284,7 +284,7 @@ class Trajectory:
                             particle.__setattr__(field_name, val)                  
                     
                     # add the particle to the system
-                    system.add_particle(particle)
+                    system.particle.append(particle)
                     
                 # Add system to trajectory
                 self.add_system(system)
@@ -349,8 +349,8 @@ class Trajectory:
                     else:
                         p_label = -1    
                     # create the Particle object
-                    particle = Particle(position=p_pos, species=p_type, label=p_label)                        
-                    system.add_particle(particle)
+                    particle = Particle(position=p_pos, species=p_type, label=p_label)
+                    system.particle.append(particle)
                     
                 # Add system to trajectory
                 self.add_system(system)
@@ -389,7 +389,7 @@ class Trajectory:
                     for field in self.additional_fields:
                         value = atooms_p.__getattribute__(field)
                         particle.__setattr__(field, value)
-                    system.add_particle(particle)
+                    system.particle.append(particle)
                 self.add_system(system)
             atooms_traj.close()
                 
@@ -410,7 +410,7 @@ class Trajectory:
                     pos = md_traj.xyz[frame, atom]
                     spe = md_traj[frame].topology.atom(atom).element.symbol
                     particle = Particle(position=pos, species=spe)
-                    system.add_particle(particle)
+                    system.particle.append(particle)
                 self.add_system(system)
         except ValueError:
             raise ValueError('formats that require a topology argument cannot be opened')

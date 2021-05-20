@@ -44,15 +44,6 @@ class System:
             particle = []
         self.particle = particle
         self.cell = cell
-        
-    def add_particle(self, particle):
-        """
-        Add a `Particle` to the `self.particle` list.
-        """
-        if isinstance(particle, Particle):
-            self.particle.append(particle)
-        else:
-            raise TypeError('can only add an instance of `Particle`')
     
     @property
     def number_of_dimensions(self):
