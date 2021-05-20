@@ -3,7 +3,7 @@
 import unittest
 import os
 
-from pysc.trajectory import Trajectory
+from pysc import Trajectory
 from pysc.descriptor import RadialDescriptor, BondAngleDescriptor
 from pysc.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
 

@@ -1,4 +1,4 @@
-from pysc.trajectory import Trajectory
+from .trajectory import Trajectory
 from pysc.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
