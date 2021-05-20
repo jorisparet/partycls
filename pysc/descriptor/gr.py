@@ -7,22 +7,22 @@ class RadialDescriptor(StructuralDescriptor):
     name = 'radial'
     symbol = 'gr'
     
-    def __init__(self, trajectory, dr=0.1, n_shells=3, rlim=None):
+    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None):
         StructuralDescriptor.__init__(self, trajectory)
         self.n_shells = n_shells
         # set the grid automatically using coordination shells (`n_shells`)
-        #  or user-defined limits (`rlim`) if provided
-        self._bounds(dr, rlim)
+        #  or user-defined limits (`bounds`) if provided
+        self._set_bounds(dr, bounds)
 #        # default normalization (r**2*g(r))
 #        self.normalize = self.squared_distance_RDF_normalization
 
     @property
-    def rlim(self):
-        return self._rlim
+    def bounds(self):
+        return self._bounds
     
-    @rlim.setter
-    def rlim(self, value):
-        self._bounds(self._dr, value)
+    @bounds.setter
+    def bounds(self, value):
+        self._set_bounds(self._dr, value)
         
     @property
     def dr(self):
@@ -30,7 +30,7 @@ class RadialDescriptor(StructuralDescriptor):
     
     @dr.setter
     def dr(self, value):
-        self._bounds(value, self._rlim)
+        self._set_bounds(value, self._bounds)
         
     def compute(self):
         StructuralDescriptor.sanity_checks(self)
@@ -66,7 +66,7 @@ class RadialDescriptor(StructuralDescriptor):
             const = 4.0 / 3.0 * numpy.pi * self.dr**3
         const = const * rho * x_1
         g_b = numpy.empty_like(self.grid)
-        b_min = numpy.floor(self._rlim[0]/self.dr) # if r_min != 0
+        b_min = numpy.floor(self._bounds[0]/self.dr) # if r_min != 0
         for m in range(self.n_features):
             b = b_min + m + 1
             wb = (b**3 - (b-1)**3)
@@ -86,7 +86,7 @@ class RadialDescriptor(StructuralDescriptor):
 #            const = 4.0 / 3.0 * numpy.pi * self.dr**3
 #        const = const * rho * x_1
 #        g_b = numpy.empty_like(self.grid)
-#        b_min = numpy.floor(self.rlim[0]/self.dr) # if r_min != 0
+#        b_min = numpy.floor(self.bounds[0]/self.dr) # if r_min != 0
 #        for m in range(self.n_features):
 #            b = b_min + m + 1
 #            wb = (b**3 - (b-1)**3)
@@ -95,16 +95,16 @@ class RadialDescriptor(StructuralDescriptor):
             
     #TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     #TODO: duplicate code with `compute()`
-    def _bounds(self, dr, rlim):
+    def _set_bounds(self, dr, bounds):
         # take the smallest side as maximal upper bound for the grid
         sides = numpy.array(self.trajectory.dump('cell.side'))
         L = numpy.min(sides)
         # use `n_shells`
         self._dr = dr
-        if rlim is None:
+        if bounds is None:
             # first define full grid
             r = numpy.arange(self._dr/2, L/2, self._dr, dtype=numpy.float64)
-            self._rlim = (r[0], r[-1]) # temporary
+            self._bounds = (r[0], r[-1]) # temporary
             self.grid = r # temporary
             # arrays
             pos_0 = self.group_positions(0)
@@ -136,15 +136,15 @@ class RadialDescriptor(StructuralDescriptor):
                 index += first_min   
             # set grid and bounds
             self.grid = r[0:index+1]
-            self._rlim = (r[0], r[index])
+            self._bounds = (r[0], r[index])
         
         # use user-defined limits if provided
         else:
-            if len(rlim) == 2 and rlim[0] < rlim[1] and rlim[1] <= L/2:
-                rmin, rmax = rlim
+            if len(bounds) == 2 and bounds[0] < bounds[1] and bounds[1] <= L/2:
+                rmin, rmax = bounds
                 r = numpy.arange(rmin+(self._dr/2), rmax, self._dr, dtype=numpy.float64)
                 # set grid and bounds
                 self.grid = r
-                self._rlim = (r[0], r[-1])
+                self._bounds = (r[0], r[-1])
             else:
-                raise ValueError('`rlim` is not correctly defined.')
+                raise ValueError('`bounds` is not correctly defined.')

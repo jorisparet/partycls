@@ -367,8 +367,8 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         for pair in pairs:
             if self.cutoffs[pairs.index(pair)] is None:
                 s1, s2 = pair
-                rlim = (0.0, numpy.min(self.trajectory[0].cell.side/2))
-                descriptor = RadialDescriptor(self.trajectory, dr=0.1, rlim=rlim)
+                bounds = (0.0, numpy.min(self.trajectory[0].cell.side/2))
+                descriptor = RadialDescriptor(self.trajectory, dr=0.1, bounds=bounds)
                 descriptor.add_filter("species == '{}'".format(s1), group=0)
                 descriptor.add_filter("species == '{}'".format(s2), group=1)
                 descriptor.compute()

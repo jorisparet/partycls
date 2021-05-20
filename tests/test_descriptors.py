@@ -24,7 +24,7 @@ class Test(unittest.TestCase):
         D = RadialDescriptor(self.traj, dr=0.1)
         self._compute(D)
         # check automatically computed bounds
-        self.assertEqual(D.rlim, (0.05, 2.45), 'wrong bounds for the radial grid')
+        self.assertEqual(D.bounds, (0.05, 2.45), 'wrong bounds for the radial grid')
         # check average value of g(r) at the first peak
         gr = D.normalize_gr(D.average)
         self.assertEqual(float32(gr[8]), float32(2.939288),

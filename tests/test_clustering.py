@@ -42,7 +42,7 @@ class Test(unittest.TestCase):
 
     """
     def test_radial_ci(self):
-        D = RadialDescriptor(self.traj, rlim=(0.0, 1.25))
+        D = RadialDescriptor(self.traj, bounds=(0.0, 1.25))
         X = D.compute()
         clustering = CommunityInference(n_init=100)
         clustering.fit(X)
@@ -55,7 +55,7 @@ class Test(unittest.TestCase):
         
         # Same via optimization
         opt = Optimization(self.traj, descriptor='gr', clustering='cinf')
-        opt.descriptor.rlim = (0.0, 1.25)
+        opt.descriptor.bounds = (0.0, 1.25)
         opt.clustering.n_init = 100
         opt.disable_output()
         # TODO: fix warning
