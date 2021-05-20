@@ -1,5 +1,5 @@
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 import numpy
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 class BondAngleDescriptor(AngularStructuralDescriptor):

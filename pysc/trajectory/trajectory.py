@@ -3,10 +3,10 @@ This class is inspired by the `atooms` framework authored by Daniele Coslovich
 See https://framagit.org/atooms/atooms 
 """
 
+import numpy
 from .system import System
 from .particle import Particle
 from .cell import Cell
-import numpy
 
 def tipify(s):
     """

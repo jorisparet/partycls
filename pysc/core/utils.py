@@ -1,5 +1,4 @@
 import re
-
 from pysc.trajectory.particle import aliases
 
 def _standardize_condition(condition):

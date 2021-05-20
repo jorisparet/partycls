@@ -3,9 +3,9 @@ This class is inspired by the `atooms` framework authored by Daniele Coslovich
 See https://framagit.org/atooms/atooms 
 """
 
+import numpy
 from .particle import Particle, aliases
 from pysc.core.utils import _standardize_condition
-import numpy
 
 class System:
     """

@@ -1,5 +1,5 @@
-from .descriptor import StructuralDescriptor
 import numpy
+from .descriptor import StructuralDescriptor
 from .realspace_wrap import compute
 
 class RadialDescriptor(StructuralDescriptor):

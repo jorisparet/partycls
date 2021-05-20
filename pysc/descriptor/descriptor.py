@@ -1,7 +1,7 @@
+import numpy
 from pysc.trajectory import Trajectory
 from pysc.core.utils import _standardize_condition
 from .realspace_wrap import compute
-import numpy
 
 class StructuralDescriptor:    
     """

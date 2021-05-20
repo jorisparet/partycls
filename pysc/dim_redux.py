@@ -1,8 +1,8 @@
+import numpy
 from sklearn.decomposition import PCA as _PCA
 from sklearn.manifold import TSNE as _TSNE
 from sklearn.manifold import LocallyLinearEmbedding as _LocallyLinearEmbedding
 from sklearn.neural_network import MLPRegressor
-import numpy
 
 __all__ = ['PCA', 'TSNE', 'LocallyLinearEmbedding', 'AutoEncoder']
 

@@ -1,7 +1,5 @@
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
-#from .helpers import cartesian_to_spherical, pbc
 import numpy
-#from scipy.special import sph_harm
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 class BondOrientationalDescriptor(AngularStructuralDescriptor):
