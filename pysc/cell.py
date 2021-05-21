@@ -5,6 +5,9 @@ See https://framagit.org/atooms/atooms
 
 import numpy
 
+aliases = {'box': 'cell.side',
+           'volume': 'cell.volume'}
+
 class Cell:
     """
     Orthorhombic cell.
