@@ -100,6 +100,18 @@ class Optimization:
         Dictionnary that controls the writing process and 
         the properties of all the output files.
         
+    features: numpy.ndarray
+        Raw features as computed by the associated structural descriptor.
+        Initial value is None if features were not computed.
+        
+    scaled_features: numpy.ndarray
+        Features after being rescaled by a feature scaling method.
+        Equal to None if no scaling is applied to the features.
+        
+    reduced_features: numpy.ndarray
+        Features in the reduced space after applying a dimensionality reduction
+        technique. Equal to None if no reduction is applied to the features. 
+        
     Examples
     --------
     
@@ -121,18 +133,21 @@ class Optimization:
             self.descriptor = descriptor_db[descriptor](self.trajectory)
         else:
             self.descriptor = descriptor
+        self.features = self.descriptor.features
 
         # Feature scaling
         if isinstance(scaling, str):
             self.scaling = scaling_db[scaling]()
         else:
             self.scaling = scaling
+        self.scaled_features = None
 
         # Dimensionality reduction
         if isinstance(dim_redux, str):
             self.dim_redux = dim_redux_db[dim_redux]()
         else:
             self.dim_redux = dim_redux
+        self.reduced_features = None
             
         # Clustering
         if isinstance(clustering, str):
@@ -200,19 +215,21 @@ class Optimization:
 
         # Make sure the descriptor has been computed
         if self.descriptor.features is None:
-            self.descriptor.compute()
+            self.features = self.descriptor.compute()
 
         # Feature scaling
         if self.scaling is None:
             X_scaled = self.descriptor.features.copy()
         else:
             X_scaled = self.scaling.fit_transform(self.descriptor.features)
+            self.scaled_features = X_scaled
 
         # Dimensionality reduction
         if self.dim_redux is None:
             X_red = X_scaled.copy()
         else:
             X_red = self.dim_redux.reduce(X_scaled)
+            self.reduced_features = X_red
 
         # Clustering
         if self.clustering.symbol == 'cinf' and (self.scaling is not None or self.dim_redux is not None):
