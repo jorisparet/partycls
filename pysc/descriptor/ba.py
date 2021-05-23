@@ -5,6 +5,53 @@ from .realspace_wrap import compute
 class BondAngleDescriptor(AngularStructuralDescriptor):
     """
     Structural descriptor based on bond angles between particles.
+    
+    See the parent class for more details.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+        
+    dtheta : float
+        Bin width in degrees.
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+        
+    cutoffs : list of float
+        List of cutoff distances to identify the nearest neighbors using
+        the fixed-cutoff ('FC') method.
+        
+    nearest_neighbors_method : str, default: 'FC'
+        Nearest neighbor method, 'FC' or 'SANN'.
+    
+    Examples:
+    ---------
+    
+    >>> D = BondAngleDescriptor('trajectory.xyz', dtheta=2.0)
+    >>> D.nearest_neighbors_method = 'SANN'
+    >>> D.add_filter("species == 'A'")
+    >>> D.compute()    
     """
     
     name = 'bond-angle'

@@ -5,7 +5,60 @@ from .realspace_wrap import compute
 class BondOrientationalDescriptor(AngularStructuralDescriptor):
     """
     Structural descriptor based on bond order parameters as defined by
-    Steinhardt et. al (https://doi.org/10.1103%2FPhysRevB.28.784).
+    Steinhardt et al. (https://doi.org/10.1103%2FPhysRevB.28.784).
+    
+    See the parent class for more details.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+        
+    lmin : int, default: 0
+        Minimum degree. This set the lower bound of the grid.
+        
+    lmax : int, default: 8
+        Minimum degree. This set the upper bound of the grid.
+        
+    orders: list, default: None
+        Specific values of orders to compute, e.g. orders=[4,6]. This has
+        the priority over `lmin` and `lmax`.
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+        
+    cutoffs : list of float
+        List of cutoff distances to identify the nearest neighbors using
+        the fixed-cutoff ('FC') method.
+        
+    nearest_neighbors_method : str, default: 'FC'
+        Nearest neighbor method, 'FC' or 'SANN'.
+    
+    Examples:
+    ---------
+    
+    >>> D = BondOrientationalDescriptor('trajectory.xyz', orders=[4,6])
+    >>> D.nearest_neighbors_method = 'FC'
+    >>> D.compute()
     """
 
     name = 'bond-orientational'
@@ -62,6 +115,60 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
     """
     Structural descriptor based on locally averaged bond order parameters as
     defined by Lechner & Dellago (https://doi.org/10.1063/1.2977970).
+    
+    See the parent class for more details.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+        
+    lmin : int, default: 0
+        Minimum degree. This set the lower bound of the grid.
+        
+    lmax : int, default: 8
+        Minimum degree. This set the upper bound of the grid.
+        
+    orders: list, default: None
+        Specific values of orders to compute, e.g. orders=[4,6]. This has
+        the priority over `lmin` and `lmax`.
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+        
+    cutoffs : list of float
+        List of cutoff distances to identify the nearest neighbors using
+        the fixed-cutoff ('FC') method.
+        
+    nearest_neighbors_method : str, default: 'FC'
+        Nearest neighbor method, 'FC' or 'SANN'.
+    
+    Examples:
+    ---------
+    
+    >>> D = LechnerDellagoDescriptor('trajectory.xyz', orders=[4,6])
+    >>> D.nearest_neighbors_method = 'FC'
+    >>> D.add_filter("species == 'A'")
+    >>> D.compute()
     """
 
     name = 'lechner-dellago'

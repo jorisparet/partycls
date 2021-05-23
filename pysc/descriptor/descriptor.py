@@ -283,6 +283,8 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     """
     Base class for angular structural descriptors.
     
+    See the parent class for more details.
+    
     Descriptors that exploit angular correlations and require nearest-neighbors information 
     will inherit of this class. Two methods to identify nearest-neighbors are available:
     - "Fixed cutoff" (symbol: 'FC'): uses the partial radial distribution functions to compute
@@ -301,6 +303,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
+        
+    neighbors : list
+        Lists of nearest neighbors for all the particles in group=0. Empty by
+        default and filled when calling the method `nearest_neighbors`.
     
     Attributes
     ----------
