@@ -23,7 +23,7 @@ This will also write a set of files relative the optimization. Among those, a tr
 We can also choose to restrict the analysis to a specific subset of particles by adding a filter on any particle property. Say we have a binary system composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
 
 ```python
-from pysc.trajectory import Trajectory
+from pysc import Trajectory
 from pysc.descriptor import BondAngleDescriptor
 
 traj = Trajectory('trajectory.xyz')
