@@ -232,10 +232,13 @@ class Optimization:
             self.reduced_features = X_red
 
         # Clustering
+        #  community inference needs to fit an instance of descriptor
         if self.clustering.symbol == 'cinf' and (self.scaling is not None or self.dim_redux is not None):
             raise ValueError('community inference is not meant to run with feature-scaling or dimensionality reduction')
-        # run
-        self.clustering.fit(X_red)
+        elif self.clustering.symbol == 'cinf':
+            self.clustering.fit(self.descriptor)
+        else:
+            self.clustering.fit(X_red)
         #  give its predicted label to each selected `Particle` in the trajectory.
         n = 0
         for frame in self.descriptor._groups[0]:
