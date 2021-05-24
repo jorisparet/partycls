@@ -1,7 +1,7 @@
 import numpy
 from sklearn.cluster import KMeans as _KMeans
 from sklearn.mixture import GaussianMixture as _GaussianMixture
-from pysc.descriptor import StructuralDescriptor, DummyDescriptor
+from pysc.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
 
 __all__ = ['KMeans', 'GaussianMixture', 'CommunityInference']
 
@@ -173,7 +173,11 @@ class CommunityInference(Clustering):
         P_average = f_k @ P_k
         
         # community information
-        dx = descriptor.grid[1] - descriptor.grid[0]
+        if isinstance(descriptor, BondOrientationalDescriptor):
+            # in case of non-successive values of l in the grid
+            dx = 1.0
+        else:
+            dx = descriptor.grid[1] - descriptor.grid[0]
         def _mutual_information(P_average, P_k, f_k, dx):
             MI = 0.0
             f_x = numpy.empty_like(P_average)
