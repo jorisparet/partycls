@@ -40,30 +40,26 @@ class Test(unittest.TestCase):
         self.assertEqual(set(opt.fractions), set(clustering.fractions),
                          'different cluster fractions')
 
-    """
     def test_radial_ci(self):
-        D = RadialDescriptor(self.traj, bounds=(0.0, 1.25))
-        X = D.compute()
+        D = RadialDescriptor(self.traj)
+        D.compute()
         clustering = CommunityInference(n_init=100)
-        clustering.fit(X)
+        clustering.fit(D)
         # check if the dislocated particles are in the same cluster
         labels = list(clustering.labels)
         self.assertEqual(labels[4], labels[6], 'not the expected labels')
-        # check if only tqhe dislocated particles are in the same cluster
-        self.assertEqual(set(opt.fractions), set([2/27, 25/27]),
+        # check if only the dislocated particles are in the same cluster
+        self.assertEqual(set(clustering.fractions), set([2/27, 25/27]),
                          'not the expected cluster fractions')
         
         # Same via optimization
         opt = Optimization(self.traj, descriptor='gr', clustering='cinf')
-        opt.descriptor.bounds = (0.0, 1.25)
         opt.clustering.n_init = 100
         opt.disable_output()
-        # TODO: fix warning
         opt.run()
         # check if both methods give the same result
         self.assertEqual(set(opt.fractions), set(clustering.fractions),
                          'different cluster fractions')
-    """
  
 if __name__ == '__main__':
     unittest.main()
