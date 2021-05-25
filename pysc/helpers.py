@@ -1,12 +1,37 @@
 import numpy
 
-__all__ = ['merge', 'entropic_labeling']
+__all__ = ['shannon_entropy', 'merge_clusters', 'sort_clusters']
+            
+def shannon_entropy(px, dx=1.0):
+    """
+    Shannon entropy of distribution p(x).
 
-def merge(weights, n_clusters_min=2, epsilon_=1e-15):
+    Parameters
+    ----------
+    px : list or numpy.array
+        Distribution p(x).
+    dx : float, optional
+        Differential of x. The default is 1.0.
+
+    Returns
+    -------
+    S : float
+        Shannon entropy.
+    """
+    S = 0.0
+    P = px * dx
+    for p in P:
+        if p != 0.0:
+            S += p * numpy.log(p)
+    return -S
+
+def merge_clusters(weights, n_clusters_min=2, epsilon_=1e-15):
     """
     Merge clusters into `n_clusters_min` new clusters based on the
     probabilities that particles initially belong to each of the original
-    clusters with a certain probability.
+    clusters with a certain probability and using an entropy criterion.
+    
+    See https://doi.org/10.1198/jcgs.2010.08111 (Baudry et al.)
 
     Parameters
     ----------
@@ -71,10 +96,11 @@ def merge(weights, n_clusters_min=2, epsilon_=1e-15):
         
     return new_weights, new_labels
 
-def entropic_labeling(labels, centroids):
+def sort_clusters(labels, centroids, func=shannon_entropy):
     """
-    Uses the entropy of each centroid to make a consistent labeling.
-    Clusters are labeled in order of descending entropies.
+    Make a consistent labeling of the clusters based on their centroids by
+    computing an associated numerical value as sorting criterion. By default, 
+    the labeling is based on the Shannon entropy of each cluster.
 
     Parameters
     ----------
@@ -82,6 +108,11 @@ def entropic_labeling(labels, centroids):
         Original labels.
     centroids : numpy.ndarray
         Cluster centroids.
+    func : function, optional
+        Function used to associate a numerical value to each cluster, to be
+        used as sorting criterion. This function must accept a list or a 
+        one dimensional array as parameter (this parameter being the 
+        coordinates of a given centroid). The default is shannon_entropy.
 
     Returns
     -------
@@ -97,7 +128,7 @@ def entropic_labeling(labels, centroids):
     entropies = numpy.empty(n_clusters)
     # Shannon entropy of each cluster based on centroids
     for k in range(n_clusters):
-        entropies[k] = _entropy(centroids[k])
+        entropies[k] = func(centroids[k])
     # rank distributions according to their entropies
     entropies *= -1
     ranks = numpy.argsort(numpy.argsort(entropies))
@@ -118,7 +149,7 @@ def _compute_delta_ent(i, j, weights):
     """
     delta_ent = 0.0
     for w in weights:  # each w is a vector of weights (this is a loop over particles)
-        w_merge = w[i]+w[j]  # for this particle, add the weights for cluster i and j
+        w_merge = w[i] + w[j]  # for this particle, add the weights for cluster i and j
         delta_ent += w_merge * numpy.log(w_merge)
         delta_ent -= w[i] * numpy.log(w[i])
         delta_ent -= w[j] * numpy.log(w[j])
@@ -133,14 +164,3 @@ def _compute_ICL_ent(weights, epsilon_):
         wts = numpy.maximum(w, epsilon_)
         ICL_ent -= numpy.sum( wts * numpy.log(wts) )
     return ICL_ent
-            
-def _entropy(px, dx=1.0):
-    """
-    Shannon entropy of distribution Px.
-    """
-    S = 0.0
-    P = px * dx
-    for p in P:
-        if p != 0.0:
-            S += p * numpy.log(p)
-    return -S
