@@ -427,7 +427,11 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         for pair in pairs:
             if self.cutoffs[pairs.index(pair)] is None:
                 s1, s2 = pair
-                bounds = (0.0, numpy.min(self.trajectory[0].cell.side/2))
+                # use the smallest side of the smallest box in case of
+                #  non-constant volume trajectory
+                sides = numpy.array(self.trajectory.dump('cell.side'))
+                L = numpy.min(sides)
+                bounds = (0.0, L/2)
                 descriptor = RadialDescriptor(self.trajectory, dr=0.1, bounds=bounds)
                 descriptor.add_filter("species == '{}'".format(s1), group=0)
                 descriptor.add_filter("species == '{}'".format(s2), group=1)
