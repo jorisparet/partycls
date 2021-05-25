@@ -303,10 +303,6 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
-        
-    neighbors : list
-        Lists of nearest neighbors for all the particles in group=0. Empty by
-        default and filled when calling the method `nearest_neighbors`.
     
     Attributes
     ----------
@@ -318,6 +314,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     nearest_neighbors_method : str, default: 'FC'
         Nearest neighbor method, 'FC' or 'SANN'.
         
+    neighbors : list
+        Lists of nearest neighbors for all the particles in group=0. Empty by
+        default and filled when calling the method `nearest_neighbors`.
     """
     
     def __init__(self, trajectory):
