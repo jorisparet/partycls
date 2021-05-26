@@ -47,10 +47,20 @@ class Trajectory:
         Path to the trajectory file to read.
         
     fmt : str, optional, default: 'xyz'
-        Format of the trajectory.
+        Format of the trajectory. Needed when using "atooms" as a backend.
         
+    backend : str, optional, default: None
+        Name of a third-party package to use as backend when reading the input
+        trajectory. Currently supports "atooms" and "mdtraj".
+        
+    top : str, mdtraj.Trajectory, or mdtraj.Topology, optional, defaut: None
+        Topology information. Needed when using "mdtraj" as backend on a 
+        trajectory file whose format requires topology information. See MDTraj
+        documentation for more information.
+         
     additional_fields : list of str, optional, default: []
-        Additional fields (i.e. particle properties) to read from the trajectory.   
+        Additional fields (i.e. particle properties) to read from the 
+        trajectory. Not all trajectory formats allow for additional fields.
         
     first : int, optional, default: 0
         Index of the first frame to consider in the trajectory. Starts at zero.
@@ -70,10 +80,13 @@ class Trajectory:
     filename : str
         Name of the original trajectory file.
         
-    fmt : str, optional, default: "xyz"
+    fmt : str
         Format of the original trajectory file.
         
-    additional_fields : list, optional, default: []
+    backend : str or None
+        Name of the third-party package used to read the input trajectory file.
+        
+    additional_fields : list
         List of additional particle properties that were extracted from the
         original trajectory file.
     
@@ -84,10 +97,11 @@ class Trajectory:
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
     
-    def __init__(self, filename, fmt='xyz', backend=None, additional_fields=[], first=0, last=None, step=1):
+    def __init__(self, filename, fmt='xyz', backend=None, top=None, additional_fields=[], first=0, last=None, step=1):
         self.filename = filename
         self.fmt = fmt
         self.backend = backend
+        self.top = top
         self.additional_fields = additional_fields
         self._systems = []
         self._read(first, last, step)
@@ -446,7 +460,10 @@ class Trajectory:
         
         try:
             import mdtraj as md
-            md_traj = md.load(self.filename)
+            try:
+                md_traj = md.load(self.filename)
+            except ValueError:
+                md_traj = md.load(self.filename, top=self.top)
             for frame in range(md_traj.n_frames):
                 input_cell = md_traj.unitcell_lengths
                 assert input_cell is not None, 'cell dimensions are needed to read the trajectory'
@@ -455,6 +472,9 @@ class Trajectory:
                 for atom in range(md_traj.n_atoms):
                     pos = md_traj.xyz[frame, atom]
                     spe = md_traj[frame].topology.atom(atom).element.symbol
+                    # virtual site
+                    if spe == 'VS':
+                        spe = md_traj[frame].topology.atom(atom).name
                     particle = Particle(position=pos, species=spe)
                     system.particle.append(particle)
                 self._systems.append(system)
