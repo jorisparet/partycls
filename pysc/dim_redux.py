@@ -80,8 +80,15 @@ class AutoEncoder(MLPRegressor):
     symbol = 'ae'
     full_name = 'Neural-Network Auto-Encoder (AE)'
     
-    def __init__(self, layers=(2,), activation='relu'):
-        MLPRegressor.__init__(self, hidden_layer_sizes=layers, activation=activation)
+    def __init__(self, layers=(100,2,100), activation='relu', solver='adam', alpha=1e-4):
+        MLPRegressor.__init__(self, hidden_layer_sizes=layers, 
+                              activation=activation, solver=solver,
+                              alpha=1e-4)
+        self.n_components = min(self.hidden_layer_sizes)
+    
+    @property
+    def n_components(self):
+        return min(self.hidden_layer_sizes)        
     
     def reduce(self, X):
         """
@@ -106,9 +113,19 @@ class AutoEncoder(MLPRegressor):
         
         # Mean absolute error
         Y_pred = self.predict(X)
+        # MAE
         MAE = numpy.abs(Y_pred - X).mean()
-        self.mean_abs_error = MAE
-        MSD = ((X - X.mean(axis=1).reshape(X.shape[0], 1))**2).mean()
+        self.mean_absolute_error = MAE
+        # MSE / MSD
+        MSE = 0.0
+        MSD = 0.0
+        Xmean = numpy.mean(X, axis=0)
+        for i in range(X.shape[0]):
+            MSE += numpy.sum( (X[i] - self.predict(X[i].reshape(1,-1)))**2)
+            MSD += numpy.sum((X[i] - Xmean)**2)
+        MSE /= X.shape[0]
+        MSD /= X.shape[0]
+        self.mean_squared_error = MSE
         self.mean_squared_deviation = MSD
         
         # Weights and biases
@@ -116,8 +133,7 @@ class AutoEncoder(MLPRegressor):
         biases = self.intercepts_
         
         # Keep the encoder part only
-        n_components = min(self.hidden_layer_sizes)
-        bottleneck_index = self.hidden_layer_sizes.index(n_components)
+        bottleneck_index = self.hidden_layer_sizes.index(self.n_components)
         encoder_weights = W[0:bottleneck_index+1]
         encoder_biases = biases[0:bottleneck_index+1]
         
@@ -133,9 +149,9 @@ class AutoEncoder(MLPRegressor):
                 if self.activation == 'tanh':
                     X_red = numpy.tanh(X_red @ w + b)
                 if self.activation == 'identity':
-                    raise NotImplementedError
+                    X_red = X_red @ w + b
                 if self.activation == 'logistic':
-                    raise NotImplementedError
+                    X_red = 1.0 / (1.0 + numpy.exp(-(X_red @ w + b)))
                     
         # Return the dataset in low dimension
         return X_red
