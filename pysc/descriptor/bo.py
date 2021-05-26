@@ -188,17 +188,18 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         pos_0 = self.group_positions(0)
         pos_1 = self.group_positions(1)
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        cutoffs = numpy.asarray(self.cutoffs)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
         # compute nearest neighbors
         self.nearest_neighbors(method=self.nearest_neighbors_method)
+        cutoffs = numpy.array(self.cutoffs)
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
                 # neighbors of neighbors of i
                 neigh_i = self.neighbors[n][i]
                 neigh_neigh_i = []
+                # TODO: SANN for neighbors of j if set as nearest_neighbors_method
                 for j in neigh_i:
                     neigh_j = compute.nearest_neighbors(idx_1[n][j], idx_1[n],
                                                         pos_1[n][j], pos_1[n].T,
