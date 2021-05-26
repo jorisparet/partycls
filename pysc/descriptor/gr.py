@@ -59,12 +59,22 @@ class RadialDescriptor(StructuralDescriptor):
     
     def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None):
         StructuralDescriptor.__init__(self, trajectory)
-        self.n_shells = n_shells
         # set the grid automatically using coordination shells (`n_shells`)
         #  or user-defined limits (`bounds`) if provided
-        self._set_bounds(dr, bounds)
+        self._set_bounds(dr, n_shells, bounds)
 #        # default normalization (r**2*g(r))
 #        self.normalize = self.squared_distance_RDF_normalization
+
+    @property
+    def n_shells(self):
+        """
+        Upper bound for correlation expressed in number of coordinations shells.
+        """
+        return self._n_shells
+    
+    @n_shells.setter
+    def n_shells(self, value):
+        return self._set_bounds(self._dr, value, None)
 
     @property
     def bounds(self):
@@ -75,7 +85,7 @@ class RadialDescriptor(StructuralDescriptor):
     
     @bounds.setter
     def bounds(self, value):
-        self._set_bounds(self._dr, value)
+        self._set_bounds(self._dr, None, value)
         
     @property
     def dr(self):
@@ -86,7 +96,7 @@ class RadialDescriptor(StructuralDescriptor):
     
     @dr.setter
     def dr(self, value):
-        self._set_bounds(value, self._bounds)
+        self._set_bounds(value, self._n_shells, self._bounds)
         
     def compute(self):
         """
@@ -161,7 +171,7 @@ class RadialDescriptor(StructuralDescriptor):
             
     #TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     #TODO: duplicate code with `compute()`
-    def _set_bounds(self, dr, bounds):
+    def _set_bounds(self, dr, n_shells, bounds):
         # take the smallest side as maximal upper bound for the grid
         sides = numpy.array(self.trajectory.dump('cell.side'))
         L = numpy.min(sides)
@@ -195,13 +205,14 @@ class RadialDescriptor(StructuralDescriptor):
             g = self.normalize_gr(g)
             # find position of the n-th minimum in g(r)
             index = 0
-            for shell in range(self.n_shells):
+            for shell in range(n_shells):
                 g_tmp = g[index:]
                 first_max = numpy.argmax(g_tmp)
                 first_min = numpy.argmin(g_tmp[first_max:]) + first_max
                 index += first_min   
             # set grid and bounds
             self.grid = r[0:index+1]
+            self._n_shells = n_shells
             self._bounds = (r[0], r[index])
         
         # use user-defined limits if provided
@@ -211,6 +222,7 @@ class RadialDescriptor(StructuralDescriptor):
                 r = numpy.arange(rmin+(self._dr/2), rmax, self._dr, dtype=numpy.float64)
                 # set grid and bounds
                 self.grid = r
+                self._n_shells = None
                 self._bounds = (r[0], r[-1])
             else:
                 raise ValueError('`bounds` is not correctly defined.')
