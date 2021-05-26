@@ -43,14 +43,14 @@ class Test(unittest.TestCase):
         D.cutoffs = self.cutoffs
         self._compute(D)
         # test value of q_1
-        self.assertEqual(float32(D.average[1]), float32(0.09393699),
+        self.assertEqual(float32(D.average[0]), float32(0.09393699),
                          'wrong average value for q_1')
         
     def test_lechner_dellago(self):
         D = LechnerDellagoDescriptor(self.traj)
         D.cutoffs = self.cutoffs
         self._compute(D)
-        self.assertEqual(float32(D.average[1]), float32(0.02164681),
+        self.assertEqual(float32(D.average[0]), float32(0.02164681),
                          'wrong average value for qbar_1')
 
 if __name__ == '__main__':
