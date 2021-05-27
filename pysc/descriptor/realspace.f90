@@ -194,7 +194,7 @@ CONTAINS
     !ylm = SQRT(up/down) * plm(l, m, COS(theta)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*phi), 0.0))
     ylm = SQRT(up/down) * plm(l, m, COS(phi)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*theta), 0.0))
   END FUNCTION ylm
-
+  
   !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
   FUNCTION qlm(l, neigh_i, pos_i, pos_j, box)
     INTEGER(8), INTENT(in) :: l, neigh_i(:)
@@ -223,6 +223,40 @@ CONTAINS
     qlm = qlm / SIZE(neigh_i)
   END FUNCTION qlm
 
+!  !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
+!  ! For the generalization in Fortran of Lechner-Dellago 
+!  FUNCTION qlm(l, neigh_i, pos_i, pos_j, box)
+!    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+!    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+!    COMPLEX(8)             :: qlm(2*l+1), harm
+!    REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
+!    INTEGER(8)             :: j, n_neigh_i, ni, m
+!    qlm(:) = (0.0, 0.0)
+!    ! number of neighbors of i
+!    n_neigh_i = 0
+!    DO j=1,SIZE(neigh_i)
+!      IF (neigh_i(j) /= -1) n_neigh_i = n_neigh_i + 1
+!    END DO
+!    ! r_ij (cartesian)
+!    DO j=1,n_neigh_i
+!      ni = neigh_i(j)+1 ! python index shift 
+!      r_xyz(:,j) = pos_j(:,ni)
+!    END DO
+!    r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
+!    r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
+!    r_xyz(3,:) = r_xyz(3,:) - pos_i(3)
+!    CALL pbc_(r_xyz, box)
+!    ! r_ij (spherical)
+!    r_sph = cartesian_to_spherical(r_xyz)
+!    DO m=0,2*l
+!      DO j=1,n_neigh_i
+!        harm = ylm(l, m-l, r_sph(2,j), r_sph(3,j))
+!        qlm(m+1) = qlm(m+1) + harm
+!      END DO
+!    END DO
+!    qlm = qlm / n_neigh_i
+!  END FUNCTION qlm
+  
   !!!!!!!!!! ROTATIONAL INVARIANT OF ORDER l !!!!!!!!!!
   ! difference at the ~8th digit compared to Python 
   FUNCTION rotational_invariant(l, q_lm) RESULT(q_l)
@@ -253,9 +287,9 @@ CONTAINS
     q_lm_i = qlm(l, neigh_i, pos_i, pos_j, box)
     DO kn=1,SIZE(neigh_i)
       k = neigh_i(kn)+1 ! python index shift
-      q_lm_k(kn,:) = qlm(l, neigh_neigh_i(kn,:), pos_j(:,k), pos_j, box)
+      q_lm_k(kn,:) = qlm(l, neigh_neigh_i(:,kn), pos_j(:,k), pos_j, box)
     END DO
-    qbarlm = q_lm_i + SUM(q_lm_k)
+    qbarlm = q_lm_i + SUM(q_lm_k, 1)
     qbarlm = qbarlm / nbar_b
   END FUNCTION qbarlm
 
@@ -265,7 +299,6 @@ CONTAINS
     REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
     COMPLEX(8)             :: qbar_lm(2*l+1)
     REAL(8)                :: qbar_l
-    WRITE(*,*) "HERE"
     qbar_lm = qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
     qbar_l = rotational_invariant(l, qbar_lm)
   END FUNCTION qbarl
@@ -446,124 +479,7 @@ CONTAINS
         sortneighbor(i) = neighbor(i)
       END DO
     END DO
-  END SUBROUTINE
- 
-!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!   !     Fortran implementation of the SANN algorithm                        !
-!   !     van Meel, Filion, Valeriani and Frenkel November (2011)             !
-!   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!   ! TO FINISH
-!   SUBROUTINE sann()
-!     ! npart = total number of particles in the system
-!     INTEGER(8) :: npart
-!     !  m = tentative number of neighbours
-!     INTEGER(8) :: i,j,k,m
-!     ! countneighbors = number of neighbours of particle i
-!     INTEGER(8) :: countneighbors(1000)
-!     ! neighbor = list of neighbours of particles i
-!     INTEGER(8) :: neighbor(1000,100)
-!     ! sortneighbor = sorted neighbours 
-!     INTEGER(8) :: sortneighbor(1000,100)
-!     ! selectedneighbors = list of selected neighbours    
-!     INTEGER(8) ::  selectedneighbors(1000,100)
-!     ! Nb = final number of neighbours of particle i
-!     INTEGER(8) :: Nb(1000)
-!     ! edge of the simulation box
-!     REAL(8) :: box(:)
-!     REAL(8) :: hbox(:)
-!     ! distance = list of distances between each 
-!     ! neighbour of particle i and particle i 
-!     REAL(8) ::  distance(1000,100)
-!     ! distancesorted = sorted distances
-!     REAL(8) :: distancesorted(1000,100)       
-!     ! R(m) as in Eq.3 in the manuscript
-!     REAL(8) :: rm,rm1
-!     ! x,y,z component of every particle i
-!     REAL(8) :: x(1000),y(1000),z(1000)
-!     ! distance between particle i and particle j
-!     REAL(8) :: d_ij
-!     ! cutoff distance to identify all potential neighbours
-!     REAL(8) :: rcutoff
-!     
-!     ! *** STEP 1 ***
-!     ! first we identify the particles within a cutoff radius rcutoff
-!     DO i=1,npart
-!       ! loop over all particles different from i
-!       DO j =1,npart
-!         IF (j /= i) THEN
-!           ! compute x,y,z component of the distance between particle i and j
-!           r_ij(:) =  pos_1(:,j) - pos_0(:,i)
-!           ! applying periodic boundary conditions
-!           CALL pbc(r_ij, box, hbox)
-!           ! compute distance d_ij  between particle i and j
-!           d_ij = SQRT(SUM(r_ij**2))
-!           ! compute distance d_ij  between particle i and j
-!           d_ij = SQRT(dx*dx+dy*dy+dz*dz)
-!           ! identify neighbours that are within a cutoff (rcutoff)
-!           IF (d_ij < rcutoff) THEN
-!             ! j is a neighbour of i
-!             countneighbors(i) = countneighbors(i) + 1
-!             ! build a list of neighbours
-!             neighbor(i,countneighbors(i))= j 
-!             ! create a list with the distance between i and j 
-!             distance(i,countneighbors(i))= d_ij
-!           END IF
-!         END IF
-!       END DO
-!     END DO
-!     
-!     ! *** STEP 2 ***
-!     ! for every particle i sort all (countneighbors) 
-!     ! neighbours (neighbor) according to their 
-!     ! distances (distance) and create  a new list of 
-!     ! particle i's (sortneighbor)
-!     ! and a new sorted list of distances (distancesorted)
-!     DO i=1,npart
-!          CALL sort(i,countneighbors,distance,neighbor,sortneighbor,distancesorted)
-!     END DO
-! 
-!     DO i=1,npart
-!       ! *** STEP 3 *** 
-!       ! start with 3 neighbours
-!       m = 3
-!       ! *** STEP 4 ***
-!       ! compute R(m) as in Eq.3 
-!       rm = 0
-!       DO k=1,m
-!         rm = rm + distancesorted(i,k)
-!       END DO
-!       rm = rm/(m-2)
-!       ! compute r(m+1)
-!       DO j = 1,countneighbors(i)      
-!         rm1 = 0
-!         DO k=1,m
-!            rm1 = rm1 + distancesorted(i,k)
-!         END DO
-!         rm1 = rm1/(m-2)
-!         ! *** STEP 5 ***  
-!         ! if rm > rm1     
-!         IF (rm >= rm1) THEN     
-!           rm = rm1
-!           ! increase m
-!           m = m+1
-!         ELSE
-!           ! *** STEP 6 ***
-!           ! if rm < rm1, m is the final number of neighbours
-!           EXIT
-!         END IF
-!       END DO
-!       ! the final number of neighbours is m = Nb(i) 
-!       ! and the neighbours are  selectedneighbors
-!       Nb(i) = m
-!       DO j=1,Nb(i)
-!         selectedneighbors(i,j) = sortneighbor(i,j)
-!       END DO
-!     END DO
-!       
-!     RETURN
-!     
-!   END SUBROUTINE
-  
+  END SUBROUTINE  
   
 END MODULE compute
 

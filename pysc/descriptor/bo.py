@@ -210,15 +210,17 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
                 # compute BO parameters for particle `i`
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = self._qbar_l(l, i, neigh_i, neigh_neigh_i, pos_0[n][i], pos_1[n], box)
-                    #TODO: fix the shape of neigh_neigh_i to pass it to qbarl()
-                    #hist_n_i[l] = compute.qbarl(l, numpy.array(neigh_i), numpy.array(neigh_neigh_i).T, pos_0[n][i], pos_1[n].T, box)
+                    hist_n_i[ln] = self._qbar_l(l, neigh_i, neigh_neigh_i, pos_0[n][i], pos_1[n], box)
+                    #TODO: improve Fortran calculation for Lechner-Dellago
+                    # hist_n_i[ln] = compute.qbarl(l, numpy.array(neigh_i), 
+                    #                               numpy.array(neigh_neigh_i).T, 
+                    #                               pos_0[n][i], pos_1[n].T, box)
                 features[row] = hist_n_i
                 row += 1      
         self.features = features
         return features
     
-    def _qbar_lm(self, l, i, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
+    def _qbar_lm(self, l, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
         Nbar_b = len(neigh_i) + 1
         q_lm_i = compute.qlm(l, neigh_i, pos_i, pos_j.T, box)
         q_lm_k = []
@@ -228,9 +230,9 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         qbar_lm = q_lm_i + numpy.sum(q_lm_k, axis=0)
         return qbar_lm / Nbar_b
     
-    def _qbar_l(self, l, i, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
+    def _qbar_l(self, l, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
         """
         Rotational invariant of order l for particle `i`.
         """
-        qbar_lm = self._qbar_lm(l, i, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
+        qbar_lm = self._qbar_lm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
         return compute.rotational_invariant(l, qbar_lm)
