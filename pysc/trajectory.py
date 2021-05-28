@@ -23,13 +23,16 @@ def tipify(s):
         Best-matching type for the input string `s`.
 
     """
-    try:
-        return int(s)
-    except ValueError:
-        try:
-            return float(s)
-        except ValueError:
-            return s
+    if '_' in s: 
+        return s 
+    else: 
+        try: 
+            return int(s) 
+        except ValueError: 
+            try: 
+                return float(s) 
+            except ValueError: 
+                return s 
 
 
 class Trajectory:
@@ -478,8 +481,6 @@ class Trajectory:
                     particle = Particle(position=pos, species=spe)
                     system.particle.append(particle)
                 self._systems.append(system)
-        except ValueError:
-            raise ValueError('formats that require a topology argument cannot be opened')
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `mdtraj` module found.')
 
