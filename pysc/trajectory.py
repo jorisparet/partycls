@@ -272,7 +272,7 @@ class Trajectory:
         def _system_info(info):
             """Information on the system (dimension, fields, etc.)"""
             import re
-            default_fields = ['id', 'type', 'species', 'pos', 
+            default_fields = ['id', 'type', 'name', 'species', 'pos', 
                               'position', 'x', 'y', 'z']
             # loop over all properties
             for p in info:
