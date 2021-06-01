@@ -8,7 +8,7 @@ tags:
   - condensed matter
   - physics
 authors:
-  - name: Joris Paret^[joris.paret@umontpellier.fr]
+  - name: Joris Paret
     orcid: 0000-0002-1300-1227
     affiliation: 1
   - name: Daniele Coslovich
