@@ -84,7 +84,6 @@ class AutoEncoder(MLPRegressor):
         MLPRegressor.__init__(self, hidden_layer_sizes=layers, 
                               activation=activation, solver=solver,
                               alpha=1e-4)
-        self.n_components = min(self.hidden_layer_sizes)
     
     @property
     def n_components(self):
