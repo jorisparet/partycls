@@ -228,6 +228,50 @@ class Trajectory:
             assert len(value) == self.__len__(), '`value` should have the same length than the Trajectory.'
             for frame, system in enumerate(self._systems):
                 system.set_property(what, value[frame], subset=subset)
+
+    def show(self, frame=0, backend='matplotlib', color='species', *args, **kwargs):
+        """
+        Show the n-th frame of the trajectory and color particles
+        according to an arbitrary property, such as species, cluster label, 
+        etc. Current visualization backends are 'matplotlib' and '3dmol'.
+
+        Parameters
+        ----------
+        frame : int, optional
+            Index of the frame to show. The default is 0.
+        backend : str, optional
+            Name of the backend to use for visualization. 
+            The default is 'matplotlib'.
+        color : str, optional
+            Name of the particle property to use as basis for coloring the 
+            particles. This property must be defined for all the particles in the system.
+            The default is 'species'.
+        *args : additional non-keyworded arguments (backend-dependent).
+        **kwargs : additional keyworded arguments (backend-dependent).
+
+        Raises
+        ------
+        ValueError
+            In case of unknown `backend`.
+
+        Returns
+        -------
+        Figure or View (backend-dependent)
+        
+        Examples
+        --------
+        >>> traj.show(frame=0, color='label', backend='3dmol')
+        >>> traj.show(frame=1, color='energy', backend='matplotlib', cmap='viridis')
+
+        """
+        from .helpers import show_matplotlib, show_3dmol
+        if backend == 'matplotlib':
+            _show = show_matplotlib
+        elif backend == '3dmol':
+            _show = show_3dmol
+        else:
+            raise ValueError('unknown backend for visualization')
+        return _show(self._systems[frame], color=color, *args, **kwargs)   
     
     def _read(self, first, last, step):
         

@@ -1,7 +1,95 @@
 import numpy
 
-__all__ = ['shannon_entropy', 'merge_clusters', 'sort_clusters']
-            
+__all__ = ['show_matplotlib',
+           'show_3dmol',
+           'shannon_entropy',
+           'merge_clusters',
+           'sort_clusters']
+
+def show_matplotlib(system, color, cmap='viridis', outfile=None, linewidth=0.5, alpha=1.0, show=False):
+    """
+    Make a snapshot of the `system` using matplotlib.
+    The figure is returned for further
+    customization or visualization in jupyter notebooks.
+    """
+    import matplotlib.pyplot as plt
+    from .trajectory import tipify
+    from matplotlib.cm import cmaps_listed
+
+    discrete_colors = ['r', 'b', 'g', 'y']
+    colormap = cmaps_listed[cmap]
+    fig = plt.figure()
+    ax = fig.add_subplot(111, aspect='equal')
+    ax.axes.get_xaxis().set_visible(False)
+    ax.axes.get_yaxis().set_visible(False)
+    ax.set_xlim((-system.cell.side[0]/2, system.cell.side[0]/2))
+    ax.set_ylim((-system.cell.side[1]/2, system.cell.side[1]/2))
+    # check for radius property
+    # set default value if non-existant
+    if not hasattr(system.particle[0], 'radius'):
+        system.set_property('radius', 0.5)
+    # color according to a specific property
+    property_vals = system.dump('particle.{}'.format(color))
+    # discrete property
+    discrete = isinstance(tipify(str(property_vals[0])), (str, int))
+    if discrete:
+        property_set = list(set(property_vals))
+        property_set.sort()
+        color_db = discrete_colors
+    else:
+        color_db = colormap(property_vals)
+    for pn, p in enumerate(system.particle):
+        if discrete:
+            p_color = color_db[property_set.index(p.__getattribute__(color))]
+        else:
+            p_color = color_db[pn]
+        c = plt.Circle(p.position[: 2], p.radius,
+                       facecolor=p_color, edgecolor='k',
+                       alpha=alpha, linewidth=linewidth,
+                       zorder=p.position[2])
+        ax.add_artist(c)
+    if outfile is not None:
+        fig.savefig(outfile, bbox_inches='tight')
+    if show:
+        plt.show()
+    return fig
+
+def show_3dmol(system, color, radius=1.0, palette=None):
+    """
+    Visualize the `system` in cell using 3dmol http://3dmol.csb.pitt.edu/
+    """
+    import py3Dmol
+    from .trajectory import tipify
+    
+    if palette is None:
+        palette = ["#50514f", "#f25f5c", "#ffe066", "#247ba0", "#70c1b3",
+                   "#0cce6b", "#c200fb", "#e2a0ff", "#6622cc", "#119822"]
+    view = py3Dmol.view()
+    view.setBackgroundColor('white')
+    # check for radius property
+    # set default value if non-existant
+    if not hasattr(system.particle[0], 'radius'):
+        system.set_property('radius', 0.5)
+    # color according to a specific property
+    property_vals = system.dump('particle.{}'.format(color))
+    property_set = list(set(property_vals))
+    property_set.sort()
+    if not isinstance(tipify(str(property_vals[0])), (str, int)):
+        raise ValueError('cannot color particle according to a float property')
+    for p in system.particle:
+        p_color = palette[property_set.index(p.__getattribute__(color))]
+        view.addSphere({'center': {'x': p.position[0], 'y': p.position[1], 'z': p.position[2]},
+                        'radius': radius * p.radius, 'color': p_color})
+    if system.cell is not None:
+        view.addBox({'center': {'x': 0.0,
+                                'y': 0.0,
+                                'z': 0.0},
+                     'dimensions': {'w': system.cell.side[0],
+                                    'h': system.cell.side[1],
+                                    'd': system.cell.side[2]},
+                     'wireframe': True, 'color': "#000000"})
+    return view
+
 def shannon_entropy(px, dx=1.0):
     """
     Shannon entropy of distribution p(x).
