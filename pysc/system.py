@@ -159,7 +159,7 @@ class System:
         # Make array of the attribute
         attr = what.split('.')[-1]
         if what.startswith('particle'):
-            data = numpy.array([getattr(p, attr) for p in self.particle])
+            data = numpy.array([eval('p.{}'.format(attr)) for p in self.particle])
         elif what.startswith('cell'):
              data = numpy.array(getattr(self.cell, attr))
         else:
