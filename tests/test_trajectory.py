@@ -5,7 +5,7 @@ import os
 
 from pysc import Trajectory
 from pysc.descriptor import BondAngleDescriptor
-from pysc import Optimization, ZScore, PCA, KMeans
+from pysc import Workflow, ZScore, PCA, KMeans
 
 class Test(unittest.TestCase):
 
@@ -32,17 +32,17 @@ class Test(unittest.TestCase):
         clustering.fit(Xred)
         print('Fractions :', clustering.fractions, '(clustering alone)')
         
-        # Same via optimization
-        opt = Optimization(self.traj, descriptor='ba', scaling='zscore',
-                           dim_redux='pca', clustering='kmeans')
-        opt.descriptor.add_filter('species == "A"', group=0)
-        opt.descriptor.cutoffs = self.cutoffs
-        opt.dim_redux.n_components = 3
-        opt.clustering.n_init = 100
-        opt.disable_output()
-        opt.run()
-        print('Fractions :', clustering.fractions, '(via optimization)')
-        self.assertEqual(set(clustering.fractions), set(opt.fractions))
+        # Same via workflow
+        wf = Workflow(self.traj, descriptor='ba', scaling='zscore',
+                      dim_redux='pca', clustering='kmeans')
+        wf.descriptor.add_filter('species == "A"', group=0)
+        wf.descriptor.cutoffs = self.cutoffs
+        wf.dim_redux.n_components = 3
+        wf.clustering.n_init = 100
+        wf.disable_output()
+        wf.run()
+        print('Fractions :', clustering.fractions, '(via workflow)')
+        self.assertEqual(set(clustering.fractions), set(wf.fractions))
         
 if __name__ == '__main__':
     unittest.main()

@@ -5,7 +5,7 @@ import os
 
 from pysc import Trajectory
 from pysc.descriptor import BondAngleDescriptor, RadialDescriptor
-from pysc import Optimization, ZScore, PCA, KMeans, CommunityInference
+from pysc import Workflow, ZScore, PCA, KMeans, CommunityInference
 
 class Test(unittest.TestCase):
 
@@ -30,14 +30,14 @@ class Test(unittest.TestCase):
         self.assertEqual(set(clustering.fractions), set([2/27, 25/27]),
                          'not the expected cluster fractions')
         
-        # Same via optimization
-        opt = Optimization(self.traj, descriptor='ba', scaling='zscore', clustering='kmeans')
-        opt.descriptor.cutoffs = self.cutoffs
-        opt.clustering.n_init = 100
-        opt.disable_output()
-        opt.run()
+        # Same via workflow
+        wf = Workflow(self.traj, descriptor='ba', scaling='zscore', clustering='kmeans')
+        wf.descriptor.cutoffs = self.cutoffs
+        wf.clustering.n_init = 100
+        wf.disable_output()
+        wf.run()
         # check if both methods give the same result
-        self.assertEqual(set(opt.fractions), set(clustering.fractions),
+        self.assertEqual(set(wf.fractions), set(clustering.fractions),
                          'different cluster fractions')
 
     def test_radial_ci(self):
@@ -52,13 +52,13 @@ class Test(unittest.TestCase):
         self.assertEqual(set(clustering.fractions), set([2/27, 25/27]),
                          'not the expected cluster fractions')
         
-        # Same via optimization
-        opt = Optimization(self.traj, descriptor='gr', clustering='cinf')
-        opt.clustering.n_init = 100
-        opt.disable_output()
-        opt.run()
+        # Same via workflow
+        wf = Workflow(self.traj, descriptor='gr', clustering='cinf')
+        wf.clustering.n_init = 100
+        wf.disable_output()
+        wf.run()
         # check if both methods give the same result
-        self.assertEqual(set(opt.fractions), set(clustering.fractions),
+        self.assertEqual(set(wf.fractions), set(clustering.fractions),
                          'different cluster fractions')
  
 if __name__ == '__main__':

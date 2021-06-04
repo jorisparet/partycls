@@ -24,9 +24,9 @@ clustering_db = {'kmeans': KMeans,
                  'gmm': GaussianMixture,
                  'cinf': CommunityInference}
 
-class Optimization:
+class Workflow:
     """
-    An optimization is a workflow that goes through the following steps:
+    A workflow is a clustering procedure that goes through the following steps:
     - compute a structural descriptor on a given trajectory ;
     - (optional) apply a feature scaling on the previously computed structural features ;
     - (optional) apply a dimensionality reduction on the (raw/scaled) features ;
@@ -115,9 +115,9 @@ class Optimization:
     Examples
     --------
     
-    >>> from pysc import Optimization
-    >>> opt = Optimization('trajectory.xyz', descriptor='ba', scaling='zscore')
-    >>> opt.run()
+    >>> from pysc import Workflow
+    >>> wf = Workflow('trajectory.xyz', descriptor='ba', scaling='zscore')
+    >>> wf.run()
     """
     
     def __init__(self, trajectory, descriptor='gr', scaling=None, dim_redux=None, clustering='kmeans'):
@@ -246,7 +246,7 @@ class Optimization:
                 particle.label = self.labels[n]
                 n += 1
                 
-        # Optimization has run at least once
+        # Workflow has run at least once
         self._has_run = True
         # End the timer
         self._end = time.time()
@@ -292,10 +292,10 @@ class Optimization:
         
         Examples
         --------
-        >>> opt = Optimisation('trajectory.xyz')
-        >>> opt.set_output_metadata('log', enable=False) # do not write the log file
-        >>> opt.set_output_metadata('trajectory', filename='awesome_trajectory.xyz') # change the default output name
-        >>> opt.run('dataset', enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
+        >>> wf = Workflow('trajectory.xyz')
+        >>> wf.set_output_metadata('log', enable=False) # do not write the log file
+        >>> wf.set_output_metadata('trajectory', filename='awesome_trajectory.xyz') # change the default output name
+        >>> wf.run('dataset', enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
         
         """
         for key, val in kwargs.items():
@@ -341,10 +341,10 @@ class Optimization:
 
         Examples
         --------
-        >>> opt = Optimisation('trajectory.xyz')
-        >>> opt.write_trajectory(fmt='rumd')
-        >>> opt.write_trajectory(additional_field=['particle.mass']) # `Particle` must have the attribute `mass`.
-        >>> opt.write_trajectory(filename='my_custom_name', precision=8)
+        >>> wf = Workflow('trajectory.xyz')
+        >>> wf.write_trajectory(fmt='rumd')
+        >>> wf.write_trajectory(additional_field=['particle.mass']) # `Particle` must have the attribute `mass`.
+        >>> wf.write_trajectory(filename='my_custom_name', precision=8)
         
         """
         if filename is None:
@@ -356,9 +356,9 @@ class Optimization:
     # TODO: more info needed in the log?
     def write_log(self, filename=None, precision=6, **kwargs):
         """
-        Write a log file with all relevant information about the optimization.
-        The log file can be written only if the optimization has been run at
-        least once with the method `Optimization.run`.
+        Write a log file with all relevant information about the workflow.
+        The log file can be written only if the workflow has been run at
+        least once with the method `Workflow.run`.
 
         Parameters
         ----------
@@ -382,9 +382,9 @@ class Optimization:
             fractions = self.clustering.fractions
             n_init = self.clustering.n_init
             with open(filename, 'w') as file:
-                file.write('# title: optimization log \n')
+                file.write('# title: workflow log \n')
                 file.write(self._get_header())
-                file.write('\nOptimization time: {:.{}f}s \n'.format(self._time, precision))
+                file.write('\Execution time: {:.{}f}s \n'.format(self._time, precision))
                 file.write('\nNumber of repetitions: {} \n'.format(n_init))
                 # fractions
                 file.write('\nFractions (k, f_k): \n')
@@ -530,7 +530,7 @@ class Optimization:
                                    kind=kind)
     
     def __str__(self):
-        rep = 'Optimization(filename="{}", descriptor="{}", scaling="{}", dim_redux="{}", clustering="{}", has_run={})'
+        rep = 'Workflow(filename="{}", descriptor="{}", scaling="{}", dim_redux="{}", clustering="{}", has_run={})'
         rep = rep.format(self.trajectory.filename,
                          self.descriptor.symbol,
                          self.scaling.symbol if self.scaling is not None else None,

@@ -1,4 +1,4 @@
-from .optimization import Optimization
+from .workflow import Workflow
 from .trajectory import Trajectory
 from .clustering import *
 from .dim_redux import *

@@ -11,14 +11,14 @@ The goal of PySCL is to provide a coherent interface to the basic objects of str
 In this simple example, we read a trajectory file in XYZ format and perform a clustering based on the radial correlations of the particle, using the radial distribution of particles around a central particle as numerical fingerprint and the K-Means clustering algorithm to form the clusters:
 
 ```python
-from pysc import Optimization
+from pysc import Workflow
 
-opt = Optimization('trajectory.xyz', descriptor='gr', clustering='kmeans')
-opt.run()
-print('Cluster membership of the particles', opt.labels)
+wf = Workflow('trajectory.xyz', descriptor='gr', clustering='kmeans')
+wf.run()
+print('Cluster membership of the particles', wf.labels)
 ```
 
-This will also write a set of files relative the optimization. Among those, a trajectory file similar to the input trajectory, with an additional row for the cluster membership of each particle.
+This will also write a set of files relative the execution of the workflow. Among those, a trajectory file similar to the input trajectory, with an additional row for the cluster membership of each particle.
 
 We can also choose to restrict the analysis to a specific subset of particles by adding a filter on any particle property. Say we have a binary system composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
 
