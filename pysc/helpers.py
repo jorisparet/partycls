@@ -6,64 +6,150 @@ __all__ = ['show_matplotlib',
            'merge_clusters',
            'sort_clusters']
 
-def show_matplotlib(system, color, cmap='viridis', outfile=None, linewidth=0.5, alpha=1.0, show=False):
+_palette = ["#50514f", "#f25f5c", "#ffe066", "#247ba0", "#70c1b3",
+            "#0cce6b", "#c200fb", "#e2a0ff", "#6622cc", "#119822"]
+
+def show_matplotlib(system, color, view='top', palette=None, cmap='viridis', 
+                    outfile=None, linewidth=0.5, alpha=1.0, show=False):
     """
     Make a snapshot of the `system` using matplotlib.
-    The figure is returned for further
-    customization or visualization in jupyter notebooks.
+    The figure is returned for further customization or visualization 
+    in jupyter notebooks.    
+
+    Parameters
+    ----------
+    system : System
+        An instance of `System`.
+    color : str
+        Particle property to use for color coding, e.g. 'species', 'label'.
+    view : str, optional
+        View type, i.e. face of the box to show. The default is 'top'.
+    palette : list, optional
+        List of colors when coloring particles according to a discrete property,
+        such as 'species' or 'label'. A default palette will be used if not 
+        specified. The default is None.
+    cmap : str, optional
+        Name of a matplotlib colormap to use when coloring particles according
+        to a continuous property such as 'velocity' or 'energy'. List of 
+        available colormap can be found in `matplotlib.cm.cmaps_listed`.
+        The default is 'viridis'.
+    outfile : str, optional
+        Output filename to save the snapshot. The default is None (not saved).
+    linewidth : int or float, optional
+        The default is 0.5.
+    alpha : int or float, optional
+        Transparency parameter. The default is 1.0.
+    show : bool, optional
+        Show the snapshot when calling the function. The default is False.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+        Figure of the snapshot.
+
     """
     import matplotlib.pyplot as plt
     from .trajectory import tipify
     from matplotlib.cm import cmaps_listed
+    from numpy import array, sign, argsort
 
-    discrete_colors = ['r', 'b', 'g', 'y']
-    colormap = cmaps_listed[cmap]
+    views = {'top':    [1,2,3],
+             'bottom': [1,-2,-3],
+             'front':  [1,3,-2],
+             'back':   [-1,3,2],
+             'left':   [-2,3,-1],
+             'right':  [2,3,1]}
+
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal')
     ax.axes.get_xaxis().set_visible(False)
     ax.axes.get_yaxis().set_visible(False)
     ax.set_xlim((-system.cell.side[0]/2, system.cell.side[0]/2))
     ax.set_ylim((-system.cell.side[1]/2, system.cell.side[1]/2))
+    # scale marker size relative to box size
+    M = ax.transData.get_matrix()
+    scale = M[0,0]
     # check for radius property
     # set default value if non-existant
     if not hasattr(system.particle[0], 'radius'):
         system.set_property('radius', 0.5)
     # color according to a specific property
     property_vals = system.dump('particle.{}'.format(color))
-    # discrete property
+    
+    # discrete property?
     discrete = isinstance(tipify(str(property_vals[0])), (str, int))
+    # corresponding color system
+    discrete_colors = _palette if palette is None else palette
+    colormap = cmaps_listed[cmap]
     if discrete:
         property_set = list(set(property_vals))
         property_set.sort()
         color_db = discrete_colors
     else:
         color_db = colormap(property_vals)
+    
+    # list of individual colors
+    colors = []
     for pn, p in enumerate(system.particle):
         if discrete:
             p_color = color_db[property_set.index(p.__getattribute__(color))]
+            colors.append(p_color)
         else:
-            p_color = color_db[pn]
-        c = plt.Circle(p.position[: 2], p.radius,
-                       facecolor=p_color, edgecolor='k',
-                       alpha=alpha, linewidth=linewidth,
-                       zorder=p.position[2])
-        ax.add_artist(c)
+            colors.append(color_db[pn])
+    colors = array(colors)
+
+    # plot the system, show it, save it
+    # TODO: adapt for 2D systems
+    pos = system.dump('position')
+    xi, yi, zi = views[view]
+    X = sign(xi)*pos[:,abs(xi)-1]
+    Y = sign(yi)*pos[:,abs(yi)-1]
+    Z = sign(zi)*pos[:,abs(zi)-1]
+    R = system.dump('radius')
+    order = argsort(Z)
+    ax.scatter(X[order], Y[order], c=colors[order], 
+               marker='o', ec='k', s=(scale*R[order])**2,
+               linewidths=linewidth, alpha=alpha)
     if outfile is not None:
         fig.savefig(outfile, bbox_inches='tight')
     if show:
         plt.show()
     return fig
 
-def show_3dmol(system, color, radius=1.0, palette=None):
+def show_3dmol(system, color, palette=None):
     """
-    Visualize the `system` in cell using 3dmol http://3dmol.csb.pitt.edu/
+    Visualize the `system` using 3dmol http://3dmol.csb.pitt.edu/
+    The py3Dmol view is returned for further customization or visualization 
+    in jupyter notebooks.
+
+    Parameters
+    ----------
+    system : System
+        An instance of `System`.
+    color : str
+        Particle property to use for color coding, e.g. 'species', 'label'.
+        This property must be a string or an integer.
+    palette : list, optional
+        List of colors when coloring particles according to a discrete property,
+        such as 'species' or 'label'. A default palette will be used if not 
+        specified. The default is None.
+
+    Raises
+    ------
+    ValueError
+        If the `color` parameter refers to a float particle property.
+
+    Returns
+    -------
+    view : py3Dmol.view
+        py3Dmol view.
+
     """
     import py3Dmol
     from .trajectory import tipify
     
     if palette is None:
-        palette = ["#50514f", "#f25f5c", "#ffe066", "#247ba0", "#70c1b3",
-                   "#0cce6b", "#c200fb", "#e2a0ff", "#6622cc", "#119822"]
+        palette = _palette
     view = py3Dmol.view()
     view.setBackgroundColor('white')
     # check for radius property
@@ -76,18 +162,22 @@ def show_3dmol(system, color, radius=1.0, palette=None):
     property_set.sort()
     if not isinstance(tipify(str(property_vals[0])), (str, int)):
         raise ValueError('cannot color particle according to a float property')
+    # plot particles
     for p in system.particle:
         p_color = palette[property_set.index(p.__getattribute__(color))]
-        view.addSphere({'center': {'x': p.position[0], 'y': p.position[1], 'z': p.position[2]},
-                        'radius': radius * p.radius, 'color': p_color})
-    if system.cell is not None:
-        view.addBox({'center': {'x': 0.0,
-                                'y': 0.0,
-                                'z': 0.0},
-                     'dimensions': {'w': system.cell.side[0],
-                                    'h': system.cell.side[1],
-                                    'd': system.cell.side[2]},
-                     'wireframe': True, 'color': "#000000"})
+        view.addSphere({'center': {'x': p.position[0], 
+                                   'y': p.position[1], 
+                                   'z': p.position[2]},
+                        'radius': p.radius, 
+                        'color': p_color})
+    # plot cell
+    view.addBox({'center': {'x': 0.0,
+                            'y': 0.0,
+                            'z': 0.0},
+                 'dimensions': {'w': system.cell.side[0],
+                                'h': system.cell.side[1],
+                                'd': system.cell.side[2]},
+                 'wireframe': True, 'color': "#000000"})
     return view
 
 def shannon_entropy(px, dx=1.0):
