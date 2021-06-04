@@ -74,7 +74,7 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     def compute(self):      
         StructuralDescriptor.sanity_checks(self)
         # all relevant arrays
-        n_frames = len(self._groups[0])
+        n_frames = len(self.groups[0])
         idx_0 = self.group_indices(0)
         pos_0, pos_1 = self.group_positions(0), self.group_positions(1)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)

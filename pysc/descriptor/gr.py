@@ -110,7 +110,7 @@ class RadialDescriptor(StructuralDescriptor):
 
         """
         StructuralDescriptor.sanity_checks(self)
-        n_frames = len(self._groups[0])
+        n_frames = len(self.groups[0])
         pos_0 = self.group_positions(0)
         pos_1 = self.group_positions(1)
         idx_0 = self.group_indices(0)
@@ -189,7 +189,7 @@ class RadialDescriptor(StructuralDescriptor):
             idx_1 = self.group_indices(1)
             box = self.trajectory[0].cell.side
             all_hist = numpy.empty((self.size, r.size), dtype=numpy.int64)
-            n_frames = len(self._groups[0])
+            n_frames = len(self.groups[0])
             row = 0
             for n in range(n_frames):
                 # pos_x arrays need to be transposed to be used with fortran

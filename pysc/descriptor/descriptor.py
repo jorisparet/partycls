@@ -53,6 +53,13 @@ class StructuralDescriptor:
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
+        
+    groups : tuple
+        Composition of the groups: groups[0] and groups[1] contain lists of all
+        the `Particle` objects in groups 0 and 1 respectively. Each element of 
+        the tuple is a list of `Particle` in `trajectory`, e.g. groups[0][0] is 
+        the list of all the particles in the first frame of `trajectory` that 
+        belong to group=0.
     
     Examples:
     ---------
@@ -75,7 +82,7 @@ class StructuralDescriptor:
         else:
             self.trajectory = trajectory
         # Default: consider all particles for the correlation
-        self._groups = ([], [])
+        self.groups = ([], [])
         self._group_init(0)
         self._group_init(1)
         # Active filters (none by default)
@@ -92,12 +99,12 @@ class StructuralDescriptor:
         """
         Initialize the group `group` with all the particles by default.
         """
-        self._groups[group].clear()
+        self.groups[group].clear()
         for system in self.trajectory:
             frame = []
             for particle in system.particle:
                 frame.append(particle)
-            self._groups[group].append(frame.copy())
+            self.groups[group].append(frame.copy())
     
     def add_filter(self, condition, group=0):
         """
@@ -135,7 +142,7 @@ class StructuralDescriptor:
         condition = _standardize_condition(condition)
         self.active_filters.append((condition, group))
         # Iterate over frames
-        for frame in self._groups[group]:
+        for frame in self.groups[group]:
             to_remove = []
             # First find particles to remove from the current frame
             for particle in frame:
@@ -187,7 +194,7 @@ class StructuralDescriptor:
         Return the number of particles in `group`.
         """
         N = 0
-        for frame in self._groups[group]:
+        for frame in self.groups[group]:
             N += len(frame)
         return N
             
@@ -197,7 +204,7 @@ class StructuralDescriptor:
         Keeps the trajectory format (frames).
         """
         group_idx = []
-        for frame in self._groups[group]:
+        for frame in self.groups[group]:
             frame_indices = []
             for particle in frame:
                 frame_indices.append(particle.index)
@@ -210,7 +217,7 @@ class StructuralDescriptor:
         Keeps the trajectory format (i.e. list structure).
         """
         _pos = []
-        for frame in self._groups[group]:
+        for frame in self.groups[group]:
             _pos_frame = numpy.empty((len(frame), self.dimension), dtype=numpy.float64)
             for n, particle in enumerate(frame):
                 _pos_frame[n] = particle.position
@@ -224,7 +231,7 @@ class StructuralDescriptor:
         """
         _species = []
         dtype_species = type(self.trajectory[0].particle[0].species)
-        for frame in self._groups[group]:
+        for frame in self.groups[group]:
             _species_frame = numpy.empty(len(frame), dtype=dtype_species)
             for n, particle in enumerate(frame):
                 _species_frame[n] = particle.species
@@ -237,7 +244,7 @@ class StructuralDescriptor:
         Keeps the trajectory format (i.e. list structure).
         """
         _species_id = []
-        for frame in self._groups[group]:
+        for frame in self.groups[group]:
             _species_frame = numpy.empty(len(frame), dtype=numpy.int64)
             for n, particle in enumerate(frame):
                 _species_frame[n] = particle.species_id
@@ -257,7 +264,7 @@ class StructuralDescriptor:
         """
         Total number of particles in the descriptor (i.e. in group=0).
         """
-        return sum([len(frame) for frame in self._groups[0]])
+        return sum([len(frame) for frame in self.groups[0]])
     
     @property
     def n_features(self):
@@ -389,7 +396,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         if None in self.cutoffs: self._compute_cutoffs()
         cutoffs = numpy.array(self.cutoffs)
         # boundaries
-        n_frames = len(self._groups[0])
+        n_frames = len(self.groups[0])
         box = self.trajectory[0].cell.side
         # list of neighbors
         self.neighbors = [[] for n in range(n_frames)]

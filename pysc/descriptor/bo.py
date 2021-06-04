@@ -81,7 +81,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     def compute(self):
         StructuralDescriptor.sanity_checks(self)
         # all relevant arrays
-        n_frames = len(self._groups[0])
+        n_frames = len(self.groups[0])
         idx_0 = self.group_indices(0)
         pos_0 = self.group_positions(0)
         pos_1 = self.group_positions(1)
@@ -181,7 +181,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
     def compute(self):
         StructuralDescriptor.sanity_checks(self)
         # all relevant arrays
-        n_frames = len(self._groups[0])
+        n_frames = len(self.groups[0])
         idx_0 = self.group_indices(0)
         idx_1 = self.group_indices(1)
         spe_1 = self.group_species_id(1)

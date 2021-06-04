@@ -241,7 +241,7 @@ class Workflow:
             self.clustering.fit(X_red)
         #  give its predicted label to each selected `Particle` in the trajectory.
         n = 0
-        for frame in self.descriptor._groups[0]:
+        for frame in self.descriptor.groups[0]:
             for particle in frame:
                 particle.label = self.labels[n]
                 n += 1
