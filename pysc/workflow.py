@@ -349,9 +349,9 @@ class Workflow:
         """
         if filename is None:
             filename = self._output_file(fmt)
-        self.trajectory._write(filename, fmt=fmt, backend=backend,
-                               additional_fields=['label']+additional_fields, 
-                               precision=precision)
+        self.trajectory.write(filename, fmt=fmt, backend=backend,
+                              additional_fields=['label']+additional_fields, 
+                              precision=precision)
 
     # TODO: more info needed in the log?
     def write_log(self, filename=None, precision=6, **kwargs):

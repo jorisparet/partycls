@@ -528,7 +528,38 @@ class Trajectory:
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `mdtraj` module found.')
 
-    def _write(self, output_path, fmt='xyz', backend=None, additional_fields=[], precision=6):
+    def write(self, output_path, fmt='xyz', backend=None, additional_fields=[], precision=6):
+        """
+        Write the current trajectory to a file.
+
+        Parameters
+        ----------
+        output_path : str
+            Name of the output trajectory file.
+        fmt : str, optional
+            Format of the output trajectory file. The default is 'xyz'.
+        backend : str, optional
+            Name of a third-party package to use when writing the output
+            trajectory. The default is None.
+        additional_fields : list of str, optional
+            Additional fields (i.e. particle properties) to write in the output
+            trajectory. Not all trajectory formats allow for additional fields. 
+            The default is [].
+        precision : int, optional
+            Number of decimals when writing the output trajectory. 
+            The default is 6.
+
+        Raises
+        ------
+        ValueError
+            - If `backend=None` and `fmt` is not recognized natively.
+            - If `backend` is unknown.
+
+        Returns
+        -------
+        None.
+
+        """
 
         # formats recognized by defaults
         if backend is None:
@@ -546,6 +577,10 @@ class Trajectory:
         # MDTraj backend
         elif backend == 'mdtraj':
             self._write_mdtraj(output_path, fmt, additional_fields, precision)
+        
+        # wrong backend
+        else:
+            raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
 
     def _write_xyz(self, output_path, additional_fields, precision):
         if not output_path.endswith('.xyz'):
