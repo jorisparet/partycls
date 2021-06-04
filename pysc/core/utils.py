@@ -21,7 +21,7 @@ def _standardize_condition(condition):
         A standardized condition.
 
     """
-    regexp = re.search('(\w+\.?\w+)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"]?)', condition)
+    regexp = re.search('(\w+\.?\w?)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"]?)', condition)
     if regexp:
         attr = regexp.group(1)
         operator = regexp.group(2)
