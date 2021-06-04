@@ -28,6 +28,7 @@ class Clustering:
         self.method = method
         self.n_init = n_init
         self.labels = None
+        self.backend = None
     
     def __repr__(self):
         # `self.symbol` is defined in child classes
@@ -68,8 +69,6 @@ class Clustering:
     
 class KMeans(Clustering):
     
-    symbol = 'kmeans'
-    
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'kmeans'
         self.full_name = 'K-Means'
@@ -81,13 +80,13 @@ class KMeans(Clustering):
         The predicted labels are updated in the attribute `labels` of 
         the current instance of `KMeans`.
         """
-        kmeans = _KMeans(n_clusters=self.n_clusters,
-                         n_init=self.n_init)
-        if isinstance(X, StructuralDescriptor):
-            kmeans.fit(X.features)
+        self.backend = _KMeans(n_clusters=self.n_clusters,
+                               n_init=self.n_init)
+        if hasattr(X, 'features'):
+            self.backend.fit(X.features)
         else:
-            kmeans.fit(X)
-        self.labels = kmeans.labels_
+            self.backend.fit(X)
+        self.labels = self.backend.labels_
         
 class GaussianMixture(Clustering):
     
@@ -102,13 +101,15 @@ class GaussianMixture(Clustering):
         The predicted labels are updated in the attribute `labels` of the 
         current instance of `GaussianMixture`.
         """
-        gmm = _GaussianMixture(n_components=self.n_clusters,
-                               n_init=self.n_init)
-        if isinstance(X, StructuralDescriptor):
-            gmm.fit(X.features)
+        self.backend = _GaussianMixture(n_components=self.n_clusters, 
+                                        n_init=self.n_init)
+        if hasattr(X, 'features'):
+            self.backend.fit(X.features)
         else:
-            gmm.fit(X)
-        self.labels = gmm.predict(X)
+            self.backend.fit(X)
+        self.labels = self.backend.predict(X)
+        
+    
         
 class CommunityInference(Clustering):
     
