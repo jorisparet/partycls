@@ -216,6 +216,48 @@ class System:
                     setattr(particle, what, value[c])
                     c += 1
 
+    def show(self, backend='matplotlib', color='species', *args, **kwargs):
+        """
+        Show a snapshot of the system and color particles
+        according to an arbitrary property, such as species, cluster label, 
+        etc. Current visualization backends are 'matplotlib' and '3dmol'.
+
+        Parameters
+        ----------
+        backend : str, optional
+            Name of the backend to use for visualization. 
+            The default is 'matplotlib'.
+        color : str, optional
+            Name of the particle property to use as basis for coloring the 
+            particles. This property must be defined for all the particles in the system.
+            The default is 'species'.
+        *args : additional non-keyworded arguments (backend-dependent).
+        **kwargs : additional keyworded arguments (backend-dependent).
+
+        Raises
+        ------
+        ValueError
+            In case of unknown `backend`.
+
+        Returns
+        -------
+        Figure or View (backend-dependent)
+        
+        Examples
+        --------
+        >>> sys.show(frame=0, color='label', backend='3dmol')
+        >>> sys.show(frame=1, color='energy', backend='matplotlib', cmap='viridis')
+
+        """
+        from .helpers import show_matplotlib, show_3dmol
+        if backend == 'matplotlib':
+            _show = show_matplotlib
+        elif backend == '3dmol':
+            _show = show_3dmol
+        else:
+            raise ValueError('unknown backend for visualization')
+        return _show(self, color=color, *args, **kwargs)   
+
     def __str__(self):
         rep = 'System(number_of_particles={}, species={}, chemical_fractions={}, cell={})'
         return rep.format(len(self.particle),

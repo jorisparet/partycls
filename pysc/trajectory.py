@@ -229,23 +229,23 @@ class Trajectory:
             for frame, system in enumerate(self._systems):
                 system.set_property(what, value[frame], subset=subset)
 
-    def show(self, frame=0, backend='matplotlib', color='species', *args, **kwargs):
+    def show(self, frames=None, backend='matplotlib', color='species', *args, **kwargs):
         """
-        Show the n-th frame of the trajectory and color particles
+        Show the frames on index `frames` of the trajectory and color particles
         according to an arbitrary property, such as species, cluster label, 
         etc. Current visualization backends are 'matplotlib' and '3dmol'.
 
         Parameters
         ----------
-        frame : int, optional
-            Index of the frame to show. The default is 0.
+        frames : list of int, optional
+            Indices of the frames to show. The default is None (shows all frames).
         backend : str, optional
             Name of the backend to use for visualization. 
             The default is 'matplotlib'.
         color : str, optional
             Name of the particle property to use as basis for coloring the 
-            particles. This property must be defined for all the particles in the system.
-            The default is 'species'.
+            particles. This property must be defined for all the particles in 
+            the system. The default is 'species'.
         *args : additional non-keyworded arguments (backend-dependent).
         **kwargs : additional keyworded arguments (backend-dependent).
 
@@ -256,22 +256,28 @@ class Trajectory:
 
         Returns
         -------
-        Figure or View (backend-dependent)
+        list of Figure or View (backend-dependent)
         
         Examples
         --------
-        >>> traj.show(frame=0, color='label', backend='3dmol')
-        >>> traj.show(frame=1, color='energy', backend='matplotlib', cmap='viridis')
+        >>> traj.show(frames=[0,1,2], color='label', backend='3dmol')
+        >>> traj.show(frames=[0,1], color='energy', backend='matplotlib', cmap='viridis')
+        >>> traj[0].show() # use the iterability of Trajectory objects
 
         """
-        from .helpers import show_matplotlib, show_3dmol
-        if backend == 'matplotlib':
-            _show = show_matplotlib
-        elif backend == '3dmol':
-            _show = show_3dmol
-        else:
-            raise ValueError('unknown backend for visualization')
-        return _show(self._systems[frame], color=color, *args, **kwargs)   
+        # show all frames (default)
+        if frames is None:
+            frames = [frame for frame in range(len(self))]
+        # list of figures/views returned by each system
+        snapshots = []
+        for frame in frames:
+            kwargs_f = kwargs.copy()
+            if 'outfile' in kwargs:
+                kwargs_f['outfile'] += '{:04}'.format(frame)
+            snapshot = self._systems[frame].show(backend=backend, 
+                                                 color=color, *args, **kwargs_f)
+            snapshots.append(snapshot)
+        return snapshots
     
     def _read(self, first, last, step):
         
