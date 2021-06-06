@@ -6,26 +6,40 @@ from pysc.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientati
 __all__ = ['KMeans', 'GaussianMixture', 'CommunityInference']
 
 class Clustering:
+    """
+    Base class (abstract) for clustering methods.
+    
+    Parameters
+    ----------
+    
+    n_clusters : int, optional
+        Requested number of clusters. The default is 2.
+    
+    n_init : int, optional
+        Number of times the clustering will be run with different seeds. 
+        The default is 1.
+            
+    Attributes
+    ----------
+
+    n_clusters : int, optional
+        Number of clusters.
+    
+    n_init : int, optional
+        Number of times the clustering is run.
+    
+    labels : list of int
+        Cluster labels. The default is None. Initialized after the `fit`
+        method was called.
+        
+    backend : compatible backend
+        Backend used for the clustering method if it relies on an external
+        package.
+   
+    """
     
     def __init__(self, n_clusters=2, method='kmeans', n_init=1):
-        """
-        Parameters
-        ----------
-        n_clusters : int, optional
-            Number of clusters. The default is 2.
-        method : str, optional
-            Name of the clustering algorithm. The default is 'kmeans'.
-        n_init : TYPE, optional
-            Number of time the clustering will be run with different seeds. 
-            The default is 1.
-
-        Returns
-        -------
-        None.
-
-        """
         self.n_clusters = n_clusters
-        self.method = method
         self.n_init = n_init
         self.labels = None
         self.backend = None
@@ -55,7 +69,30 @@ class Clustering:
     
     def centroids(self, X):
         """
-        Returns the clusters' centroids of dataset `X` using the labels.
+        Central feature vector of each cluster.
+        
+        Each object in the dataset over which the clustering was performed is 
+        assigned a discrete label. This label represents the index of the 
+        nearest cluster center to which this object belongs. The centroid (i.e. 
+        the cluster center), is thus the average feature vector of all the 
+        objects in the cluster.
+        
+        Cluster memberships of the objects are stored in the `labels`
+        attribute. Coordinates of the centroids can then be calculated for an
+        arbitrary dataset `X`, provided it has the same shape as the original 
+        dataset used for the clustering.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Array of features (dataset) for which to compute the centroids.
+
+        Returns
+        -------
+        C_k : numpy.ndarray
+            Cluster centroids. C_k[n] is the coordinates of the n-th cluster 
+            center.
+
         """
         n_features = X.shape[1]
         C_k = numpy.zeros((self.n_clusters, n_features), dtype=numpy.float64)
