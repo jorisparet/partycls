@@ -189,6 +189,7 @@ class Workflow:
         self._end = None
         self._time = None
         
+    # TODO: like scipy functions, we may return a dict() with the optimization results
     def run(self):
         """
         Compute the clustering and write the output files according to the
@@ -354,6 +355,7 @@ class Workflow:
                               precision=precision)
 
     # TODO: more info needed in the log?
+    # TODO: log should be a string, so that it can be parsed/printed by python code
     def write_log(self, filename=None, precision=6, **kwargs):
         """
         Write a log file with all relevant information about the workflow.
