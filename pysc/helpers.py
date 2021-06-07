@@ -69,10 +69,6 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
     # scale marker size relative to box size
     M = ax.transData.get_matrix()
     scale = M[0,0]
-    # check for radius property
-    # set default value if non-existant
-    if not hasattr(system.particle[0], 'radius'):
-        system.set_property('radius', 0.5)
     # color according to a specific property
     property_vals = system.dump('particle.{}'.format(color))
     
@@ -152,10 +148,6 @@ def show_3dmol(system, color, palette=None):
         palette = _palette
     view = py3Dmol.view()
     view.setBackgroundColor('white')
-    # check for radius property
-    # set default value if non-existant
-    if not hasattr(system.particle[0], 'radius'):
-        system.set_property('radius', 0.5)
     # color according to a specific property
     property_vals = system.dump('particle.{}'.format(color))
     property_set = list(set(property_vals))

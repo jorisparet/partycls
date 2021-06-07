@@ -39,6 +39,9 @@ class Particle:
     label : int, optional, default: -1
         Cluster label of the particle. 
         Default is -1 (i.e. not belonging to any cluster).
+        
+    radius : float, optional, defaut: 0.5
+        Particle radius.
     
     Attributes
     ----------
@@ -52,6 +55,9 @@ class Particle:
     label : int
         Cluster label of the particle. 
         
+    radius : float
+        Particle radius.
+        
     index : int
         A unique index to identify the particle.
     
@@ -62,7 +68,7 @@ class Particle:
     >>> p = Particle([0.0, 0.0], species='B')
     """
     
-    def __init__(self, position=None, species='A', label=-1):
+    def __init__(self, position=None, species='A', label=-1, radius=0.5):
         if position is None:
             self.position = numpy.zeros(3)
         else:
@@ -70,6 +76,8 @@ class Particle:
         self.species = species
         # Cluster label
         self.label = label
+        # Particle radois
+        self.radius = radius
         # Index of the particle
         self.index = id(self)
         
