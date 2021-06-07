@@ -38,15 +38,18 @@ class Clustering:
    
     """
     
-    def __init__(self, n_clusters=2, method='kmeans', n_init=1):
+    def __init__(self, n_clusters=2, n_init=1):
         self.n_clusters = n_clusters
         self.n_init = n_init
         self.labels = None
         self.backend = None
+
+    def __str__(self):
+        rep = 'Clustering(method="{}", n_clusters={}, n_init={})'
+        return rep.format(self.full_name, self.n_clusters, self.n_init)
     
     def __repr__(self):
-        # `self.symbol` is defined in child classes
-       return self.symbol
+        return self.__str__()
     
     def fit(X):
         pass
@@ -109,7 +112,7 @@ class KMeans(Clustering):
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'kmeans'
         self.full_name = 'K-Means'
-        Clustering.__init__(self, n_clusters=n_clusters, method=self.symbol, n_init=n_init)
+        Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
         
     def fit(self, X):
         """
@@ -130,7 +133,7 @@ class GaussianMixture(Clustering):
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'gmm'
         self.full_name = 'Gaussian Mixture'
-        Clustering.__init__(self, n_clusters=n_clusters, method=self.symbol, n_init=n_init)
+        Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
         
     def fit(self, X):
         """
@@ -149,11 +152,14 @@ class GaussianMixture(Clustering):
     
         
 class CommunityInference(Clustering):
+    """
+    https://doi.org/10.1063/5.0004732
+    """
     
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'cinf'
         self.full_name = 'Community Inference'
-        Clustering.__init__(self, n_clusters=n_clusters, method=self.symbol, n_init=n_init)
+        Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
         self.mutual_information = None
         
     def fit(self, X):
