@@ -108,6 +108,15 @@ class Clustering:
         return C_k
     
 class KMeans(Clustering):
+    """
+    KMeans clustering.
+    
+    This class relies on the class `KMeans` from the machine learning package 
+    "scikit-learn". An instance of sklearn.cluster.KMeans is created when 
+    calling the `fit` method, and is then accessible through the `backend`
+    attribute for later use. See scikit's documentation for more information on
+    the original class.
+    """
     
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'kmeans'
@@ -129,6 +138,15 @@ class KMeans(Clustering):
         self.labels = self.backend.labels_
         
 class GaussianMixture(Clustering):
+    """
+    Gaussian Mixture.
+    
+    This class relies on the class `GaussianMixture` from the machine learning 
+    package "scikit-learn". An instance of sklearn.mixture.GaussianMixture is 
+    created when calling the `fit` method, and is then accessible through the 
+    `backend` attribute for later use. See scikit's documentation for more 
+    information on the original class.
+    """
     
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'gmm'
@@ -153,7 +171,9 @@ class GaussianMixture(Clustering):
         
 class CommunityInference(Clustering):
     """
-    https://doi.org/10.1063/5.0004732
+    Community Inference is a hard clustering method based on information 
+    theory. See "Paret et al. https://doi.org/10.1063/5.0004732" for more 
+    details.
     """
     
     def __init__(self, n_clusters=2, n_init=1):
