@@ -6,7 +6,7 @@ See https://framagit.org/atooms/atooms
 import numpy
 from .particle import Particle, aliases
 from .cell import aliases as cell_aliases
-from pysc.core.utils import standardize_condition
+from .core.utils import standardize_condition
 
 # combine aliases
 aliases.update(cell_aliases)

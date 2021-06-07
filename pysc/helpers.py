@@ -49,7 +49,7 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
 
     """
     import matplotlib.pyplot as plt
-    from core.utils import tipify
+    from .core.utils import tipify
     from matplotlib.cm import cmaps_listed
     from numpy import array, sign, argsort
 

@@ -7,7 +7,7 @@ import numpy
 from .system import System
 from .particle import Particle
 from .cell import Cell
-from core.utils import tipify
+from .core.utils import tipify
 
 class Trajectory:
     """
