@@ -1,7 +1,9 @@
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MaxAbsScaler
+from sklearn.preprocessing import RobustScaler
 
-__all__ = ['ZScore', 'MinMax']
+__all__ = ['ZScore', 'MinMax', 'MaxAbs', 'Robust']
 
 class ZScore(StandardScaler):
     
@@ -10,7 +12,7 @@ class ZScore(StandardScaler):
     
     def scale(self, X):
         """
-        Rescale the input features using Z-scores (or "standard scores").
+        Standardize features by removing the mean and scaling to unit variance.
 
         Parameters
         ----------
@@ -32,7 +34,52 @@ class MinMax(MinMaxScaler):
     
     def scale(self, X):
         """
-        Rescale the input features using min-max renormalization.
+        Transform features by scaling each feature to a given range (default 
+        is [0,1]).
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Original features.
+
+        Returns
+        -------
+        numpy.ndarray
+            Scaled features.
+
+        """
+        return self.fit_transform(X)
+    
+class MaxAbs(MaxAbsScaler):
+    
+    symbol = 'maxabs'
+    full_name = 'Max-Abs'
+    
+    def scale(self, X):
+        """
+        Scale each feature by its maximum absolute value.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Original features.
+
+        Returns
+        -------
+        numpy.ndarray
+            Scaled features.
+
+        """
+        return self.fit_transform(X)
+    
+class Robust(RobustScaler):
+    
+    symbol = 'robust'
+    full_name = 'Robust'
+    
+    def scale(self, X):
+        """
+        Scale features using statistics that are robust to outliers.
 
         Parameters
         ----------
