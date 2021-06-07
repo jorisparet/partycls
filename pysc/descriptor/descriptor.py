@@ -95,6 +95,13 @@ class StructuralDescriptor:
         self.grid = None
         self.features = None
 
+    def __str__(self):
+        rep = 'Descriptor(name="{}", dimension={}, filters={})'
+        return rep.format(self.name, self.dimension, self.active_filters)
+    
+    def __repr__(self):
+        return self.__str__()
+
     def _group_init(self, group):
         """
         Initialize the group `group` with all the particles by default.
