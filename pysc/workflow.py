@@ -4,10 +4,8 @@ from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
 from pysc.core import __version__ as _version
+from pysc.core import __code_extension__ as code_extension
 import time, datetime
-
-# Code name
-_output_path = '{filename}.pysc.{mode}.{method}.{kind}'
 
 class Workflow:
     """
@@ -106,7 +104,17 @@ class Workflow:
         
     reduced_features: numpy.ndarray
         Features in the reduced space after applying a dimensionality reduction
-        technique. Equal to None if no reduction is applied to the features. 
+        technique. Equal to None if no reduction is applied to the features.
+        
+    naming_convention : str
+        Base name for output files. 
+        Default is '{filename}.{code}.{descriptor}.{clustering}', where each
+        tag will be replaced by its value in the current instance of 
+        `Workflow` (e.g. "traj.xyz.pysc.gr.kmeans").
+        
+        Base name can be changed using any combination of the available tags:
+        {filename}, {code}, {descriptor}, {scaling}, {dim_redux}, {clustering}.
+        Example: "{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}".
         
     Examples
     --------
@@ -220,6 +228,9 @@ class Workflow:
                                             'writer':self.write_dataset,
                                             'filename':None,
                                             'precision':6}}
+        
+        # Naming convention for output files
+        self.naming_convention = '{filename}.{code}.{descriptor}.{clustering}'
                                 
         # Internal
         self._has_run = False
@@ -564,10 +575,15 @@ class Workflow:
     
     def _output_file(self, kind):
         """Returns path of output file."""
-        return _output_path.format(filename=self.trajectory.filename,
-                                   mode=self.descriptor.symbol,
-                                   method=self.clustering.symbol,
-                                   kind=kind)
+        scaling_symbol = self.scaling.symbol if self.scaling is not None else ''
+        dim_redux_symbol = self.dim_redux.symbol if self.dim_redux is not None else ''
+        base_name = self.naming_convention.format(filename=self.trajectory.filename,
+                                                  code=code_extension,
+                                                  descriptor=self.descriptor.symbol,
+                                                  scaling=scaling_symbol,
+                                                  dim_redux=dim_redux_symbol,
+                                                  clustering=self.clustering.symbol)
+        return '{base}.{kind}'.format(base=base_name, kind=kind)
     
     def __str__(self):
         rep = 'Workflow(filename="{}", descriptor="{}", scaling="{}", dim_redux="{}", clustering="{}", has_run={})'
