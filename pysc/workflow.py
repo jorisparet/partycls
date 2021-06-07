@@ -2,27 +2,12 @@ from .trajectory import Trajectory
 from pysc.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
-from .feature_scaling import ZScore, MinMax
+from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
 from pysc.core import __version__ as _version
 import time, datetime
 
 # Code name
 _output_path = '{filename}.pysc.{mode}.{method}.{kind}'
-
-# Databases
-descriptor_db = {'gr': RadialDescriptor,
-                 'ba': BondAngleDescriptor,
-                 'bo': BondOrientationalDescriptor,
-                 'ld': LechnerDellagoDescriptor}
-scaling_db = {'zscore': ZScore,
-              'minmax': MinMax}
-dim_redux_db = {'pca': PCA,
-                'tsne': TSNE,
-                'lle': LocallyLinearEmbedding,
-                'ae': AutoEncoder}
-clustering_db = {'kmeans': KMeans,
-                 'gmm': GaussianMixture,
-                 'cinf': CommunityInference}
 
 class Workflow:
     """
@@ -39,8 +24,9 @@ class Workflow:
         An instance of `Trajectory` a path to trajectory file to read, or 
         an instance of a class with compatible interface.
         
-    descriptor : {'gr', 'ba', 'bo', 'ld', or an instance of StructuralDescriptor}
-        Structural descriptor to be computed on the trajectory.
+    descriptor : str, or an instance of StructuralDescriptor
+        Structural descriptor to be computed on the trajectory. See the
+        `descriptor_db` class attribute for compatible strings. Examples :
         
         'gr' : radial distribution of particles around a central particle.
         
@@ -50,16 +36,25 @@ class Workflow:
         
         'ld' : Lechner-Dellago cond-orientational order parameter (see https://doi.org/10.1063/1.2977970)
         
-    scaling : {'zscore', 'minmax', None, or an object with the proper interface}, optional, default: None
-        Feature scaling method.
+    scaling : str, None, or an object with the proper interface, optional, default: None
+        Feature scaling method. See the `scaling_db` class attribute for
+        compatible strings. Examples:
         
         'zscore' : standardize features by removing the mean and scaling to unit variance
             
         'minmax' : scale and translate each feature individually such that it 
         is in the given range on the training set, e.g. between zero and one
+        
+        'maxabs' : scale and translate each feature individually such that the 
+        maximal absolute value of each feature in the training set will be 1.
             
-    dim_redux : {'pca', 'tsne', 'lle', 'ae', None, or an object with the proper interface}, optional, default: None
-        Dimensionality reduction method.
+        'robust' : remove the median and scale the data according to the 
+        specified quantile range (default is between 25th quantile and 75th
+        quantile).
+            
+    dim_redux : str, None, or an object with the proper interface, optional, default: None
+        Dimensionality reduction method. See the `dim_redux_db` class attribute
+        for compatible strings. Examples:
         
         'pca' : Principal Component Analysis.
         
@@ -69,8 +64,9 @@ class Workflow:
         
         'ae' : neural network Auto-Encoder.
         
-    clustering : {'kmeans', 'gmm', 'cinf'}, default: 'kmeans'
-        Clustering algorithm.
+    clustering : str, an instance of `Clustering`, or an object with the proper interface, optional, default: 'kmeans'
+        Clustering algorithm. See the `clustering_db` class attribute for 
+        compatible strings. Examples:
         
         'kmeans' : K-Means algorithm.
         
@@ -87,7 +83,7 @@ class Workflow:
     descriptor : StructuralDescriptor
         Structural descriptor associated to the trajectory.
         
-    scaling : ZScore, MinMax
+    scaling : ZScore, MinMax, MaxAbs, Robust
         Feature scaling.
         
     dim_redux : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
@@ -119,6 +115,48 @@ class Workflow:
     >>> wf = Workflow('trajectory.xyz', descriptor='ba', scaling='zscore')
     >>> wf.run()
     """
+
+    # Databases
+    descriptor_db = {'gr': RadialDescriptor,
+                     'rad': RadialDescriptor,
+                     'radial': RadialDescriptor,
+                     'ba': BondAngleDescriptor,
+                     'ang': BondAngleDescriptor,
+                     'angular': BondAngleDescriptor,
+                     'bo': BondOrientationalDescriptor,
+                     'boo': BondOrientationalDescriptor,
+                     'bop': BondOrientationalDescriptor,
+                     'ld': LechnerDellagoDescriptor,
+                     'lechner-dellago': LechnerDellagoDescriptor,
+                     'lechner dellago': LechnerDellagoDescriptor}
+    
+    clustering_db = {'k-means': KMeans,
+                     'kmeans': KMeans,
+                     'gaussian mixture': GaussianMixture,
+                     'gaussian-mixture': GaussianMixture,
+                     'gmm': GaussianMixture,
+                     'gm': GaussianMixture,
+                     'community inference': CommunityInference,
+                     'community-inference': CommunityInference,
+                     'inference': CommunityInference,
+                     'cinf': CommunityInference}
+    
+    scaling_db = {'standard': ZScore,
+                  'zscore': ZScore,
+                  'z-score': ZScore,
+                  'minmax': MinMax,
+                  'min-max': MinMax,
+                  'maxabs': MaxAbs,
+                  'max-abs': MaxAbs,
+                  'robust': Robust}
+    
+    dim_redux_db = {'pca': PCA,
+                    'tsne': TSNE,
+                    't-sne': TSNE,
+                    'lle': LocallyLinearEmbedding,
+                    'autoencoder': AutoEncoder,
+                    'auto-encoder': AutoEncoder,
+                    'ae': AutoEncoder}
     
     def __init__(self, trajectory, descriptor='gr', scaling=None, dim_redux=None, clustering='kmeans'):
         
@@ -130,28 +168,28 @@ class Workflow:
 
         # Descriptor
         if isinstance(descriptor, str):
-            self.descriptor = descriptor_db[descriptor](self.trajectory)
+            self.descriptor = self.descriptor_db[descriptor](self.trajectory)
         else:
             self.descriptor = descriptor
         self.features = self.descriptor.features
 
         # Feature scaling
         if isinstance(scaling, str):
-            self.scaling = scaling_db[scaling]()
+            self.scaling = self.scaling_db[scaling]()
         else:
             self.scaling = scaling
         self.scaled_features = None
 
         # Dimensionality reduction
         if isinstance(dim_redux, str):
-            self.dim_redux = dim_redux_db[dim_redux]()
+            self.dim_redux = self.dim_redux_db[dim_redux]()
         else:
             self.dim_redux = dim_redux
         self.reduced_features = None
             
         # Clustering
         if isinstance(clustering, str):
-            self.clustering = clustering_db[clustering]()
+            self.clustering = self.clustering_db[clustering.lower()]()
         else:
             self.clustering = clustering
             
