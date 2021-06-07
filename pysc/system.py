@@ -6,7 +6,7 @@ See https://framagit.org/atooms/atooms
 import numpy
 from .particle import Particle, aliases
 from .cell import aliases as cell_aliases
-from pysc.core.utils import _standardize_condition
+from pysc.core.utils import standardize_condition
 
 # combine aliases
 aliases.update(cell_aliases)
@@ -200,7 +200,7 @@ class System:
         
         # Set the property to a given subset?
         if subset is not None:
-            condition = _standardize_condition(subset)
+            condition = standardize_condition(subset)
         else:
             condition = 'True'
         # Set the same scalar value to each selected particle

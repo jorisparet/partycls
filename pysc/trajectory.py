@@ -7,33 +7,7 @@ import numpy
 from .system import System
 from .particle import Particle
 from .cell import Cell
-
-def tipify(s):
-    """
-    Convert a string `s` into the best matching type.
-
-    Parameters
-    ----------
-    s : str
-        String to convert
-
-    Returns
-    -------
-    int, float, or str
-        Best-matching type for the input string `s`.
-
-    """
-    if '_' in s: 
-        return s 
-    else: 
-        try: 
-            return int(s) 
-        except ValueError: 
-            try: 
-                return float(s) 
-            except ValueError: 
-                return s 
-
+from core.utils import tipify
 
 class Trajectory:
     """

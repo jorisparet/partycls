@@ -1,6 +1,6 @@
 import numpy
 from pysc.trajectory import Trajectory
-from pysc.core.utils import _standardize_condition
+from pysc.core.utils import standardize_condition
 from .realspace_wrap import compute
 
 class StructuralDescriptor:    
@@ -139,7 +139,7 @@ class StructuralDescriptor:
         >>> S.add_filter("x < 0", group=0) # particles on the left side of the box
       
         """
-        condition = _standardize_condition(condition)
+        condition = standardize_condition(condition)
         self.active_filters.append((condition, group))
         # Iterate over frames
         for frame in self.groups[group]:

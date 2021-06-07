@@ -1,7 +1,33 @@
 import re
 from pysc.particle import aliases
 
-def _standardize_condition(condition):
+def tipify(s):
+    """
+    Convert a string `s` into the best matching type.
+
+    Parameters
+    ----------
+    s : str
+        String to convert
+
+    Returns
+    -------
+    int, float, or str
+        Best-matching type for the input string `s`.
+
+    """
+    if '_' in s: 
+        return s 
+    else: 
+        try: 
+            return int(s) 
+        except ValueError: 
+            try: 
+                return float(s) 
+            except ValueError: 
+                return s
+
+def standardize_condition(condition):
     """
     Check that the condition is correctly formated (i.e <attr> _operator_ <val>).
 
