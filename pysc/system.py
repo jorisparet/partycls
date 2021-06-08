@@ -178,7 +178,15 @@ class System:
                     data.append(eval('particle.{}'.format(attr)))
             data = numpy.array(data)
         elif what.startswith('cell'):
-             data = getattr(self.cell, attr)
+            what = what.split('.')[-1]
+            regexp = re.search('(\w+)\[(\w+)\]', what)
+            # cell iterable property
+            if regexp:
+                what = regexp.group(1)
+                idx = int(regexp.group(2))
+                data = getattr(self.cell, what)[idx]
+            else:
+                data = getattr(self.cell, attr)
         else:
             raise ValueError('Unknown attribute %s' % what)
         return data
