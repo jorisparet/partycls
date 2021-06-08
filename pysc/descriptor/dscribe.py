@@ -6,13 +6,13 @@ __all__ = ['DscribeDescriptor', 'DscribeChemicalDescriptor']
 def _system_to_ase_atoms(system, chemistry, pbc):
     from ase import Atoms
     if chemistry:
-        atoms = Atoms(system.dump('particle.species'),
-                      system.dump('particle.position'),
+        atoms = Atoms(system.get_property('particle.species'),
+                      system.get_property('particle.position'),
                       cell=system.cell.side,
                       pbc=pbc)
     else:
         atoms = Atoms(['H'] * len(system.particle),
-                      system.dump('particle.position'),
+                      system.get_property('particle.position'),
                       cell=system.cell.side,
                       pbc=pbc)
     return atoms

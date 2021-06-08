@@ -392,13 +392,13 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         """
         # indices
         idx_0, idx_1 = self.group_indices(0), self.group_indices(1)
-        idx_all = self.trajectory.dump('index')
+        idx_all = self.trajectory.get_property('index')
         # species
         spe_0, spe_1 = self.group_species_id(0), self.group_species_id(1)
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         # positions
         pos_0, pos_1 = self.group_positions(0), self.group_positions(1)
-        pos_all = self.trajectory.dump('position')
+        pos_all = self.trajectory.get_property('position')
         # compute all/missing cutoffs
         if None in self.cutoffs: self._compute_cutoffs()
         cutoffs = numpy.array(self.cutoffs)
@@ -442,7 +442,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                 s1, s2 = pair
                 # use the smallest side of the smallest box in case of
                 #  non-constant volume trajectory
-                sides = numpy.array(self.trajectory.dump('cell.side'))
+                sides = numpy.array(self.trajectory.get_property('cell.side'))
                 L = numpy.min(sides)
                 bounds = (0.0, L/2)
                 descriptor = RadialDescriptor(self.trajectory, dr=0.1, bounds=bounds)

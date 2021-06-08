@@ -173,7 +173,7 @@ class RadialDescriptor(StructuralDescriptor):
     #TODO: duplicate code with `compute()`
     def _set_bounds(self, dr, n_shells, bounds):
         # take the smallest side as maximal upper bound for the grid
-        sides = numpy.array(self.trajectory.dump('cell.side'))
+        sides = numpy.array(self.trajectory.get_property('cell.side'))
         L = numpy.min(sides)
         # use `n_shells`
         self._dr = dr

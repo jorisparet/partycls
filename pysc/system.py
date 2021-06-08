@@ -3,13 +3,10 @@ This class is inspired by the `atooms` framework authored by Daniele Coslovich
 See https://framagit.org/atooms/atooms 
 """
 
+import re
 import numpy
-from .particle import Particle, aliases
-from .cell import aliases as cell_aliases
+from .particle import aliases
 from .core.utils import standardize_condition
-
-# combine aliases
-aliases.update(cell_aliases)
 
 class System:
     """
@@ -39,7 +36,7 @@ class System:
     
     >>> p = [Particle(position=[0.0, 0.0, 0.0], species='A'),
              Particle(position=[1.0, 1.0, 1.0], species='B')]
-    >>> c = Cell(side = [5.0, 5.0, 5.0])
+    >>> c = Cell([5.0, 5.0, 5.0])
     >>> sys = System(particle=p, cell=c)
     """
     
@@ -76,7 +73,7 @@ class System:
         """
         Sorted numpy array of all the distinct species in the system.
         """
-        return numpy.array(sorted(set(self.dump('species'))))
+        return numpy.array(sorted(set(self.get_property('species'))))
     
     @property
     def pairs_of_species(self):
@@ -105,15 +102,17 @@ class System:
         """
         Numpy array with the chemical fractions of each species in the system.
         """
-        species = self.dump('species')
+        species = self.get_property('species')
         fractions = numpy.empty(len(self.distinct_species))
         for i, species_i in enumerate(self.distinct_species):
             fractions[i] = numpy.sum(species == species_i) / len(self.particle)
         return fractions
 
-    def dump(self, what, subset=None):
+    def get_property(self, what, subset=None):
         """
         Return a numpy array with the system property specified by `what`.
+        If `what` is a particle property, return the property for all particles
+        in the system, or for a given subset of particles specified by `subset`.
         
         Parameters
         ----------
@@ -123,23 +122,17 @@ class System:
             `what` must be of the form 
             "particle.<attribute>" or "cell.<attribute>". 
             
-            The following aliases are allowed:
+            The following particle aliases are allowed:
             - 'position': 'particle.position'
             - 'pos': 'particle.position'
-            - 'position[0]': 'particle.position[0]'
+            - 'position[0]': 'particle.position[0]', 
             - 'pos[0]': 'particle.position[0]'
-            - 'position_x': 'particle.position[0]'
-            - 'pos_x': 'particle.position[0]'
             - 'x': 'particle.position[0]'
-            - 'position[1]': 'particle.position[1]'
+            - 'position[1]': 'particle.position[1]',
             - 'pos[1]': 'particle.position[1]'
-            - 'position_y': 'particle.position[1]'
-            - 'pos_y': 'particle.position[1]'
             - 'y': 'particle.position[1]'
             - 'position[2]': 'particle.position[2]'
             - 'pos[2]': 'particle.position[2]'
-            - 'position_z': 'particle.position[2]'
-            - 'pos_z': 'particle.position[2]'
             - 'z': 'particle.position[2]'
             - 'species': 'particle.species'
             - 'spe': 'particle.species'
@@ -147,14 +140,12 @@ class System:
             - 'index': 'particle.index'
             - 'mass': 'particle.mass'
             - 'radius': 'particle.radius'
-            - 'mass' 'particle.mass'
-            - 'box': 'cell.side'
-            - 'volume': 'cell.volume'
-            - 'periodic': 'cell.periodic'
             
         subset : str, optional
-            Subset of paticles for which the property must be dumped. The 
-            default is None (all particles will be included).
+            Subset of paticles for which the property must be dumped. Must be 
+            of the form "particle.<attribute>" unless "<attribute>" is an 
+            alias. The default is None (all particles will be included).
+            This is ignored if `what` is cell property.
             
         Returns
         -------
@@ -165,8 +156,9 @@ class System:
         --------
         >>> traj = Trajectory('trajectory.xyz')
         >>> sys = traj[0]
-        >>> pos_0 = sys.dump('position')
-        >>> spe_0 = sys.dump('species')
+        >>> pos_0 = sys.get_property('position')
+        >>> spe_0 = sys.get_property('species')
+        >>> sides = sys.get_property('cell.side')
         """
         if what in aliases:
             what = aliases[what]
@@ -176,6 +168,7 @@ class System:
             condition = standardize_condition(subset)
         else:
             condition = 'True'
+            
         # Make array of the attribute
         attr = what.split('.')[-1]
         if what.startswith('particle'):
@@ -185,21 +178,29 @@ class System:
                     data.append(eval('particle.{}'.format(attr)))
             data = numpy.array(data)
         elif what.startswith('cell'):
-             data = numpy.array(getattr(self.cell, attr))
+             data = getattr(self.cell, attr)
         else:
             raise ValueError('Unknown attribute %s' % what)
         return data
+
+    def dump(self, what, subset=None):
+        """
+        Alias for the method get_property.
+        """
+        return self.get_property(what, subset=subset)
     
     def set_property(self, what, value, subset=None):
         """
-        Set a property `what` to `value` for all the particles in the 
-        system or for a given subset of particles specified by `subset`.
-        
+        Set a system property `what` to `value`. If `what` is a particle 
+        property, set the property for all the particles in the system or for a 
+        given subset of particles specified by `subset`.
 
         Parameters
         ----------
         what : str
-            Name of the property to set.
+            Name of the property to set. This is considered to be a particle
+            property by default, unless it starts with "cell", e.g. 
+            "cell.side".
         value : int, float, list, or numpy.ndarray
             Value(s) of the property to set. An instance of `int` or `float`
             will set the same value for all concerned particles. An instance
@@ -208,6 +209,7 @@ class System:
             number of concerned particles.
         subset : str, optional
             Particles to which the property must be set. The default is None.
+            This is ignored if `what` is cell property.
 
         Returns
         -------
@@ -219,26 +221,49 @@ class System:
         >>> sys.set_property('radius', 0.5, "species == 'A'")
         >>> labels = [0, 1, 0] # 3 particles in the subset
         >>> sys.set_property('label', labels, "species == 'B'")
+        >>> sys.set_property('cell.side[0]', 2.0)
 
         """
-        
+
         # Set the property to a given subset?
         if subset is not None:
             condition = standardize_condition(subset)
         else:
             condition = 'True'
-        # Set the same scalar value to each selected particle
+        
+        # Set the same scalar value to each selected particle/cell
         if not isinstance(value, (list, numpy.ndarray)):
-            for particle in self.particle:
-                if eval(condition):
-                    setattr(particle, what, value)
-        # Set a specific value to each particle with a list/array
+            if what.startswith('cell'):
+                what = what.split('.')[-1]
+                regexp = re.search('(\w+)\[(\w+)\]', what)
+                # cell iterable property
+                if regexp:
+                    what = regexp.group(1)
+                    idx = int(regexp.group(2))
+                    getattr(self.cell, what)[idx] = value
+                else:
+                    setattr(self.cell, what, value)
+            else:
+                if what.startswith('particle'):
+                    what = what.split('.')[-1]
+                for particle in self.particle:
+                    if eval(condition):
+                        setattr(particle, what, value)
+                
+        # Set a specific value to each particle/cell with a list/array
         else:
-            c = 0
-            for particle in self.particle:
-                if eval(condition):
-                    setattr(particle, what, value[c])
-                    c += 1
+            if what.startswith('cell'):
+                what = what.split('.')[-1]
+                setattr(self.cell, what, value)
+            else:
+                if what.startswith('particle'):
+                    what = what.split('.')[-1]
+                c = 0
+                for particle in self.particle:
+                    if eval(condition):
+                        setattr(particle, what, value[c])
+                        c += 1
+        
 
     def show(self, backend='matplotlib', color='species', *args, **kwargs):
         """

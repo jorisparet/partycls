@@ -112,7 +112,7 @@ class Trajectory:
         """
         self._systems.pop(frame)
     
-    def dump(self, what, subset=None):
+    def get_property(self, what, subset=None):
         """
         Return a list of numpy arrays with the system property specified by 
         `what`. The list size is the number of systems in the trajectory.
@@ -125,23 +125,33 @@ class Trajectory:
             `what` must be of the form 
             "particle.<attribute>" or "cell.<attribute>". 
             
-            The following aliases are allowed:
-            - "pos" ("particle.position")
-            - "position" ("particle.position")
-            - "position_x" ("particle.position[0]")
-            - "x" ("particle.position[0]")
-            - "position_y" ("particle.position[1]")
-            - "y" ("particle.position[1]")
-            - "position_z" ("particle.position[2]")
-            - "z" ("particle.position[2]")
-            - "spe" ("particle.species")
-            - "species" ("particle.species")
-            - "species_id" ("particle.species_id")
-            - "radius" ("particle.radius")
-            - "label" ("particle.label")
-            - "index" ("particle.index")
-            - "mass" ("particle.mass")
-            - "box" ("cell.side")
+            The following particle aliases are allowed:
+            - 'position': 'particle.position'
+            - 'pos': 'particle.position'
+            - 'position[0]': 'particle.position[0]', 
+            - 'pos[0]': 'particle.position[0]'
+            - 'x': 'particle.position[0]'
+            - 'position[1]': 'particle.position[1]',
+            - 'pos[1]': 'particle.position[1]'
+            - 'y': 'particle.position[1]'
+            - 'position[2]': 'particle.position[2]'
+            - 'pos[2]': 'particle.position[2]'
+            - 'z': 'particle.position[2]'
+            - 'species': 'particle.species'
+            - 'spe': 'particle.species'
+            - 'label': 'particle.label'
+            - 'index': 'particle.index'
+            - 'mass': 'particle.mass'
+            - 'radius': 'particle.radius'
+
+        subset : str, optional
+            Subset of paticles for which the property must be dumped. Must be 
+            of the form "particle.<attribute>" unless "<attribute>" is an 
+            alias. The default is None (all particles will be included).
+            This is ignored if `what` is cell property.
+            
+must be of the form 
+            "particle.<attribute>" or "cell.<attribute>".
 
         Returns
         -------
@@ -153,25 +163,33 @@ class Trajectory:
         Examples
         --------
         >>> traj = Trajectory('trajectory.xyz')
-        >>> pos = traj.dump('position')
-        >>> spe = traj.dump('species')
+        >>> pos = traj.get_property('position')
+        >>> spe = traj.get_property('species')
+        >>> sides = traj.get_property('cell.side')
         
         """
         to_dump = []
         for system in self._systems:
-            to_dump.append(system.dump(what, subset))
+            to_dump.append(system.get_property(what, subset))
         return to_dump
+
+    def dump(self, what, subset=None):
+        """
+        Alias for the method get_property().
+        """
+        return self.get_property(what, subset=subset)
     
     def set_property(self, what, value, subset=None):
         """
         Set a property `what` to `value` for all the particles in the 
         trajectory or for a given subset of particles specified by `subset`.
-        
 
         Parameters
         ----------
         what : str
-            Name of the property to set.
+            Name of the property to set. This is considered to be a particle
+            property by default, unless it starts with "cell", e.g. 
+            "cell.side".
         value : int, float, list, or numpy.ndarray
             Value(s) of the property to set. An instance of `int` or `float`
             will set the same value for all concerned particles. An instance
@@ -181,6 +199,7 @@ class Trajectory:
             particles.
         subset : str, optional
             Particles to which the property must be set. The default is None.
+            This is ignored if `what` is cell property.
 
         Returns
         -------

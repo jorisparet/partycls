@@ -70,7 +70,7 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
     M = ax.transData.get_matrix()
     scale = M[0,0]
     # color according to a specific property
-    property_vals = system.dump('particle.{}'.format(color))
+    property_vals = system.get_property('particle.{}'.format(color))
     
     # discrete property?
     discrete = isinstance(tipify(str(property_vals[0])), (str, int))
@@ -96,12 +96,12 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
 
     # plot the system, show it, save it
     # TODO: adapt for 2D systems
-    pos = system.dump('position')
+    pos = system.get_property('position')
     xi, yi, zi = views[view]
     X = sign(xi)*pos[:,abs(xi)-1]
     Y = sign(yi)*pos[:,abs(yi)-1]
     Z = sign(zi)*pos[:,abs(zi)-1]
-    R = system.dump('radius')
+    R = system.get_property('radius')
     order = argsort(Z)
     ax.scatter(X[order], Y[order], c=colors[order], 
                marker='o', ec='k', s=(scale*R[order])**2,
@@ -149,7 +149,7 @@ def show_3dmol(system, color, palette=None):
     view = py3Dmol.view()
     view.setBackgroundColor('white')
     # color according to a specific property
-    property_vals = system.dump('particle.{}'.format(color))
+    property_vals = system.get_property('particle.{}'.format(color))
     property_set = list(set(property_vals))
     property_set.sort()
     if not isinstance(tipify(str(property_vals[0])), (str, int)):
