@@ -176,21 +176,21 @@ class Workflow:
 
         # Descriptor
         if isinstance(descriptor, str):
-            self.descriptor = self.descriptor_db[descriptor](self.trajectory)
+            self.descriptor = self.descriptor_db[descriptor.lower()](self.trajectory)
         else:
             self.descriptor = descriptor
         self.features = self.descriptor.features
 
         # Feature scaling
         if isinstance(scaling, str):
-            self.scaling = self.scaling_db[scaling]()
+            self.scaling = self.scaling_db[scaling.lower()]()
         else:
             self.scaling = scaling
         self.scaled_features = None
 
         # Dimensionality reduction
         if isinstance(dim_redux, str):
-            self.dim_redux = self.dim_redux_db[dim_redux]()
+            self.dim_redux = self.dim_redux_db[dim_redux.lower()]()
         else:
             self.dim_redux = dim_redux
         self.reduced_features = None
