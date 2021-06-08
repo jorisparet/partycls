@@ -60,7 +60,7 @@ class DscribeDescriptor(StructuralDescriptor):
             system = _system_to_ase_atoms(system,
                                           chemistry=self._chemistry,
                                           pbc=self._periodic)
-            features = self.backend.create(system)
+            features = self.backend.create(system, positions=self.group_positions(1))
             self.features[row: row+features.shape[0], :] = features
             row += features.shape[0]
 
