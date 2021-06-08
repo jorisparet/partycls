@@ -53,7 +53,7 @@ def standardize_condition(condition):
         operator = regexp.group(2)
         value = regexp.group(3)
         # if attribute is an alias, replace it with full attribute
-        if not(attr.startswith('particle')):
+        if not attr.startswith('particle'):
             if attr in aliases:
                 attr = aliases[attr]
             else:
