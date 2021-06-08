@@ -6,7 +6,8 @@ See https://framagit.org/atooms/atooms
 import numpy
 
 aliases = {'box': 'cell.side',
-           'volume': 'cell.volume'}
+           'volume': 'cell.volume',
+           'periodic': 'cell.periodic'}
 
 class Cell:
     """

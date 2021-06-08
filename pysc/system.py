@@ -111,7 +111,7 @@ class System:
             fractions[i] = numpy.sum(species == species_i) / len(self.particle)
         return fractions
 
-    def dump(self, what):
+    def dump(self, what, subset=None):
         """
         Return a numpy array with the system property specified by `what`.
         
@@ -124,23 +124,38 @@ class System:
             "particle.<attribute>" or "cell.<attribute>". 
             
             The following aliases are allowed:
-            - "pos" ("particle.position")
-            - "position" ("particle.position")
-            - "position_x" ("particle.position[0]")
-            - "x" ("particle.position[0]")
-            - "position_y" ("particle.position[1]")
-            - "y" ("particle.position[1]")
-            - "position_z" ("particle.position[2]")
-            - "z" ("particle.position[2]")
-            - "spe" ("particle.species")
-            - "species" ("particle.species")
-            - "species_id" ("particle.species_id")
-            - "radius" ("particle.radius")
-            - "label" ("particle.label")
-            - "index" ("particle.index")
-            - "mass" ("particle.mass")
-            - "box" ("cell.side")
-        
+            - 'position': 'particle.position'
+            - 'pos': 'particle.position'
+            - 'position[0]': 'particle.position[0]'
+            - 'pos[0]': 'particle.position[0]'
+            - 'position_x': 'particle.position[0]'
+            - 'pos_x': 'particle.position[0]'
+            - 'x': 'particle.position[0]'
+            - 'position[1]': 'particle.position[1]'
+            - 'pos[1]': 'particle.position[1]'
+            - 'position_y': 'particle.position[1]'
+            - 'pos_y': 'particle.position[1]'
+            - 'y': 'particle.position[1]'
+            - 'position[2]': 'particle.position[2]'
+            - 'pos[2]': 'particle.position[2]'
+            - 'position_z': 'particle.position[2]'
+            - 'pos_z': 'particle.position[2]'
+            - 'z': 'particle.position[2]'
+            - 'species': 'particle.species'
+            - 'spe': 'particle.species'
+            - 'label': 'particle.label'
+            - 'index': 'particle.index'
+            - 'mass': 'particle.mass'
+            - 'radius': 'particle.radius'
+            - 'mass' 'particle.mass'
+            - 'box': 'cell.side'
+            - 'volume': 'cell.volume'
+            - 'periodic': 'cell.periodic'
+            
+        subset : str, optional
+            Subset of paticles for which the property must be dumped. The 
+            default is None (all particles will be included).
+            
         Returns
         -------
         to_dump : numpy.ndarray
@@ -155,11 +170,20 @@ class System:
         """
         if what in aliases:
             what = aliases[what]
-        
+
+        # Set the property to a given subset?
+        if subset is not None:
+            condition = standardize_condition(subset)
+        else:
+            condition = 'True'
         # Make array of the attribute
         attr = what.split('.')[-1]
         if what.startswith('particle'):
-            data = numpy.array([eval('p.{}'.format(attr)) for p in self.particle])
+            data = []
+            for particle in self.particle:
+                if eval(condition):
+                    data.append(eval('particle.{}'.format(attr)))
+            data = numpy.array(data)
         elif what.startswith('cell'):
              data = numpy.array(getattr(self.cell, attr))
         else:

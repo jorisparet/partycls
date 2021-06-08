@@ -112,7 +112,7 @@ class Trajectory:
         """
         self._systems.pop(frame)
     
-    def dump(self, what):
+    def dump(self, what, subset=None):
         """
         Return a list of numpy arrays with the system property specified by 
         `what`. The list size is the number of systems in the trajectory.
@@ -159,7 +159,7 @@ class Trajectory:
         """
         to_dump = []
         for system in self._systems:
-            to_dump.append(system.dump(what))
+            to_dump.append(system.dump(what, subset))
         return to_dump
     
     def set_property(self, what, value, subset=None):
