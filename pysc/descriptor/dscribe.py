@@ -17,6 +17,14 @@ def _system_to_ase_atoms(system, chemistry, pbc):
                       pbc=pbc)
     return atoms
 
+def _arrays_to_ase_atoms(positions, species, side, pbc):
+    from ase import Atoms
+    atoms = Atoms(species,
+                  positions,
+                  cell=side,
+                  pbc=pbc)
+    return atoms
+
 
 class DscribeDescriptor(StructuralDescriptor):
     """
@@ -56,11 +64,17 @@ class DscribeDescriptor(StructuralDescriptor):
     def compute(self):
         self.features = numpy.empty((self.size, self.n_features))
         row = 0
-        for system in self.trajectory:
-            system = _system_to_ase_atoms(system,
-                                          chemistry=self._chemistry,
+        for i, system in enumerate(self.trajectory):
+            positions = self.group_positions(1)[i]  # system.dump('particle.position')
+            if self._chemistry:
+                species = self.group_species(1)[i]  # system.dump('particle.species')
+            else:
+                species = ['H'] * len(self.group_species(1)[i])
+            side = system.cell.side
+            system = _arrays_to_ase_atoms(positions, species, side,
                                           pbc=self._periodic)
-            features = self.backend.create(system)
+            other_positions = self.group_positions(0)[i]
+            features = self.backend.create(system, positions=other_positions)
             self.features[row: row+features.shape[0], :] = features
             row += features.shape[0]
 
