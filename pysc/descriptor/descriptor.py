@@ -2,6 +2,7 @@ import numpy
 from pysc.trajectory import Trajectory
 from pysc.core.utils import standardize_condition
 from .realspace_wrap import compute
+from pysc.particle import aliases
 
 class StructuralDescriptor:    
     """
@@ -204,59 +205,25 @@ class StructuralDescriptor:
         for frame in self.groups[group]:
             N += len(frame)
         return N
-            
-    def group_indices(self, group):
-        """
-        Return the indices of the particles included in `group`.
-        Keeps the trajectory format (frames).
-        """
-        group_idx = []
-        for frame in self.groups[group]:
-            frame_indices = []
-            for particle in frame:
-                frame_indices.append(particle.index)
-            group_idx.append(frame_indices)
-        return group_idx
-    
-    def group_positions(self, group):
-        """
-        Return the positions of the particles in `group`.
-        Keeps the trajectory format (i.e. list structure).
-        """
-        _pos = []
-        for frame in self.groups[group]:
-            _pos_frame = numpy.empty((len(frame), self.dimension), dtype=numpy.float64)
-            for n, particle in enumerate(frame):
-                _pos_frame[n] = particle.position
-            _pos.append(_pos_frame)
-        return _pos
 
-    def group_species(self, group):
-        """
-        Return the species of the particles in `group`.
-        Keeps the trajectory format (i.e. list structure).
-        """
-        _species = []
-        dtype_species = type(self.trajectory[0].particle[0].species)
+    def get_group_property(self, what, group):
+        if what in aliases:
+            what = aliases[what]
+        if what.startswith('particle'):
+            what = what.split('.')[-1]
+        to_dump = []
         for frame in self.groups[group]:
-            _species_frame = numpy.empty(len(frame), dtype=dtype_species)
-            for n, particle in enumerate(frame):
-                _species_frame[n] = particle.species
-            _species.append(_species_frame)
-        return _species      
+            to_dump_frame = []
+            for particle in frame:
+                to_dump_frame.append(eval('particle.{}'.format(what)))
+            to_dump.append(numpy.array(to_dump_frame))
+        return to_dump
     
-    def group_species_id(self, group):
+    def dump(self, what, group):
         """
-        Return the species' ID of the particles in `group`.
-        Keeps the trajectory format (i.e. list structure).
+        Alias for the method get_group_property.
         """
-        _species_id = []
-        for frame in self.groups[group]:
-            _species_frame = numpy.empty(len(frame), dtype=numpy.int64)
-            for n, particle in enumerate(frame):
-                _species_frame[n] = particle.species_id
-            _species_id.append(_species_frame)
-        return _species_id
+        return self.get_group_property(what, group)
     
     def group_fraction(self, group):
         """
@@ -391,13 +358,16 @@ class AngularStructuralDescriptor(StructuralDescriptor):
 
         """
         # indices
-        idx_0, idx_1 = self.group_indices(0), self.group_indices(1)
+        idx_0 = self.dump('index', 0)
+        idx_1 = self.dump('index', 1)
         idx_all = self.trajectory.get_property('index')
         # species
-        spe_0, spe_1 = self.group_species_id(0), self.group_species_id(1)
+        spe_0 = self.dump('species_id', 0)
+        spe_1 = self.dump('species_id', 1)
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         # positions
-        pos_0, pos_1 = self.group_positions(0), self.group_positions(1)
+        pos_0 = self.dump('position', 0)
+        pos_1 = self.dump('position', 1)
         pos_all = self.trajectory.get_property('position')
         # compute all/missing cutoffs
         if None in self.cutoffs: self._compute_cutoffs()

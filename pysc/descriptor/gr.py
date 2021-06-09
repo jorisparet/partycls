@@ -111,10 +111,10 @@ class RadialDescriptor(StructuralDescriptor):
         """
         StructuralDescriptor.sanity_checks(self)
         n_frames = len(self.groups[0])
-        pos_0 = self.group_positions(0)
-        pos_1 = self.group_positions(1)
-        idx_0 = self.group_indices(0)
-        idx_1 = self.group_indices(1)
+        pos_0 = self.dump('position', 0)
+        pos_1 = self.dump('position', 1)
+        idx_0 = self.dump('index', 0)
+        idx_1 = self.dump('index', 1)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
         row = 0
         for n in range(n_frames):
@@ -183,10 +183,10 @@ class RadialDescriptor(StructuralDescriptor):
             self._bounds = (r[0], r[-1]) # temporary
             self.grid = r # temporary
             # arrays
-            pos_0 = self.group_positions(0)
-            pos_1 = self.group_positions(1)
-            idx_0 = self.group_indices(0)
-            idx_1 = self.group_indices(1)
+            pos_0 = self.dump('position', 0)
+            pos_1 = self.dump('position', 1)
+            idx_0 = self.dump('index', 0)
+            idx_1 = self.dump('index', 1)
             box = self.trajectory[0].cell.side
             all_hist = numpy.empty((self.size, r.size), dtype=numpy.int64)
             n_frames = len(self.groups[0])
