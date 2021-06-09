@@ -47,7 +47,7 @@ class System:
         self.cell = cell
     
     @property
-    def number_of_dimensions(self):
+    def n_dimensions(self):
         """
         Number of spatial dimensions, guessed from the length of
         `particle[0].position`.

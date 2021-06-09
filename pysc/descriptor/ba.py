@@ -72,7 +72,7 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         self.grid = numpy.arange(value/2.0, 180.0, value, dtype=numpy.float64)
     
     def compute(self):      
-        StructuralDescriptor.sanity_checks(self)
+        StructuralDescriptor._sanity_checks(self)
         # all relevant arrays
         n_frames = len(self.groups[0])        
         pos_0 = self.dump('position', 0)

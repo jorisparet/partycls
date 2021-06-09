@@ -62,6 +62,7 @@ class DscribeDescriptor(StructuralDescriptor):
         self.grid = range(self.backend.get_number_of_features())
 
     def compute(self):
+        StructuralDescriptor._sanity_checks(self)
         self.features = numpy.empty((self.size, self.n_features))
         row = 0
         for i, system in enumerate(self.trajectory):

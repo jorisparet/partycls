@@ -89,7 +89,7 @@ class StructuralDescriptor:
         # Active filters (none by default)
         self.active_filters = []
         # Dimension is guessed from the first frame of the trajectory
-        self.dimension = self.trajectory[0].number_of_dimensions
+        self.dimension = self.trajectory[0].n_dimensions
         # Features
         #  default is None (when the object is created)
         #  correctly assigned when is method compute() is called

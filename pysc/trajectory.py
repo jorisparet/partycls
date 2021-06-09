@@ -609,7 +609,7 @@ class Trajectory:
             for frame, system in enumerate(self._systems):
                 file.write('{}\n'.format(len(system.particle)))
                 header = 'ioformat=1 dt=0.001 timeStepIndex={} boxLengths={} '
-                dimension = system.number_of_dimensions
+                dimension = system.n_dimensions
                 if dimension == 2:
                     columns = 'columns=type,x,y\n'
                 if dimension == 3:

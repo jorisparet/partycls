@@ -66,7 +66,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None):
         AngularStructuralDescriptor.__init__(self, trajectory)
-        if self.trajectory[0].number_of_dimensions == 2:
+        if self.trajectory[0].n_dimensions == 2:
             raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
         self._bounds(lmin, lmax, orders)
 
@@ -79,7 +79,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         self._bounds(1, 8, values)
         
     def compute(self):
-        StructuralDescriptor.sanity_checks(self)
+        StructuralDescriptor._sanity_checks(self)
         # all relevant arrays
         n_frames = len(self.groups[0])        
         pos_0 = self.dump('position', 0)
@@ -179,7 +179,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
                                              lmax=lmax, orders=orders)
 
     def compute(self):
-        StructuralDescriptor.sanity_checks(self)
+        StructuralDescriptor._sanity_checks(self)
         # all relevant arrays
         n_frames = len(self.groups[0])        
         pos_0 = self.dump('position', 0)

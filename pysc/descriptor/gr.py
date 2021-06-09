@@ -109,7 +109,7 @@ class RadialDescriptor(StructuralDescriptor):
             Radial correlations.
 
         """
-        StructuralDescriptor.sanity_checks(self)
+        StructuralDescriptor._sanity_checks(self)
         n_frames = len(self.groups[0])
         pos_0 = self.dump('position', 0)
         pos_1 = self.dump('position', 1)
