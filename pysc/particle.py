@@ -94,3 +94,21 @@ class Particle:
     
     def __repr__(self):
         return self.__str__()
+    
+    def fold(self, cell):
+        """
+        Fold the particle position into the central cell.
+
+        Parameters
+        ----------
+        cell : Cell
+            Simulation cell.
+
+        Returns
+        -------
+        None
+
+        """
+        def _periodic_vector_unfolded(vec, box):
+            return vec - numpy.rint(vec / box) * box
+        self.position[:] = _periodic_vector_unfolded(self.position, cell.side)

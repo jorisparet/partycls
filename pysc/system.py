@@ -317,6 +317,18 @@ class System:
             raise ValueError('unknown backend for visualization')
         return _show(self, color=color, *args, **kwargs)   
 
+    def fold(self):
+        """
+        Fold the particle positions into the central cell.
+
+        Returns
+        -------
+        None.
+
+        """
+        for p in self.particle:
+            p.fold(self.cell)
+
     def __str__(self):
         rep = 'System(number_of_particles={}, species={}, chemical_fractions={}, cell={})'
         return rep.format(len(self.particle),

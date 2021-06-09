@@ -270,6 +270,18 @@ class Trajectory:
                                                  color=color, *args, **kwargs_f)
             snapshots.append(snapshot)
         return snapshots
+
+    def fold(self):
+        """
+        Fold the particle positions into the central cell.
+
+        Returns
+        -------
+        None.
+
+        """        
+        for system in self._systems:
+            system.fold()
     
     def _read(self, first, last, step):
         
