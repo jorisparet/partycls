@@ -125,7 +125,7 @@ class Trajectory:
             `what` must be of the form 
             "particle.<attribute>" or "cell.<attribute>". 
             
-            The following particle aliases are allowed:
+            The following particle aliases are accepted:
             - 'position': 'particle.position'
             - 'pos': 'particle.position'
             - 'position[0]': 'particle.position[0]', 
@@ -145,13 +145,10 @@ class Trajectory:
             - 'radius': 'particle.radius'
 
         subset : str, optional
-            Subset of paticles for which the property must be dumped. Must be 
+            Subset of particles for which the property must be dumped. Must be 
             of the form "particle.<attribute>" unless "<attribute>" is an 
             alias. The default is None (all particles will be included).
             This is ignored if `what` is cell property.
-            
-must be of the form 
-            "particle.<attribute>" or "cell.<attribute>".
 
         Returns
         -------
@@ -190,6 +187,7 @@ must be of the form
             Name of the property to set. This is considered to be a particle
             property by default, unless it starts with "cell", e.g. 
             "cell.side".
+            
         value : int, float, list, or numpy.ndarray
             Value(s) of the property to set. An instance of `int` or `float`
             will set the same value for all concerned particles. An instance
@@ -197,6 +195,7 @@ must be of the form
             particle. In this case, the shape of `value` should respect the
             number of frames in the trajectory and the number of concerned
             particles.
+            
         subset : str, optional
             Particles to which the property must be set. The default is None.
             This is ignored if `what` is cell property.

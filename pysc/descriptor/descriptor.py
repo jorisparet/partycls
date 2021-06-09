@@ -207,6 +207,53 @@ class StructuralDescriptor:
         return N
 
     def get_group_property(self, what, group):
+        """
+        Return a list of numpy arrays with the properties of the particles in
+        group `group`. The list size is the number of systems in the 
+        trajectory.
+
+        Parameters
+        ----------
+        what : str
+            Requested particle property. 
+            
+            `what` must be a particle property or an alias.
+            
+            The following particle aliases are accepted:
+            - 'position': 'particle.position'
+            - 'pos': 'particle.position'
+            - 'position[0]': 'particle.position[0]', 
+            - 'pos[0]': 'particle.position[0]'
+            - 'x': 'particle.position[0]'
+            - 'position[1]': 'particle.position[1]',
+            - 'pos[1]': 'particle.position[1]'
+            - 'y': 'particle.position[1]'
+            - 'position[2]': 'particle.position[2]'
+            - 'pos[2]': 'particle.position[2]'
+            - 'z': 'particle.position[2]'
+            - 'species': 'particle.species'
+            - 'spe': 'particle.species'
+            - 'label': 'particle.label'
+            - 'index': 'particle.index'
+            - 'mass': 'particle.mass'
+            - 'radius': 'particle.radius'
+
+        Returns
+        -------
+        to_dump : list
+            List of the requested particle property with length equal to the 
+            number of frames in the trajectory. Each element of the list is a
+            numpy.ndarray of the requested particle property.
+            
+        Examples
+        --------
+        >>> traj = Trajectory('trajectory.xyz')
+        >>> D = StructuralDescriptor(traj)
+        >>> D.get_group_property('position', 0)
+        >>> D.get_group_property('x', 1)
+        >>> D.get_group_property('energy', 0)
+        
+        """
         if what in aliases:
             what = aliases[what]
         if what.startswith('particle'):
