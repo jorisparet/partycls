@@ -19,21 +19,21 @@ except (ImportError, OSError):
     except:
         readme = ''
 
-with open('pysc/core/_version.py') as f:
+with open('partycls/core/_version.py') as f:
     exec(f.read())
 
-args = dict(name='pysc',
+args = dict(name='partycls',
             version=__version__,
             description='Structural clustering through correlation functions',
             long_description=readme,
             author='Joris Paret',
             author_email='joris.paret@umontpellier.fr',
-            packages=['pysc',
-                      'pysc/core',
-                      'pysc/descriptor'],
+            packages=['partycls',
+                      'partycls/core',
+                      'partycls/descriptor'],
             install_requires=['numpy', 'sklearn'],
-            ext_modules=[Extension('pysc.descriptor.realspace_wrap',
-                                   sources=['pysc/descriptor/realspace.f90'],
+            ext_modules=[Extension('partycls.descriptor.realspace_wrap',
+                                   sources=['partycls/descriptor/realspace.f90'],
                                    extra_f90_compile_args=[])],
             license='GPLv3',
             setup_requires = ['numpy'],

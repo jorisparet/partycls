@@ -1,5 +1,5 @@
 import re
-from pysc.particle import aliases
+from partycls.particle import aliases
 
 def tipify(s):
     """

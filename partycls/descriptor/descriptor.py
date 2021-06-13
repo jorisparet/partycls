@@ -1,8 +1,8 @@
 import numpy
-from pysc.trajectory import Trajectory
-from pysc.core.utils import standardize_condition
+from partycls.trajectory import Trajectory
+from partycls.core.utils import standardize_condition
 from .realspace_wrap import compute
-from pysc.particle import aliases
+from partycls.particle import aliases
 
 class StructuralDescriptor:    
     """
@@ -10,7 +10,7 @@ class StructuralDescriptor:
     
     The descriptor is calculated for the provided trajectory `trajectory`. This can be:
     - an object implementing the `Trajectory` interface ;
-    - the path to a trajectory file in a format recognized by pyscl ;
+    - the path to a trajectory file in a format recognized by partyclsl ;
     
     A structural descriptor S(x) is a collection of N individual empirical correlation 
     functions {s_i(x)} at the particle level, defined over a grid {x_j} of M features.

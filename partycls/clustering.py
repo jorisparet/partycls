@@ -1,7 +1,7 @@
 import numpy
 from sklearn.cluster import KMeans as _KMeans
 from sklearn.mixture import GaussianMixture as _GaussianMixture
-from pysc.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
+from partycls.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
 
 __all__ = ['KMeans', 'GaussianMixture', 'CommunityInference']
 

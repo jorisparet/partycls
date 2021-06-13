@@ -3,9 +3,9 @@
 import unittest
 import os
 
-from pysc import Trajectory
-from pysc.descriptor import BondAngleDescriptor, RadialDescriptor
-from pysc import Workflow, ZScore, PCA, KMeans, CommunityInference
+from partycls import Trajectory
+from partycls.descriptor import BondAngleDescriptor, RadialDescriptor
+from partycls import Workflow, ZScore, PCA, KMeans, CommunityInference
 
 class Test(unittest.TestCase):
 

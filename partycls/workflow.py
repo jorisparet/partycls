@@ -1,10 +1,10 @@
 from .trajectory import Trajectory
-from pysc.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
-from pysc.core import __version__ as _version
-from pysc.core import __code_extension__ as code_extension
+from partycls.core import __version__ as _version
+from partycls.core import __code_extension__ as code_extension
 import time, datetime
 
 class Workflow:
@@ -110,7 +110,7 @@ class Workflow:
         Base name for output files. 
         Default is '{filename}.{code}.{descriptor}.{clustering}', where each
         tag will be replaced by its value in the current instance of 
-        `Workflow` (e.g. "traj.xyz.pysc.gr.kmeans").
+        `Workflow` (e.g. "traj.xyz.partycls.gr.kmeans").
         
         Base name can be changed using any combination of the available tags:
         {filename}, {code}, {descriptor}, {scaling}, {dim_redux}, {clustering}.
@@ -119,7 +119,7 @@ class Workflow:
     Examples
     --------
     
-    >>> from pysc import Workflow
+    >>> from partycls import Workflow
     >>> wf = Workflow('trajectory.xyz', descriptor='ba', scaling='zscore')
     >>> wf.run()
     """

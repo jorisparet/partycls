@@ -3,9 +3,9 @@
 import unittest
 import os
 
-from pysc import Trajectory
-from pysc.descriptor import RadialDescriptor, BondAngleDescriptor
-from pysc.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls import Trajectory
+from partycls.descriptor import RadialDescriptor, BondAngleDescriptor
+from partycls.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
 
 from numpy import float32
 

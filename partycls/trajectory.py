@@ -70,7 +70,7 @@ class Trajectory:
     Examples
     --------
     
-    >>> from pysc.trajectory import Trajectory
+    >>> from partycls.trajectory import Trajectory
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
     

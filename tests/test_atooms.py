@@ -9,7 +9,7 @@ try:
 except ModuleNotFoundError:
     HAS_ATOOMS = False
 
-from pysc import Trajectory
+from partycls import Trajectory
 
 class Test(unittest.TestCase):
 

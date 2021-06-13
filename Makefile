@@ -1,4 +1,4 @@
-PROJECT = pysc
+PROJECT = partycls
 
 .PHONY: all test todo install develop doc version clean
 
@@ -14,7 +14,7 @@ test:
 	python -m unittest discover -s tests
 
 coverage:
-	coverage run --source pysc -m unittest discover -s tests
+	coverage run --source partycls -m unittest discover -s tests
 	coverage report -m
 
 clean:

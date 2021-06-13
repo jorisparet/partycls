@@ -1,17 +1,17 @@
-PySCL
-=====
+partycls
+========
 
-**PySCL** is a Python framework for the clustering of condensed matter systems using simple few-body spatial correlations as structural descriptors. It allows to easily create a customized workflow, from reading the input trajectory to the clustering results, through feature scaling and dimensionality reduction methods. Thanks to a flexible system of filters, it makes it easy to restrict the analysis to a given subset of particles based on arbitrary particle properties.
+**partycls** is a Python framework for the clustering of condensed matter systems using simple few-body spatial correlations as structural descriptors. It allows to easily create a customized workflow, from reading the input trajectory to the clustering results, through feature scaling and dimensionality reduction methods. Thanks to a flexible system of filters, it makes it easy to restrict the analysis to a given subset of particles based on arbitrary particle properties.
 
 Quick start
 -----------
 
-The goal of PySCL is to provide a coherent interface to the basic objects of structural clustering. After opening a trajectory file, the process of clustering and analyzing the results comes in the form of a simple and tunable workflow to facilitate the study of the various parameters and comparisons with other clusterings.
+The goal of partycls is to provide a coherent interface to the basic objects of structural clustering. After opening a trajectory file, the process of clustering and analyzing the results comes in the form of a simple and tunable workflow to facilitate the study of the various parameters and comparisons with other clusterings.
 
 In this simple example, we read a trajectory file in XYZ format and perform a clustering based on the radial correlations of the particle, using the radial distribution of particles around a central particle as numerical fingerprint and the K-Means clustering algorithm to form the clusters:
 
 ```python
-from pysc import Workflow
+from partycls import Workflow
 
 wf = Workflow('trajectory.xyz', descriptor='gr', clustering='kmeans')
 wf.run()
@@ -23,8 +23,8 @@ This will also write a set of files relative the execution of the workflow. Amon
 We can also choose to restrict the analysis to a specific subset of particles by adding a filter on any particle property. Say we have a binary system composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
 
 ```python
-from pysc import Trajectory
-from pysc.descriptor import BondAngleDescriptor
+from partycls import Trajectory
+from partycls.descriptor import BondAngleDescriptor
 
 traj = Trajectory('trajectory.xyz')
 D = BondAngleDescriptor(traj)
@@ -41,7 +41,7 @@ print(D.features)
 We can then perform a clustering based on these structural features, asking for e.g. 3 clusters:
 
 ```python
-from pysc import KMeans
+from partycls import KMeans
 
 clustering = KMeans(n_clusters=3)
 clustering.fit(D.features)
