@@ -1,5 +1,5 @@
 build
 *~
 __pycache__
-*.pysc.*
+*.pcls.*
 tutorial/.ipynb_checkpoints
