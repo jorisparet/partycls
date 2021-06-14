@@ -54,8 +54,8 @@ Installation
 From the code reposity
 
 ```bash
-git clone https://gitlab.etu.umontpellier.fr/jorisparet/pysc
-cd pysc
+git clone https://github.com/jorisparet/partycls.git
+cd partycls
 make install
 ```
 
