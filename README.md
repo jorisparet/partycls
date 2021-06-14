@@ -48,6 +48,11 @@ clustering.fit(D.features)
 print('Cluster membership of the particles', clustering.labels)
 ```
 
+Documentation
+-------------
+
+See the [tutorial](https://github.com/jorisparet/partycls/tree/master/tutorial) in the form of Jupyter notebooks for a step-by-step introduction to partycls objects and main features. 
+
 Installation
 ------------
 
