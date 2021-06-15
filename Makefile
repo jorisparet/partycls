@@ -1,6 +1,6 @@
 PROJECT = partycls
 
-.PHONY: all test todo install develop doc version clean
+.PHONY: all test install coverage clean
 
 all: version
 
@@ -11,10 +11,12 @@ user: version
 	python setup.py install --user
 
 test:
-	python -m unittest discover -s tests
+	mv partycls partycls_tmp
+	python -m unittest discover -s tests; mv partycls_tmp partycls
 
 coverage:
-	coverage run --source partycls -m unittest discover -s tests
+	mv partycls partycls_tmp
+	coverage run --source partycls -m unittest discover -s tests; mv partycls_tmp partycls 
 	coverage report -m
 
 clean:
