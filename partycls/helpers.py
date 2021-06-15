@@ -23,7 +23,8 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
     color : str
         Particle property to use for color coding, e.g. 'species', 'label'.
     view : str, optional
-        View type, i.e. face of the box to show. The default is 'top'.
+        View type, i.e. face of the box to show. Only works for a 3D system.
+        The default is 'top'.
     palette : list, optional
         List of colors when coloring particles according to a discrete property,
         such as 'species' or 'label'. A default palette will be used if not 
@@ -94,18 +95,27 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
             colors.append(color_db[pn])
     colors = array(colors)
 
-    # plot the system, show it, save it
-    # TODO: adapt for 2D systems
+    # positions and radii
     pos = system.get_property('position')
-    xi, yi, zi = views[view]
-    X = sign(xi)*pos[:,abs(xi)-1]
-    Y = sign(yi)*pos[:,abs(yi)-1]
-    Z = sign(zi)*pos[:,abs(zi)-1]
     R = system.get_property('radius')
-    order = argsort(Z)
-    ax.scatter(X[order], Y[order], c=colors[order], 
-               marker='o', ec='k', s=(scale*R[order])**2,
-               linewidths=linewidth, alpha=alpha)
+    
+    # plot 3D    
+    if system.n_dimensions == 3:
+        xi, yi, zi = views[view]
+        X = sign(xi)*pos[:,abs(xi)-1]
+        Y = sign(yi)*pos[:,abs(yi)-1]
+        Z = sign(zi)*pos[:,abs(zi)-1]
+        order = argsort(Z)
+        ax.scatter(X[order], Y[order], c=colors[order], 
+                   marker='o', ec='k', s=(scale*R[order])**2,
+                   linewidths=linewidth, alpha=alpha)
+    # plot 2D
+    if system.n_dimensions == 2:
+        X = pos[:,0]
+        Y = pos[:,1]
+        ax.scatter(X, Y, c=colors, marker='o', ec='k', s=(scale*R)**2,
+                   linewidths=linewidth, alpha=alpha)
+    
     if outfile is not None:
         fig.savefig(outfile, bbox_inches='tight')
     if show:
