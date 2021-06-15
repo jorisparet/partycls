@@ -1,6 +1,6 @@
 PROJECT = partycls
 
-.PHONY: all test install coverage clean
+.PHONY: all test install coverage version clean
 
 all: version
 
