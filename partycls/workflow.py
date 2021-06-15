@@ -1,7 +1,7 @@
 from .trajectory import Trajectory
 from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
-from .dim_redux import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
+from .dim_reduction import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
 from partycls.core import __version__ as _version
 from partycls.core import __code_extension__ as code_extension
@@ -50,8 +50,8 @@ class Workflow:
         specified quantile range (default is between 25th quantile and 75th
         quantile).
             
-    dim_redux : str, None, or an object with the proper interface, optional, default: None
-        Dimensionality reduction method. See the `dim_redux_db` class attribute
+    dim_reduction : str, None, or an object with the proper interface, optional, default: None
+        Dimensionality reduction method. See the `dim_reduction_db` class attribute
         for compatible strings. Examples:
         
         'pca' : Principal Component Analysis.
@@ -84,7 +84,7 @@ class Workflow:
     scaling : ZScore, MinMax, MaxAbs, Robust
         Feature scaling.
         
-    dim_redux : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
+    dim_reduction : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
         Dimensionality reduction.
         
     clustering : Clustering
@@ -113,7 +113,7 @@ class Workflow:
         `Workflow` (e.g. "traj.xyz.partycls.gr.kmeans").
         
         Base name can be changed using any combination of the available tags:
-        {filename}, {code}, {descriptor}, {scaling}, {dim_redux}, {clustering}.
+        {filename}, {code}, {descriptor}, {scaling}, {dim_reduction}, {clustering}.
         Example: "{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}".
         
     Examples
@@ -158,7 +158,7 @@ class Workflow:
                   'max-abs': MaxAbs,
                   'robust': Robust}
     
-    dim_redux_db = {'pca': PCA,
+    dim_reduction_db = {'pca': PCA,
                     'tsne': TSNE,
                     't-sne': TSNE,
                     'lle': LocallyLinearEmbedding,
@@ -166,7 +166,7 @@ class Workflow:
                     'auto-encoder': AutoEncoder,
                     'ae': AutoEncoder}
     
-    def __init__(self, trajectory, descriptor='gr', scaling=None, dim_redux=None, clustering='kmeans'):
+    def __init__(self, trajectory, descriptor='gr', scaling=None, dim_reduction=None, clustering='kmeans'):
         
         # Trajectory
         if isinstance(trajectory, str):
@@ -189,10 +189,10 @@ class Workflow:
         self.scaled_features = None
 
         # Dimensionality reduction
-        if isinstance(dim_redux, str):
-            self.dim_redux = self.dim_redux_db[dim_redux.lower()]()
+        if isinstance(dim_reduction, str):
+            self.dim_reduction = self.dim_reduction_db[dim_reduction.lower()]()
         else:
-            self.dim_redux = dim_redux
+            self.dim_reduction = dim_reduction
         self.reduced_features = None
             
         # Clustering
@@ -275,15 +275,15 @@ class Workflow:
             self.scaled_features = X_scaled
 
         # Dimensionality reduction
-        if self.dim_redux is None:
+        if self.dim_reduction is None:
             X_red = X_scaled.copy()
         else:
-            X_red = self.dim_redux.reduce(X_scaled)
+            X_red = self.dim_reduction.reduce(X_scaled)
             self.reduced_features = X_red
 
         # Clustering
         #  community inference needs to fit an instance of descriptor
-        if self.clustering.symbol == 'cinf' and (self.scaling is not None or self.dim_redux is not None):
+        if self.clustering.symbol == 'cinf' and (self.scaling is not None or self.dim_reduction is not None):
             raise ValueError('community inference is not meant to run with feature-scaling or dimensionality reduction')
         elif self.clustering.symbol == 'cinf':
             self.clustering.fit(self.descriptor)
@@ -557,11 +557,11 @@ class Workflow:
             scaling = scaling.format('none')
             
         # Dimensionality reduction
-        dim_redux = '# dimensionality reduction: {} \n'
-        if self.dim_redux is not None:
-            dim_redux = dim_redux.format(self.dim_redux.full_name)
+        dim_reduction = '# dimensionality reduction: {} \n'
+        if self.dim_reduction is not None:
+            dim_reduction = dim_reduction.format(self.dim_reduction.full_name)
         else:
-            dim_redux = dim_redux.format('none')
+            dim_reduction = dim_reduction.format('none')
             
         # Clustering method
         clustering = '# clustering method: {} \n'.format(self.clustering.full_name)
@@ -570,27 +570,27 @@ class Workflow:
         n_clusters = '# requested number of clusters: {} \n'.format(self.clustering.n_clusters)
         
         # Assemble header
-        header = ''.join([date, version, parent, scaling, dim_redux, clustering, n_clusters])
+        header = ''.join([date, version, parent, scaling, dim_reduction, clustering, n_clusters])
         return header
     
     def _output_file(self, kind):
         """Returns path of output file."""
         scaling_symbol = self.scaling.symbol if self.scaling is not None else ''
-        dim_redux_symbol = self.dim_redux.symbol if self.dim_redux is not None else ''
+        dim_reduction_symbol = self.dim_reduction.symbol if self.dim_reduction is not None else ''
         base_name = self.naming_convention.format(filename=self.trajectory.filename,
                                                   code=code_extension,
                                                   descriptor=self.descriptor.symbol,
                                                   scaling=scaling_symbol,
-                                                  dim_redux=dim_redux_symbol,
+                                                  dim_reduction=dim_reduction_symbol,
                                                   clustering=self.clustering.symbol)
         return '{base}.{kind}'.format(base=base_name, kind=kind)
     
     def __str__(self):
-        rep = 'Workflow(filename="{}", descriptor="{}", scaling="{}", dim_redux="{}", clustering="{}", has_run={})'
+        rep = 'Workflow(filename="{}", descriptor="{}", scaling="{}", dim_reduction="{}", clustering="{}", has_run={})'
         rep = rep.format(self.trajectory.filename,
                          self.descriptor.symbol,
                          self.scaling.symbol if self.scaling is not None else None,
-                         self.dim_redux.symbol if self.dim_redux is not None else None,
+                         self.dim_reduction.symbol if self.dim_reduction is not None else None,
                          self.clustering.symbol,
                          self._has_run)
         return rep

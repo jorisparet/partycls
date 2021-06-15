@@ -71,10 +71,10 @@ class Test(unittest.TestCase):
         
         # Same via workflow
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore',
-                      dim_redux='pca', clustering='kmeans')
+                      dim_reduction='pca', clustering='kmeans')
         wf.descriptor.add_filter('species == "A"', group=0)
         wf.descriptor.cutoffs = self.cutoffs
-        wf.dim_redux.n_components = 3
+        wf.dim_reduction.n_components = 3
         wf.clustering.n_init = 100
         wf.disable_output()
         wf.run()
