@@ -68,7 +68,7 @@ Requirements
 
 * [numpy](https://pypi.org/project/numpy/)
 * [scikit-learn](https://scikit-learn.org)
-* [optional] [mdtraj](www.mdtraj.org) (additional trajectory formats)
+* [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
 * [optional] [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
 * [optional] [dscribe](https://singroup.github.io/dscribe) (additional descriptors)
 
