@@ -74,9 +74,12 @@ class Trajectory:
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
     
-    def __init__(self, filename, fmt='xyz', backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
+    def __init__(self, filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
         self.filename = filename
-        self.fmt = fmt
+        if backend is None:
+            self.fmt = 'xyz'
+        else:
+            self.fmt = fmt
         self.backend = backend
         self.top = top
         if additional_fields is None:
