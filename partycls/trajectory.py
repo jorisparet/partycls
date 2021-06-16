@@ -76,7 +76,7 @@ class Trajectory:
     
     def __init__(self, filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
         self.filename = filename
-        if backend is None:
+        if backend is None and fmt is None:
             self.fmt = 'xyz'
         else:
             self.fmt = fmt
