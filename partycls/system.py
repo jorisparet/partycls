@@ -275,7 +275,7 @@ class System:
                         c += 1
         
 
-    def show(self, *args, backend='matplotlib', color='species', **kwargs):
+    def show(self, backend='matplotlib', color='species', **kwargs):
         """
         Show a snapshot of the system and color particles
         according to an arbitrary property, such as species, cluster label, 
@@ -290,7 +290,6 @@ class System:
             Name of the particle property to use as basis for coloring the 
             particles. This property must be defined for all the particles in the system.
             The default is 'species'.
-        *args : additional non-keyworded arguments (backend-dependent).
         **kwargs : additional keyworded arguments (backend-dependent).
 
         Raises
@@ -315,7 +314,7 @@ class System:
             _show = show_3dmol
         else:
             raise ValueError('unknown backend for visualization')
-        return _show(self, color=color, *args, **kwargs)   
+        return _show(self, color=color, **kwargs)   
 
     def fold(self):
         """

@@ -63,7 +63,7 @@ class Trajectory:
     backend : str or None
         Name of the third-party package used to read the input trajectory file.
         
-    additional_fields : list
+    additional_fields : list, default: None
         List of additional particle properties that were extracted from the
         original trajectory file.
     
@@ -224,7 +224,7 @@ class Trajectory:
             for frame, system in enumerate(self._systems):
                 system.set_property(what, value[frame], subset=subset)
 
-    def show(self, *args, frames=None, backend='matplotlib', color='species', **kwargs):
+    def show(self, frames=None, backend='matplotlib', color='species', **kwargs):
         """
         Show the frames on index `frames` of the trajectory and color particles
         according to an arbitrary property, such as species, cluster label, 
@@ -241,7 +241,6 @@ class Trajectory:
             Name of the particle property to use as basis for coloring the 
             particles. This property must be defined for all the particles in 
             the system. The default is 'species'.
-        *args : additional non-keyworded arguments (backend-dependent).
         **kwargs : additional keyworded arguments (backend-dependent).
 
         Raises
@@ -270,7 +269,8 @@ class Trajectory:
             if 'outfile' in kwargs:
                 kwargs_f['outfile'] += '{:04}'.format(frame)
             snapshot = self._systems[frame].show(backend=backend, 
-                                                 color=color, *args, **kwargs_f)
+                                                 color=color,
+                                                 **kwargs_f)
             snapshots.append(snapshot)
         return snapshots
 
