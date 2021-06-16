@@ -59,7 +59,7 @@ clustering.fit(D.features)
 print('Cluster membership of the particles', clustering.labels)
 ```
 
-In addition to the built-in trajectory reader, partycls is designed to accept a large variety of trajectory formats, including custom ones, by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports the structural descriptors of the [DScribe](https://singroup.github.io/dscribe) package.
+partycls is designed to accept a large variety of trajectory formats (including custom ones!) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It relies on the [scikit-learn](https://scikit-learn.org) package to perform dimensional reduction prior to clustering and supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
 
 Requirements
 ------------
