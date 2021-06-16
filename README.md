@@ -17,10 +17,10 @@ traj[0].show()
 
 ![](data/snapshots/grains_species.png)
 
-We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the cluster labels
+We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the corresponding cluster label
 
 ```python
-from partycles import Workflow
+from partycls import Workflow
 
 wf = Workflow(traj, descriptor='ba', clustering='kmeans')
 wf.run()
@@ -29,9 +29,7 @@ traj[0].show(color='label')
 
 ![](data/snapshots/grains_labels.png)
 
-Tha above commands also write a set of files including a labeled trajectory file and additional information on the clustering results.
-
-The whole workflow can be easily tuned and customized, check out out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how.
+Tha results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be easily tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
 
 We can restrict the analysis to specific a subset of particles by adding filters. Say we have a binary mixture composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
 
@@ -61,7 +59,7 @@ clustering.fit(D.features)
 print('Cluster membership of the particles', clustering.labels)
 ```
 
-In addition to the built-in trajectory reader, *partycls* is designed to accept a large variety of trajectory formats, including custom ones, by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports the descriptors of the [DScribe](https://singroup.github.io/dscribe) package.
+In addition to the built-in trajectory reader, *partycls* is designed to accept a large variety of trajectory formats, including custom ones, by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports the structural descriptors of the [DScribe](https://singroup.github.io/dscribe) package.
 
 Requirements
 ------------
