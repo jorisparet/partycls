@@ -74,12 +74,15 @@ class Trajectory:
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
     
-    def __init__(self, filename, fmt='xyz', backend=None, top=None, additional_fields=[], first=0, last=None, step=1):
+    def __init__(self, filename, fmt='xyz', backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
         self.filename = filename
         self.fmt = fmt
         self.backend = backend
         self.top = top
-        self.additional_fields = additional_fields
+        if additional_fields is None:
+            self.additional_fields = []
+        else:
+            self.additional_fields = additional_fields
         self._systems = []
         self._read(first, last, step)
 
@@ -221,7 +224,7 @@ class Trajectory:
             for frame, system in enumerate(self._systems):
                 system.set_property(what, value[frame], subset=subset)
 
-    def show(self, frames=None, backend='matplotlib', color='species', *args, **kwargs):
+    def show(self, *args, frames=None, backend='matplotlib', color='species', **kwargs):
         """
         Show the frames on index `frames` of the trajectory and color particles
         according to an arbitrary property, such as species, cluster label, 
@@ -259,7 +262,7 @@ class Trajectory:
         """
         # show all frames (default)
         if frames is None:
-            frames = [frame for frame in range(len(self))]
+            frames = range(len(self))
         # list of figures/views returned by each system
         snapshots = []
         for frame in frames:
@@ -348,7 +351,7 @@ class Trajectory:
             while True:
                 firstline = trajectory.readline()
                 # Stop if EOF
-                if not(firstline):
+                if not firstline:
                     break
                 # Current frame
                 n_particles = int(firstline)
@@ -380,7 +383,7 @@ class Trajectory:
                             fields_to_read_idx.append(fidx)
                 
                 # Loop over particles
-                for p in range(n_particles):
+                for _ in range(n_particles):
                     line = trajectory.readline().split()                    
                     # particle type
                     p_type = line[0]
@@ -437,7 +440,7 @@ class Trajectory:
             while True:
                 firstline = trajectory.readline()
                 # Stop if EOF
-                if not(firstline):
+                if not firstline:
                     break
                 # Current frame
                 n_particles = int(firstline)
@@ -448,7 +451,7 @@ class Trajectory:
                 dimension = len(sides)            
 
                 # Loop over particles
-                for p in range(n_particles):
+                for _ in range(n_particles):
                     line = trajectory.readline().split()                    
                     # particle type
                     p_type = line[0]
@@ -538,7 +541,7 @@ class Trajectory:
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `mdtraj` module found.')
 
-    def write(self, output_path, fmt='xyz', backend=None, additional_fields=[], precision=6):
+    def write(self, output_path, fmt='xyz', backend=None, additional_fields=None, precision=6):
         """
         Write the current trajectory to a file.
 
@@ -570,6 +573,10 @@ class Trajectory:
         None.
 
         """
+        if additional_fields is None:
+            additional_fields = []
+        else:
+            additional_fields = additional_fields
 
         # formats recognized by defaults
         if backend is None:

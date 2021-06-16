@@ -179,7 +179,7 @@ class System:
             data = numpy.array(data)
         elif what.startswith('cell'):
             what = what.split('.')[-1]
-            regexp = re.search('(\w+)\[(\w+)\]', what)
+            regexp = re.search(r'(\w+)\[(\w+)\]', what)
             # cell iterable property
             if regexp:
                 what = regexp.group(1)
@@ -275,7 +275,7 @@ class System:
                         c += 1
         
 
-    def show(self, backend='matplotlib', color='species', *args, **kwargs):
+    def show(self, *args, backend='matplotlib', color='species', **kwargs):
         """
         Show a snapshot of the system and color particles
         according to an arbitrary property, such as species, cluster label, 
