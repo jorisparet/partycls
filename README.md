@@ -43,8 +43,6 @@ D.add_filter("species == 'B'")
 D.add_filter("x < 0.0")
 D.compute()
 
-# List of active filters on particles' properties
-print(D.active_filters)
 # Angular correlations for the selected particles
 print(D.features)
 ```
