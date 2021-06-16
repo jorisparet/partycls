@@ -83,7 +83,7 @@ class AutoEncoder(MLPRegressor):
     def __init__(self, layers=(100,2,100), activation='relu', solver='adam', alpha=1e-4):
         MLPRegressor.__init__(self, hidden_layer_sizes=layers, 
                               activation=activation, solver=solver,
-                              alpha=1e-4)
+                              alpha=alpha)
     
     @property
     def n_components(self):

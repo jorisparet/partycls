@@ -51,7 +51,7 @@ class Clustering:
     def __repr__(self):
         return self.__str__()
     
-    def fit(X):
+    def fit(self, X):
         pass
 
     @property
