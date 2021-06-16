@@ -6,7 +6,7 @@ partycls
 Quick start
 -----------
 
-Here is a simple example that shows how to use `partycls` to find identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame
+Here is a simple example that shows how to use partycls to find identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame
 
 ```python
 from partycls import Trajectory
@@ -17,7 +17,7 @@ traj[0].show()
 
 ![](data/snapshots/grains_species.png)
 
-We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the corresponding cluster label
+We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the cluster they belong to.
 
 ```python
 from partycls import Workflow
@@ -59,7 +59,7 @@ clustering.fit(D.features)
 print('Cluster membership of the particles', clustering.labels)
 ```
 
-In addition to the built-in trajectory reader, *partycls* is designed to accept a large variety of trajectory formats, including custom ones, by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports the structural descriptors of the [DScribe](https://singroup.github.io/dscribe) package.
+In addition to the built-in trajectory reader, partycls is designed to accept a large variety of trajectory formats, including custom ones, by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports the structural descriptors of the [DScribe](https://singroup.github.io/dscribe) package.
 
 Requirements
 ------------
@@ -73,7 +73,7 @@ Requirements
 Documentation
 -------------
 
-See the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) (Jupyter notebooks) for a step-by-step introduction to the main features of *partycls* and some of its applications.
+See the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
 
 Installation
 ------------
