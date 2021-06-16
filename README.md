@@ -70,6 +70,7 @@ Requirements
 * [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
 * [optional] [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
 * [optional] [dscribe](https://singroup.github.io/dscribe) (additional descriptors)
+* [optional] [py3Dmol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
 
 Documentation
 -------------

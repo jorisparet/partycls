@@ -4,3 +4,4 @@ dscribe # optional
 atooms # optional
 mdtraj # optional
 matplotlib # optional
+py3Dmol # optional
