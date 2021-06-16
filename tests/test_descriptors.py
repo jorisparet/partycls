@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
         D = BondAngleDescriptor(self.traj, dtheta=3.0)
         D.cutoffs = self.cutoffs
         self._compute(D)
-        q = D.normalize(D.average, method="sin")
+        q = D.normalize(D.average, method="pdf")
         self.assertEqual(float32(q[22]), float32(0.015544709),
                          'wrong average value at the peak \theta=67.5°')
         
