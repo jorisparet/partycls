@@ -303,6 +303,13 @@ class StructuralDescriptor:
     
     def compute(self):
         pass
+    
+    def normalize(self, dist):
+        """
+        Generic normalization function for child classes. Returns the input
+        distribution unchanged.
+        """
+        return dist    
         
     def _sanity_checks(self):
         assert (self.group_size(0) > 0 and self.group_size(1) > 0), 'groups cannot be empty.'

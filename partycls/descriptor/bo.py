@@ -101,9 +101,6 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
                 row += 1      
         self.features = features
         return features
-    
-    def normalize(self, dist):
-        return dist
 
     def _bounds(self, lmin, lmax, orders):
         if orders is None:
