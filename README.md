@@ -15,7 +15,7 @@ traj = Trajectory('grains.xyz')
 traj[0].show()
 ```
 
-![](data/snapshots/grains_species.png)
+![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_species.png)
 
 We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the cluster they belong to.
 
@@ -27,7 +27,7 @@ wf.run()
 traj[0].show(color='label')
 ```
 
-![](data/snapshots/grains_labels.png)
+![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_labels.png)
 
 Tha results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be easily tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
 
