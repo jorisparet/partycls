@@ -129,45 +129,31 @@ class RadialDescriptor(StructuralDescriptor):
                 row += 1
         self.features = features
         return features
-    
-    def normalize_gr(self, dist):
-        """
-        Later.
-        """
-        rho = self.trajectory[0].density
-        x_1 = self.group_fraction(1)
-        if self.dimension == 2:
-            const = numpy.pi * self.dr**2
-        if self.dimension == 3:
-            const = 4.0 / 3.0 * numpy.pi * self.dr**3
-        const = const * rho * x_1
-        g_b = numpy.empty_like(self.grid)
-        b_min = numpy.floor(self._bounds[0]/self.dr) # if r_min != 0
-        for m in range(self.n_features):
-            b = b_min + m + 1
-            wb = (b**3 - (b-1)**3)
-            g_b[m] = dist[m] / wb
-        return g_b / const
 
-    def normalize(self, dist):
+    def normalize(self, distribution, method="r2"):
         """
         Later.
         """
-        return (self.grid*self.grid) * self.normalize_gr(dist)
-#        rho = self.trajectory[0].density
-#        x_1 = self.group_fraction(1)
-#        if self.dimension == 2:
-#            const = numpy.pi * self.dr**2
-#        if self.dimension == 3:
-#            const = 4.0 / 3.0 * numpy.pi * self.dr**3
-#        const = const * rho * x_1
-#        g_b = numpy.empty_like(self.grid)
-#        b_min = numpy.floor(self.bounds[0]/self.dr) # if r_min != 0
-#        for m in range(self.n_features):
-#            b = b_min + m + 1
-#            wb = (b**3 - (b-1)**3)
-#            g_b[m] = dist[m] / wb
-#        return self.grid**2 * g_b / const
+        if method == "r2":
+            # TODO: this normalization is a bit inconsistent
+            return (self.grid*self.grid) * self.normalize(distribution, method="gr")
+        elif method == "gr":
+            rho = self.trajectory[0].density
+            x_1 = self.group_fraction(1)
+            if self.dimension == 2:
+                const = numpy.pi * self.dr**2
+            if self.dimension == 3:
+                const = 4.0 / 3.0 * numpy.pi * self.dr**3
+            const = const * rho * x_1
+            g_b = numpy.empty_like(self.grid)
+            b_min = numpy.floor(self._bounds[0] / self.dr) # if r_min != 0
+            for m in range(self.n_features):
+                b = b_min + m + 1
+                wb = (b**3 - (b-1)**3)
+                g_b[m] = distribution[m] / wb
+            return g_b / const
+        else:
+            raise ValueError("unknown value {}".format(methos))
             
     #TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     #TODO: duplicate code with `compute()`
@@ -202,7 +188,7 @@ class RadialDescriptor(StructuralDescriptor):
                     row += 1
             # g(r)
             g = numpy.sum(all_hist, axis=0)
-            g = self.normalize_gr(g)
+            g = self.normalize(g, method="gr")
             # find position of the n-th minimum in g(r)
             index = 0
             for shell in range(n_shells):

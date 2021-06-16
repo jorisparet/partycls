@@ -26,7 +26,7 @@ class Test(unittest.TestCase):
         # check automatically computed bounds
         self.assertEqual(D.bounds, (0.05, 2.45), 'wrong bounds for the radial grid')
         # check average value of g(r) at the first peak
-        gr = D.normalize_gr(D.average)
+        gr = D.normalize(D.average, method="gr")
         self.assertEqual(float32(gr[8]), float32(2.939288),
                          'wrong average value at the first peak of g(r)')
 
@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
         D = BondAngleDescriptor(self.traj, dtheta=3.0)
         D.cutoffs = self.cutoffs
         self._compute(D)
-        q = D.normalize_sin(D.average)
+        q = D.normalize(D.average, method="sin")
         self.assertEqual(float32(q[22]), float32(0.015544709),
                          'wrong average value at the peak \theta=67.5°')
         

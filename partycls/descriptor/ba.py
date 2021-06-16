@@ -97,17 +97,16 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         self.features = features
         return features
 
-    def normalize(self, dist):
+    def normalize(self, distribution, method="pdf"):
         """
         Later.
         """
-        return dist * (1.0 / numpy.sum(dist) / self.dtheta)
-    
-    #TODO: check normalization (directly include sinus?)
-    def normalize_sin(self, dist):
-        """
-        Later.
-        """
-        norm_sin = numpy.sin(self.grid / 360.0 * 2 * numpy.pi)
-        dist = dist / norm_sin
-        return dist * (1.0 / numpy.sum(dist) / self.dtheta)
+        if method == "pdf":
+            return distribution / numpy.sum(distribution) / self.dtheta
+        elif method == "sin":
+            #TODO: check normalization (directly include sinus?)
+            norm_sin = numpy.sin(self.grid / 360.0 * 2 * numpy.pi)
+            distribution = distribution / norm_sin
+            return distribution / numpy.sum(distribution) / self.dtheta
+        else:
+            raise ValueError("unknown value {}".format(methos))

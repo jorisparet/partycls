@@ -470,7 +470,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                 r = descriptor.grid
                 h_12 = descriptor.average
                 # normalized g(r)
-                g_12 = descriptor.normalize_gr(h_12)
+                g_12 = descriptor.normalize(h_12, method="gr")
                 # find the first minimum of g_12(r)
                 first_max = numpy.argmax(g_12)
                 first_min = numpy.argmin(g_12[first_max:]) + first_max
