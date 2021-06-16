@@ -6,34 +6,34 @@ partycls
 Quick start
 -----------
 
-The goal of *partycls* is to provide a coherent interface to the basic objects of structural clustering. After opening a trajectory file, the process of clustering and analyzing the results comes in the form of a simple and tunable workflow that facilitates the study of the various parameters as well as comparisons with other clusterings.
-
-In this simple example, we read the XYZ trajectory file of a tridimensional system composed of crystalline domains separated by grains boundaries. Using a built-in visualization tool, we show this system:
+Here is a simple example that shows how to use `partycls` to find identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame
 
 ```python
 from partycls import Trajectory
 
 traj = Trajectory('grains.xyz')
-traj.show()
+traj[0].show()
 ```
 
 ![](data/snapshots/grains_species.png)
 
-Using the local distribution of bond angles around each particle in this system as numerical fingerprint, we perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time using the resulting cluster labels for coloring:
+We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the cluster labels
 
 ```python
 from partycles import Workflow
 
 wf = Workflow(traj, descriptor='ba', clustering='kmeans')
 wf.run()
-traj.show(color='label')
+traj[0].show(color='label')
 ```
 
 ![](data/snapshots/grains_labels.png)
 
-Using simple angular correlations, we were able to identify the grain boundaries. This execution will also write a set of files relative the execution of the designed workflow, such as a labeled trajectory file or additional information on the clustering.
+Tha above commands also write a set of files including a labeled trajectory file and additional information on the clustering results.
 
-We can also choose to restrict the analysis to a specific subset of particles by adding a filter on any particle property. Say we have a binary system composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
+The whole workflow can be easily tuned and customized, check out out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how.
+
+We can restrict the analysis to specific a subset of particles by adding filters. Say we have a binary mixture composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
 
 ```python
 from partycls import Trajectory
@@ -61,7 +61,7 @@ clustering.fit(D.features)
 print('Cluster membership of the particles', clustering.labels)
 ```
 
-In addition to the built-in trajectory reader, *partycls* is designed to accept a large variety of formats for trajectory files by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports additional descriptors thanks to an adapter for the [DScribe](https://singroup.github.io/dscribe) package.
+In addition to the built-in trajectory reader, *partycls* is designed to accept a large variety of trajectory formats, including custom ones, by relying on third-party packages such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). It also supports the descriptors of the [DScribe](https://singroup.github.io/dscribe) package.
 
 Requirements
 ------------
@@ -75,7 +75,7 @@ Requirements
 Documentation
 -------------
 
-See the [tutorial](https://github.com/jorisparet/partycls/tree/master/tutorial) in the form of Jupyter notebooks for a step-by-step introduction to *partycls* objects and main features.
+See the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) (Jupyter notebooks) for a step-by-step introduction to the main features of *partycls* and some of its applications.
 
 Installation
 ------------
