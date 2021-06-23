@@ -6,7 +6,7 @@ partycls
 Quick start
 -----------
 
-Here is a simple example that shows how to use partycls to find identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame
+Here is a simple example that shows how to use partycls to identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame.
 
 ```python
 from partycls import Trajectory
@@ -29,7 +29,7 @@ traj[0].show(color='label')
 
 ![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_labels.png)
 
-Tha results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be easily tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
+The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be easily tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
 
 We can restrict the analysis to specific a subset of particles by adding filters. Say we have a binary mixture composed of particles with types A and B, and are only interested in the angular correlations of B particles in the left side of the box (with respect to x-axis):
 
@@ -70,6 +70,7 @@ Requirements
 * [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
 * [optional] [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
 * [optional] [dscribe](https://singroup.github.io/dscribe) (additional descriptors)
+* [optional] [matplotlib](https://matplotlib.org/) (visualization)
 * [optional] [py3Dmol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
 
 Documentation
