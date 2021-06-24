@@ -4,7 +4,8 @@ from partycls.core.utils import standardize_condition
 from .realspace_wrap import compute
 from partycls.particle import aliases
 
-class StructuralDescriptor:    
+
+class StructuralDescriptor:
     """
     Base class for structural descriptors.
     
@@ -74,7 +75,7 @@ class StructuralDescriptor:
     >>> D.active_filters
     [("particle.species == 'B'", 1)]
     """
-    
+
     def __init__(self, trajectory):
         # Trajectory
         # TODO: we can't change format or backend when passing a string
@@ -99,7 +100,7 @@ class StructuralDescriptor:
     def __str__(self):
         rep = 'Descriptor(name="{}", dimension={}, filters={})'
         return rep.format(self.name, self.dimension, self.active_filters)
-    
+
     def __repr__(self):
         return self.__str__()
 
@@ -113,7 +114,7 @@ class StructuralDescriptor:
             for particle in system.particle:
                 frame.append(particle)
             self.groups[group].append(frame.copy())
-    
+
     def add_filter(self, condition, group=0):
         """
         Add a filter on the group (0 or 1) to select the subset of particles
@@ -160,7 +161,7 @@ class StructuralDescriptor:
             for p_to_rem in to_remove:
                 frame.remove(p_to_rem)
         self._sanity_checks()
-                
+
     def clear_filters(self, group=0):
         """
         Clear all active filters on `group`.
@@ -182,7 +183,7 @@ class StructuralDescriptor:
         for fltr in self.active_filters:
             if fltr[1] == group:
                 self.active_filters.remove(fltr)
-                
+
     def clear_all_filters(self):
         """
         Clear all active filters in both groups.
@@ -196,7 +197,7 @@ class StructuralDescriptor:
         self._group_init(0)
         self._group_init(1)
         self.active_filters = []
-        
+
     def group_size(self, group):
         """
         Return the number of particles in `group`.
@@ -265,13 +266,13 @@ class StructuralDescriptor:
                 to_dump_frame.append(eval('particle.{}'.format(what)))
             to_dump.append(numpy.array(to_dump_frame))
         return to_dump
-    
+
     def dump(self, what, group):
         """
         Alias for the method get_group_property.
         """
         return self.get_group_property(what, group)
-    
+
     def group_fraction(self, group):
         """
         Return the fraction of particles inside `group` over the whole trajectory.
@@ -279,40 +280,41 @@ class StructuralDescriptor:
         N_group = self.group_size(group)
         N_tot = numpy.sum([len(sys.particle) for sys in self.trajectory])
         return N_group / N_tot
-    
+
     @property
     def size(self):
         """
         Total number of particles in the descriptor (i.e. in group=0).
         """
         return sum([len(frame) for frame in self.groups[0]])
-    
+
     @property
     def n_features(self):
         """
         Number of features of the descriptor.
         """
         return len(self.grid)
-    
+
     @property
     def average(self):
         """
         Average feature vector of the descriptor.
         """
         return numpy.mean(self.features, axis=0)
-    
+
     def compute(self):
         pass
-    
+
     def normalize(self, dist):
         """
         Generic normalization function for child classes. Returns the input
         distribution unchanged.
         """
-        return dist    
-        
+        return dist
+
     def _sanity_checks(self):
         assert (self.group_size(0) > 0 and self.group_size(1) > 0), 'groups cannot be empty.'
+
 
 class AngularStructuralDescriptor(StructuralDescriptor):
     """
@@ -353,14 +355,14 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         Lists of nearest neighbors for all the particles in group=0. Empty by
         default and filled when calling the method `nearest_neighbors`.
     """
-    
+
     def __init__(self, trajectory):
         StructuralDescriptor.__init__(self, trajectory)
         self.cutoffs = [None for n in range(len(self.trajectory[0].pairs_of_species))]
         # 'FC' = Fixed Cutoff (default)
         # 'SANN' = Solid Angle Nearest Neighbors
         self.nearest_neighbors_method = 'FC'
-        
+
     def set_cutoff(self, s1, s2, rcut, mirror=True):
         """
         Set the nearest-neighbor cutoff for the pair of species (s1, s2).
@@ -388,9 +390,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         self.cutoffs[idx_12] = rcut
         if mirror:
             idx_21 = pairs.index((s2, s1))
-            self.cutoffs[idx_21] = rcut    
+            self.cutoffs[idx_21] = rcut
 
-    #TODO: define self.neighbors as an attribute for the class
+    # TODO: define self.neighbors as an attribute for the class
     def nearest_neighbors(self, method='FC'):
         """
         Compute the nearest neighbors of particles in group=0 using one of the
@@ -424,28 +426,29 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         pos_1 = self.dump('position', 1)
         pos_all = self.trajectory.get_property('position')
         # compute all/missing cutoffs
-        if None in self.cutoffs: self._compute_cutoffs()
+        if None in self.cutoffs:
+            self._compute_cutoffs()
         cutoffs = numpy.array(self.cutoffs)
         # boundaries
         n_frames = len(self.groups[0])
         box = self.trajectory[0].cell.side
         # list of neighbors
         self.neighbors = [[] for n in range(n_frames)]
-        
+
         # Fixed cutoff
         if method == 'FC':
             for n in range(n_frames):
                 for i in range(len(idx_0[n])):
-                        neigh_i = compute.nearest_neighbors(idx_0[n][i], idx_1[n],
-                                                            pos_0[n][i], pos_1[n].T,
-                                                            spe_0[n][i], spe_1[n],
-                                                            pairs, box, cutoffs)
-                        neigh_i = neigh_i[neigh_i >= 0]
-                        self.neighbors[n].append(neigh_i)
+                    neigh_i = compute.nearest_neighbors(idx_0[n][i], idx_1[n],
+                                                        pos_0[n][i], pos_1[n].T,
+                                                        spe_0[n][i], spe_1[n],
+                                                        pairs, box, cutoffs)
+                    neigh_i = neigh_i[neigh_i >= 0]
+                    self.neighbors[n].append(neigh_i)
 
         #  Solid Angle Nearest Neighbors (SANN)
         #   This will find all neighbors of `i`
-        #   (including particles not in group=1)            
+        #   (including particles not in group=1)
         if method == 'SANN':
             # scaling factor for first guess as trying neighbors
             rmax = 1.5 * numpy.max(cutoffs)
@@ -457,7 +460,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                     neigh_i = neigh_i[neigh_i >= 0]
                     self.neighbors[n].append(neigh_i)
 
-    #TODO: if fixed-cutoff method, let the user choose `dr`
+    # TODO: if fixed-cutoff method, let the user choose `dr`
     def _compute_cutoffs(self):
         from .gr import RadialDescriptor
         pairs = self.trajectory[0].pairs_of_species
@@ -468,7 +471,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                 #  non-constant volume trajectory
                 sides = numpy.array(self.trajectory.get_property('cell.side'))
                 L = numpy.min(sides)
-                bounds = (0.0, L/2)
+                bounds = (0.0, L / 2)
                 descriptor = RadialDescriptor(self.trajectory, dr=0.1, bounds=bounds)
                 descriptor.add_filter("species == '{}'".format(s1), group=0)
                 descriptor.add_filter("species == '{}'".format(s2), group=1)
@@ -484,15 +487,16 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                 rcut = r[first_min]
                 # set the cutoff
                 self.set_cutoff(s1, s2, rcut)
-    
+
+
 class DummyDescriptor(StructuralDescriptor):
-    
+
     name = 'dummy'
     symbol = 'dm'
-    
+
     def __init__(self):
         self.grid = [0, 1]
         self.features = None
-    
+
     def normalize(self, dist):
         return dist * (1.0 / numpy.sum(dist))

@@ -5,6 +5,7 @@ See https://framagit.org/atooms/atooms
 
 import numpy
 
+
 class Cell:
     """
     Orthorhombic cell.
@@ -32,7 +33,7 @@ class Cell:
     >>> c.volume
     8.0
     """
-    
+
     def __init__(self, side, periodic=None):
         self.side = numpy.asarray(side, dtype=numpy.float64)
 
@@ -42,18 +43,18 @@ class Cell:
             self.periodic[:] = True
         else:
             self.periodic = numpy.asarray(periodic, dtype=bool)
-            
+
     @property
     def volume(self):
         """
         Volume of the cell.
         """
         return numpy.prod(self.side)
-    
+
     def __str__(self):
         return 'Cell(side={}, periodic={}, volume={})'.format(self.side,
                                                               self.periodic,
                                                               self.volume)
-    
+
     def __repr__(self):
         return self.__str__()

@@ -5,6 +5,7 @@ from partycls.descriptor import StructuralDescriptor, DummyDescriptor, BondOrien
 
 __all__ = ['KMeans', 'GaussianMixture', 'CommunityInference']
 
+
 class Clustering:
     """
     Base class (abstract) for clustering methods.
@@ -37,7 +38,7 @@ class Clustering:
         package.
    
     """
-    
+
     def __init__(self, n_clusters=2, n_init=1):
         self.n_clusters = n_clusters
         self.n_init = n_init
@@ -47,10 +48,10 @@ class Clustering:
     def __str__(self):
         rep = 'Clustering(method="{}", n_clusters={}, n_init={})'
         return rep.format(self.full_name, self.n_clusters, self.n_init)
-    
+
     def __repr__(self):
         return self.__str__()
-    
+
     def fit(self, X):
         pass
 
@@ -69,7 +70,7 @@ class Clustering:
             for k in range(self.n_clusters):
                 n_k[k] = numpy.sum(self.labels == k)
             return n_k
-    
+
     def centroids(self, X):
         """
         Central feature vector of each cluster.
@@ -106,7 +107,8 @@ class Clustering:
                     C_k[k] += X[n]
             C_k[k] = C_k[k] / n_k[k]
         return C_k
-    
+
+
 class KMeans(Clustering):
     """
     KMeans clustering.
@@ -117,12 +119,12 @@ class KMeans(Clustering):
     attribute for later use. See scikit's documentation for more information on
     the original class.
     """
-    
+
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'kmeans'
         self.full_name = 'K-Means'
         Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
-        
+
     def fit(self, X):
         """
         Run the K-Means algorithm on `X`.
@@ -136,7 +138,8 @@ class KMeans(Clustering):
         else:
             self.backend.fit(X)
         self.labels = self.backend.labels_
-        
+
+
 class GaussianMixture(Clustering):
     """
     Gaussian Mixture.
@@ -147,41 +150,40 @@ class GaussianMixture(Clustering):
     `backend` attribute for later use. See scikit's documentation for more 
     information on the original class.
     """
-    
+
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'gmm'
         self.full_name = 'Gaussian Mixture'
         Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
-        
+
     def fit(self, X):
         """
         Run the EM algorithm on `X` using a mixture of Gaussians.
         The predicted labels are updated in the attribute `labels` of the 
         current instance of `GaussianMixture`.
         """
-        self.backend = _GaussianMixture(n_components=self.n_clusters, 
+        self.backend = _GaussianMixture(n_components=self.n_clusters,
                                         n_init=self.n_init)
         if hasattr(X, 'features'):
             self.backend.fit(X.features)
         else:
             self.backend.fit(X)
         self.labels = self.backend.predict(X)
-        
-    
-        
+
+
 class CommunityInference(Clustering):
     """
     Community Inference is a hard clustering method based on information 
     theory. See "Paret et al. https://doi.org/10.1063/5.0004732" for more 
     details.
     """
-    
+
     def __init__(self, n_clusters=2, n_init=1):
         self.symbol = 'cinf'
         self.full_name = 'Community Inference'
         Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
         self.mutual_information = None
-        
+
     def fit(self, X):
         """
         Community inference algorithm.
@@ -197,7 +199,7 @@ class CommunityInference(Clustering):
             descriptor.features = features
 
         MI_previous, labels_previous = self._inference_loop(descriptor)
-        for n in range(self.n_init-1):
+        for n in range(self.n_init - 1):
             MI_next, labels_next = self._inference_loop(descriptor)
             # optimization `n` is worse than the previous one
             if MI_next < MI_previous:
@@ -207,19 +209,19 @@ class CommunityInference(Clustering):
             # it becomes the new standard
             else:
                 MI_previous = MI_next
-                labels_previous = labels_next           
-            
+                labels_previous = labels_next
+
     def _inference_loop(self, descriptor):
-      
+
         import random
-        
+
         # shortcuts
         N = descriptor.size
         K = self.n_clusters
-        Km1 = K - 1 # loop invariant
-        
+        Km1 = K - 1  # loop invariant
+
         # randomly set the labels
-        self.labels = numpy.array([random.randint(0,Km1) for n in range(N)])
+        self.labels = numpy.array([random.randint(0, Km1) for n in range(N)])
         # populations and fractions
         n_k = self.populations
         f_k = self.fractions
@@ -229,42 +231,43 @@ class CommunityInference(Clustering):
         for i in range(N):
             k_i = self.labels[i]
             H_k[k_i] += descriptor.features[i]
-        # community distributions   
+        # community distributions
         P_k = numpy.empty_like(H_k, dtype=numpy.float64)
         for k in range(K):
             P_k[k] = descriptor.normalize(H_k[k] / n_k[k])
         # average distribution
         P_average = f_k @ P_k
-        
+
         # community information
         if isinstance(descriptor, BondOrientationalDescriptor):
             # in case of non-successive values of l in the grid
             dx = 1.0
         else:
             dx = descriptor.grid[1] - descriptor.grid[0]
+
         def _mutual_information(P_average, P_k, f_k, dx):
             MI = 0.0
             f_x = numpy.empty_like(P_average)
             for k in range(len(f_k)):
                 for m in range(len(P_average)):
-                    if P_k[k,m] != 0.0 and P_average[m] != 0.0:
-                        f_x[m] = P_k[k,m] * numpy.log2( P_k[k,m] / P_average[m] )
+                    if P_k[k, m] != 0.0 and P_average[m] != 0.0:
+                        f_x[m] = P_k[k, m] * numpy.log2(P_k[k, m] / P_average[m])
                     else:
                         f_x[m] = 0.0
 
 #                #TODO: is it more efficient?
-#                f_x = P_k[k] * (numpy.log2(P_k[k], 
-#                         out=numpy.zeros_like(P_average), 
-#                         where=(P_k[k] != 0.0))  
-#                         - numpy.log2(P_average, 
-#                         out=numpy.zeros_like(P_average), 
+#                f_x = P_k[k] * (numpy.log2(P_k[k],
+#                         out=numpy.zeros_like(P_average),
+#                         where=(P_k[k] != 0.0))
+#                         - numpy.log2(P_average,
+#                         out=numpy.zeros_like(P_average),
 #                         where=(P_average != 0.0)))
-            
+
                 f_x = f_x * f_k[k]
                 MI = MI + numpy.sum(f_x) * dx
             return MI
         self.mutual_information = _mutual_information(P_average, P_k, f_k, dx)
-        
+
         # Begin loop
         no_change = 0
         while no_change < N:
@@ -300,7 +303,7 @@ class CommunityInference(Clustering):
                     # changes in distributions
                     P_k_new[k_i] = descriptor.normalize(H_k_new[k_i] / n_k_new[k_i])
                     P_k_new[k_j] = descriptor.normalize(H_k_new[k_j] / n_k_new[k_j])
-                    P_k_list[kn] = P_k_new                    
+                    P_k_list[kn] = P_k_new
                     # change in community information
                     I_new = _mutual_information(P_average, P_k_new, f_k_new, dx)
                     I_list[kn] = I_new

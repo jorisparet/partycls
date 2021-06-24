@@ -8,6 +8,7 @@ import numpy
 from .particle import aliases
 from .core.utils import standardize_condition
 
+
 class System:
     """
     A system is composed of a collection of particles that lie within an
@@ -39,13 +40,13 @@ class System:
     >>> c = Cell([5.0, 5.0, 5.0])
     >>> sys = System(particle=p, cell=c)
     """
-    
+
     def __init__(self, particle=None, cell=None):
         if particle is None:
             particle = []
         self.particle = particle
         self.cell = cell
-    
+
     @property
     def n_dimensions(self):
         """
@@ -56,7 +57,7 @@ class System:
             return len(self.particle[0].position)
         else:
             return 0
-        
+
     @property
     def density(self):
         """
@@ -67,14 +68,14 @@ class System:
         if self.cell is None:
             return ValueError('cannot compute density without a cell')
         return len(self.particle) / self.cell.volume
-    
+
     @property
     def distinct_species(self):
         """
         Sorted numpy array of all the distinct species in the system.
         """
         return numpy.array(sorted(set(self.get_property('species'))))
-    
+
     @property
     def pairs_of_species(self):
         """
@@ -94,9 +95,9 @@ class System:
         pairs = []
         for i in range(len(self.distinct_species)):
             for j in range(len(self.distinct_species)):
-                pairs.append((i+1, j+1))
+                pairs.append((i + 1, j + 1))
         return pairs
-    
+
     @property
     def chemical_fractions(self):
         """
@@ -168,7 +169,7 @@ class System:
             condition = standardize_condition(subset)
         else:
             condition = 'True'
-            
+
         # Make array of the attribute
         attr = what.split('.')[-1]
         if what.startswith('particle'):
@@ -196,7 +197,7 @@ class System:
         Alias for the method get_property.
         """
         return self.get_property(what, subset=subset)
-    
+
     def set_property(self, what, value, subset=None):
         """
         Set a system property `what` to `value`. If `what` is a particle 
@@ -240,7 +241,7 @@ class System:
             condition = standardize_condition(subset)
         else:
             condition = 'True'
-        
+
         # Set the same scalar value to each selected particle/cell
         if not isinstance(value, (list, numpy.ndarray)):
             if what.startswith('cell'):
@@ -259,7 +260,7 @@ class System:
                 for particle in self.particle:
                     if eval(condition):
                         setattr(particle, what, value)
-                
+
         # Set a specific value to each particle/cell with a list/array
         else:
             if what.startswith('cell'):
@@ -273,7 +274,6 @@ class System:
                     if eval(condition):
                         setattr(particle, what, value[c])
                         c += 1
-        
 
     def show(self, backend='matplotlib', color='species', **kwargs):
         """
@@ -314,7 +314,7 @@ class System:
             _show = show_3dmol
         else:
             raise ValueError('unknown backend for visualization')
-        return _show(self, color=color, **kwargs)   
+        return _show(self, color=color, **kwargs)
 
     def fold(self):
         """
@@ -334,6 +334,6 @@ class System:
                           self.distinct_species,
                           self.chemical_fractions,
                           self.cell.side)
-    
+
     def __repr__(self):
         return self.__str__()

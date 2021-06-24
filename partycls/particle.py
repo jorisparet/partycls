@@ -8,10 +8,10 @@ import numpy
 # Aliases for particles' properties
 aliases = {'position': 'particle.position',
            'pos': 'particle.position',
-           'position[0]': 'particle.position[0]',  
+           'position[0]': 'particle.position[0]',
            'pos[0]': 'particle.position[0]',
            'x': 'particle.position[0]',
-           'position[1]': 'particle.position[1]', 
+           'position[1]': 'particle.position[1]',
            'pos[1]': 'particle.position[1]',
            'y': 'particle.position[1]',
            'position[2]': 'particle.position[2]',
@@ -23,6 +23,7 @@ aliases = {'position': 'particle.position',
            'index': 'particle.index',
            'mass': 'particle.mass',
            'radius': 'particle.radius'}
+
 
 class Particle:
     """
@@ -70,7 +71,7 @@ class Particle:
     >>> p = Particle([0.0, 0.0, 0.0], species='A')
     >>> p = Particle([0.0, 0.0], species='B')
     """
-    
+
     def __init__(self, position=None, species='A', label=-1, radius=0.5):
         if position is None:
             self.position = numpy.zeros(3)
@@ -83,18 +84,18 @@ class Particle:
         self.radius = radius
         # Index of the particle
         self.index = id(self)
-        
+
     def __str__(self):
         rep = 'Particle('
         for attr, value in self.__dict__.items():
             if not attr.startswith('_'):
                 rep += '{}={}, '.format(attr, value)
-        rep = rep[:-2]+')'
+        rep = rep[:-2] + ')'
         return rep
-    
+
     def __repr__(self):
         return self.__str__()
-    
+
     def fold(self, cell):
         """
         Fold the particle position into the central cell.

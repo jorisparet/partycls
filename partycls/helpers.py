@@ -9,7 +9,8 @@ __all__ = ['show_matplotlib',
 _palette = ["#50514f", "#f25f5c", "#ffe066", "#247ba0", "#70c1b3",
             "#0cce6b", "#c200fb", "#e2a0ff", "#6622cc", "#119822"]
 
-def show_matplotlib(system, color, view='top', palette=None, cmap='viridis', 
+
+def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
                     outfile=None, linewidth=0.5, alpha=1.0, show=False):
     """
     Make a snapshot of the `system` using matplotlib.
@@ -54,25 +55,25 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
     from matplotlib.cm import cmaps_listed
     from numpy import array, sign, argsort
 
-    views = {'top':    [1,2,3],
-             'bottom': [1,-2,-3],
-             'front':  [1,3,-2],
-             'back':   [-1,3,2],
-             'left':   [-2,3,-1],
-             'right':  [2,3,1]}
+    views = {'top': [1, 2, 3],
+             'bottom': [1, -2, -3],
+             'front': [1, 3, -2],
+             'back': [-1, 3, 2],
+             'left': [-2, 3, -1],
+             'right': [2, 3, 1]}
 
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal')
     ax.axes.get_xaxis().set_visible(False)
     ax.axes.get_yaxis().set_visible(False)
-    ax.set_xlim((-system.cell.side[0]/2, system.cell.side[0]/2))
-    ax.set_ylim((-system.cell.side[1]/2, system.cell.side[1]/2))
+    ax.set_xlim((-system.cell.side[0] / 2, system.cell.side[0] / 2))
+    ax.set_ylim((-system.cell.side[1] / 2, system.cell.side[1] / 2))
     # scale marker size relative to box size
     M = ax.transData.get_matrix()
-    scale = M[0,0]
+    scale = M[0, 0]
     # color according to a specific property
     property_vals = system.get_property('particle.{}'.format(color))
-    
+
     # discrete property?
     discrete = isinstance(tipify(str(property_vals[0])), (str, int))
     # corresponding color system
@@ -84,7 +85,7 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
         color_db = discrete_colors
     else:
         color_db = colormap(property_vals)
-    
+
     # list of individual colors
     colors = []
     for pn, p in enumerate(system.particle):
@@ -98,29 +99,30 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
     # positions and radii
     pos = system.get_property('position')
     R = system.get_property('radius')
-    
-    # plot 3D    
+
+    # plot 3D
     if system.n_dimensions == 3:
         xi, yi, zi = views[view]
-        X = sign(xi)*pos[:,abs(xi)-1]
-        Y = sign(yi)*pos[:,abs(yi)-1]
-        Z = sign(zi)*pos[:,abs(zi)-1]
+        X = sign(xi) * pos[:, abs(xi) - 1]
+        Y = sign(yi) * pos[:, abs(yi) - 1]
+        Z = sign(zi) * pos[:, abs(zi) - 1]
         order = argsort(Z)
-        ax.scatter(X[order], Y[order], c=colors[order], 
-                   marker='o', ec='k', s=(scale*R[order])**2,
+        ax.scatter(X[order], Y[order], c=colors[order],
+                   marker='o', ec='k', s=(scale * R[order])**2,
                    linewidths=linewidth, alpha=alpha)
     # plot 2D
     if system.n_dimensions == 2:
-        X = pos[:,0]
-        Y = pos[:,1]
-        ax.scatter(X, Y, c=colors, marker='o', ec='k', s=(scale*R)**2,
+        X = pos[:, 0]
+        Y = pos[:, 1]
+        ax.scatter(X, Y, c=colors, marker='o', ec='k', s=(scale * R)**2,
                    linewidths=linewidth, alpha=alpha)
-    
+
     if outfile is not None:
         fig.savefig(outfile, bbox_inches='tight')
     if show:
         plt.show()
     return fig
+
 
 def show_3dmol(system, color, palette=None):
     """
@@ -153,7 +155,7 @@ def show_3dmol(system, color, palette=None):
     """
     import py3Dmol
     from .trajectory import tipify
-    
+
     if palette is None:
         palette = _palette
     view = py3Dmol.view()
@@ -167,10 +169,10 @@ def show_3dmol(system, color, palette=None):
     # plot particles
     for p in system.particle:
         p_color = palette[property_set.index(p.__getattribute__(color))]
-        view.addSphere({'center': {'x': p.position[0], 
-                                   'y': p.position[1], 
+        view.addSphere({'center': {'x': p.position[0],
+                                   'y': p.position[1],
                                    'z': p.position[2]},
-                        'radius': p.radius, 
+                        'radius': p.radius,
                         'color': p_color})
     # plot cell
     view.addBox({'center': {'x': 0.0,
@@ -181,6 +183,7 @@ def show_3dmol(system, color, palette=None):
                                 'd': system.cell.side[2]},
                  'wireframe': True, 'color': "#000000"})
     return view
+
 
 def shannon_entropy(px, dx=1.0):
     """
@@ -204,6 +207,7 @@ def shannon_entropy(px, dx=1.0):
         if p != 0.0:
             S += p * numpy.log(p)
     return -S
+
 
 def merge_clusters(weights, n_clusters_min=2, epsilon_=1e-15):
     """
@@ -251,7 +255,7 @@ def merge_clusters(weights, n_clusters_min=2, epsilon_=1e-15):
             for j in range(i):
                 delta_ent = _compute_delta_ent(i, j, new_weights)
                 d_evals.append(delta_ent)
-                labs.append([i,j])
+                labs.append([i, j])
                 # print entropy change for (i,j)
                 # print('  {i}  {j}  {:.4f}'.format(i,j,delta_ent))
 
@@ -261,20 +265,21 @@ def merge_clusters(weights, n_clusters_min=2, epsilon_=1e-15):
 
         # do the merge...
         for w in new_weights:
-            w[ labs[best_merge_index][1] ] += w[ labs[best_merge_index][0] ]
-            w[ labs[best_merge_index][0] ] = epsilon_
+            w[labs[best_merge_index][1]] += w[labs[best_merge_index][0]]
+            w[labs[best_merge_index][0]] = epsilon_
 
         # print("# ICL entropy before (total) : {:.4f}".format(_compute_ICL_ent(weights, epsilon_)))
         # print("# ICL entropy after  (total) : {:.4f}".format(_compute_ICL_ent(new_weights, epsilon_)))
 
         n_clusters -= 1
-        
+
     # new discrete labels based on the new weights
     new_labels = [0 for n in range(new_weights.shape[0])]
     for i, wi in enumerate(new_weights):
         new_labels[i] = numpy.argmax(wi)
-        
+
     return new_weights, new_labels
+
 
 def sort_clusters(labels, centroids, func=shannon_entropy):
     """
@@ -323,6 +328,7 @@ def sort_clusters(labels, centroids, func=shannon_entropy):
         new_centroids[k_new] = centroids[k]
     return new_labels, new_centroids
 
+
 def _compute_delta_ent(i, j, weights):
     """
     Entropy change on merging two clusters (following Baudry) 
@@ -335,6 +341,7 @@ def _compute_delta_ent(i, j, weights):
         delta_ent -= w[j] * numpy.log(w[j])
     return delta_ent
 
+
 def _compute_ICL_ent(weights, epsilon_):
     """
     ICL entropy from list of weights
@@ -342,5 +349,5 @@ def _compute_ICL_ent(weights, epsilon_):
     ICL_ent = 0.0
     for w in weights:
         wts = numpy.maximum(w, epsilon_)
-        ICL_ent -= numpy.sum( wts * numpy.log(wts) )
+        ICL_ent -= numpy.sum(wts * numpy.log(wts))
     return ICL_ent

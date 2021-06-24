@@ -9,6 +9,7 @@ from .particle import Particle
 from .cell import Cell
 from .core.utils import tipify
 
+
 class Trajectory:
     """
     A trajectory is composed by one or several frames, each frame being an 
@@ -73,7 +74,7 @@ class Trajectory:
     >>> from partycls.trajectory import Trajectory
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
-    
+
     def __init__(self, filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
         self.filename = filename
         if backend is None and fmt is None:
@@ -91,17 +92,17 @@ class Trajectory:
 
     def __getitem__(self, item):
         return self._systems[item]
-    
+
     def __len__(self):
         return len(self._systems)
 
     def __str__(self):
         rep = 'Trajectory(filename="{}", number_of_frames={})'
         return rep.format(self.filename, self.__len__())
-    
+
     def __repr__(self):
         return self.__str__()
-        
+
     def remove(self, frame):
         """
         Remove the system at position `frame` from the trajectory.
@@ -117,7 +118,7 @@ class Trajectory:
 
         """
         self._systems.pop(frame)
-    
+
     def get_property(self, what, subset=None):
         """
         Return a list of numpy arrays with the system property specified by 
@@ -181,7 +182,7 @@ class Trajectory:
         Alias for the method get_property().
         """
         return self.get_property(what, subset=subset)
-    
+
     def set_property(self, what, value, subset=None):
         """
         Set a property `what` to `value` for all the particles in the 
@@ -271,7 +272,7 @@ class Trajectory:
             kwargs_f = kwargs.copy()
             if 'outfile' in kwargs:
                 kwargs_f['outfile'] += '{:04}'.format(frame)
-            snapshot = self._systems[frame].show(backend=backend, 
+            snapshot = self._systems[frame].show(backend=backend,
                                                  color=color,
                                                  **kwargs_f)
             snapshots.append(snapshot)
@@ -285,12 +286,12 @@ class Trajectory:
         -------
         None.
 
-        """        
+        """
         for system in self._systems:
             system.fold()
-    
+
     def _read(self, first, last, step):
-        
+
         # formats recognized by defaults
         if self.backend is None:
             if self.fmt == 'xyz':
@@ -298,31 +299,32 @@ class Trajectory:
             elif self.fmt == 'rumd':
                 self._parser_rumd()
             else:
-                raise ValueError('"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
-                
+                raise ValueError(
+                    '"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
+
         # atooms backend
         elif self.backend == 'atooms':
             self._parser_atooms()
-        
+
         # MDTraj backend
         elif self.backend == 'mdtraj':
             self._parser_mdtraj()
-        
+
         # wrong backend
         else:
             raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
-        
+
         # # Standardize the species by giving each a numeral ID
         self._make_species_numeral()
-        
+
         # Sanity checks
         #  constant number of particles
         n_particles = set([len(sys.particle) for sys in self._systems])
         assert(len(n_particles) == 1), 'the number of particles should be kept constant in the trajectory.'
-        
+
         # Slice the trajectory
         self._slice(first, last, step)
-        
+
     def _parser_xyz(self):
         """
         Read the trajectory from a XYZ file and put 
@@ -332,7 +334,7 @@ class Trajectory:
         def _system_info(info):
             """Information on the system (dimension, fields, etc.)"""
             import re
-            default_fields = ['id', 'type', 'name', 'species', 'pos', 
+            default_fields = ['id', 'type', 'name', 'species', 'pos',
                               'position', 'x', 'y', 'z']
             # loop over all properties
             for p in info:
@@ -348,7 +350,7 @@ class Trajectory:
                     cell = re_cell.group(1).split(',')
                     cell = [float(L) for L in cell]
             return cell, fields
-        
+
         # Read whole file
         with open(self.filename) as trajectory:
             while True:
@@ -369,7 +371,8 @@ class Trajectory:
                     starting_idx = dimension + 1
                     # community/cluster label
                     default_cluster_fields = ['cluster', 'community', 'label']
-                    read_cluster_field = True in [cls_field in self.additional_fields for cls_field in default_cluster_fields]
+                    read_cluster_field = True in [
+                        cls_field in self.additional_fields for cls_field in default_cluster_fields]
                     if read_cluster_field:
                         cluster_field_mask = [cf in other_fields for cf in default_cluster_fields]
                         has_cluster_field = True in cluster_field_mask
@@ -384,10 +387,10 @@ class Trajectory:
                             fidx = other_fields.index(field)
                             fields_to_read.append(field)
                             fields_to_read_idx.append(fidx)
-                
+
                 # Loop over particles
                 for _ in range(n_particles):
-                    line = trajectory.readline().split()                    
+                    line = trajectory.readline().split()
                     # particle type
                     p_type = line[0]
                     # position (2D or 3D)
@@ -401,14 +404,14 @@ class Trajectory:
                     # set the additional fields
                     if self.additional_fields:
                         if read_cluster_field and has_cluster_field:
-                            particle.label = int(line[starting_idx+cidx])
+                            particle.label = int(line[starting_idx + cidx])
                         for field_name, field_idx in zip(fields_to_read, fields_to_read_idx):
-                            val = tipify(line[starting_idx+field_idx])
-                            particle.__setattr__(field_name, val)                  
-                    
+                            val = tipify(line[starting_idx + field_idx])
+                            particle.__setattr__(field_name, val)
+
                     # add the particle to the system
                     system.particle.append(particle)
-                    
+
                 # Add system to trajectory
                 self._systems.append(system)
 
@@ -419,7 +422,7 @@ class Trajectory:
         """
 
         import gzip
-        
+
         def _system_info(info):
             """Information on the system (dimension, fields, etc.)"""
             import re
@@ -438,7 +441,7 @@ class Trajectory:
             # look for community/cluster field
             cluster_field = 'community' in fields or 'cluster' in fields
             return cell, cluster_field
-        
+
         with gzip.open(self.filename, mode='rt') as trajectory:
             while True:
                 firstline = trajectory.readline()
@@ -451,11 +454,11 @@ class Trajectory:
                 sides, cluster_field = _system_info(frame_info)
                 cell = Cell(sides)
                 system = System(cell=cell)
-                dimension = len(sides)            
+                dimension = len(sides)
 
                 # Loop over particles
                 for _ in range(n_particles):
-                    line = trajectory.readline().split()                    
+                    line = trajectory.readline().split()
                     # particle type
                     p_type = line[0]
                     # position (2D or 3D)
@@ -470,28 +473,29 @@ class Trajectory:
                         if dimension == 3:
                             p_label = int(line[4])
                     else:
-                        p_label = -1    
+                        p_label = -1
                     # create the Particle object
                     particle = Particle(position=p_pos, species=p_type, label=p_label)
                     system.particle.append(particle)
-                    
+
                 # Add system to trajectory
                 self._systems.append(system)
 
     def _parser_atooms(self):
-        
+
         try:
             from atooms.trajectory import Trajectory as AtoomsTrajectory
-            
+
             supported = list(AtoomsTrajectory.formats.keys())
-            assert self.fmt in supported, 'the current version of atooms only supports the following formats: {}'.format(supported)
-            
+            assert self.fmt in supported, 'the current version of atooms only supports the following formats: {}'.format(
+                supported)
+
             _Trajectory = AtoomsTrajectory.formats[self.fmt]
-            
-            # Read additional fields if the trajectory format allows 
+
+            # Read additional fields if the trajectory format allows
             if self.additional_fields:
                 try:
-                    atooms_traj = _Trajectory(self.filename, mode='r', fields=['id', 'pos']+self.additional_fields)
+                    atooms_traj = _Trajectory(self.filename, mode='r', fields=['id', 'pos'] + self.additional_fields)
                 except TypeError:
                     print('This trajectory format does not support additional fields')
                     print('Warning: ignoring additional fields.')
@@ -515,12 +519,12 @@ class Trajectory:
                     system.particle.append(particle)
                 self._systems.append(system)
             atooms_traj.close()
-                
+
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `atooms` module found.')
 
     def _parser_mdtraj(self):
-        
+
         try:
             import mdtraj as md
             try:
@@ -588,16 +592,17 @@ class Trajectory:
             elif fmt == 'rumd':
                 self._write_rumd(output_path, additional_fields, precision)
             else:
-                raise ValueError('"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
-                
+                raise ValueError(
+                    '"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
+
         # atooms backend
         elif backend == 'atooms':
             self._write_atooms(output_path, fmt, additional_fields, precision)
-        
+
         # MDTraj backend
         elif backend == 'mdtraj':
             self._write_mdtraj(output_path, fmt, additional_fields, precision)
-        
+
         # wrong backend
         else:
             raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
@@ -643,25 +648,25 @@ class Trajectory:
                                          len(system.distinct_species),
                                          ','.join('1.0' for s in system.distinct_species)))
                 for particle in system.particle:
-                    line = '{} '.format(particle.species_id-1)
+                    line = '{} '.format(particle.species_id - 1)
                     line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
                     # no additional field
                     #line += '{} '.format(particle.label)
                     line += '\n'
                     file.write(line)
-            
+
     def _write_atooms(self, output_path, fmt, fields, precision):
         try:
             from atooms.trajectory import Trajectory as AtoomsTrajectory
             from atooms.system import System as _System
             from atooms.system import Particle as _Particle
             from atooms.system import Cell as _Cell
-            
+
             _Trajectory = AtoomsTrajectory.formats[fmt]
 
-            # Write additional fields if the trajectory format allows 
+            # Write additional fields if the trajectory format allows
             try:
-                with _Trajectory(output_path, 'w', fields=['id', 'pos']+fields) as atooms_traj:
+                with _Trajectory(output_path, 'w', fields=['id', 'pos'] + fields) as atooms_traj:
                     for n, system in enumerate(self._systems):
                         new_cell = _Cell(side=system.cell.side)
                         new_system = _System(cell=new_cell)
@@ -673,13 +678,13 @@ class Trajectory:
                             new_particle.label = label
                             new_system.particle.append(new_particle)
                         atooms_traj.write(new_system, step=n)
-                        
+
             except TypeError:
                 print('This trajectory format does not support additional fields (e.g. cluster labels)')
-        
+
         except ModuleNotFoundError:
-            print('No `atooms` module found.')        
-            
+            print('No `atooms` module found.')
+
     def _write_mdtraj(self, output_path, fmt, fields, precision):
         raise NotImplementedError('Writing output trajectories with the MDTraj backend is currently impossible')
 
@@ -695,7 +700,7 @@ class Trajectory:
             last = nframes
         # Remove unwanted frames
         all_frames = list(range(nframes))
-        frames = all_frames[first:last+1:step]
+        frames = all_frames[first:last + 1:step]
         kept_systems = []
         for frame in frames:
             kept_systems.append(self._systems[frame])

@@ -1,6 +1,7 @@
 import re
 from partycls.particle import aliases
 
+
 def tipify(s):
     """
     Convert a string `s` into the best matching type.
@@ -16,16 +17,17 @@ def tipify(s):
         Best-matching type for the input string `s`.
 
     """
-    if '_' in s: 
-        return s 
-    else: 
-        try: 
-            return int(s) 
-        except ValueError: 
-            try: 
-                return float(s) 
-            except ValueError: 
+    if '_' in s:
+        return s
+    else:
+        try:
+            return int(s)
+        except ValueError:
+            try:
+                return float(s)
+            except ValueError:
                 return s
+
 
 def standardize_condition(condition):
     """

@@ -3,6 +3,7 @@ from .descriptor import StructuralDescriptor
 
 __all__ = ['DscribeDescriptor', 'DscribeChemicalDescriptor']
 
+
 def _system_to_ase_atoms(system, chemistry, pbc):
     from ase import Atoms
     if chemistry:
@@ -16,6 +17,7 @@ def _system_to_ase_atoms(system, chemistry, pbc):
                       cell=system.cell.side,
                       pbc=pbc)
     return atoms
+
 
 def _arrays_to_ase_atoms(positions, species, side, pbc):
     from ase import Atoms
@@ -76,7 +78,7 @@ class DscribeDescriptor(StructuralDescriptor):
                                           pbc=self._periodic)
             other_positions = self.dump('position', 0)[i]
             features = self.backend.create(system, positions=other_positions)
-            self.features[row: row+features.shape[0], :] = features
+            self.features[row: row + features.shape[0], :] = features
             row += features.shape[0]
 
         return self.features
@@ -84,10 +86,10 @@ class DscribeDescriptor(StructuralDescriptor):
     def normalize(self, dist):
         return dist
 
+
 class DscribeChemicalDescriptor(DscribeDescriptor):
     """
     Adapter for generic DScribe descriptors, with chemical species information.
     """
 
     _chemistry = True
-    

@@ -5,7 +5,9 @@ from .dim_reduction import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
 from partycls.core import __version__ as _version
 from partycls.core import __code_extension__ as code_extension
-import time, datetime
+import time
+import datetime
+
 
 class Workflow:
     """
@@ -137,7 +139,7 @@ class Workflow:
                      'ld': LechnerDellagoDescriptor,
                      'lechner-dellago': LechnerDellagoDescriptor,
                      'lechner dellago': LechnerDellagoDescriptor}
-    
+
     clustering_db = {'k-means': KMeans,
                      'kmeans': KMeans,
                      'gaussian mixture': GaussianMixture,
@@ -148,7 +150,7 @@ class Workflow:
                      'community-inference': CommunityInference,
                      'inference': CommunityInference,
                      'cinf': CommunityInference}
-    
+
     scaling_db = {'standard': ZScore,
                   'zscore': ZScore,
                   'z-score': ZScore,
@@ -157,17 +159,17 @@ class Workflow:
                   'maxabs': MaxAbs,
                   'max-abs': MaxAbs,
                   'robust': Robust}
-    
+
     dim_reduction_db = {'pca': PCA,
-                    'tsne': TSNE,
-                    't-sne': TSNE,
-                    'lle': LocallyLinearEmbedding,
-                    'autoencoder': AutoEncoder,
-                    'auto-encoder': AutoEncoder,
-                    'ae': AutoEncoder}
-    
+                        'tsne': TSNE,
+                        't-sne': TSNE,
+                        'lle': LocallyLinearEmbedding,
+                        'autoencoder': AutoEncoder,
+                        'auto-encoder': AutoEncoder,
+                        'ae': AutoEncoder}
+
     def __init__(self, trajectory, descriptor='gr', scaling=None, dim_reduction=None, clustering='kmeans'):
-        
+
         # Trajectory
         if isinstance(trajectory, str):
             self.trajectory = Trajectory(trajectory)
@@ -194,50 +196,50 @@ class Workflow:
         else:
             self.dim_reduction = dim_reduction
         self.reduced_features = None
-            
+
         # Clustering
         if isinstance(clustering, str):
             self.clustering = self.clustering_db[clustering.lower()]()
         else:
             self.clustering = clustering
-            
+
         # Default output metadata
-        self.output_metadata = {'trajectory': {'enable':True,
-                                               'writer':self.write_trajectory,
-                                               'filename':None,
-                                               'fmt':'xyz',
+        self.output_metadata = {'trajectory': {'enable': True,
+                                               'writer': self.write_trajectory,
+                                               'filename': None,
+                                               'fmt': 'xyz',
                                                'backend': None,
-                                               'additional_fields':[],
-                                               'precision':6},
-    
-                                'log': {'enable':True,
-                                        'writer':self.write_log,
-                                        'filename':None,
-                                        'precision':6},
-                                        
-                                'centroids': {'enable':True,
-                                              'writer':self.write_centroids,
-                                              'filename':None,
-                                              'precision':6},
-                                
-                                'labels': {'enable':False,
-                                           'writer':self.write_labels,
-                                           'filename':None},
-                                           
-                                'dataset': {'enable':False,
-                                            'writer':self.write_dataset,
-                                            'filename':None,
-                                            'precision':6}}
-        
+                                               'additional_fields': [],
+                                               'precision': 6},
+
+                                'log': {'enable': True,
+                                        'writer': self.write_log,
+                                        'filename': None,
+                                        'precision': 6},
+
+                                'centroids': {'enable': True,
+                                              'writer': self.write_centroids,
+                                              'filename': None,
+                                              'precision': 6},
+
+                                'labels': {'enable': False,
+                                           'writer': self.write_labels,
+                                           'filename': None},
+
+                                'dataset': {'enable': False,
+                                            'writer': self.write_dataset,
+                                            'filename': None,
+                                            'precision': 6}}
+
         # Naming convention for output files
         self.naming_convention = '{filename}.{code}.{descriptor}.{clustering}'
-                                
+
         # Internal
         self._has_run = False
         self._start = None
         self._end = None
         self._time = None
-        
+
     # TODO: like scipy functions, we may return a dict() with the optimization results
     def run(self):
         """
@@ -295,13 +297,13 @@ class Workflow:
             for particle in frame:
                 particle.label = self.labels[n]
                 n += 1
-                
+
         # Workflow has run at least once
         self._has_run = True
         # End the timer
         self._end = time.time()
         self._time = self._end - self._start
-        
+
         # Outputs
         for filetype in self.output_metadata.keys():
             enable = self.output_metadata[filetype]['enable']
@@ -312,15 +314,15 @@ class Workflow:
     @property
     def labels(self):
         return self.clustering.labels
-    
+
     @property
     def fractions(self):
         return self.clustering.fractions
-    
+
     @property
     def populations(self):
         return self.clustering.populations
-    
+
     @property
     def centroids(self):
         return self.clustering.centroids
@@ -350,7 +352,7 @@ class Workflow:
         """
         for key, val in kwargs.items():
             self.output_metadata[what][key] = val
-        
+
     def disable_output(self):
         """
         Disable all outputs.
@@ -400,7 +402,7 @@ class Workflow:
         if filename is None:
             filename = self._output_file(fmt)
         self.trajectory.write(filename, fmt=fmt, backend=backend,
-                              additional_fields=['label']+additional_fields, 
+                              additional_fields=['label'] + additional_fields,
                               precision=precision)
 
     # TODO: more info needed in the log?
@@ -482,7 +484,7 @@ class Workflow:
                 g = '{:.{}f} '.format(g_i, precision)
                 line = g + ''.join(['{:.{}f} '.format(C_k[k, n], precision) for k in range(n_clusters)]) + '\n'
                 file.write(line)
-                
+
     def write_labels(self, filename=None, **kwargs):
         """
         Write the clusters' labels only.
@@ -505,7 +507,7 @@ class Workflow:
             file.write(self._get_header())
             for ki in self.labels:
                 file.write('{} \n'.format(ki))
-                
+
     def write_dataset(self, filename=None, precision=6, **kwargs):
         """
         Write the full raw dataset from the descriptor as an array (i.e. all 
@@ -532,7 +534,7 @@ class Workflow:
             for vector in self.descriptor.features:
                 line = ''.join(['{:.{}f} '.format(vi, precision) for vi in vector]) + '\n'
                 file.write(line)
-   
+
     def _get_header(self):
         # Time
         now = datetime.datetime.now()
@@ -545,34 +547,34 @@ class Workflow:
 
         # Version
         version = '# version: {} \n'.format(_version)
-        
+
         # Parent
         parent = '# parent: {} \n'.format(self.trajectory.filename)
-        
+
         # Feature scaling
         scaling = '# feature scaling: {} \n'
         if self.scaling is not None:
             scaling = scaling.format(self.scaling.full_name)
         else:
             scaling = scaling.format('none')
-            
+
         # Dimensionality reduction
         dim_reduction = '# dimensionality reduction: {} \n'
         if self.dim_reduction is not None:
             dim_reduction = dim_reduction.format(self.dim_reduction.full_name)
         else:
             dim_reduction = dim_reduction.format('none')
-            
+
         # Clustering method
         clustering = '# clustering method: {} \n'.format(self.clustering.full_name)
 
         # Number of communities/clusters
         n_clusters = '# requested number of clusters: {} \n'.format(self.clustering.n_clusters)
-        
+
         # Assemble header
         header = ''.join([date, version, parent, scaling, dim_reduction, clustering, n_clusters])
         return header
-    
+
     def _output_file(self, kind):
         """Returns path of output file."""
         scaling_symbol = self.scaling.symbol if self.scaling is not None else ''
@@ -584,7 +586,7 @@ class Workflow:
                                                   dim_reduction=dim_reduction_symbol,
                                                   clustering=self.clustering.symbol)
         return '{base}.{kind}'.format(base=base_name, kind=kind)
-    
+
     def __str__(self):
         rep = 'Workflow(filename="{}", descriptor="{}", scaling="{}", dim_reduction="{}", clustering="{}", has_run={})'
         rep = rep.format(self.trajectory.filename,
@@ -594,6 +596,6 @@ class Workflow:
                          self.clustering.symbol,
                          self._has_run)
         return rep
-    
+
     def __repr__(self):
         return self.__str__()
