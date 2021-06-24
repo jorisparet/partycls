@@ -55,6 +55,8 @@ A substantial fraction of the code acts as a wrapper around functions of the mac
 
 ![The different steps to perform a structural clustering. The input is a file written in any of the trajectory formats supported by partycls. After selecting the structural descriptor and optional filters, two key steps for pre-processing the data are possible: feature scaling and dimensionality reduction. Finally, a clustering is performed using the selected algorithm. Several output files are produced for further analysis. \label{fig:workflow}](figures/workflow.pdf)
 
+To maintain a consistent API as the code base evolves, partycls will rigorously follow [semantic versioning](https://semver.org/).
+
 # Examples
 
 As a simple example, we consider the detection of the grain boundaries in a polycrystal formed by differently oriented FCC crystallites. This is easily achieved even with a simple radial descriptor, since that the average radial distribution of particles at the boundaries is different than the one of the crystal in the bulk. The following short piece of code opens the input trajectory stored in the file `grains.xyz`, computes the local radial distribution functions of the particles, applies a standard Z-Score normalization on the data, and finally performs a clustering using the Gaussian mixture model (GMM) with $K=2$ clusters (default):
