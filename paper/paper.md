@@ -31,7 +31,7 @@ partycls is a Python framework to perform spatio-temporal clustering of systems 
 
 Analysis of the local arrangements of atoms and molecules in dense liquids and solids is crucial to understand their emergent physical properties.
 This is particularly important in systems whose local structure is heterogeneous, which include polycrystalline materials and partially ordered systems, like semi-crystalline polymers [@Ganda_2020] or metastable liquids during crystal nucleation [@Russo_Tanaka_2016].
-Even more challenging is the case of glass-forming liquids and glasses [@Royall_Williams_2015], which can display locally stable arrangements, known as locally favored structures, whose symmetry and local chemical concentration differ in a subtle way from the bulk.
+Even more challenging is the case of glass-forming liquids and glasses [@Royall_Williams_2015], as these systems may display locally favored structures, whose symmetry and chemical concentration differ in a subtle way from the bulk.
 
 Traditional methods to classify particles according to local arrangements of their neighbors include the Voronoi tessellation [@tanemura_geometrical_1977] and common neighbor analysis (CNA) [@honeycutt_molecular_1987]. More recent approaches provide detailed insight into the topology of the particles' arrangements [@malins_identification_2013;@Lazar_Han_Srolovitz_2015]. Many of these methods are implemented in open source code and can be applied to trajectories produced by computer simulations and to experimental data of colloidal suspensions analyzed using confocal microscopes [@Royall_Williams_2015].
 These approaches, however, tend to produce a very large number of distinct signatures, especially in disordered systems.
