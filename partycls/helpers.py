@@ -1,6 +1,7 @@
 import numpy
 
 __all__ = ['show_matplotlib',
+           'show_ovito',
            'show_3dmol',
            'shannon_entropy',
            'merge_clusters',
@@ -8,6 +9,10 @@ __all__ = ['show_matplotlib',
 
 _palette = ["#50514f", "#f25f5c", "#ffe066", "#247ba0", "#70c1b3",
             "#0cce6b", "#c200fb", "#e2a0ff", "#6622cc", "#119822"]
+
+def hex_to_rgb(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i+2], 16) / 256 for i in (0, 2, 4))
 
 
 def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
@@ -122,6 +127,137 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
     if show:
         plt.show()
     return fig
+
+
+def show_ovito(system, color, view='top', palette=None, cmap='viridis',
+               outfile=None, size=(640, 480), zoom=True):
+    """
+    Make a snapshot of the `system` using Ovito.
+    The image is returned for further customization or visualization 
+    in jupyter notebooks.        
+
+    Parameters
+    ----------
+    system : System
+        An instance of `System`.
+    color : str
+        Particle property to use for color coding, e.g. 'species', 'label'.
+    view : str, optional
+        View type, i.e. face of the box to show. Only works for a 3D system.
+        The default is 'top'.
+    palette : list, optional
+        List of colors when coloring particles according to a discrete property,
+        such as 'species' or 'label'. A default palette will be used if not 
+        specified. The default is None.
+    cmap : str, optional
+        Name of a matplotlib colormap to use when coloring particles according
+        to a continuous property such as 'velocity' or 'energy'. List of 
+        available colormap can be found in `matplotlib.cm.cmaps_listed`.
+        The default is 'viridis'.
+    outfile : str, optional
+        Output filename to save the snapshot. The default is None (not saved).
+    size : tuple, optional
+        Size of the image to render. The default is (640, 480).
+    zoom : bool, optional
+        Zoom on the simulation box. The default is True.
+
+    Returns
+    -------
+    Image
+        Rendered image.
+
+    """
+    try:
+        from ovito.io import import_file
+    except ImportError:
+        print('install ovito to display the particles')
+        return
+    from ovito.vis import Viewport, TachyonRenderer
+    import os
+    import tempfile
+    from .core.utils import tipify
+    from matplotlib.cm import cmaps_listed
+
+    # discrete property?
+    property_vals = system.get_property('particle.{}'.format(color))
+    discrete = isinstance(tipify(str(property_vals[0])), (str, int))
+    # corresponding color system
+    discrete_colors = _palette if palette is None else palette
+    colormap = cmaps_listed[cmap]
+
+    # discrete or continuous color field
+    if palette is None:
+        discrete_colors = _palette
+        discrete_colors = [hex_to_rgb(c) for c in discrete_colors]
+    else:
+        discrete_colors = palette
+    # corresponding palette / colormap
+    if discrete:
+        property_set = list(set(property_vals))
+        property_set.sort()
+        color_db = discrete_colors
+    else:
+        color_db = colormap(property_vals)
+    
+    # individual particle color
+    for pn, p in enumerate(system.particle):
+        if discrete:
+            p_color = color_db[property_set.index(p.__getattribute__(color))]
+            p.color = p_color
+        else:
+            p.color = color_db[pn]
+    
+    # Get a temporary file to write the sample
+    fh = tempfile.NamedTemporaryFile('w', suffix='.xyz', delete=False)
+    tmp_file = fh.name
+    # Self-contained EXYZ dump (it is not clean to use trajectories here)
+    fh.write('{}\n'.format(len(system.particle)))
+    fh.write('Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice="{},0.,0.,0.,{},0.,0.,0.,{}"\n'.format(*system.cell.side))
+    for p in system.particle:
+        fh.write('{} {} {} {} {} {} {} {}\n'.format(p.species, *p.position, p.radius, *p.color))
+    fh.close()
+
+    # Ovito stuff. Can be customized by client code.
+    pipeline = import_file(tmp_file)
+    # Ovito seems to ignore the lattice info of exyz file
+    # so we forcibly set the cell info here
+    pipeline.source.data.cell_[0, 0] = system.cell.side[0]
+    pipeline.source.data.cell_[1, 1] = system.cell.side[1]
+    pipeline.source.data.cell_[2, 2] = system.cell.side[2]
+    pipeline.source.data.cell_[:, 3] = -system.cell.side/2
+    pipeline.add_to_scene()
+
+    views = {'top':    Viewport.Type.Top,
+             'bottom': Viewport.Type.Bottom,
+             'front':  Viewport.Type.Front,
+             'back':   Viewport.Type.Back,
+             'left':   Viewport.Type.Left,
+             'right':  Viewport.Type.Right}
+    vp_type = views[view]
+    vp = Viewport(type=vp_type)
+
+    # Render
+    if zoom:
+        vp.zoom_all()
+    if outfile is None:
+        outfile = tmp_file + '.png'
+        
+    vp.render_image(filename=outfile, 
+                    size=size, 
+                    renderer=TachyonRenderer())
+
+    # Scene is a singleton, so we must clear it
+    pipeline.remove_from_scene()
+    
+    # remove temporary exyz file
+    os.remove(tmp_file)
+
+    # Try to display the image (e.g. in a jupyter notebook)
+    try:
+        from IPython.display import Image
+        return Image(outfile)
+    except ImportError:
+        return outfile
 
 
 def show_3dmol(system, color, palette=None):

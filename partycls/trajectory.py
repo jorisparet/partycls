@@ -232,7 +232,8 @@ class Trajectory:
         """
         Show the frames on index `frames` of the trajectory and color particles
         according to an arbitrary property, such as species, cluster label, 
-        etc. Current visualization backends are 'matplotlib' and '3dmol'.
+        etc. Current visualization backends are 'matplotlib', 'ovito',
+        and '3dmol'.
 
         Parameters
         ----------

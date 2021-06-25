@@ -279,7 +279,8 @@ class System:
         """
         Show a snapshot of the system and color particles
         according to an arbitrary property, such as species, cluster label, 
-        etc. Current visualization backends are 'matplotlib' and '3dmol'.
+        etc. Current visualization backends are 'matplotlib', 'ovito' and 
+        '3dmol'.
 
         Parameters
         ----------
@@ -307,9 +308,11 @@ class System:
         >>> sys.show(frame=1, color='energy', backend='matplotlib', cmap='viridis')
 
         """
-        from .helpers import show_matplotlib, show_3dmol
+        from .helpers import show_matplotlib, show_ovito, show_3dmol
         if backend == 'matplotlib':
             _show = show_matplotlib
+        elif backend == 'ovito':
+            _show = show_ovito
         elif backend == '3dmol':
             _show = show_3dmol
         else:
