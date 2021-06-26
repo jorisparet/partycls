@@ -6,28 +6,19 @@ partycls
 Quick start
 -----------
 
-Here is a simple example that shows how to use partycls to identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame.
+Here is a simple example that shows how to use partycls to identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame. We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system coloring the particles according to the cluster they belong to.
 
 ```python
-from partycls import Trajectory
+from partycls import Trajectory, Workflow
 
 traj = Trajectory('grains.xyz')
-traj[0].show()
-```
-
-![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_species.png)
-
-We use the local distribution of bond angles around each particle as a structural fingerprint and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm. We show the system again, this time coloring the particles according to the cluster they belong to.
-
-```python
-from partycls import Workflow
-
 wf = Workflow(traj, descriptor='ba', clustering='kmeans')
 wf.run()
-traj[0].show(color='label')
+traj[0].show(color='label', backend='ovito')
 ```
 
 ![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_labels.png)
+```
 
 The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be easily tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
 
