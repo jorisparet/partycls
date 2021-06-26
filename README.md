@@ -18,7 +18,6 @@ traj[0].show(color='label', backend='ovito')
 ```
 
 ![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_labels.png)
-```
 
 The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be easily tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
 
