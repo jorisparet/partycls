@@ -61,6 +61,7 @@ Requirements
 * [optional] [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
 * [optional] [dscribe](https://singroup.github.io/dscribe) (additional descriptors)
 * [optional] [matplotlib](https://matplotlib.org/) (visualization)
+* [optional] [ovito](https://ovito.org/) (visualization)
 * [optional] [py3Dmol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
 
 Documentation
