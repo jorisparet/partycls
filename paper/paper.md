@@ -33,17 +33,14 @@ Analysis of the local arrangements of atoms and molecules in dense liquids and s
 This is particularly important in systems whose local structure is heterogeneous, which include polycrystalline materials and partially ordered systems, like semi-crystalline polymers [@Ganda_2020] or metastable liquids during crystal nucleation [@Russo_Tanaka_2016].
 Even more challenging is the case of glass-forming liquids and glasses [@Royall_Williams_2015], as these systems may display locally favored structures, whose symmetry and chemical concentration differ in a subtle way from the bulk.
 
-Traditional methods to classify particles according to local arrangements of their neighbors include the Voronoi tessellation [@tanemura_geometrical_1977] and common neighbor analysis (CNA) [@honeycutt_molecular_1987]. More recent approaches provide detailed insight into the topology of the particles' arrangements [@malins_identification_2013;@Lazar_Han_Srolovitz_2015]. These methods can be applied to trajectories produced by computer simulations and to experimental data of colloidal suspensions analyzed using confocal microscopes [@Royall_Williams_2015].
-However, they tend to produce a large number of distinct signatures, especially in disordered systems, and small distortions of the local environments can substantially affect the structural fingerprint of the particles.
-
-Recently, unsupervised learning has emerged as an alternative approach for structural analysis of disordered materials [@reinhart_machine_2017;@boattini_unsupervised_2019].
+Recently, unsupervised learning has emerged as a novel approach for structural analysis of disordered materials [@reinhart_machine_2017;@boattini_unsupervised_2019].
 In particular, clustering methods based on simple observables, such as radial distribution functions, bond angle distributions, and bond orientational parameters (BOP), provide useful insight into the structural heterogenity of glassy systems [@boattini_autonomously_2020;@paret_assessing_2020].
-By grouping the particles according to the similarity of their local structure, these methods also avoid the profileration of distinct structural signatures that affects conventional methods.
+By grouping the particles according to the similarity of their local structure, these methods avoid the profileration of distinct structural signatures that affects conventional methods, like Voronoi-based analysis [@tanemura_geometrical_1977] or common neighbor analysis (CNA) [@honeycutt_molecular_1987], as well as topological classification approaches [@malins_identification_2013;@Lazar_Han_Srolovitz_2015].
 
 With the present code, we aim to provide a coherent numerical framework for unsupervised learning of structural and dynamical features of condensed matter systems.
 To the best of our knowledge, there is currently no publicly available code that group all the necessary tools needed for this kind of analysis.
 Through a variety of structural descriptors, dimensionality reduction methods, clustering algorithms and filtering options, partycls makes it possible to discover the key structural features of a system and to assess the robustness of the results.
-The code has already been used in the context of a recent publication [@paret_assessing_2020] and is designed to encourage future extensions.
+The code has already been used in the context of a recent publication [@paret_assessing_2020] and can be easily extended.
 In particular, future versions will implement clustering in space *and* time, to learn about the dynamics of the system as well.
 
 # Design
