@@ -38,7 +38,7 @@ In particular, clustering methods based on simple observables, such as radial di
 By grouping the particles according to the similarity of their local structure, these methods avoid the profileration of distinct structural signatures that affects conventional methods, like Voronoi-based analysis [@tanemura_geometrical_1977] or common neighbor analysis (CNA) [@honeycutt_molecular_1987], as well as topological classification approaches [@malins_identification_2013;@Lazar_Han_Srolovitz_2015].
 
 With the present code, we aim to provide a coherent numerical framework for unsupervised learning of structural and dynamical features of condensed matter systems.
-To the best of our knowledge, there is currently no publicly available code that group all the necessary tools needed for this kind of analysis.
+To the best of our knowledge, there is currently no publicly available code that provides and integrates all the necessary tools needed for this kind of analysis.
 Through a variety of structural descriptors, dimensionality reduction methods, clustering algorithms and filtering options, partycls makes it possible to discover the key structural features of a system and to assess the robustness of the results.
 The code has already been used in the context of a recent publication [@paret_assessing_2020] and can be easily extended.
 In particular, future versions will implement clustering in space *and* time, to learn about the dynamics of the system as well.
