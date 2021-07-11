@@ -33,7 +33,7 @@ Analysis of the local arrangements of atoms and molecules in dense liquids and s
 This is particularly important in systems whose local structure is heterogeneous, which include polycrystalline materials and partially ordered systems, like semi-crystalline polymers [@Ganda_2020] or metastable liquids during crystal nucleation [@Russo_Tanaka_2016].
 Even more challenging is the case of glass-forming liquids and glasses [@Royall_Williams_2015], as these systems may display locally favored structures, whose symmetry and chemical concentration differ in a subtle way from the bulk.
 
-Recently, unsupervised learning has emerged as a novel approach for structural analysis of disordered materials [@reinhart_machine_2017;@boattini_unsupervised_2019].
+Recently, unsupervised learning has emerged as a novel approach to structural analysis of disordered materials [@reinhart_machine_2017;@boattini_unsupervised_2019].
 In particular, clustering methods based on simple observables, such as radial distribution functions, bond angle distributions, and bond orientational parameters (BOP), provide useful insight into the structural heterogenity of glassy systems [@boattini_autonomously_2020;@paret_assessing_2020].
 By grouping the particles according to the similarity of their local structure, these methods avoid the profileration of distinct structural signatures that affects conventional methods, like Voronoi-based analysis [@tanemura_geometrical_1977] or common neighbor analysis (CNA) [@honeycutt_molecular_1987], as well as topological classification approaches [@malins_identification_2013;@Lazar_Han_Srolovitz_2015].
 
