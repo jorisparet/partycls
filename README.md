@@ -30,7 +30,8 @@ from partycls.descriptor import BondAngleDescriptor
 traj = Trajectory('trajectory.xyz')
 D = BondAngleDescriptor(traj)
 D.add_filter("species == 'B'")
-D.add_filter("x > 0.0 and x < 1.0")
+D.add_filter("x > 0.0")
+D.add_filter("x < 1.0")
 D.compute()
 
 # Angular correlations for the selected particles
