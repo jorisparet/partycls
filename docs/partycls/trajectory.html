@@ -1,0 +1,2029 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>partycls.trajectory API documentation</title>
+<meta name="description" content="Physical trajectory …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>partycls.trajectory</code></h1>
+</header>
+<section id="section-intro">
+<p>Physical trajectory.</p>
+<p>This class is inspired by the <code>atooms</code> framework authored by Daniele Coslovich
+See <a href="https://framagit.org/atooms/atooms">https://framagit.org/atooms/atooms</a></p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Physical trajectory.
+
+This class is inspired by the `atooms` framework authored by Daniele Coslovich
+See https://framagit.org/atooms/atooms 
+&#34;&#34;&#34;
+
+import numpy
+from .system import System
+from .particle import Particle
+from .cell import Cell
+from .core.utils import tipify
+
+
+class Trajectory:
+    &#34;&#34;&#34;
+    A trajectory is composed by one or several frames, each frame being an 
+    instance of `System`. Trajectory instances are iterable. By default, only
+    the positions and particle types are being read from the trajectory file.
+    Additional particle properties in the file can be read using the 
+    `additional_fields` parameter.
+    
+    Parameters
+    ----------
+    
+    filename : str
+        Path to the trajectory file to read.
+        
+    fmt : str, optional, default: &#39;xyz&#39;
+        Format of the trajectory. Needed when using &#34;atooms&#34; as a backend.
+        
+    backend : str, optional, default: None
+        Name of a third-party package to use as backend when reading the input
+        trajectory. Currently supports &#34;atooms&#34; and &#34;mdtraj&#34;.
+        
+    top : str, mdtraj.Trajectory, or mdtraj.Topology, optional, defaut: None
+        Topology information. Needed when using &#34;mdtraj&#34; as backend on a 
+        trajectory file whose format requires topology information. See MDTraj
+        documentation for more information.
+         
+    additional_fields : list of str, optional, default: []
+        Additional fields (i.e. particle properties) to read from the 
+        trajectory. Not all trajectory formats allow for additional fields.
+        
+    first : int, optional, default: 0
+        Index of the first frame to consider in the trajectory. Starts at zero.
+        
+    last : int, optional, default: None
+        Index of the last frame to consider in the trajectory. Default is the 
+        last frame.
+        
+    step : int, optional, default: 1
+        Step between each frame to consider in the trajectory. For example,
+        if `step=2`, one every two frames is read.
+        
+    
+    Attributes
+    ----------
+    
+    filename : str
+        Name of the original trajectory file.
+        
+    fmt : str
+        Format of the original trajectory file.
+        
+    backend : str or None
+        Name of the third-party package used to read the input trajectory file.
+        
+    additional_fields : list, default: None
+        List of additional particle properties that were extracted from the
+        original trajectory file.
+    
+    Examples
+    --------
+    
+    &gt;&gt;&gt; from partycls.trajectory import Trajectory
+    &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;, additional_fields=[&#39;mass&#39;])
+    &#34;&#34;&#34;
+
+    def __init__(self, filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
+        self.filename = filename
+        if backend is None and fmt is None:
+            self.fmt = &#39;xyz&#39;
+        else:
+            self.fmt = fmt
+        self.backend = backend
+        self.top = top
+        if additional_fields is None:
+            self.additional_fields = []
+        else:
+            self.additional_fields = additional_fields
+        self._systems = []
+        self._read(first, last, step)
+
+    def __getitem__(self, item):
+        return self._systems[item]
+
+    def __len__(self):
+        return len(self._systems)
+
+    def __str__(self):
+        rep = &#39;Trajectory(filename=&#34;{}&#34;, number_of_frames={})&#39;
+        return rep.format(self.filename, self.__len__())
+
+    def __repr__(self):
+        return self.__str__()
+
+    def remove(self, frame):
+        &#34;&#34;&#34;
+        Remove the system at position `frame` from the trajectory.
+
+        Parameters
+        ----------
+        frame : int
+            Index of the frame to remove from the trajectory.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        self._systems.pop(frame)
+
+    def get_property(self, what, subset=None):
+        &#34;&#34;&#34;
+        Return a list of numpy arrays with the system property specified by 
+        `what`. The list size is the number of systems in the trajectory.
+
+        Parameters
+        ----------
+        what : str
+            Requested system property.
+            
+            `what` must be of the form 
+            &#34;particle.&lt;attribute&gt;&#34; or &#34;cell.&lt;attribute&gt;&#34;. 
+            
+            The following particle aliases are accepted:
+            - &#39;position&#39;: &#39;particle.position&#39;
+            - &#39;pos&#39;: &#39;particle.position&#39;
+            - &#39;position[0]&#39;: &#39;particle.position[0]&#39;, 
+            - &#39;pos[0]&#39;: &#39;particle.position[0]&#39;
+            - &#39;x&#39;: &#39;particle.position[0]&#39;
+            - &#39;position[1]&#39;: &#39;particle.position[1]&#39;,
+            - &#39;pos[1]&#39;: &#39;particle.position[1]&#39;
+            - &#39;y&#39;: &#39;particle.position[1]&#39;
+            - &#39;position[2]&#39;: &#39;particle.position[2]&#39;
+            - &#39;pos[2]&#39;: &#39;particle.position[2]&#39;
+            - &#39;z&#39;: &#39;particle.position[2]&#39;
+            - &#39;species&#39;: &#39;particle.species&#39;
+            - &#39;spe&#39;: &#39;particle.species&#39;
+            - &#39;label&#39;: &#39;particle.label&#39;
+            - &#39;index&#39;: &#39;particle.index&#39;
+            - &#39;mass&#39;: &#39;particle.mass&#39;
+            - &#39;radius&#39;: &#39;particle.radius&#39;
+
+        subset : str, optional
+            Subset of particles for which the property must be dumped. Must be 
+            of the form &#34;particle.&lt;attribute&gt;&#34; unless &#34;&lt;attribute&gt;&#34; is an 
+            alias. The default is None (all particles will be included).
+            This is ignored if `what` is cell property.
+
+        Returns
+        -------
+        to_dump : list
+            List of the requested system property with length equal to the 
+            number of frames in the trajectory. Each element of the list is a
+            numpy.ndarray of the requested system property.
+            
+        Examples
+        --------
+        &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;)
+        &gt;&gt;&gt; pos = traj.get_property(&#39;position&#39;)
+        &gt;&gt;&gt; spe = traj.get_property(&#39;species&#39;)
+        &gt;&gt;&gt; sides = traj.get_property(&#39;cell.side&#39;)
+        
+        &#34;&#34;&#34;
+        to_dump = []
+        for system in self._systems:
+            to_dump.append(system.get_property(what, subset))
+        return to_dump
+
+    def dump(self, what, subset=None):
+        &#34;&#34;&#34;
+        Alias for the method get_property().
+        &#34;&#34;&#34;
+        return self.get_property(what, subset=subset)
+
+    def set_property(self, what, value, subset=None):
+        &#34;&#34;&#34;
+        Set a property `what` to `value` for all the particles in the 
+        trajectory or for a given subset of particles specified by `subset`.
+
+        Parameters
+        ----------
+        what : str
+            Name of the property to set. This is considered to be a particle
+            property by default, unless it starts with &#34;cell&#34;, e.g. 
+            &#34;cell.side&#34;.
+            
+        value : int, float, list, or numpy.ndarray
+            Value(s) of the property to set. An instance of `int` or `float`
+            will set the same value for all concerned particles. An instance
+            of `list` or `numpy.ndarray` will assign a specific value to each
+            particle. In this case, the shape of `value` should respect the
+            number of frames in the trajectory and the number of concerned
+            particles.
+            
+        subset : str, optional
+            Particles to which the property must be set. The default is None.
+            This is ignored if `what` is cell property.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        &gt;&gt;&gt; traj.set_property(&#39;mass&#39;, 1.0)
+        &gt;&gt;&gt; traj.set_property(&#39;radius&#39;, 0.5, &#34;species == &#39;A&#39;&#34;)
+        &gt;&gt;&gt; labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
+                      [1, 1, 0]]
+        &gt;&gt;&gt; traj.set_property(&#39;label&#39;, labels, &#34;species == &#39;B&#39;&#34;)
+
+        &#34;&#34;&#34;
+        if not isinstance(value, (list, numpy.ndarray)):
+            for system in self._systems:
+                system.set_property(what, value, subset=subset)
+        else:
+            assert len(value) == self.__len__(), &#39;`value` should have the same length than the Trajectory.&#39;
+            for frame, system in enumerate(self._systems):
+                system.set_property(what, value[frame], subset=subset)
+
+    def show(self, frames=None, backend=&#39;matplotlib&#39;, color=&#39;species&#39;, **kwargs):
+        &#34;&#34;&#34;
+        Show the frames on index `frames` of the trajectory and color particles
+        according to an arbitrary property, such as species, cluster label, 
+        etc. Current visualization backends are &#39;matplotlib&#39;, &#39;ovito&#39;,
+        and &#39;3dmol&#39;.
+
+        Parameters
+        ----------
+        frames : list of int, optional
+            Indices of the frames to show. The default is None (shows all frames).
+        backend : str, optional
+            Name of the backend to use for visualization. 
+            The default is &#39;matplotlib&#39;.
+        color : str, optional
+            Name of the particle property to use as basis for coloring the 
+            particles. This property must be defined for all the particles in 
+            the system. The default is &#39;species&#39;.
+        **kwargs : additional keyworded arguments (backend-dependent).
+
+        Raises
+        ------
+        ValueError
+            In case of unknown `backend`.
+
+        Returns
+        -------
+        list of Figure or View (backend-dependent)
+        
+        Examples
+        --------
+        &gt;&gt;&gt; traj.show(frames=[0,1,2], color=&#39;label&#39;, backend=&#39;3dmol&#39;)
+        &gt;&gt;&gt; traj.show(frames=[0,1], color=&#39;energy&#39;, backend=&#39;matplotlib&#39;, cmap=&#39;viridis&#39;)
+        &gt;&gt;&gt; traj[0].show() # use the iterability of Trajectory objects
+
+        &#34;&#34;&#34;
+        # show all frames (default)
+        if frames is None:
+            frames = range(len(self))
+        # list of figures/views returned by each system
+        snapshots = []
+        for frame in frames:
+            kwargs_f = kwargs.copy()
+            if &#39;outfile&#39; in kwargs:
+                kwargs_f[&#39;outfile&#39;] += &#39;{:04}&#39;.format(frame)
+            snapshot = self._systems[frame].show(backend=backend,
+                                                 color=color,
+                                                 **kwargs_f)
+            snapshots.append(snapshot)
+        return snapshots
+
+    def fold(self):
+        &#34;&#34;&#34;
+        Fold the particle positions into the central cell.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        for system in self._systems:
+            system.fold()
+
+    def _read(self, first, last, step):
+
+        # formats recognized by defaults
+        if self.backend is None:
+            if self.fmt == &#39;xyz&#39;:
+                self._parser_xyz()
+            elif self.fmt == &#39;rumd&#39;:
+                self._parser_rumd()
+            else:
+                raise ValueError(
+                    &#39;&#34;{}&#34; format is not recognized natively. You may try again with a backend.&#39;.format(self.fmt))
+
+        # atooms backend
+        elif self.backend == &#39;atooms&#39;:
+            self._parser_atooms()
+
+        # MDTraj backend
+        elif self.backend == &#39;mdtraj&#39;:
+            self._parser_mdtraj()
+
+        # wrong backend
+        else:
+            raise ValueError(&#39;backend &#34;{}&#34; is not a recognized backend&#39;.format(self.backend))
+
+        # # Standardize the species by giving each a numeral ID
+        self._make_species_numeral()
+
+        # Sanity checks
+        #  constant number of particles
+        n_particles = set([len(sys.particle) for sys in self._systems])
+        assert(len(n_particles) == 1), &#39;the number of particles should be kept constant in the trajectory.&#39;
+
+        # Slice the trajectory
+        self._slice(first, last, step)
+
+    def _parser_xyz(self):
+        &#34;&#34;&#34;
+        Read the trajectory from a XYZ file and put 
+        the different frames in a list of `System`.
+        &#34;&#34;&#34;
+
+        def _system_info(info):
+            &#34;&#34;&#34;Information on the system (dimension, fields, etc.)&#34;&#34;&#34;
+            import re
+            default_fields = [&#39;id&#39;, &#39;type&#39;, &#39;name&#39;, &#39;species&#39;, &#39;pos&#39;,
+                              &#39;position&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;]
+            # loop over all properties
+            for p in info:
+                # search columns
+                re_cols = re.search(&#39;^[C|c]olumns:(.+)$&#39;, p)
+                # keep additional fields/columns for a later use
+                if re_cols:
+                    fields = re_cols.group(1).split(&#39;,&#39;)
+                    fields = [field for field in fields if field not in default_fields]
+                # search cell
+                re_cell = re.search(&#39;^[C|c]ell:(.+)$&#39;, p)
+                if re_cell:
+                    cell = re_cell.group(1).split(&#39;,&#39;)
+                    cell = [float(L) for L in cell]
+            return cell, fields
+
+        # Read whole file
+        with open(self.filename) as trajectory:
+            while True:
+                firstline = trajectory.readline()
+                # Stop if EOF
+                if not firstline:
+                    break
+                # Current frame
+                n_particles = int(firstline)
+                frame_info = trajectory.readline().split()
+                sides, other_fields = _system_info(frame_info)
+                cell = Cell(sides)
+                system = System(cell=cell)
+                dimension = len(sides)
+
+                # Look for additional fields
+                if self.additional_fields:
+                    starting_idx = dimension + 1
+                    # community/cluster label
+                    default_cluster_fields = [&#39;cluster&#39;, &#39;community&#39;, &#39;label&#39;]
+                    read_cluster_field = True in [
+                        cls_field in self.additional_fields for cls_field in default_cluster_fields]
+                    if read_cluster_field:
+                        cluster_field_mask = [cf in other_fields for cf in default_cluster_fields]
+                        has_cluster_field = True in cluster_field_mask
+                        if has_cluster_field:
+                            cluster_field_name = default_cluster_fields[cluster_field_mask.index(True)]
+                            cidx = other_fields.index(cluster_field_name)
+                    # other additional fields
+                    fields_to_read = []
+                    fields_to_read_idx = []
+                    for field in self.additional_fields:
+                        if field not in default_cluster_fields:
+                            fidx = other_fields.index(field)
+                            fields_to_read.append(field)
+                            fields_to_read_idx.append(fidx)
+
+                # Loop over particles
+                for _ in range(n_particles):
+                    line = trajectory.readline().split()
+                    # particle type
+                    p_type = line[0]
+                    # position (2D or 3D)
+                    if dimension == 2:
+                        p_pos = numpy.array(line[1:3], dtype=numpy.float64)
+                    if dimension == 3:
+                        p_pos = numpy.array(line[1:4], dtype=numpy.float64)
+
+                    # create the Particle object
+                    particle = Particle(position=p_pos, species=p_type)
+                    # set the additional fields
+                    if self.additional_fields:
+                        if read_cluster_field and has_cluster_field:
+                            particle.label = int(line[starting_idx + cidx])
+                        for field_name, field_idx in zip(fields_to_read, fields_to_read_idx):
+                            val = tipify(line[starting_idx + field_idx])
+                            particle.__setattr__(field_name, val)
+
+                    # add the particle to the system
+                    system.particle.append(particle)
+
+                # Add system to trajectory
+                self._systems.append(system)
+
+    def _parser_rumd(self):
+        &#34;&#34;&#34;
+        Read the trajectory from a RUMD file and put 
+        the different frames in a list of `System`.
+        &#34;&#34;&#34;
+
+        import gzip
+
+        def _system_info(info):
+            &#34;&#34;&#34;Information on the system (dimension, fields, etc.)&#34;&#34;&#34;
+            import re
+            # loop over all properties
+            for p in info:
+                # search columns
+                re_cols = re.search(&#39;^columns=(.+)$&#39;, p)
+                # keep fields/columns for a later use
+                if re_cols:
+                    fields = re_cols.group(1).split(&#39;,&#39;)
+                # search cell
+                re_cell = re.search(&#39;^(sim_box|boxLengths)=(.+)$&#39;, p)
+                if re_cell:
+                    cell = re_cell.group(2).split(&#39;,&#39;)
+                    cell = [float(L) for L in cell if L[0].isdigit()]
+            # look for community/cluster field
+            cluster_field = &#39;community&#39; in fields or &#39;cluster&#39; in fields
+            return cell, cluster_field
+
+        with gzip.open(self.filename, mode=&#39;rt&#39;) as trajectory:
+            while True:
+                firstline = trajectory.readline()
+                # Stop if EOF
+                if not firstline:
+                    break
+                # Current frame
+                n_particles = int(firstline)
+                frame_info = trajectory.readline().split()
+                sides, cluster_field = _system_info(frame_info)
+                cell = Cell(sides)
+                system = System(cell=cell)
+                dimension = len(sides)
+
+                # Loop over particles
+                for _ in range(n_particles):
+                    line = trajectory.readline().split()
+                    # particle type
+                    p_type = line[0]
+                    # position (2D or 3D)
+                    if dimension == 2:
+                        p_pos = numpy.array(line[1:3], dtype=numpy.float64)
+                    if dimension == 3:
+                        p_pos = numpy.array(line[1:4], dtype=numpy.float64)
+                    # community/cluster
+                    if cluster_field:
+                        if dimension == 2:
+                            p_label = int(line[3])
+                        if dimension == 3:
+                            p_label = int(line[4])
+                    else:
+                        p_label = -1
+                    # create the Particle object
+                    particle = Particle(position=p_pos, species=p_type, label=p_label)
+                    system.particle.append(particle)
+
+                # Add system to trajectory
+                self._systems.append(system)
+
+    def _parser_atooms(self):
+
+        try:
+            from atooms.trajectory import Trajectory as AtoomsTrajectory
+
+            supported = list(AtoomsTrajectory.formats.keys())
+            assert self.fmt in supported, &#39;the current version of atooms only supports the following formats: {}&#39;.format(
+                supported)
+
+            _Trajectory = AtoomsTrajectory.formats[self.fmt]
+
+            # Read additional fields if the trajectory format allows
+            if self.additional_fields:
+                try:
+                    atooms_traj = _Trajectory(self.filename, mode=&#39;r&#39;, fields=[&#39;id&#39;, &#39;pos&#39;] + self.additional_fields)
+                except TypeError:
+                    print(&#39;This trajectory format does not support additional fields&#39;)
+                    print(&#39;Warning: ignoring additional fields.&#39;)
+                    self.additional_fields = []
+                    atooms_traj = _Trajectory(self.filename)
+            else:
+                atooms_traj = _Trajectory(self.filename)
+
+            # Fill the native Trajectory using atooms Trajectory
+            for atooms_sys in atooms_traj:
+                cell = Cell(atooms_sys.cell.side)
+                system = System(cell=cell)
+                for atooms_p in atooms_sys.particle:
+                    pos = atooms_p.position.copy()
+                    spe = atooms_p.species
+                    particle = Particle(position=pos, species=spe)
+                    # additional fields
+                    for field in self.additional_fields:
+                        value = atooms_p.__getattribute__(field)
+                        particle.__setattr__(field, value)
+                    system.particle.append(particle)
+                self._systems.append(system)
+            atooms_traj.close()
+
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError(&#39;No `atooms` module found.&#39;)
+
+    def _parser_mdtraj(self):
+
+        try:
+            import mdtraj as md
+            try:
+                md_traj = md.load(self.filename)
+            except ValueError:
+                md_traj = md.load(self.filename, top=self.top)
+            for frame in range(md_traj.n_frames):
+                input_cell = md_traj.unitcell_lengths
+                assert input_cell is not None, &#39;cell dimensions are needed to read the trajectory&#39;
+                cell = Cell(side=input_cell[frame])
+                system = System(cell=cell)
+                for atom in range(md_traj.n_atoms):
+                    pos = md_traj.xyz[frame, atom]
+                    spe = md_traj[frame].topology.atom(atom).element.symbol
+                    # virtual site
+                    if spe == &#39;VS&#39;:
+                        spe = md_traj[frame].topology.atom(atom).name
+                    particle = Particle(position=pos, species=spe)
+                    system.particle.append(particle)
+                self._systems.append(system)
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError(&#39;No `mdtraj` module found.&#39;)
+
+    def write(self, output_path, fmt=&#39;xyz&#39;, backend=None, additional_fields=None, precision=6):
+        &#34;&#34;&#34;
+        Write the current trajectory to a file.
+
+        Parameters
+        ----------
+        output_path : str
+            Name of the output trajectory file.
+        fmt : str, optional
+            Format of the output trajectory file. The default is &#39;xyz&#39;.
+        backend : str, optional
+            Name of a third-party package to use when writing the output
+            trajectory. The default is None.
+        additional_fields : list of str, optional
+            Additional fields (i.e. particle properties) to write in the output
+            trajectory. Not all trajectory formats allow for additional fields. 
+            The default is [].
+        precision : int, optional
+            Number of decimals when writing the output trajectory. 
+            The default is 6.
+
+        Raises
+        ------
+        ValueError
+            - If `backend=None` and `fmt` is not recognized natively.
+            - If `backend` is unknown.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        if additional_fields is None:
+            additional_fields = []
+        else:
+            additional_fields = additional_fields
+
+        # formats recognized by defaults
+        if backend is None:
+            if fmt == &#39;xyz&#39;:
+                self._write_xyz(output_path, additional_fields, precision)
+            elif fmt == &#39;rumd&#39;:
+                self._write_rumd(output_path, additional_fields, precision)
+            else:
+                raise ValueError(
+                    &#39;&#34;{}&#34; format is not recognized natively. You may try again with a backend.&#39;.format(self.fmt))
+
+        # atooms backend
+        elif backend == &#39;atooms&#39;:
+            self._write_atooms(output_path, fmt, additional_fields, precision)
+
+        # MDTraj backend
+        elif backend == &#39;mdtraj&#39;:
+            self._write_mdtraj(output_path, fmt, additional_fields, precision)
+
+        # wrong backend
+        else:
+            raise ValueError(&#39;backend &#34;{}&#34; is not a recognized backend&#39;.format(self.backend))
+
+    def _write_xyz(self, output_path, additional_fields, precision):
+        if not output_path.endswith(&#39;.xyz&#39;):
+            output_path += &#39;.xyz&#39;
+        with open(output_path, &#39;w&#39;) as file:
+            for system in self._systems:
+                file.write(&#39;{}\n&#39;.format(len(system.particle)))
+                columns = &#39;columns:id,pos,&#39;
+                for field in additional_fields:
+                    columns += &#39;{},&#39;.format(field)
+                columns = columns[:-1]
+                header = columns + &#39; cell:{}\n&#39;
+                file.write(header.format(&#39;,&#39;.join(&#39;{:.{}f}&#39;.format(L, precision) for L in system.cell.side)))
+                for particle in system.particle:
+                    line = &#39;{} &#39;.format(particle.species)
+                    line += &#39;{} &#39;.format(&#39; &#39;.join(&#39;{:.{}f}&#39;.format(p_i, precision) for p_i in particle.position))
+                    for field in additional_fields:
+                        line += &#39;{} &#39;.format(particle.__getattribute__(field))
+                    line += &#39;\n&#39;
+                    file.write(line)
+
+    # /!\ RUMD does not seem to accept additional fields
+    def _write_rumd(self, output_path, fields, precision):
+        import gzip
+        if not output_path.endswith(&#39;.xyz.gz&#39;):
+            output_path += &#39;.xyz.gz&#39;
+        with gzip.open(output_path, &#39;wt&#39;) as file:
+            for frame, system in enumerate(self._systems):
+                file.write(&#39;{}\n&#39;.format(len(system.particle)))
+                header = &#39;ioformat=1 dt=0.001 timeStepIndex={} boxLengths={} &#39;
+                dimension = system.n_dimensions
+                if dimension == 2:
+                    columns = &#39;columns=type,x,y\n&#39;
+                if dimension == 3:
+                    columns = &#39;columns=type,x,y,z\n&#39;
+                header = header + &#39;numTypes={} mass={} &#39;
+                header = header + columns
+                file.write(header.format(frame,
+                                         &#39;,&#39;.join(&#39;{:.{}f}&#39;.format(L, precision) for L in system.cell.side),
+                                         len(system.distinct_species),
+                                         &#39;,&#39;.join(&#39;1.0&#39; for s in system.distinct_species)))
+                for particle in system.particle:
+                    line = &#39;{} &#39;.format(particle.species_id - 1)
+                    line += &#39;{} &#39;.format(&#39; &#39;.join(&#39;{:.{}f}&#39;.format(p_i, precision) for p_i in particle.position))
+                    # no additional field
+                    #line += &#39;{} &#39;.format(particle.label)
+                    line += &#39;\n&#39;
+                    file.write(line)
+
+    def _write_atooms(self, output_path, fmt, fields, precision):
+        try:
+            from atooms.trajectory import Trajectory as AtoomsTrajectory
+            from atooms.system import System as _System
+            from atooms.system import Particle as _Particle
+            from atooms.system import Cell as _Cell
+
+            _Trajectory = AtoomsTrajectory.formats[fmt]
+
+            # Write additional fields if the trajectory format allows
+            try:
+                with _Trajectory(output_path, &#39;w&#39;, fields=[&#39;id&#39;, &#39;pos&#39;] + fields) as atooms_traj:
+                    for n, system in enumerate(self._systems):
+                        new_cell = _Cell(side=system.cell.side)
+                        new_system = _System(cell=new_cell)
+                        for particle in system.particle:
+                            pos = particle.position
+                            spe = particle.species
+                            label = particle.label
+                            new_particle = _Particle(species=spe, position=pos)
+                            new_particle.label = label
+                            new_system.particle.append(new_particle)
+                        atooms_traj.write(new_system, step=n)
+
+            except TypeError:
+                print(&#39;This trajectory format does not support additional fields (e.g. cluster labels)&#39;)
+
+        except ModuleNotFoundError:
+            print(&#39;No `atooms` module found.&#39;)
+
+    def _write_mdtraj(self, output_path, fmt, fields, precision):
+        raise NotImplementedError(&#39;Writing output trajectories with the MDTraj backend is currently impossible&#39;)
+
+    # TODO: check if always working
+    # TODO: handle fractions
+    def _slice(self, first, last, step):
+        nframes = len(self._systems)
+        assert(first &gt;= 0 and first &lt; nframes), &#39;invalid first frame.&#39;
+        if last is not None:
+            assert(last &gt;= 0 and last &lt; nframes), &#39;invalid last frame.&#39;
+            assert(first &lt;= last), &#39;first frame must be inferior to last frame.&#39;
+        else:
+            last = nframes
+        # Remove unwanted frames
+        all_frames = list(range(nframes))
+        frames = all_frames[first:last + 1:step]
+        kept_systems = []
+        for frame in frames:
+            kept_systems.append(self._systems[frame])
+        # Owerwrite non-sliced list
+        self._systems = kept_systems
+
+    def _make_species_numeral(self):
+        &#34;&#34;&#34;
+        Standardize the names of the species to [1, ..., N_species] by
+        changing the attribute `particle.species_id` of each particle in
+        the trajectory.
+        &#34;&#34;&#34;
+        for system in self._systems:
+            distinct_species = list(system.distinct_species)
+            for particle in system.particle:
+                particle.species_id = distinct_species.index(particle.species) + 1</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="partycls.trajectory.Trajectory"><code class="flex name class">
+<span>class <span class="ident">Trajectory</span></span>
+<span>(</span><span>filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A trajectory is composed by one or several frames, each frame being an
+instance of <code>System</code>. Trajectory instances are iterable. By default, only
+the positions and particle types are being read from the trajectory file.
+Additional particle properties in the file can be read using the
+<code>additional_fields</code> parameter.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to the trajectory file to read.</dd>
+<dt><strong><code>fmt</code></strong> :&ensp;<code>str</code>, optional, default<code>: 'xyz'</code></dt>
+<dd>Format of the trajectory. Needed when using "atooms" as a backend.</dd>
+<dt><strong><code>backend</code></strong> :&ensp;<code>str</code>, optional, default<code>: None</code></dt>
+<dd>Name of a third-party package to use as backend when reading the input
+trajectory. Currently supports "atooms" and "mdtraj".</dd>
+<dt><strong><code>top</code></strong> :&ensp;<code>str, mdtraj.Trajectory,</code> or <code>mdtraj.Topology</code>, optional<code>, defaut: None</code></dt>
+<dd>Topology information. Needed when using "mdtraj" as backend on a
+trajectory file whose format requires topology information. See MDTraj
+documentation for more information.</dd>
+<dt><strong><code>additional_fields</code></strong> :&ensp;<code>list</code> of <code>str</code>, optional, default<code>: []</code></dt>
+<dd>Additional fields (i.e. particle properties) to read from the
+trajectory. Not all trajectory formats allow for additional fields.</dd>
+<dt><strong><code>first</code></strong> :&ensp;<code>int</code>, optional, default<code>: 0</code></dt>
+<dd>Index of the first frame to consider in the trajectory. Starts at zero.</dd>
+<dt><strong><code>last</code></strong> :&ensp;<code>int</code>, optional, default<code>: None</code></dt>
+<dd>Index of the last frame to consider in the trajectory. Default is the
+last frame.</dd>
+<dt><strong><code>step</code></strong> :&ensp;<code>int</code>, optional, default<code>: 1</code></dt>
+<dd>Step between each frame to consider in the trajectory. For example,
+if <code>step=2</code>, one every two frames is read.</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the original trajectory file.</dd>
+<dt><strong><code>fmt</code></strong> :&ensp;<code>str</code></dt>
+<dd>Format of the original trajectory file.</dd>
+<dt><strong><code>backend</code></strong> :&ensp;<code>str</code> or <code>None</code></dt>
+<dd>Name of the third-party package used to read the input trajectory file.</dd>
+<dt><strong><code>additional_fields</code></strong> :&ensp;<code>list</code>, default<code>: None</code></dt>
+<dd>List of additional particle properties that were extracted from the
+original trajectory file.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from partycls.trajectory import Trajectory
+&gt;&gt;&gt; traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Trajectory:
+    &#34;&#34;&#34;
+    A trajectory is composed by one or several frames, each frame being an 
+    instance of `System`. Trajectory instances are iterable. By default, only
+    the positions and particle types are being read from the trajectory file.
+    Additional particle properties in the file can be read using the 
+    `additional_fields` parameter.
+    
+    Parameters
+    ----------
+    
+    filename : str
+        Path to the trajectory file to read.
+        
+    fmt : str, optional, default: &#39;xyz&#39;
+        Format of the trajectory. Needed when using &#34;atooms&#34; as a backend.
+        
+    backend : str, optional, default: None
+        Name of a third-party package to use as backend when reading the input
+        trajectory. Currently supports &#34;atooms&#34; and &#34;mdtraj&#34;.
+        
+    top : str, mdtraj.Trajectory, or mdtraj.Topology, optional, defaut: None
+        Topology information. Needed when using &#34;mdtraj&#34; as backend on a 
+        trajectory file whose format requires topology information. See MDTraj
+        documentation for more information.
+         
+    additional_fields : list of str, optional, default: []
+        Additional fields (i.e. particle properties) to read from the 
+        trajectory. Not all trajectory formats allow for additional fields.
+        
+    first : int, optional, default: 0
+        Index of the first frame to consider in the trajectory. Starts at zero.
+        
+    last : int, optional, default: None
+        Index of the last frame to consider in the trajectory. Default is the 
+        last frame.
+        
+    step : int, optional, default: 1
+        Step between each frame to consider in the trajectory. For example,
+        if `step=2`, one every two frames is read.
+        
+    
+    Attributes
+    ----------
+    
+    filename : str
+        Name of the original trajectory file.
+        
+    fmt : str
+        Format of the original trajectory file.
+        
+    backend : str or None
+        Name of the third-party package used to read the input trajectory file.
+        
+    additional_fields : list, default: None
+        List of additional particle properties that were extracted from the
+        original trajectory file.
+    
+    Examples
+    --------
+    
+    &gt;&gt;&gt; from partycls.trajectory import Trajectory
+    &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;, additional_fields=[&#39;mass&#39;])
+    &#34;&#34;&#34;
+
+    def __init__(self, filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
+        self.filename = filename
+        if backend is None and fmt is None:
+            self.fmt = &#39;xyz&#39;
+        else:
+            self.fmt = fmt
+        self.backend = backend
+        self.top = top
+        if additional_fields is None:
+            self.additional_fields = []
+        else:
+            self.additional_fields = additional_fields
+        self._systems = []
+        self._read(first, last, step)
+
+    def __getitem__(self, item):
+        return self._systems[item]
+
+    def __len__(self):
+        return len(self._systems)
+
+    def __str__(self):
+        rep = &#39;Trajectory(filename=&#34;{}&#34;, number_of_frames={})&#39;
+        return rep.format(self.filename, self.__len__())
+
+    def __repr__(self):
+        return self.__str__()
+
+    def remove(self, frame):
+        &#34;&#34;&#34;
+        Remove the system at position `frame` from the trajectory.
+
+        Parameters
+        ----------
+        frame : int
+            Index of the frame to remove from the trajectory.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        self._systems.pop(frame)
+
+    def get_property(self, what, subset=None):
+        &#34;&#34;&#34;
+        Return a list of numpy arrays with the system property specified by 
+        `what`. The list size is the number of systems in the trajectory.
+
+        Parameters
+        ----------
+        what : str
+            Requested system property.
+            
+            `what` must be of the form 
+            &#34;particle.&lt;attribute&gt;&#34; or &#34;cell.&lt;attribute&gt;&#34;. 
+            
+            The following particle aliases are accepted:
+            - &#39;position&#39;: &#39;particle.position&#39;
+            - &#39;pos&#39;: &#39;particle.position&#39;
+            - &#39;position[0]&#39;: &#39;particle.position[0]&#39;, 
+            - &#39;pos[0]&#39;: &#39;particle.position[0]&#39;
+            - &#39;x&#39;: &#39;particle.position[0]&#39;
+            - &#39;position[1]&#39;: &#39;particle.position[1]&#39;,
+            - &#39;pos[1]&#39;: &#39;particle.position[1]&#39;
+            - &#39;y&#39;: &#39;particle.position[1]&#39;
+            - &#39;position[2]&#39;: &#39;particle.position[2]&#39;
+            - &#39;pos[2]&#39;: &#39;particle.position[2]&#39;
+            - &#39;z&#39;: &#39;particle.position[2]&#39;
+            - &#39;species&#39;: &#39;particle.species&#39;
+            - &#39;spe&#39;: &#39;particle.species&#39;
+            - &#39;label&#39;: &#39;particle.label&#39;
+            - &#39;index&#39;: &#39;particle.index&#39;
+            - &#39;mass&#39;: &#39;particle.mass&#39;
+            - &#39;radius&#39;: &#39;particle.radius&#39;
+
+        subset : str, optional
+            Subset of particles for which the property must be dumped. Must be 
+            of the form &#34;particle.&lt;attribute&gt;&#34; unless &#34;&lt;attribute&gt;&#34; is an 
+            alias. The default is None (all particles will be included).
+            This is ignored if `what` is cell property.
+
+        Returns
+        -------
+        to_dump : list
+            List of the requested system property with length equal to the 
+            number of frames in the trajectory. Each element of the list is a
+            numpy.ndarray of the requested system property.
+            
+        Examples
+        --------
+        &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;)
+        &gt;&gt;&gt; pos = traj.get_property(&#39;position&#39;)
+        &gt;&gt;&gt; spe = traj.get_property(&#39;species&#39;)
+        &gt;&gt;&gt; sides = traj.get_property(&#39;cell.side&#39;)
+        
+        &#34;&#34;&#34;
+        to_dump = []
+        for system in self._systems:
+            to_dump.append(system.get_property(what, subset))
+        return to_dump
+
+    def dump(self, what, subset=None):
+        &#34;&#34;&#34;
+        Alias for the method get_property().
+        &#34;&#34;&#34;
+        return self.get_property(what, subset=subset)
+
+    def set_property(self, what, value, subset=None):
+        &#34;&#34;&#34;
+        Set a property `what` to `value` for all the particles in the 
+        trajectory or for a given subset of particles specified by `subset`.
+
+        Parameters
+        ----------
+        what : str
+            Name of the property to set. This is considered to be a particle
+            property by default, unless it starts with &#34;cell&#34;, e.g. 
+            &#34;cell.side&#34;.
+            
+        value : int, float, list, or numpy.ndarray
+            Value(s) of the property to set. An instance of `int` or `float`
+            will set the same value for all concerned particles. An instance
+            of `list` or `numpy.ndarray` will assign a specific value to each
+            particle. In this case, the shape of `value` should respect the
+            number of frames in the trajectory and the number of concerned
+            particles.
+            
+        subset : str, optional
+            Particles to which the property must be set. The default is None.
+            This is ignored if `what` is cell property.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        &gt;&gt;&gt; traj.set_property(&#39;mass&#39;, 1.0)
+        &gt;&gt;&gt; traj.set_property(&#39;radius&#39;, 0.5, &#34;species == &#39;A&#39;&#34;)
+        &gt;&gt;&gt; labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
+                      [1, 1, 0]]
+        &gt;&gt;&gt; traj.set_property(&#39;label&#39;, labels, &#34;species == &#39;B&#39;&#34;)
+
+        &#34;&#34;&#34;
+        if not isinstance(value, (list, numpy.ndarray)):
+            for system in self._systems:
+                system.set_property(what, value, subset=subset)
+        else:
+            assert len(value) == self.__len__(), &#39;`value` should have the same length than the Trajectory.&#39;
+            for frame, system in enumerate(self._systems):
+                system.set_property(what, value[frame], subset=subset)
+
+    def show(self, frames=None, backend=&#39;matplotlib&#39;, color=&#39;species&#39;, **kwargs):
+        &#34;&#34;&#34;
+        Show the frames on index `frames` of the trajectory and color particles
+        according to an arbitrary property, such as species, cluster label, 
+        etc. Current visualization backends are &#39;matplotlib&#39;, &#39;ovito&#39;,
+        and &#39;3dmol&#39;.
+
+        Parameters
+        ----------
+        frames : list of int, optional
+            Indices of the frames to show. The default is None (shows all frames).
+        backend : str, optional
+            Name of the backend to use for visualization. 
+            The default is &#39;matplotlib&#39;.
+        color : str, optional
+            Name of the particle property to use as basis for coloring the 
+            particles. This property must be defined for all the particles in 
+            the system. The default is &#39;species&#39;.
+        **kwargs : additional keyworded arguments (backend-dependent).
+
+        Raises
+        ------
+        ValueError
+            In case of unknown `backend`.
+
+        Returns
+        -------
+        list of Figure or View (backend-dependent)
+        
+        Examples
+        --------
+        &gt;&gt;&gt; traj.show(frames=[0,1,2], color=&#39;label&#39;, backend=&#39;3dmol&#39;)
+        &gt;&gt;&gt; traj.show(frames=[0,1], color=&#39;energy&#39;, backend=&#39;matplotlib&#39;, cmap=&#39;viridis&#39;)
+        &gt;&gt;&gt; traj[0].show() # use the iterability of Trajectory objects
+
+        &#34;&#34;&#34;
+        # show all frames (default)
+        if frames is None:
+            frames = range(len(self))
+        # list of figures/views returned by each system
+        snapshots = []
+        for frame in frames:
+            kwargs_f = kwargs.copy()
+            if &#39;outfile&#39; in kwargs:
+                kwargs_f[&#39;outfile&#39;] += &#39;{:04}&#39;.format(frame)
+            snapshot = self._systems[frame].show(backend=backend,
+                                                 color=color,
+                                                 **kwargs_f)
+            snapshots.append(snapshot)
+        return snapshots
+
+    def fold(self):
+        &#34;&#34;&#34;
+        Fold the particle positions into the central cell.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        for system in self._systems:
+            system.fold()
+
+    def _read(self, first, last, step):
+
+        # formats recognized by defaults
+        if self.backend is None:
+            if self.fmt == &#39;xyz&#39;:
+                self._parser_xyz()
+            elif self.fmt == &#39;rumd&#39;:
+                self._parser_rumd()
+            else:
+                raise ValueError(
+                    &#39;&#34;{}&#34; format is not recognized natively. You may try again with a backend.&#39;.format(self.fmt))
+
+        # atooms backend
+        elif self.backend == &#39;atooms&#39;:
+            self._parser_atooms()
+
+        # MDTraj backend
+        elif self.backend == &#39;mdtraj&#39;:
+            self._parser_mdtraj()
+
+        # wrong backend
+        else:
+            raise ValueError(&#39;backend &#34;{}&#34; is not a recognized backend&#39;.format(self.backend))
+
+        # # Standardize the species by giving each a numeral ID
+        self._make_species_numeral()
+
+        # Sanity checks
+        #  constant number of particles
+        n_particles = set([len(sys.particle) for sys in self._systems])
+        assert(len(n_particles) == 1), &#39;the number of particles should be kept constant in the trajectory.&#39;
+
+        # Slice the trajectory
+        self._slice(first, last, step)
+
+    def _parser_xyz(self):
+        &#34;&#34;&#34;
+        Read the trajectory from a XYZ file and put 
+        the different frames in a list of `System`.
+        &#34;&#34;&#34;
+
+        def _system_info(info):
+            &#34;&#34;&#34;Information on the system (dimension, fields, etc.)&#34;&#34;&#34;
+            import re
+            default_fields = [&#39;id&#39;, &#39;type&#39;, &#39;name&#39;, &#39;species&#39;, &#39;pos&#39;,
+                              &#39;position&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;]
+            # loop over all properties
+            for p in info:
+                # search columns
+                re_cols = re.search(&#39;^[C|c]olumns:(.+)$&#39;, p)
+                # keep additional fields/columns for a later use
+                if re_cols:
+                    fields = re_cols.group(1).split(&#39;,&#39;)
+                    fields = [field for field in fields if field not in default_fields]
+                # search cell
+                re_cell = re.search(&#39;^[C|c]ell:(.+)$&#39;, p)
+                if re_cell:
+                    cell = re_cell.group(1).split(&#39;,&#39;)
+                    cell = [float(L) for L in cell]
+            return cell, fields
+
+        # Read whole file
+        with open(self.filename) as trajectory:
+            while True:
+                firstline = trajectory.readline()
+                # Stop if EOF
+                if not firstline:
+                    break
+                # Current frame
+                n_particles = int(firstline)
+                frame_info = trajectory.readline().split()
+                sides, other_fields = _system_info(frame_info)
+                cell = Cell(sides)
+                system = System(cell=cell)
+                dimension = len(sides)
+
+                # Look for additional fields
+                if self.additional_fields:
+                    starting_idx = dimension + 1
+                    # community/cluster label
+                    default_cluster_fields = [&#39;cluster&#39;, &#39;community&#39;, &#39;label&#39;]
+                    read_cluster_field = True in [
+                        cls_field in self.additional_fields for cls_field in default_cluster_fields]
+                    if read_cluster_field:
+                        cluster_field_mask = [cf in other_fields for cf in default_cluster_fields]
+                        has_cluster_field = True in cluster_field_mask
+                        if has_cluster_field:
+                            cluster_field_name = default_cluster_fields[cluster_field_mask.index(True)]
+                            cidx = other_fields.index(cluster_field_name)
+                    # other additional fields
+                    fields_to_read = []
+                    fields_to_read_idx = []
+                    for field in self.additional_fields:
+                        if field not in default_cluster_fields:
+                            fidx = other_fields.index(field)
+                            fields_to_read.append(field)
+                            fields_to_read_idx.append(fidx)
+
+                # Loop over particles
+                for _ in range(n_particles):
+                    line = trajectory.readline().split()
+                    # particle type
+                    p_type = line[0]
+                    # position (2D or 3D)
+                    if dimension == 2:
+                        p_pos = numpy.array(line[1:3], dtype=numpy.float64)
+                    if dimension == 3:
+                        p_pos = numpy.array(line[1:4], dtype=numpy.float64)
+
+                    # create the Particle object
+                    particle = Particle(position=p_pos, species=p_type)
+                    # set the additional fields
+                    if self.additional_fields:
+                        if read_cluster_field and has_cluster_field:
+                            particle.label = int(line[starting_idx + cidx])
+                        for field_name, field_idx in zip(fields_to_read, fields_to_read_idx):
+                            val = tipify(line[starting_idx + field_idx])
+                            particle.__setattr__(field_name, val)
+
+                    # add the particle to the system
+                    system.particle.append(particle)
+
+                # Add system to trajectory
+                self._systems.append(system)
+
+    def _parser_rumd(self):
+        &#34;&#34;&#34;
+        Read the trajectory from a RUMD file and put 
+        the different frames in a list of `System`.
+        &#34;&#34;&#34;
+
+        import gzip
+
+        def _system_info(info):
+            &#34;&#34;&#34;Information on the system (dimension, fields, etc.)&#34;&#34;&#34;
+            import re
+            # loop over all properties
+            for p in info:
+                # search columns
+                re_cols = re.search(&#39;^columns=(.+)$&#39;, p)
+                # keep fields/columns for a later use
+                if re_cols:
+                    fields = re_cols.group(1).split(&#39;,&#39;)
+                # search cell
+                re_cell = re.search(&#39;^(sim_box|boxLengths)=(.+)$&#39;, p)
+                if re_cell:
+                    cell = re_cell.group(2).split(&#39;,&#39;)
+                    cell = [float(L) for L in cell if L[0].isdigit()]
+            # look for community/cluster field
+            cluster_field = &#39;community&#39; in fields or &#39;cluster&#39; in fields
+            return cell, cluster_field
+
+        with gzip.open(self.filename, mode=&#39;rt&#39;) as trajectory:
+            while True:
+                firstline = trajectory.readline()
+                # Stop if EOF
+                if not firstline:
+                    break
+                # Current frame
+                n_particles = int(firstline)
+                frame_info = trajectory.readline().split()
+                sides, cluster_field = _system_info(frame_info)
+                cell = Cell(sides)
+                system = System(cell=cell)
+                dimension = len(sides)
+
+                # Loop over particles
+                for _ in range(n_particles):
+                    line = trajectory.readline().split()
+                    # particle type
+                    p_type = line[0]
+                    # position (2D or 3D)
+                    if dimension == 2:
+                        p_pos = numpy.array(line[1:3], dtype=numpy.float64)
+                    if dimension == 3:
+                        p_pos = numpy.array(line[1:4], dtype=numpy.float64)
+                    # community/cluster
+                    if cluster_field:
+                        if dimension == 2:
+                            p_label = int(line[3])
+                        if dimension == 3:
+                            p_label = int(line[4])
+                    else:
+                        p_label = -1
+                    # create the Particle object
+                    particle = Particle(position=p_pos, species=p_type, label=p_label)
+                    system.particle.append(particle)
+
+                # Add system to trajectory
+                self._systems.append(system)
+
+    def _parser_atooms(self):
+
+        try:
+            from atooms.trajectory import Trajectory as AtoomsTrajectory
+
+            supported = list(AtoomsTrajectory.formats.keys())
+            assert self.fmt in supported, &#39;the current version of atooms only supports the following formats: {}&#39;.format(
+                supported)
+
+            _Trajectory = AtoomsTrajectory.formats[self.fmt]
+
+            # Read additional fields if the trajectory format allows
+            if self.additional_fields:
+                try:
+                    atooms_traj = _Trajectory(self.filename, mode=&#39;r&#39;, fields=[&#39;id&#39;, &#39;pos&#39;] + self.additional_fields)
+                except TypeError:
+                    print(&#39;This trajectory format does not support additional fields&#39;)
+                    print(&#39;Warning: ignoring additional fields.&#39;)
+                    self.additional_fields = []
+                    atooms_traj = _Trajectory(self.filename)
+            else:
+                atooms_traj = _Trajectory(self.filename)
+
+            # Fill the native Trajectory using atooms Trajectory
+            for atooms_sys in atooms_traj:
+                cell = Cell(atooms_sys.cell.side)
+                system = System(cell=cell)
+                for atooms_p in atooms_sys.particle:
+                    pos = atooms_p.position.copy()
+                    spe = atooms_p.species
+                    particle = Particle(position=pos, species=spe)
+                    # additional fields
+                    for field in self.additional_fields:
+                        value = atooms_p.__getattribute__(field)
+                        particle.__setattr__(field, value)
+                    system.particle.append(particle)
+                self._systems.append(system)
+            atooms_traj.close()
+
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError(&#39;No `atooms` module found.&#39;)
+
+    def _parser_mdtraj(self):
+
+        try:
+            import mdtraj as md
+            try:
+                md_traj = md.load(self.filename)
+            except ValueError:
+                md_traj = md.load(self.filename, top=self.top)
+            for frame in range(md_traj.n_frames):
+                input_cell = md_traj.unitcell_lengths
+                assert input_cell is not None, &#39;cell dimensions are needed to read the trajectory&#39;
+                cell = Cell(side=input_cell[frame])
+                system = System(cell=cell)
+                for atom in range(md_traj.n_atoms):
+                    pos = md_traj.xyz[frame, atom]
+                    spe = md_traj[frame].topology.atom(atom).element.symbol
+                    # virtual site
+                    if spe == &#39;VS&#39;:
+                        spe = md_traj[frame].topology.atom(atom).name
+                    particle = Particle(position=pos, species=spe)
+                    system.particle.append(particle)
+                self._systems.append(system)
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError(&#39;No `mdtraj` module found.&#39;)
+
+    def write(self, output_path, fmt=&#39;xyz&#39;, backend=None, additional_fields=None, precision=6):
+        &#34;&#34;&#34;
+        Write the current trajectory to a file.
+
+        Parameters
+        ----------
+        output_path : str
+            Name of the output trajectory file.
+        fmt : str, optional
+            Format of the output trajectory file. The default is &#39;xyz&#39;.
+        backend : str, optional
+            Name of a third-party package to use when writing the output
+            trajectory. The default is None.
+        additional_fields : list of str, optional
+            Additional fields (i.e. particle properties) to write in the output
+            trajectory. Not all trajectory formats allow for additional fields. 
+            The default is [].
+        precision : int, optional
+            Number of decimals when writing the output trajectory. 
+            The default is 6.
+
+        Raises
+        ------
+        ValueError
+            - If `backend=None` and `fmt` is not recognized natively.
+            - If `backend` is unknown.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        if additional_fields is None:
+            additional_fields = []
+        else:
+            additional_fields = additional_fields
+
+        # formats recognized by defaults
+        if backend is None:
+            if fmt == &#39;xyz&#39;:
+                self._write_xyz(output_path, additional_fields, precision)
+            elif fmt == &#39;rumd&#39;:
+                self._write_rumd(output_path, additional_fields, precision)
+            else:
+                raise ValueError(
+                    &#39;&#34;{}&#34; format is not recognized natively. You may try again with a backend.&#39;.format(self.fmt))
+
+        # atooms backend
+        elif backend == &#39;atooms&#39;:
+            self._write_atooms(output_path, fmt, additional_fields, precision)
+
+        # MDTraj backend
+        elif backend == &#39;mdtraj&#39;:
+            self._write_mdtraj(output_path, fmt, additional_fields, precision)
+
+        # wrong backend
+        else:
+            raise ValueError(&#39;backend &#34;{}&#34; is not a recognized backend&#39;.format(self.backend))
+
+    def _write_xyz(self, output_path, additional_fields, precision):
+        if not output_path.endswith(&#39;.xyz&#39;):
+            output_path += &#39;.xyz&#39;
+        with open(output_path, &#39;w&#39;) as file:
+            for system in self._systems:
+                file.write(&#39;{}\n&#39;.format(len(system.particle)))
+                columns = &#39;columns:id,pos,&#39;
+                for field in additional_fields:
+                    columns += &#39;{},&#39;.format(field)
+                columns = columns[:-1]
+                header = columns + &#39; cell:{}\n&#39;
+                file.write(header.format(&#39;,&#39;.join(&#39;{:.{}f}&#39;.format(L, precision) for L in system.cell.side)))
+                for particle in system.particle:
+                    line = &#39;{} &#39;.format(particle.species)
+                    line += &#39;{} &#39;.format(&#39; &#39;.join(&#39;{:.{}f}&#39;.format(p_i, precision) for p_i in particle.position))
+                    for field in additional_fields:
+                        line += &#39;{} &#39;.format(particle.__getattribute__(field))
+                    line += &#39;\n&#39;
+                    file.write(line)
+
+    # /!\ RUMD does not seem to accept additional fields
+    def _write_rumd(self, output_path, fields, precision):
+        import gzip
+        if not output_path.endswith(&#39;.xyz.gz&#39;):
+            output_path += &#39;.xyz.gz&#39;
+        with gzip.open(output_path, &#39;wt&#39;) as file:
+            for frame, system in enumerate(self._systems):
+                file.write(&#39;{}\n&#39;.format(len(system.particle)))
+                header = &#39;ioformat=1 dt=0.001 timeStepIndex={} boxLengths={} &#39;
+                dimension = system.n_dimensions
+                if dimension == 2:
+                    columns = &#39;columns=type,x,y\n&#39;
+                if dimension == 3:
+                    columns = &#39;columns=type,x,y,z\n&#39;
+                header = header + &#39;numTypes={} mass={} &#39;
+                header = header + columns
+                file.write(header.format(frame,
+                                         &#39;,&#39;.join(&#39;{:.{}f}&#39;.format(L, precision) for L in system.cell.side),
+                                         len(system.distinct_species),
+                                         &#39;,&#39;.join(&#39;1.0&#39; for s in system.distinct_species)))
+                for particle in system.particle:
+                    line = &#39;{} &#39;.format(particle.species_id - 1)
+                    line += &#39;{} &#39;.format(&#39; &#39;.join(&#39;{:.{}f}&#39;.format(p_i, precision) for p_i in particle.position))
+                    # no additional field
+                    #line += &#39;{} &#39;.format(particle.label)
+                    line += &#39;\n&#39;
+                    file.write(line)
+
+    def _write_atooms(self, output_path, fmt, fields, precision):
+        try:
+            from atooms.trajectory import Trajectory as AtoomsTrajectory
+            from atooms.system import System as _System
+            from atooms.system import Particle as _Particle
+            from atooms.system import Cell as _Cell
+
+            _Trajectory = AtoomsTrajectory.formats[fmt]
+
+            # Write additional fields if the trajectory format allows
+            try:
+                with _Trajectory(output_path, &#39;w&#39;, fields=[&#39;id&#39;, &#39;pos&#39;] + fields) as atooms_traj:
+                    for n, system in enumerate(self._systems):
+                        new_cell = _Cell(side=system.cell.side)
+                        new_system = _System(cell=new_cell)
+                        for particle in system.particle:
+                            pos = particle.position
+                            spe = particle.species
+                            label = particle.label
+                            new_particle = _Particle(species=spe, position=pos)
+                            new_particle.label = label
+                            new_system.particle.append(new_particle)
+                        atooms_traj.write(new_system, step=n)
+
+            except TypeError:
+                print(&#39;This trajectory format does not support additional fields (e.g. cluster labels)&#39;)
+
+        except ModuleNotFoundError:
+            print(&#39;No `atooms` module found.&#39;)
+
+    def _write_mdtraj(self, output_path, fmt, fields, precision):
+        raise NotImplementedError(&#39;Writing output trajectories with the MDTraj backend is currently impossible&#39;)
+
+    # TODO: check if always working
+    # TODO: handle fractions
+    def _slice(self, first, last, step):
+        nframes = len(self._systems)
+        assert(first &gt;= 0 and first &lt; nframes), &#39;invalid first frame.&#39;
+        if last is not None:
+            assert(last &gt;= 0 and last &lt; nframes), &#39;invalid last frame.&#39;
+            assert(first &lt;= last), &#39;first frame must be inferior to last frame.&#39;
+        else:
+            last = nframes
+        # Remove unwanted frames
+        all_frames = list(range(nframes))
+        frames = all_frames[first:last + 1:step]
+        kept_systems = []
+        for frame in frames:
+            kept_systems.append(self._systems[frame])
+        # Owerwrite non-sliced list
+        self._systems = kept_systems
+
+    def _make_species_numeral(self):
+        &#34;&#34;&#34;
+        Standardize the names of the species to [1, ..., N_species] by
+        changing the attribute `particle.species_id` of each particle in
+        the trajectory.
+        &#34;&#34;&#34;
+        for system in self._systems:
+            distinct_species = list(system.distinct_species)
+            for particle in system.particle:
+                particle.species_id = distinct_species.index(particle.species) + 1</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="partycls.trajectory.Trajectory.dump"><code class="name flex">
+<span>def <span class="ident">dump</span></span>(<span>self, what, subset=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Alias for the method get_property().</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dump(self, what, subset=None):
+    &#34;&#34;&#34;
+    Alias for the method get_property().
+    &#34;&#34;&#34;
+    return self.get_property(what, subset=subset)</code></pre>
+</details>
+</dd>
+<dt id="partycls.trajectory.Trajectory.fold"><code class="name flex">
+<span>def <span class="ident">fold</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Fold the particle positions into the central cell.</p>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fold(self):
+    &#34;&#34;&#34;
+    Fold the particle positions into the central cell.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    for system in self._systems:
+        system.fold()</code></pre>
+</details>
+</dd>
+<dt id="partycls.trajectory.Trajectory.get_property"><code class="name flex">
+<span>def <span class="ident">get_property</span></span>(<span>self, what, subset=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a list of numpy arrays with the system property specified by
+<code>what</code>. The list size is the number of systems in the trajectory.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>what</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Requested system property.</p>
+<p><code>what</code> must be of the form
+"particle.<attribute>" or "cell.<attribute>". </p>
+<p>The following particle aliases are accepted:
+- 'position': 'particle.position'
+- 'pos': 'particle.position'
+- 'position[0]': 'particle.position[0]',
+- 'pos[0]': 'particle.position[0]'
+- 'x': 'particle.position[0]'
+- 'position[1]': 'particle.position[1]',
+- 'pos[1]': 'particle.position[1]'
+- 'y': 'particle.position[1]'
+- 'position[2]': 'particle.position[2]'
+- 'pos[2]': 'particle.position[2]'
+- 'z': 'particle.position[2]'
+- 'species': 'particle.species'
+- 'spe': 'particle.species'
+- 'label': 'particle.label'
+- 'index': 'particle.index'
+- 'mass': 'particle.mass'
+- 'radius': 'particle.radius'</p>
+</dd>
+<dt><strong><code>subset</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Subset of particles for which the property must be dumped. Must be
+of the form "particle.<attribute>" unless "<attribute>" is an
+alias. The default is None (all particles will be included).
+This is ignored if <code>what</code> is cell property.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>to_dump</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of the requested system property with length equal to the
+number of frames in the trajectory. Each element of the list is a
+numpy.ndarray of the requested system property.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; traj = Trajectory('trajectory.xyz')
+&gt;&gt;&gt; pos = traj.get_property('position')
+&gt;&gt;&gt; spe = traj.get_property('species')
+&gt;&gt;&gt; sides = traj.get_property('cell.side')
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_property(self, what, subset=None):
+    &#34;&#34;&#34;
+    Return a list of numpy arrays with the system property specified by 
+    `what`. The list size is the number of systems in the trajectory.
+
+    Parameters
+    ----------
+    what : str
+        Requested system property.
+        
+        `what` must be of the form 
+        &#34;particle.&lt;attribute&gt;&#34; or &#34;cell.&lt;attribute&gt;&#34;. 
+        
+        The following particle aliases are accepted:
+        - &#39;position&#39;: &#39;particle.position&#39;
+        - &#39;pos&#39;: &#39;particle.position&#39;
+        - &#39;position[0]&#39;: &#39;particle.position[0]&#39;, 
+        - &#39;pos[0]&#39;: &#39;particle.position[0]&#39;
+        - &#39;x&#39;: &#39;particle.position[0]&#39;
+        - &#39;position[1]&#39;: &#39;particle.position[1]&#39;,
+        - &#39;pos[1]&#39;: &#39;particle.position[1]&#39;
+        - &#39;y&#39;: &#39;particle.position[1]&#39;
+        - &#39;position[2]&#39;: &#39;particle.position[2]&#39;
+        - &#39;pos[2]&#39;: &#39;particle.position[2]&#39;
+        - &#39;z&#39;: &#39;particle.position[2]&#39;
+        - &#39;species&#39;: &#39;particle.species&#39;
+        - &#39;spe&#39;: &#39;particle.species&#39;
+        - &#39;label&#39;: &#39;particle.label&#39;
+        - &#39;index&#39;: &#39;particle.index&#39;
+        - &#39;mass&#39;: &#39;particle.mass&#39;
+        - &#39;radius&#39;: &#39;particle.radius&#39;
+
+    subset : str, optional
+        Subset of particles for which the property must be dumped. Must be 
+        of the form &#34;particle.&lt;attribute&gt;&#34; unless &#34;&lt;attribute&gt;&#34; is an 
+        alias. The default is None (all particles will be included).
+        This is ignored if `what` is cell property.
+
+    Returns
+    -------
+    to_dump : list
+        List of the requested system property with length equal to the 
+        number of frames in the trajectory. Each element of the list is a
+        numpy.ndarray of the requested system property.
+        
+    Examples
+    --------
+    &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;)
+    &gt;&gt;&gt; pos = traj.get_property(&#39;position&#39;)
+    &gt;&gt;&gt; spe = traj.get_property(&#39;species&#39;)
+    &gt;&gt;&gt; sides = traj.get_property(&#39;cell.side&#39;)
+    
+    &#34;&#34;&#34;
+    to_dump = []
+    for system in self._systems:
+        to_dump.append(system.get_property(what, subset))
+    return to_dump</code></pre>
+</details>
+</dd>
+<dt id="partycls.trajectory.Trajectory.remove"><code class="name flex">
+<span>def <span class="ident">remove</span></span>(<span>self, frame)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove the system at position <code>frame</code> from the trajectory.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index of the frame to remove from the trajectory.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove(self, frame):
+    &#34;&#34;&#34;
+    Remove the system at position `frame` from the trajectory.
+
+    Parameters
+    ----------
+    frame : int
+        Index of the frame to remove from the trajectory.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    self._systems.pop(frame)</code></pre>
+</details>
+</dd>
+<dt id="partycls.trajectory.Trajectory.set_property"><code class="name flex">
+<span>def <span class="ident">set_property</span></span>(<span>self, what, value, subset=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set a property <code>what</code> to <code>value</code> for all the particles in the
+trajectory or for a given subset of particles specified by <code>subset</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>what</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the property to set. This is considered to be a particle
+property by default, unless it starts with "cell", e.g.
+"cell.side".</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>int, float, list,</code> or <code>numpy.ndarray</code></dt>
+<dd>Value(s) of the property to set. An instance of <code>int</code> or <code>float</code>
+will set the same value for all concerned particles. An instance
+of <code>list</code> or <code>numpy.ndarray</code> will assign a specific value to each
+particle. In this case, the shape of <code>value</code> should respect the
+number of frames in the trajectory and the number of concerned
+particles.</dd>
+<dt><strong><code>subset</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Particles to which the property must be set. The default is None.
+This is ignored if <code>what</code> is cell property.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; traj.set_property('mass', 1.0)
+&gt;&gt;&gt; traj.set_property('radius', 0.5, &quot;species == 'A'&quot;)
+&gt;&gt;&gt; labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
+              [1, 1, 0]]
+&gt;&gt;&gt; traj.set_property('label', labels, &quot;species == 'B'&quot;)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_property(self, what, value, subset=None):
+    &#34;&#34;&#34;
+    Set a property `what` to `value` for all the particles in the 
+    trajectory or for a given subset of particles specified by `subset`.
+
+    Parameters
+    ----------
+    what : str
+        Name of the property to set. This is considered to be a particle
+        property by default, unless it starts with &#34;cell&#34;, e.g. 
+        &#34;cell.side&#34;.
+        
+    value : int, float, list, or numpy.ndarray
+        Value(s) of the property to set. An instance of `int` or `float`
+        will set the same value for all concerned particles. An instance
+        of `list` or `numpy.ndarray` will assign a specific value to each
+        particle. In this case, the shape of `value` should respect the
+        number of frames in the trajectory and the number of concerned
+        particles.
+        
+    subset : str, optional
+        Particles to which the property must be set. The default is None.
+        This is ignored if `what` is cell property.
+
+    Returns
+    -------
+    None.
+
+    Examples
+    --------
+    &gt;&gt;&gt; traj.set_property(&#39;mass&#39;, 1.0)
+    &gt;&gt;&gt; traj.set_property(&#39;radius&#39;, 0.5, &#34;species == &#39;A&#39;&#34;)
+    &gt;&gt;&gt; labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
+                  [1, 1, 0]]
+    &gt;&gt;&gt; traj.set_property(&#39;label&#39;, labels, &#34;species == &#39;B&#39;&#34;)
+
+    &#34;&#34;&#34;
+    if not isinstance(value, (list, numpy.ndarray)):
+        for system in self._systems:
+            system.set_property(what, value, subset=subset)
+    else:
+        assert len(value) == self.__len__(), &#39;`value` should have the same length than the Trajectory.&#39;
+        for frame, system in enumerate(self._systems):
+            system.set_property(what, value[frame], subset=subset)</code></pre>
+</details>
+</dd>
+<dt id="partycls.trajectory.Trajectory.show"><code class="name flex">
+<span>def <span class="ident">show</span></span>(<span>self, frames=None, backend='matplotlib', color='species', **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Show the frames on index <code>frames</code> of the trajectory and color particles
+according to an arbitrary property, such as species, cluster label,
+etc. Current visualization backends are 'matplotlib', 'ovito',
+and '3dmol'.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frames</code></strong> :&ensp;<code>list</code> of <code>int</code>, optional</dt>
+<dd>Indices of the frames to show. The default is None (shows all frames).</dd>
+<dt><strong><code>backend</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the backend to use for visualization.
+The default is 'matplotlib'.</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the particle property to use as basis for coloring the
+particles. This property must be defined for all the particles in
+the system. The default is 'species'.</dd>
+</dl>
+<p>**kwargs : additional keyworded arguments (backend-dependent).</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>In case of unknown <code>backend</code>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code> of <code>Figure</code> or <code>View (backend-dependent)</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; traj.show(frames=[0,1,2], color='label', backend='3dmol')
+&gt;&gt;&gt; traj.show(frames=[0,1], color='energy', backend='matplotlib', cmap='viridis')
+&gt;&gt;&gt; traj[0].show() # use the iterability of Trajectory objects
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show(self, frames=None, backend=&#39;matplotlib&#39;, color=&#39;species&#39;, **kwargs):
+    &#34;&#34;&#34;
+    Show the frames on index `frames` of the trajectory and color particles
+    according to an arbitrary property, such as species, cluster label, 
+    etc. Current visualization backends are &#39;matplotlib&#39;, &#39;ovito&#39;,
+    and &#39;3dmol&#39;.
+
+    Parameters
+    ----------
+    frames : list of int, optional
+        Indices of the frames to show. The default is None (shows all frames).
+    backend : str, optional
+        Name of the backend to use for visualization. 
+        The default is &#39;matplotlib&#39;.
+    color : str, optional
+        Name of the particle property to use as basis for coloring the 
+        particles. This property must be defined for all the particles in 
+        the system. The default is &#39;species&#39;.
+    **kwargs : additional keyworded arguments (backend-dependent).
+
+    Raises
+    ------
+    ValueError
+        In case of unknown `backend`.
+
+    Returns
+    -------
+    list of Figure or View (backend-dependent)
+    
+    Examples
+    --------
+    &gt;&gt;&gt; traj.show(frames=[0,1,2], color=&#39;label&#39;, backend=&#39;3dmol&#39;)
+    &gt;&gt;&gt; traj.show(frames=[0,1], color=&#39;energy&#39;, backend=&#39;matplotlib&#39;, cmap=&#39;viridis&#39;)
+    &gt;&gt;&gt; traj[0].show() # use the iterability of Trajectory objects
+
+    &#34;&#34;&#34;
+    # show all frames (default)
+    if frames is None:
+        frames = range(len(self))
+    # list of figures/views returned by each system
+    snapshots = []
+    for frame in frames:
+        kwargs_f = kwargs.copy()
+        if &#39;outfile&#39; in kwargs:
+            kwargs_f[&#39;outfile&#39;] += &#39;{:04}&#39;.format(frame)
+        snapshot = self._systems[frame].show(backend=backend,
+                                             color=color,
+                                             **kwargs_f)
+        snapshots.append(snapshot)
+    return snapshots</code></pre>
+</details>
+</dd>
+<dt id="partycls.trajectory.Trajectory.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, output_path, fmt='xyz', backend=None, additional_fields=None, precision=6)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the current trajectory to a file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>output_path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the output trajectory file.</dd>
+<dt><strong><code>fmt</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Format of the output trajectory file. The default is 'xyz'.</dd>
+<dt><strong><code>backend</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of a third-party package to use when writing the output
+trajectory. The default is None.</dd>
+<dt><strong><code>additional_fields</code></strong> :&ensp;<code>list</code> of <code>str</code>, optional</dt>
+<dd>Additional fields (i.e. particle properties) to write in the output
+trajectory. Not all trajectory formats allow for additional fields.
+The default is [].</dd>
+<dt><strong><code>precision</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimals when writing the output trajectory.
+The default is 6.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>
+<ul>
+<li>If <code>backend=None</code> and <code>fmt</code> is not recognized natively.</li>
+<li>If <code>backend</code> is unknown.</li>
+</ul>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, output_path, fmt=&#39;xyz&#39;, backend=None, additional_fields=None, precision=6):
+    &#34;&#34;&#34;
+    Write the current trajectory to a file.
+
+    Parameters
+    ----------
+    output_path : str
+        Name of the output trajectory file.
+    fmt : str, optional
+        Format of the output trajectory file. The default is &#39;xyz&#39;.
+    backend : str, optional
+        Name of a third-party package to use when writing the output
+        trajectory. The default is None.
+    additional_fields : list of str, optional
+        Additional fields (i.e. particle properties) to write in the output
+        trajectory. Not all trajectory formats allow for additional fields. 
+        The default is [].
+    precision : int, optional
+        Number of decimals when writing the output trajectory. 
+        The default is 6.
+
+    Raises
+    ------
+    ValueError
+        - If `backend=None` and `fmt` is not recognized natively.
+        - If `backend` is unknown.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    if additional_fields is None:
+        additional_fields = []
+    else:
+        additional_fields = additional_fields
+
+    # formats recognized by defaults
+    if backend is None:
+        if fmt == &#39;xyz&#39;:
+            self._write_xyz(output_path, additional_fields, precision)
+        elif fmt == &#39;rumd&#39;:
+            self._write_rumd(output_path, additional_fields, precision)
+        else:
+            raise ValueError(
+                &#39;&#34;{}&#34; format is not recognized natively. You may try again with a backend.&#39;.format(self.fmt))
+
+    # atooms backend
+    elif backend == &#39;atooms&#39;:
+        self._write_atooms(output_path, fmt, additional_fields, precision)
+
+    # MDTraj backend
+    elif backend == &#39;mdtraj&#39;:
+        self._write_mdtraj(output_path, fmt, additional_fields, precision)
+
+    # wrong backend
+    else:
+        raise ValueError(&#39;backend &#34;{}&#34; is not a recognized backend&#39;.format(self.backend))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="partycls" href="index.html">partycls</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="partycls.trajectory.Trajectory" href="#partycls.trajectory.Trajectory">Trajectory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="partycls.trajectory.Trajectory.dump" href="#partycls.trajectory.Trajectory.dump">dump</a></code></li>
+<li><code><a title="partycls.trajectory.Trajectory.fold" href="#partycls.trajectory.Trajectory.fold">fold</a></code></li>
+<li><code><a title="partycls.trajectory.Trajectory.get_property" href="#partycls.trajectory.Trajectory.get_property">get_property</a></code></li>
+<li><code><a title="partycls.trajectory.Trajectory.remove" href="#partycls.trajectory.Trajectory.remove">remove</a></code></li>
+<li><code><a title="partycls.trajectory.Trajectory.set_property" href="#partycls.trajectory.Trajectory.set_property">set_property</a></code></li>
+<li><code><a title="partycls.trajectory.Trajectory.show" href="#partycls.trajectory.Trajectory.show">show</a></code></li>
+<li><code><a title="partycls.trajectory.Trajectory.write" href="#partycls.trajectory.Trajectory.write">write</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

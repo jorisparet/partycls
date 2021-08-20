@@ -444,7 +444,7 @@ class Workflow:
             with open(filename, 'w') as file:
                 file.write('# title: workflow log \n')
                 file.write(self._get_header())
-                file.write('\Execution time: {:.{}f}s \n'.format(self._time, precision))
+                file.write('\nExecution time: {:.{}f}s \n'.format(self._time, precision))
                 file.write('\nNumber of repetitions: {} \n'.format(n_init))
                 # fractions
                 file.write('\nFractions (k, f_k): \n')

@@ -1,0 +1,1920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>partycls.workflow API documentation</title>
+<meta name="description" content="Workflow for clustering analysis …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>partycls.workflow</code></h1>
+</header>
+<section id="section-intro">
+<p>Workflow for clustering analysis.</p>
+<p>A workflow is a procedure that goes through various steps (some of which are
+optional) to perform a structural clustering on a trajectory.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Workflow for clustering analysis.
+
+A workflow is a procedure that goes through various steps (some of which are 
+optional) to perform a structural clustering on a trajectory.
+&#34;&#34;&#34;
+
+from .trajectory import Trajectory
+from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
+from .clustering import KMeans, GaussianMixture, CommunityInference
+from .dim_reduction import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
+from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
+from partycls.core import __version__ as _version
+from partycls.core import __code_extension__ as code_extension
+import time
+import datetime
+
+
+class Workflow:
+    &#34;&#34;&#34;
+    A workflow is a clustering procedure that goes through the following steps:
+    - compute a structural descriptor on a given trajectory ;
+    - (optional) apply a feature scaling on the previously computed structural features ;
+    - (optional) apply a dimensionality reduction on the (raw/scaled) features ;
+    - run a clustering algorithm to partition particles into structurally different clusters ;
+    
+    Parameters
+    ----------
+    
+    trajectory : Trajectory, or str
+        An instance of `Trajectory` a path to trajectory file to read, or 
+        an instance of a class with compatible interface.
+        
+    descriptor : str, or an instance of StructuralDescriptor
+        Structural descriptor to be computed on the trajectory. See the
+        `descriptor_db` class attribute for compatible strings. Examples :
+        
+        &#39;gr&#39; : radial distribution of particles around a central particle.
+        
+        &#39;ba&#39; : angular distribution of pairs of nearest neighbors of a central particle.
+        
+        &#39;bo&#39; : Steinhardt bond-orientational order parameter (see https://doi.org/10.1103/PhysRevB.28.784)
+        
+        &#39;ld&#39; : Lechner-Dellago cond-orientational order parameter (see https://doi.org/10.1063/1.2977970)
+        
+    scaling : str, None, or an object with the proper interface, optional, default: None
+        Feature scaling method. See the `scaling_db` class attribute for
+        compatible strings. Examples:
+        
+        &#39;zscore&#39; : standardize features by removing the mean and scaling to unit variance
+            
+        &#39;minmax&#39; : scale and translate each feature individually such that it 
+        is in the given range on the training set, e.g. between zero and one
+        
+        &#39;maxabs&#39; : scale and translate each feature individually such that the 
+        maximal absolute value of each feature in the training set will be 1.
+            
+        &#39;robust&#39; : remove the median and scale the data according to the 
+        specified quantile range (default is between 25th quantile and 75th
+        quantile).
+            
+    dim_reduction : str, None, or an object with the proper interface, optional, default: None
+        Dimensionality reduction method. See the `dim_reduction_db` class attribute
+        for compatible strings. Examples:
+        
+        &#39;pca&#39; : Principal Component Analysis.
+        
+        &#39;tsne&#39; : t-distributed Stochastic Neighbor Embedding.
+        
+        &#39;lle&#39; : Locally Linear Embedding.
+        
+        &#39;ae&#39; : neural network Auto-Encoder.
+        
+    clustering : str, an instance of `Clustering`, or an object with the proper interface, optional, default: &#39;kmeans&#39;
+        Clustering algorithm. See the `clustering_db` class attribute for 
+        compatible strings. Examples:
+        
+        &#39;kmeans&#39; : K-Means algorithm.
+        
+        &#39;gmm&#39; : Gaussian Mixture Model.
+        
+        &#39;cinf&#39; : Community Inference (see https://doi.org/10.1063/5.0004732).
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        The trajectory file as read by the Trajectory class.
+        
+    descriptor : StructuralDescriptor
+        Structural descriptor associated to the trajectory.
+        
+    scaling : ZScore, MinMax, MaxAbs, Robust
+        Feature scaling.
+        
+    dim_reduction : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
+        Dimensionality reduction.
+        
+    clustering : Clustering
+        Clustering method.
+        
+    output_metadata : dict
+        Dictionnary that controls the writing process and 
+        the properties of all the output files.
+        
+    features: numpy.ndarray
+        Raw features as computed by the associated structural descriptor.
+        Initial value is None if features were not computed.
+        
+    scaled_features: numpy.ndarray
+        Features after being rescaled by a feature scaling method.
+        Equal to None if no scaling is applied to the features.
+        
+    reduced_features: numpy.ndarray
+        Features in the reduced space after applying a dimensionality reduction
+        technique. Equal to None if no reduction is applied to the features.
+        
+    naming_convention : str
+        Base name for output files. 
+        Default is &#39;{filename}.{code}.{descriptor}.{clustering}&#39;, where each
+        tag will be replaced by its value in the current instance of 
+        `Workflow` (e.g. &#34;traj.xyz.partycls.gr.kmeans&#34;).
+        
+        Base name can be changed using any combination of the available tags:
+        {filename}, {code}, {descriptor}, {scaling}, {dim_reduction}, {clustering}.
+        Example: &#34;{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}&#34;.
+        
+    Examples
+    --------
+    
+    &gt;&gt;&gt; from partycls import Workflow
+    &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;, descriptor=&#39;ba&#39;, scaling=&#39;zscore&#39;)
+    &gt;&gt;&gt; wf.run()
+    &#34;&#34;&#34;
+
+    # Databases
+    descriptor_db = {&#39;gr&#39;: RadialDescriptor,
+                     &#39;rad&#39;: RadialDescriptor,
+                     &#39;radial&#39;: RadialDescriptor,
+                     &#39;ba&#39;: BondAngleDescriptor,
+                     &#39;ang&#39;: BondAngleDescriptor,
+                     &#39;angular&#39;: BondAngleDescriptor,
+                     &#39;bo&#39;: BondOrientationalDescriptor,
+                     &#39;boo&#39;: BondOrientationalDescriptor,
+                     &#39;bop&#39;: BondOrientationalDescriptor,
+                     &#39;ld&#39;: LechnerDellagoDescriptor,
+                     &#39;lechner-dellago&#39;: LechnerDellagoDescriptor,
+                     &#39;lechner dellago&#39;: LechnerDellagoDescriptor}
+
+    clustering_db = {&#39;k-means&#39;: KMeans,
+                     &#39;kmeans&#39;: KMeans,
+                     &#39;gaussian mixture&#39;: GaussianMixture,
+                     &#39;gaussian-mixture&#39;: GaussianMixture,
+                     &#39;gmm&#39;: GaussianMixture,
+                     &#39;gm&#39;: GaussianMixture,
+                     &#39;community inference&#39;: CommunityInference,
+                     &#39;community-inference&#39;: CommunityInference,
+                     &#39;inference&#39;: CommunityInference,
+                     &#39;cinf&#39;: CommunityInference}
+
+    scaling_db = {&#39;standard&#39;: ZScore,
+                  &#39;zscore&#39;: ZScore,
+                  &#39;z-score&#39;: ZScore,
+                  &#39;minmax&#39;: MinMax,
+                  &#39;min-max&#39;: MinMax,
+                  &#39;maxabs&#39;: MaxAbs,
+                  &#39;max-abs&#39;: MaxAbs,
+                  &#39;robust&#39;: Robust}
+
+    dim_reduction_db = {&#39;pca&#39;: PCA,
+                        &#39;tsne&#39;: TSNE,
+                        &#39;t-sne&#39;: TSNE,
+                        &#39;lle&#39;: LocallyLinearEmbedding,
+                        &#39;autoencoder&#39;: AutoEncoder,
+                        &#39;auto-encoder&#39;: AutoEncoder,
+                        &#39;ae&#39;: AutoEncoder}
+
+    def __init__(self, trajectory, descriptor=&#39;gr&#39;, scaling=None, dim_reduction=None, clustering=&#39;kmeans&#39;):
+
+        # Trajectory
+        if isinstance(trajectory, str):
+            self.trajectory = Trajectory(trajectory)
+        else:
+            self.trajectory = trajectory
+
+        # Descriptor
+        if isinstance(descriptor, str):
+            self.descriptor = self.descriptor_db[descriptor.lower()](self.trajectory)
+        else:
+            self.descriptor = descriptor
+        self.features = self.descriptor.features
+
+        # Feature scaling
+        if isinstance(scaling, str):
+            self.scaling = self.scaling_db[scaling.lower()]()
+        else:
+            self.scaling = scaling
+        self.scaled_features = None
+
+        # Dimensionality reduction
+        if isinstance(dim_reduction, str):
+            self.dim_reduction = self.dim_reduction_db[dim_reduction.lower()]()
+        else:
+            self.dim_reduction = dim_reduction
+        self.reduced_features = None
+
+        # Clustering
+        if isinstance(clustering, str):
+            self.clustering = self.clustering_db[clustering.lower()]()
+        else:
+            self.clustering = clustering
+
+        # Default output metadata
+        self.output_metadata = {&#39;trajectory&#39;: {&#39;enable&#39;: True,
+                                               &#39;writer&#39;: self.write_trajectory,
+                                               &#39;filename&#39;: None,
+                                               &#39;fmt&#39;: &#39;xyz&#39;,
+                                               &#39;backend&#39;: None,
+                                               &#39;additional_fields&#39;: [],
+                                               &#39;precision&#39;: 6},
+
+                                &#39;log&#39;: {&#39;enable&#39;: True,
+                                        &#39;writer&#39;: self.write_log,
+                                        &#39;filename&#39;: None,
+                                        &#39;precision&#39;: 6},
+
+                                &#39;centroids&#39;: {&#39;enable&#39;: True,
+                                              &#39;writer&#39;: self.write_centroids,
+                                              &#39;filename&#39;: None,
+                                              &#39;precision&#39;: 6},
+
+                                &#39;labels&#39;: {&#39;enable&#39;: False,
+                                           &#39;writer&#39;: self.write_labels,
+                                           &#39;filename&#39;: None},
+
+                                &#39;dataset&#39;: {&#39;enable&#39;: False,
+                                            &#39;writer&#39;: self.write_dataset,
+                                            &#39;filename&#39;: None,
+                                            &#39;precision&#39;: 6}}
+
+        # Naming convention for output files
+        self.naming_convention = &#39;{filename}.{code}.{descriptor}.{clustering}&#39;
+
+        # Internal
+        self._has_run = False
+        self._start = None
+        self._end = None
+        self._time = None
+
+    # TODO: like scipy functions, we may return a dict() with the optimization results
+    def run(self):
+        &#34;&#34;&#34;
+        Compute the clustering and write the output files according to the
+        defined workflow :
+        - compute the descriptor ;
+        - (optional) apply feature scaling ;
+        - (optional) apply dimensionality reduction ;
+        - compute the clustering ;
+        - (optional) write the output files ;        
+
+        Raises
+        ------
+        ValueError
+            If a community inference clustering is attempted with feature
+            scaling or dimensionality reduction.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        # Start the timer
+        self._start = time.time()
+
+        # Make sure the descriptor has been computed
+        if self.descriptor.features is None:
+            self.features = self.descriptor.compute()
+
+        # Feature scaling
+        if self.scaling is None:
+            X_scaled = self.descriptor.features.copy()
+        else:
+            X_scaled = self.scaling.fit_transform(self.descriptor.features)
+            self.scaled_features = X_scaled
+
+        # Dimensionality reduction
+        if self.dim_reduction is None:
+            X_red = X_scaled.copy()
+        else:
+            X_red = self.dim_reduction.reduce(X_scaled)
+            self.reduced_features = X_red
+
+        # Clustering
+        #  community inference needs to fit an instance of descriptor
+        if self.clustering.symbol == &#39;cinf&#39; and (self.scaling is not None or self.dim_reduction is not None):
+            raise ValueError(&#39;community inference is not meant to run with feature-scaling or dimensionality reduction&#39;)
+        elif self.clustering.symbol == &#39;cinf&#39;:
+            self.clustering.fit(self.descriptor)
+        else:
+            self.clustering.fit(X_red)
+        #  give its predicted label to each selected `Particle` in the trajectory.
+        n = 0
+        for frame in self.descriptor.groups[0]:
+            for particle in frame:
+                particle.label = self.labels[n]
+                n += 1
+
+        # Workflow has run at least once
+        self._has_run = True
+        # End the timer
+        self._end = time.time()
+        self._time = self._end - self._start
+
+        # Outputs
+        for filetype in self.output_metadata.keys():
+            enable = self.output_metadata[filetype][&#39;enable&#39;]
+            if enable:
+                writer = self.output_metadata[filetype][&#39;writer&#39;]
+                writer(**self.output_metadata[filetype])
+
+    @property
+    def labels(self):
+        return self.clustering.labels
+
+    @property
+    def fractions(self):
+        return self.clustering.fractions
+
+    @property
+    def populations(self):
+        return self.clustering.populations
+
+    @property
+    def centroids(self):
+        return self.clustering.centroids
+
+    def set_output_metadata(self, what, **kwargs):
+        &#34;&#34;&#34;
+        Change the output properties.
+
+        Parameters
+        ----------
+        what : {&#39;trajectory&#39;, &#39;log&#39;, &#39;centroids&#39;, &#39;labels&#39;, or &#39;dataset&#39;}
+            Type of output file to change..
+        **kwargs : keywords arguments (specific to each type of file)
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;)
+        &gt;&gt;&gt; wf.set_output_metadata(&#39;log&#39;, enable=False) # do not write the log file
+        &gt;&gt;&gt; wf.set_output_metadata(&#39;trajectory&#39;, filename=&#39;awesome_trajectory.xyz&#39;) # change the default output name
+        &gt;&gt;&gt; wf.run(&#39;dataset&#39;, enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
+        
+        &#34;&#34;&#34;
+        for key, val in kwargs.items():
+            self.output_metadata[what][key] = val
+
+    def disable_output(self):
+        &#34;&#34;&#34;
+        Disable all outputs.
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        for key in self.output_metadata.keys():
+            self.output_metadata[key][&#39;enable&#39;] = False
+
+    def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=[], precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write the trajectory file with cluster labels (default) and other
+        additional fields (if any).        
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the output trajectory. Uses a default naming convention
+            if not specified. The default is None.
+        fmt : str, optional
+            Output trajectory format. The default is &#39;xyz&#39;.
+        backend : str, optional
+            Name of the backend to use to write the trajectory. Must be either
+            &#39;atooms&#39; or &#39;mdtraj&#39;. The default is None.
+        additional_fields : list, optional
+            Additional fields (i.e. particle properties) to write in the
+            output trajectory. Note that all the `Particle` objects should
+            have the specified properties as attributes. The default is [].
+        precision : int, optional
+            Number of decimals when writing the output trajectory. The default is 6.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;)
+        &gt;&gt;&gt; wf.write_trajectory(fmt=&#39;rumd&#39;)
+        &gt;&gt;&gt; wf.write_trajectory(additional_field=[&#39;particle.mass&#39;]) # `Particle` must have the attribute `mass`.
+        &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(fmt)
+        self.trajectory.write(filename, fmt=fmt, backend=backend,
+                              additional_fields=[&#39;label&#39;] + additional_fields,
+                              precision=precision)
+
+    # TODO: more info needed in the log?
+    # TODO: log should be a string, so that it can be parsed/printed by python code
+    def write_log(self, filename=None, precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write a log file with all relevant information about the workflow.
+        The log file can be written only if the workflow has been run at
+        least once with the method `Workflow.run`.
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the log file. Uses a default naming convention
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the log file. The default is 6.
+        **kwargs : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;log&#39;)
+        if self._has_run:
+            filters = self.descriptor.active_filters
+            fractions = self.clustering.fractions
+            n_init = self.clustering.n_init
+            with open(filename, &#39;w&#39;) as file:
+                file.write(&#39;# title: workflow log \n&#39;)
+                file.write(self._get_header())
+                file.write(&#39;\nExecution time: {:.{}f}s \n&#39;.format(self._time, precision))
+                file.write(&#39;\nNumber of repetitions: {} \n&#39;.format(n_init))
+                # fractions
+                file.write(&#39;\nFractions (k, f_k): \n&#39;)
+                for k, f_k in enumerate(fractions):
+                    file.write(&#39;- {} {:.{}f} \n&#39;.format(k, f_k, precision))
+                # filters
+                if len(filters) == 0:
+                    file.write(&#39;\nNo filter applied \n&#39;)
+                else:
+                    file.write(&#39;\nApplied filters: \n&#39;)
+                    for fltr in filters:
+                        file.write(&#39;- group: {}, filter: {} \n&#39;.format(fltr[1], fltr[0]))
+
+    def write_centroids(self, filename=None, precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write the coordinates of the clusters&#39; centroids using the raw features
+        from the descriptor (i.e. nor scaled or reduced).
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the centroids file. Uses a default naming convention
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the centroids file. The default is 6.
+
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;centroids&#39;)
+        with open(filename, &#39;w&#39;) as file:
+            kind = self.descriptor.name
+            file.write(&#39;# title: centroids ({} features)\n&#39;.format(kind))
+            file.write(self._get_header())
+            file.write(&#39;# columns: feature, centroids \n&#39;)
+            grid = self.descriptor.grid
+            C_k = self.clustering.centroids(self.descriptor.features)
+            n_clusters = self.clustering.n_clusters
+            for n, g_i, in enumerate(grid):
+                g = &#39;{:.{}f} &#39;.format(g_i, precision)
+                line = g + &#39;&#39;.join([&#39;{:.{}f} &#39;.format(C_k[k, n], precision) for k in range(n_clusters)]) + &#39;\n&#39;
+                file.write(line)
+
+    def write_labels(self, filename=None, **kwargs):
+        &#34;&#34;&#34;
+        Write the clusters&#39; labels only.
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the labels file. Uses a default naming convention
+            if not specified. The default is None.
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;labels&#39;)
+        with open(filename, &#39;w&#39;) as file:
+            file.write(&#34;# title: clusters&#39; labels\n&#34;)
+            file.write(self._get_header())
+            for ki in self.labels:
+                file.write(&#39;{} \n&#39;.format(ki))
+
+    def write_dataset(self, filename=None, precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write the full raw dataset from the descriptor as an array (i.e. all 
+        the individual raw features of each particle).
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the dataset file. Uses a default naming convention
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the dataset file. The default is 6.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;dataset&#39;)
+        with open(filename, &#39;w&#39;) as file:
+            file.write(&#39;# title: data set matrix \n&#39;)
+            file.write(self._get_header())
+            for vector in self.descriptor.features:
+                line = &#39;&#39;.join([&#39;{:.{}f} &#39;.format(vi, precision) for vi in vector]) + &#39;\n&#39;
+                file.write(line)
+
+    def _get_header(self):
+        # Time
+        now = datetime.datetime.now()
+        date = &#39;# date: {Y}-{M:02}-{D:02} {h}:{m:02}:{s:02} \n&#39;.format(Y=now.year,
+                                                                       M=now.month,
+                                                                       D=now.day,
+                                                                       h=now.hour,
+                                                                       m=now.minute,
+                                                                       s=now.second)
+
+        # Version
+        version = &#39;# version: {} \n&#39;.format(_version)
+
+        # Parent
+        parent = &#39;# parent: {} \n&#39;.format(self.trajectory.filename)
+
+        # Feature scaling
+        scaling = &#39;# feature scaling: {} \n&#39;
+        if self.scaling is not None:
+            scaling = scaling.format(self.scaling.full_name)
+        else:
+            scaling = scaling.format(&#39;none&#39;)
+
+        # Dimensionality reduction
+        dim_reduction = &#39;# dimensionality reduction: {} \n&#39;
+        if self.dim_reduction is not None:
+            dim_reduction = dim_reduction.format(self.dim_reduction.full_name)
+        else:
+            dim_reduction = dim_reduction.format(&#39;none&#39;)
+
+        # Clustering method
+        clustering = &#39;# clustering method: {} \n&#39;.format(self.clustering.full_name)
+
+        # Number of communities/clusters
+        n_clusters = &#39;# requested number of clusters: {} \n&#39;.format(self.clustering.n_clusters)
+
+        # Assemble header
+        header = &#39;&#39;.join([date, version, parent, scaling, dim_reduction, clustering, n_clusters])
+        return header
+
+    def _output_file(self, kind):
+        &#34;&#34;&#34;Returns path of output file.&#34;&#34;&#34;
+        scaling_symbol = self.scaling.symbol if self.scaling is not None else &#39;&#39;
+        dim_reduction_symbol = self.dim_reduction.symbol if self.dim_reduction is not None else &#39;&#39;
+        base_name = self.naming_convention.format(filename=self.trajectory.filename,
+                                                  code=code_extension,
+                                                  descriptor=self.descriptor.symbol,
+                                                  scaling=scaling_symbol,
+                                                  dim_reduction=dim_reduction_symbol,
+                                                  clustering=self.clustering.symbol)
+        return &#39;{base}.{kind}&#39;.format(base=base_name, kind=kind)
+
+    def __str__(self):
+        rep = &#39;Workflow(filename=&#34;{}&#34;, descriptor=&#34;{}&#34;, scaling=&#34;{}&#34;, dim_reduction=&#34;{}&#34;, clustering=&#34;{}&#34;, has_run={})&#39;
+        rep = rep.format(self.trajectory.filename,
+                         self.descriptor.symbol,
+                         self.scaling.symbol if self.scaling is not None else None,
+                         self.dim_reduction.symbol if self.dim_reduction is not None else None,
+                         self.clustering.symbol,
+                         self._has_run)
+        return rep
+
+    def __repr__(self):
+        return self.__str__()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="partycls.workflow.Workflow"><code class="flex name class">
+<span>class <span class="ident">Workflow</span></span>
+<span>(</span><span>trajectory, descriptor='gr', scaling=None, dim_reduction=None, clustering='kmeans')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A workflow is a clustering procedure that goes through the following steps:
+- compute a structural descriptor on a given trajectory ;
+- (optional) apply a feature scaling on the previously computed structural features ;
+- (optional) apply a dimensionality reduction on the (raw/scaled) features ;
+- run a clustering algorithm to partition particles into structurally different clusters ;</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>trajectory</code></strong> :&ensp;<code>Trajectory,</code> or <code>str</code></dt>
+<dd>An instance of <code>Trajectory</code> a path to trajectory file to read, or
+an instance of a class with compatible interface.</dd>
+<dt><strong><code>descriptor</code></strong> :&ensp;<code>str,</code> or <code>an instance</code> of <code>StructuralDescriptor</code></dt>
+<dd>
+<p>Structural descriptor to be computed on the trajectory. See the
+<code>descriptor_db</code> class attribute for compatible strings. Examples :</p>
+<p>'gr' : radial distribution of particles around a central particle.</p>
+<p>'ba' : angular distribution of pairs of nearest neighbors of a central particle.</p>
+<p>'bo' : Steinhardt bond-orientational order parameter (see <a href="https://doi.org/10.1103/PhysRevB.28.784">https://doi.org/10.1103/PhysRevB.28.784</a>)</p>
+<p>'ld' : Lechner-Dellago cond-orientational order parameter (see <a href="https://doi.org/10.1063/1.2977970">https://doi.org/10.1063/1.2977970</a>)</p>
+</dd>
+<dt><strong><code>scaling</code></strong> :&ensp;<code>str, None,</code> or <code>an object with the proper interface</code>, optional, default<code>: None</code></dt>
+<dd>
+<p>Feature scaling method. See the <code>scaling_db</code> class attribute for
+compatible strings. Examples:</p>
+<p>'zscore' : standardize features by removing the mean and scaling to unit variance</p>
+<p>'minmax' : scale and translate each feature individually such that it
+is in the given range on the training set, e.g. between zero and one</p>
+<p>'maxabs' : scale and translate each feature individually such that the
+maximal absolute value of each feature in the training set will be 1.</p>
+<p>'robust' : remove the median and scale the data according to the
+specified quantile range (default is between 25th quantile and 75th
+quantile).</p>
+</dd>
+<dt><strong><code>dim_reduction</code></strong> :&ensp;<code>str, None,</code> or <code>an object with the proper interface</code>, optional, default<code>: None</code></dt>
+<dd>
+<p>Dimensionality reduction method. See the <code>dim_reduction_db</code> class attribute
+for compatible strings. Examples:</p>
+<p>'pca' : Principal Component Analysis.</p>
+<p>'tsne' : t-distributed Stochastic Neighbor Embedding.</p>
+<p>'lle' : Locally Linear Embedding.</p>
+<p>'ae' : neural network Auto-Encoder.</p>
+</dd>
+<dt><strong><code>clustering</code></strong> :&ensp;<code>str, an instance</code> of <code><code>Clustering&lt;/code&gt;,&lt;code&gt; or &lt;/code&gt;an object with the proper interface&lt;code&gt;, optional, default&lt;/code&gt;: 'kmeans'</code></dt>
+<dd>
+<p>Clustering algorithm. See the <code>clustering_db</code> class attribute for
+compatible strings. Examples:</p>
+<p>'kmeans' : K-Means algorithm.</p>
+<p>'gmm' : Gaussian Mixture Model.</p>
+<p>'cinf' : Community Inference (see <a href="https://doi.org/10.1063/5.0004732">https://doi.org/10.1063/5.0004732</a>).</p>
+</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>trajectory</code></strong> :&ensp;<code>Trajectory</code></dt>
+<dd>The trajectory file as read by the Trajectory class.</dd>
+<dt><strong><code>descriptor</code></strong> :&ensp;<code>StructuralDescriptor</code></dt>
+<dd>Structural descriptor associated to the trajectory.</dd>
+<dt><strong><code>scaling</code></strong> :&ensp;<code>ZScore, MinMax, MaxAbs, Robust</code></dt>
+<dd>Feature scaling.</dd>
+<dt><strong><code>dim_reduction</code></strong> :&ensp;<code>PCA, TSNE, LocallyLinearEmbedding, AutoEncoder</code></dt>
+<dd>Dimensionality reduction.</dd>
+<dt><strong><code>clustering</code></strong> :&ensp;<code>Clustering</code></dt>
+<dd>Clustering method.</dd>
+<dt><strong><code>output_metadata</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionnary that controls the writing process and
+the properties of all the output files.</dd>
+<dt><strong><code>features</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Raw features as computed by the associated structural descriptor.
+Initial value is None if features were not computed.</dd>
+<dt><strong><code>scaled_features</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Features after being rescaled by a feature scaling method.
+Equal to None if no scaling is applied to the features.</dd>
+<dt><strong><code>reduced_features</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Features in the reduced space after applying a dimensionality reduction
+technique. Equal to None if no reduction is applied to the features.</dd>
+<dt><strong><code>naming_convention</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Base name for output files.
+Default is '{filename}.{code}.{descriptor}.{clustering}', where each
+tag will be replaced by its value in the current instance of
+<code><a title="partycls.workflow.Workflow" href="#partycls.workflow.Workflow">Workflow</a></code> (e.g. "traj.xyz.partycls.gr.kmeans").</p>
+<p>Base name can be changed using any combination of the available tags:
+{filename}, {code}, {descriptor}, {scaling}, {dim_reduction}, {clustering}.
+Example: "{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}".</p>
+</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from partycls import Workflow
+&gt;&gt;&gt; wf = Workflow('trajectory.xyz', descriptor='ba', scaling='zscore')
+&gt;&gt;&gt; wf.run()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Workflow:
+    &#34;&#34;&#34;
+    A workflow is a clustering procedure that goes through the following steps:
+    - compute a structural descriptor on a given trajectory ;
+    - (optional) apply a feature scaling on the previously computed structural features ;
+    - (optional) apply a dimensionality reduction on the (raw/scaled) features ;
+    - run a clustering algorithm to partition particles into structurally different clusters ;
+    
+    Parameters
+    ----------
+    
+    trajectory : Trajectory, or str
+        An instance of `Trajectory` a path to trajectory file to read, or 
+        an instance of a class with compatible interface.
+        
+    descriptor : str, or an instance of StructuralDescriptor
+        Structural descriptor to be computed on the trajectory. See the
+        `descriptor_db` class attribute for compatible strings. Examples :
+        
+        &#39;gr&#39; : radial distribution of particles around a central particle.
+        
+        &#39;ba&#39; : angular distribution of pairs of nearest neighbors of a central particle.
+        
+        &#39;bo&#39; : Steinhardt bond-orientational order parameter (see https://doi.org/10.1103/PhysRevB.28.784)
+        
+        &#39;ld&#39; : Lechner-Dellago cond-orientational order parameter (see https://doi.org/10.1063/1.2977970)
+        
+    scaling : str, None, or an object with the proper interface, optional, default: None
+        Feature scaling method. See the `scaling_db` class attribute for
+        compatible strings. Examples:
+        
+        &#39;zscore&#39; : standardize features by removing the mean and scaling to unit variance
+            
+        &#39;minmax&#39; : scale and translate each feature individually such that it 
+        is in the given range on the training set, e.g. between zero and one
+        
+        &#39;maxabs&#39; : scale and translate each feature individually such that the 
+        maximal absolute value of each feature in the training set will be 1.
+            
+        &#39;robust&#39; : remove the median and scale the data according to the 
+        specified quantile range (default is between 25th quantile and 75th
+        quantile).
+            
+    dim_reduction : str, None, or an object with the proper interface, optional, default: None
+        Dimensionality reduction method. See the `dim_reduction_db` class attribute
+        for compatible strings. Examples:
+        
+        &#39;pca&#39; : Principal Component Analysis.
+        
+        &#39;tsne&#39; : t-distributed Stochastic Neighbor Embedding.
+        
+        &#39;lle&#39; : Locally Linear Embedding.
+        
+        &#39;ae&#39; : neural network Auto-Encoder.
+        
+    clustering : str, an instance of `Clustering`, or an object with the proper interface, optional, default: &#39;kmeans&#39;
+        Clustering algorithm. See the `clustering_db` class attribute for 
+        compatible strings. Examples:
+        
+        &#39;kmeans&#39; : K-Means algorithm.
+        
+        &#39;gmm&#39; : Gaussian Mixture Model.
+        
+        &#39;cinf&#39; : Community Inference (see https://doi.org/10.1063/5.0004732).
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        The trajectory file as read by the Trajectory class.
+        
+    descriptor : StructuralDescriptor
+        Structural descriptor associated to the trajectory.
+        
+    scaling : ZScore, MinMax, MaxAbs, Robust
+        Feature scaling.
+        
+    dim_reduction : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
+        Dimensionality reduction.
+        
+    clustering : Clustering
+        Clustering method.
+        
+    output_metadata : dict
+        Dictionnary that controls the writing process and 
+        the properties of all the output files.
+        
+    features: numpy.ndarray
+        Raw features as computed by the associated structural descriptor.
+        Initial value is None if features were not computed.
+        
+    scaled_features: numpy.ndarray
+        Features after being rescaled by a feature scaling method.
+        Equal to None if no scaling is applied to the features.
+        
+    reduced_features: numpy.ndarray
+        Features in the reduced space after applying a dimensionality reduction
+        technique. Equal to None if no reduction is applied to the features.
+        
+    naming_convention : str
+        Base name for output files. 
+        Default is &#39;{filename}.{code}.{descriptor}.{clustering}&#39;, where each
+        tag will be replaced by its value in the current instance of 
+        `Workflow` (e.g. &#34;traj.xyz.partycls.gr.kmeans&#34;).
+        
+        Base name can be changed using any combination of the available tags:
+        {filename}, {code}, {descriptor}, {scaling}, {dim_reduction}, {clustering}.
+        Example: &#34;{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}&#34;.
+        
+    Examples
+    --------
+    
+    &gt;&gt;&gt; from partycls import Workflow
+    &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;, descriptor=&#39;ba&#39;, scaling=&#39;zscore&#39;)
+    &gt;&gt;&gt; wf.run()
+    &#34;&#34;&#34;
+
+    # Databases
+    descriptor_db = {&#39;gr&#39;: RadialDescriptor,
+                     &#39;rad&#39;: RadialDescriptor,
+                     &#39;radial&#39;: RadialDescriptor,
+                     &#39;ba&#39;: BondAngleDescriptor,
+                     &#39;ang&#39;: BondAngleDescriptor,
+                     &#39;angular&#39;: BondAngleDescriptor,
+                     &#39;bo&#39;: BondOrientationalDescriptor,
+                     &#39;boo&#39;: BondOrientationalDescriptor,
+                     &#39;bop&#39;: BondOrientationalDescriptor,
+                     &#39;ld&#39;: LechnerDellagoDescriptor,
+                     &#39;lechner-dellago&#39;: LechnerDellagoDescriptor,
+                     &#39;lechner dellago&#39;: LechnerDellagoDescriptor}
+
+    clustering_db = {&#39;k-means&#39;: KMeans,
+                     &#39;kmeans&#39;: KMeans,
+                     &#39;gaussian mixture&#39;: GaussianMixture,
+                     &#39;gaussian-mixture&#39;: GaussianMixture,
+                     &#39;gmm&#39;: GaussianMixture,
+                     &#39;gm&#39;: GaussianMixture,
+                     &#39;community inference&#39;: CommunityInference,
+                     &#39;community-inference&#39;: CommunityInference,
+                     &#39;inference&#39;: CommunityInference,
+                     &#39;cinf&#39;: CommunityInference}
+
+    scaling_db = {&#39;standard&#39;: ZScore,
+                  &#39;zscore&#39;: ZScore,
+                  &#39;z-score&#39;: ZScore,
+                  &#39;minmax&#39;: MinMax,
+                  &#39;min-max&#39;: MinMax,
+                  &#39;maxabs&#39;: MaxAbs,
+                  &#39;max-abs&#39;: MaxAbs,
+                  &#39;robust&#39;: Robust}
+
+    dim_reduction_db = {&#39;pca&#39;: PCA,
+                        &#39;tsne&#39;: TSNE,
+                        &#39;t-sne&#39;: TSNE,
+                        &#39;lle&#39;: LocallyLinearEmbedding,
+                        &#39;autoencoder&#39;: AutoEncoder,
+                        &#39;auto-encoder&#39;: AutoEncoder,
+                        &#39;ae&#39;: AutoEncoder}
+
+    def __init__(self, trajectory, descriptor=&#39;gr&#39;, scaling=None, dim_reduction=None, clustering=&#39;kmeans&#39;):
+
+        # Trajectory
+        if isinstance(trajectory, str):
+            self.trajectory = Trajectory(trajectory)
+        else:
+            self.trajectory = trajectory
+
+        # Descriptor
+        if isinstance(descriptor, str):
+            self.descriptor = self.descriptor_db[descriptor.lower()](self.trajectory)
+        else:
+            self.descriptor = descriptor
+        self.features = self.descriptor.features
+
+        # Feature scaling
+        if isinstance(scaling, str):
+            self.scaling = self.scaling_db[scaling.lower()]()
+        else:
+            self.scaling = scaling
+        self.scaled_features = None
+
+        # Dimensionality reduction
+        if isinstance(dim_reduction, str):
+            self.dim_reduction = self.dim_reduction_db[dim_reduction.lower()]()
+        else:
+            self.dim_reduction = dim_reduction
+        self.reduced_features = None
+
+        # Clustering
+        if isinstance(clustering, str):
+            self.clustering = self.clustering_db[clustering.lower()]()
+        else:
+            self.clustering = clustering
+
+        # Default output metadata
+        self.output_metadata = {&#39;trajectory&#39;: {&#39;enable&#39;: True,
+                                               &#39;writer&#39;: self.write_trajectory,
+                                               &#39;filename&#39;: None,
+                                               &#39;fmt&#39;: &#39;xyz&#39;,
+                                               &#39;backend&#39;: None,
+                                               &#39;additional_fields&#39;: [],
+                                               &#39;precision&#39;: 6},
+
+                                &#39;log&#39;: {&#39;enable&#39;: True,
+                                        &#39;writer&#39;: self.write_log,
+                                        &#39;filename&#39;: None,
+                                        &#39;precision&#39;: 6},
+
+                                &#39;centroids&#39;: {&#39;enable&#39;: True,
+                                              &#39;writer&#39;: self.write_centroids,
+                                              &#39;filename&#39;: None,
+                                              &#39;precision&#39;: 6},
+
+                                &#39;labels&#39;: {&#39;enable&#39;: False,
+                                           &#39;writer&#39;: self.write_labels,
+                                           &#39;filename&#39;: None},
+
+                                &#39;dataset&#39;: {&#39;enable&#39;: False,
+                                            &#39;writer&#39;: self.write_dataset,
+                                            &#39;filename&#39;: None,
+                                            &#39;precision&#39;: 6}}
+
+        # Naming convention for output files
+        self.naming_convention = &#39;{filename}.{code}.{descriptor}.{clustering}&#39;
+
+        # Internal
+        self._has_run = False
+        self._start = None
+        self._end = None
+        self._time = None
+
+    # TODO: like scipy functions, we may return a dict() with the optimization results
+    def run(self):
+        &#34;&#34;&#34;
+        Compute the clustering and write the output files according to the
+        defined workflow :
+        - compute the descriptor ;
+        - (optional) apply feature scaling ;
+        - (optional) apply dimensionality reduction ;
+        - compute the clustering ;
+        - (optional) write the output files ;        
+
+        Raises
+        ------
+        ValueError
+            If a community inference clustering is attempted with feature
+            scaling or dimensionality reduction.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        # Start the timer
+        self._start = time.time()
+
+        # Make sure the descriptor has been computed
+        if self.descriptor.features is None:
+            self.features = self.descriptor.compute()
+
+        # Feature scaling
+        if self.scaling is None:
+            X_scaled = self.descriptor.features.copy()
+        else:
+            X_scaled = self.scaling.fit_transform(self.descriptor.features)
+            self.scaled_features = X_scaled
+
+        # Dimensionality reduction
+        if self.dim_reduction is None:
+            X_red = X_scaled.copy()
+        else:
+            X_red = self.dim_reduction.reduce(X_scaled)
+            self.reduced_features = X_red
+
+        # Clustering
+        #  community inference needs to fit an instance of descriptor
+        if self.clustering.symbol == &#39;cinf&#39; and (self.scaling is not None or self.dim_reduction is not None):
+            raise ValueError(&#39;community inference is not meant to run with feature-scaling or dimensionality reduction&#39;)
+        elif self.clustering.symbol == &#39;cinf&#39;:
+            self.clustering.fit(self.descriptor)
+        else:
+            self.clustering.fit(X_red)
+        #  give its predicted label to each selected `Particle` in the trajectory.
+        n = 0
+        for frame in self.descriptor.groups[0]:
+            for particle in frame:
+                particle.label = self.labels[n]
+                n += 1
+
+        # Workflow has run at least once
+        self._has_run = True
+        # End the timer
+        self._end = time.time()
+        self._time = self._end - self._start
+
+        # Outputs
+        for filetype in self.output_metadata.keys():
+            enable = self.output_metadata[filetype][&#39;enable&#39;]
+            if enable:
+                writer = self.output_metadata[filetype][&#39;writer&#39;]
+                writer(**self.output_metadata[filetype])
+
+    @property
+    def labels(self):
+        return self.clustering.labels
+
+    @property
+    def fractions(self):
+        return self.clustering.fractions
+
+    @property
+    def populations(self):
+        return self.clustering.populations
+
+    @property
+    def centroids(self):
+        return self.clustering.centroids
+
+    def set_output_metadata(self, what, **kwargs):
+        &#34;&#34;&#34;
+        Change the output properties.
+
+        Parameters
+        ----------
+        what : {&#39;trajectory&#39;, &#39;log&#39;, &#39;centroids&#39;, &#39;labels&#39;, or &#39;dataset&#39;}
+            Type of output file to change..
+        **kwargs : keywords arguments (specific to each type of file)
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+        
+        Examples
+        --------
+        &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;)
+        &gt;&gt;&gt; wf.set_output_metadata(&#39;log&#39;, enable=False) # do not write the log file
+        &gt;&gt;&gt; wf.set_output_metadata(&#39;trajectory&#39;, filename=&#39;awesome_trajectory.xyz&#39;) # change the default output name
+        &gt;&gt;&gt; wf.run(&#39;dataset&#39;, enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
+        
+        &#34;&#34;&#34;
+        for key, val in kwargs.items():
+            self.output_metadata[what][key] = val
+
+    def disable_output(self):
+        &#34;&#34;&#34;
+        Disable all outputs.
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        for key in self.output_metadata.keys():
+            self.output_metadata[key][&#39;enable&#39;] = False
+
+    def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=[], precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write the trajectory file with cluster labels (default) and other
+        additional fields (if any).        
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the output trajectory. Uses a default naming convention
+            if not specified. The default is None.
+        fmt : str, optional
+            Output trajectory format. The default is &#39;xyz&#39;.
+        backend : str, optional
+            Name of the backend to use to write the trajectory. Must be either
+            &#39;atooms&#39; or &#39;mdtraj&#39;. The default is None.
+        additional_fields : list, optional
+            Additional fields (i.e. particle properties) to write in the
+            output trajectory. Note that all the `Particle` objects should
+            have the specified properties as attributes. The default is [].
+        precision : int, optional
+            Number of decimals when writing the output trajectory. The default is 6.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;)
+        &gt;&gt;&gt; wf.write_trajectory(fmt=&#39;rumd&#39;)
+        &gt;&gt;&gt; wf.write_trajectory(additional_field=[&#39;particle.mass&#39;]) # `Particle` must have the attribute `mass`.
+        &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(fmt)
+        self.trajectory.write(filename, fmt=fmt, backend=backend,
+                              additional_fields=[&#39;label&#39;] + additional_fields,
+                              precision=precision)
+
+    # TODO: more info needed in the log?
+    # TODO: log should be a string, so that it can be parsed/printed by python code
+    def write_log(self, filename=None, precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write a log file with all relevant information about the workflow.
+        The log file can be written only if the workflow has been run at
+        least once with the method `Workflow.run`.
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the log file. Uses a default naming convention
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the log file. The default is 6.
+        **kwargs : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;log&#39;)
+        if self._has_run:
+            filters = self.descriptor.active_filters
+            fractions = self.clustering.fractions
+            n_init = self.clustering.n_init
+            with open(filename, &#39;w&#39;) as file:
+                file.write(&#39;# title: workflow log \n&#39;)
+                file.write(self._get_header())
+                file.write(&#39;\nExecution time: {:.{}f}s \n&#39;.format(self._time, precision))
+                file.write(&#39;\nNumber of repetitions: {} \n&#39;.format(n_init))
+                # fractions
+                file.write(&#39;\nFractions (k, f_k): \n&#39;)
+                for k, f_k in enumerate(fractions):
+                    file.write(&#39;- {} {:.{}f} \n&#39;.format(k, f_k, precision))
+                # filters
+                if len(filters) == 0:
+                    file.write(&#39;\nNo filter applied \n&#39;)
+                else:
+                    file.write(&#39;\nApplied filters: \n&#39;)
+                    for fltr in filters:
+                        file.write(&#39;- group: {}, filter: {} \n&#39;.format(fltr[1], fltr[0]))
+
+    def write_centroids(self, filename=None, precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write the coordinates of the clusters&#39; centroids using the raw features
+        from the descriptor (i.e. nor scaled or reduced).
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the centroids file. Uses a default naming convention
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the centroids file. The default is 6.
+
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;centroids&#39;)
+        with open(filename, &#39;w&#39;) as file:
+            kind = self.descriptor.name
+            file.write(&#39;# title: centroids ({} features)\n&#39;.format(kind))
+            file.write(self._get_header())
+            file.write(&#39;# columns: feature, centroids \n&#39;)
+            grid = self.descriptor.grid
+            C_k = self.clustering.centroids(self.descriptor.features)
+            n_clusters = self.clustering.n_clusters
+            for n, g_i, in enumerate(grid):
+                g = &#39;{:.{}f} &#39;.format(g_i, precision)
+                line = g + &#39;&#39;.join([&#39;{:.{}f} &#39;.format(C_k[k, n], precision) for k in range(n_clusters)]) + &#39;\n&#39;
+                file.write(line)
+
+    def write_labels(self, filename=None, **kwargs):
+        &#34;&#34;&#34;
+        Write the clusters&#39; labels only.
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the labels file. Uses a default naming convention
+            if not specified. The default is None.
+
+        Returns
+        -------
+        None.
+        
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;labels&#39;)
+        with open(filename, &#39;w&#39;) as file:
+            file.write(&#34;# title: clusters&#39; labels\n&#34;)
+            file.write(self._get_header())
+            for ki in self.labels:
+                file.write(&#39;{} \n&#39;.format(ki))
+
+    def write_dataset(self, filename=None, precision=6, **kwargs):
+        &#34;&#34;&#34;
+        Write the full raw dataset from the descriptor as an array (i.e. all 
+        the individual raw features of each particle).
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename of the dataset file. Uses a default naming convention
+            if not specified. The default is None.
+        precision : int, optional
+            Number of decimals when writing the dataset file. The default is 6.
+
+        Returns
+        -------
+        None.
+
+        &#34;&#34;&#34;
+        if filename is None:
+            filename = self._output_file(&#39;dataset&#39;)
+        with open(filename, &#39;w&#39;) as file:
+            file.write(&#39;# title: data set matrix \n&#39;)
+            file.write(self._get_header())
+            for vector in self.descriptor.features:
+                line = &#39;&#39;.join([&#39;{:.{}f} &#39;.format(vi, precision) for vi in vector]) + &#39;\n&#39;
+                file.write(line)
+
+    def _get_header(self):
+        # Time
+        now = datetime.datetime.now()
+        date = &#39;# date: {Y}-{M:02}-{D:02} {h}:{m:02}:{s:02} \n&#39;.format(Y=now.year,
+                                                                       M=now.month,
+                                                                       D=now.day,
+                                                                       h=now.hour,
+                                                                       m=now.minute,
+                                                                       s=now.second)
+
+        # Version
+        version = &#39;# version: {} \n&#39;.format(_version)
+
+        # Parent
+        parent = &#39;# parent: {} \n&#39;.format(self.trajectory.filename)
+
+        # Feature scaling
+        scaling = &#39;# feature scaling: {} \n&#39;
+        if self.scaling is not None:
+            scaling = scaling.format(self.scaling.full_name)
+        else:
+            scaling = scaling.format(&#39;none&#39;)
+
+        # Dimensionality reduction
+        dim_reduction = &#39;# dimensionality reduction: {} \n&#39;
+        if self.dim_reduction is not None:
+            dim_reduction = dim_reduction.format(self.dim_reduction.full_name)
+        else:
+            dim_reduction = dim_reduction.format(&#39;none&#39;)
+
+        # Clustering method
+        clustering = &#39;# clustering method: {} \n&#39;.format(self.clustering.full_name)
+
+        # Number of communities/clusters
+        n_clusters = &#39;# requested number of clusters: {} \n&#39;.format(self.clustering.n_clusters)
+
+        # Assemble header
+        header = &#39;&#39;.join([date, version, parent, scaling, dim_reduction, clustering, n_clusters])
+        return header
+
+    def _output_file(self, kind):
+        &#34;&#34;&#34;Returns path of output file.&#34;&#34;&#34;
+        scaling_symbol = self.scaling.symbol if self.scaling is not None else &#39;&#39;
+        dim_reduction_symbol = self.dim_reduction.symbol if self.dim_reduction is not None else &#39;&#39;
+        base_name = self.naming_convention.format(filename=self.trajectory.filename,
+                                                  code=code_extension,
+                                                  descriptor=self.descriptor.symbol,
+                                                  scaling=scaling_symbol,
+                                                  dim_reduction=dim_reduction_symbol,
+                                                  clustering=self.clustering.symbol)
+        return &#39;{base}.{kind}&#39;.format(base=base_name, kind=kind)
+
+    def __str__(self):
+        rep = &#39;Workflow(filename=&#34;{}&#34;, descriptor=&#34;{}&#34;, scaling=&#34;{}&#34;, dim_reduction=&#34;{}&#34;, clustering=&#34;{}&#34;, has_run={})&#39;
+        rep = rep.format(self.trajectory.filename,
+                         self.descriptor.symbol,
+                         self.scaling.symbol if self.scaling is not None else None,
+                         self.dim_reduction.symbol if self.dim_reduction is not None else None,
+                         self.clustering.symbol,
+                         self._has_run)
+        return rep
+
+    def __repr__(self):
+        return self.__str__()</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="partycls.workflow.Workflow.clustering_db"><code class="name">var <span class="ident">clustering_db</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="partycls.workflow.Workflow.descriptor_db"><code class="name">var <span class="ident">descriptor_db</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="partycls.workflow.Workflow.dim_reduction_db"><code class="name">var <span class="ident">dim_reduction_db</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="partycls.workflow.Workflow.scaling_db"><code class="name">var <span class="ident">scaling_db</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="partycls.workflow.Workflow.centroids"><code class="name">var <span class="ident">centroids</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def centroids(self):
+    return self.clustering.centroids</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.fractions"><code class="name">var <span class="ident">fractions</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def fractions(self):
+    return self.clustering.fractions</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.labels"><code class="name">var <span class="ident">labels</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def labels(self):
+    return self.clustering.labels</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.populations"><code class="name">var <span class="ident">populations</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def populations(self):
+    return self.clustering.populations</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="partycls.workflow.Workflow.disable_output"><code class="name flex">
+<span>def <span class="ident">disable_output</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Disable all outputs.</p>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def disable_output(self):
+    &#34;&#34;&#34;
+    Disable all outputs.
+
+    Returns
+    -------
+    None.
+    
+    &#34;&#34;&#34;
+    for key in self.output_metadata.keys():
+        self.output_metadata[key][&#39;enable&#39;] = False</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the clustering and write the output files according to the
+defined workflow :
+- compute the descriptor ;
+- (optional) apply feature scaling ;
+- (optional) apply dimensionality reduction ;
+- compute the clustering ;
+- (optional) write the output files ;
+</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If a community inference clustering is attempted with feature
+scaling or dimensionality reduction.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+    &#34;&#34;&#34;
+    Compute the clustering and write the output files according to the
+    defined workflow :
+    - compute the descriptor ;
+    - (optional) apply feature scaling ;
+    - (optional) apply dimensionality reduction ;
+    - compute the clustering ;
+    - (optional) write the output files ;        
+
+    Raises
+    ------
+    ValueError
+        If a community inference clustering is attempted with feature
+        scaling or dimensionality reduction.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    # Start the timer
+    self._start = time.time()
+
+    # Make sure the descriptor has been computed
+    if self.descriptor.features is None:
+        self.features = self.descriptor.compute()
+
+    # Feature scaling
+    if self.scaling is None:
+        X_scaled = self.descriptor.features.copy()
+    else:
+        X_scaled = self.scaling.fit_transform(self.descriptor.features)
+        self.scaled_features = X_scaled
+
+    # Dimensionality reduction
+    if self.dim_reduction is None:
+        X_red = X_scaled.copy()
+    else:
+        X_red = self.dim_reduction.reduce(X_scaled)
+        self.reduced_features = X_red
+
+    # Clustering
+    #  community inference needs to fit an instance of descriptor
+    if self.clustering.symbol == &#39;cinf&#39; and (self.scaling is not None or self.dim_reduction is not None):
+        raise ValueError(&#39;community inference is not meant to run with feature-scaling or dimensionality reduction&#39;)
+    elif self.clustering.symbol == &#39;cinf&#39;:
+        self.clustering.fit(self.descriptor)
+    else:
+        self.clustering.fit(X_red)
+    #  give its predicted label to each selected `Particle` in the trajectory.
+    n = 0
+    for frame in self.descriptor.groups[0]:
+        for particle in frame:
+            particle.label = self.labels[n]
+            n += 1
+
+    # Workflow has run at least once
+    self._has_run = True
+    # End the timer
+    self._end = time.time()
+    self._time = self._end - self._start
+
+    # Outputs
+    for filetype in self.output_metadata.keys():
+        enable = self.output_metadata[filetype][&#39;enable&#39;]
+        if enable:
+            writer = self.output_metadata[filetype][&#39;writer&#39;]
+            writer(**self.output_metadata[filetype])</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.set_output_metadata"><code class="name flex">
+<span>def <span class="ident">set_output_metadata</span></span>(<span>self, what, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change the output properties.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>what</code></strong> :&ensp;<code>{'trajectory', 'log', 'centroids', 'labels',</code> or <code>'dataset'}</code></dt>
+<dd>Type of output file to change..</dd>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>keywords arguments (specific to each type</code> of <code>file)</code></dt>
+<dd>DESCRIPTION.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; wf = Workflow('trajectory.xyz')
+&gt;&gt;&gt; wf.set_output_metadata('log', enable=False) # do not write the log file
+&gt;&gt;&gt; wf.set_output_metadata('trajectory', filename='awesome_trajectory.xyz') # change the default output name
+&gt;&gt;&gt; wf.run('dataset', enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_output_metadata(self, what, **kwargs):
+    &#34;&#34;&#34;
+    Change the output properties.
+
+    Parameters
+    ----------
+    what : {&#39;trajectory&#39;, &#39;log&#39;, &#39;centroids&#39;, &#39;labels&#39;, or &#39;dataset&#39;}
+        Type of output file to change..
+    **kwargs : keywords arguments (specific to each type of file)
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+    
+    Examples
+    --------
+    &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;)
+    &gt;&gt;&gt; wf.set_output_metadata(&#39;log&#39;, enable=False) # do not write the log file
+    &gt;&gt;&gt; wf.set_output_metadata(&#39;trajectory&#39;, filename=&#39;awesome_trajectory.xyz&#39;) # change the default output name
+    &gt;&gt;&gt; wf.run(&#39;dataset&#39;, enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
+    
+    &#34;&#34;&#34;
+    for key, val in kwargs.items():
+        self.output_metadata[what][key] = val</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.write_centroids"><code class="name flex">
+<span>def <span class="ident">write_centroids</span></span>(<span>self, filename=None, precision=6, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the coordinates of the clusters' centroids using the raw features
+from the descriptor (i.e. nor scaled or reduced).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filename of the centroids file. Uses a default naming convention
+if not specified. The default is None.</dd>
+<dt><strong><code>precision</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimals when writing the centroids file. The default is 6.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_centroids(self, filename=None, precision=6, **kwargs):
+    &#34;&#34;&#34;
+    Write the coordinates of the clusters&#39; centroids using the raw features
+    from the descriptor (i.e. nor scaled or reduced).
+
+    Parameters
+    ----------
+    filename : str, optional
+        Filename of the centroids file. Uses a default naming convention
+        if not specified. The default is None.
+    precision : int, optional
+        Number of decimals when writing the centroids file. The default is 6.
+
+
+    Returns
+    -------
+    None.
+    
+    &#34;&#34;&#34;
+    if filename is None:
+        filename = self._output_file(&#39;centroids&#39;)
+    with open(filename, &#39;w&#39;) as file:
+        kind = self.descriptor.name
+        file.write(&#39;# title: centroids ({} features)\n&#39;.format(kind))
+        file.write(self._get_header())
+        file.write(&#39;# columns: feature, centroids \n&#39;)
+        grid = self.descriptor.grid
+        C_k = self.clustering.centroids(self.descriptor.features)
+        n_clusters = self.clustering.n_clusters
+        for n, g_i, in enumerate(grid):
+            g = &#39;{:.{}f} &#39;.format(g_i, precision)
+            line = g + &#39;&#39;.join([&#39;{:.{}f} &#39;.format(C_k[k, n], precision) for k in range(n_clusters)]) + &#39;\n&#39;
+            file.write(line)</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.write_dataset"><code class="name flex">
+<span>def <span class="ident">write_dataset</span></span>(<span>self, filename=None, precision=6, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the full raw dataset from the descriptor as an array (i.e. all
+the individual raw features of each particle).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filename of the dataset file. Uses a default naming convention
+if not specified. The default is None.</dd>
+<dt><strong><code>precision</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimals when writing the dataset file. The default is 6.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_dataset(self, filename=None, precision=6, **kwargs):
+    &#34;&#34;&#34;
+    Write the full raw dataset from the descriptor as an array (i.e. all 
+    the individual raw features of each particle).
+
+    Parameters
+    ----------
+    filename : str, optional
+        Filename of the dataset file. Uses a default naming convention
+        if not specified. The default is None.
+    precision : int, optional
+        Number of decimals when writing the dataset file. The default is 6.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    if filename is None:
+        filename = self._output_file(&#39;dataset&#39;)
+    with open(filename, &#39;w&#39;) as file:
+        file.write(&#39;# title: data set matrix \n&#39;)
+        file.write(self._get_header())
+        for vector in self.descriptor.features:
+            line = &#39;&#39;.join([&#39;{:.{}f} &#39;.format(vi, precision) for vi in vector]) + &#39;\n&#39;
+            file.write(line)</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.write_labels"><code class="name flex">
+<span>def <span class="ident">write_labels</span></span>(<span>self, filename=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the clusters' labels only.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filename of the labels file. Uses a default naming convention
+if not specified. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_labels(self, filename=None, **kwargs):
+    &#34;&#34;&#34;
+    Write the clusters&#39; labels only.
+
+    Parameters
+    ----------
+    filename : str, optional
+        Filename of the labels file. Uses a default naming convention
+        if not specified. The default is None.
+
+    Returns
+    -------
+    None.
+    
+    &#34;&#34;&#34;
+    if filename is None:
+        filename = self._output_file(&#39;labels&#39;)
+    with open(filename, &#39;w&#39;) as file:
+        file.write(&#34;# title: clusters&#39; labels\n&#34;)
+        file.write(self._get_header())
+        for ki in self.labels:
+            file.write(&#39;{} \n&#39;.format(ki))</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.write_log"><code class="name flex">
+<span>def <span class="ident">write_log</span></span>(<span>self, filename=None, precision=6, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write a log file with all relevant information about the workflow.
+The log file can be written only if the workflow has been run at
+least once with the method <code><a title="partycls.workflow.Workflow.run" href="#partycls.workflow.Workflow.run">Workflow.run()</a></code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filename of the log file. Uses a default naming convention
+if not specified. The default is None.</dd>
+<dt><strong><code>precision</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimals when writing the log file. The default is 6.</dd>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>TYPE</code></dt>
+<dd>DESCRIPTION.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_log(self, filename=None, precision=6, **kwargs):
+    &#34;&#34;&#34;
+    Write a log file with all relevant information about the workflow.
+    The log file can be written only if the workflow has been run at
+    least once with the method `Workflow.run`.
+
+    Parameters
+    ----------
+    filename : str, optional
+        Filename of the log file. Uses a default naming convention
+        if not specified. The default is None.
+    precision : int, optional
+        Number of decimals when writing the log file. The default is 6.
+    **kwargs : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+    
+    &#34;&#34;&#34;
+    if filename is None:
+        filename = self._output_file(&#39;log&#39;)
+    if self._has_run:
+        filters = self.descriptor.active_filters
+        fractions = self.clustering.fractions
+        n_init = self.clustering.n_init
+        with open(filename, &#39;w&#39;) as file:
+            file.write(&#39;# title: workflow log \n&#39;)
+            file.write(self._get_header())
+            file.write(&#39;\nExecution time: {:.{}f}s \n&#39;.format(self._time, precision))
+            file.write(&#39;\nNumber of repetitions: {} \n&#39;.format(n_init))
+            # fractions
+            file.write(&#39;\nFractions (k, f_k): \n&#39;)
+            for k, f_k in enumerate(fractions):
+                file.write(&#39;- {} {:.{}f} \n&#39;.format(k, f_k, precision))
+            # filters
+            if len(filters) == 0:
+                file.write(&#39;\nNo filter applied \n&#39;)
+            else:
+                file.write(&#39;\nApplied filters: \n&#39;)
+                for fltr in filters:
+                    file.write(&#39;- group: {}, filter: {} \n&#39;.format(fltr[1], fltr[0]))</code></pre>
+</details>
+</dd>
+<dt id="partycls.workflow.Workflow.write_trajectory"><code class="name flex">
+<span>def <span class="ident">write_trajectory</span></span>(<span>self, filename=None, fmt='xyz', backend=None, additional_fields=[], precision=6, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the trajectory file with cluster labels (default) and other
+additional fields (if any).
+</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filename of the output trajectory. Uses a default naming convention
+if not specified. The default is None.</dd>
+<dt><strong><code>fmt</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Output trajectory format. The default is 'xyz'.</dd>
+<dt><strong><code>backend</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the backend to use to write the trajectory. Must be either
+'atooms' or 'mdtraj'. The default is None.</dd>
+<dt><strong><code>additional_fields</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>Additional fields (i.e. particle properties) to write in the
+output trajectory. Note that all the <code>Particle</code> objects should
+have the specified properties as attributes. The default is [].</dd>
+<dt><strong><code>precision</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of decimals when writing the output trajectory. The default is 6.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; wf = Workflow('trajectory.xyz')
+&gt;&gt;&gt; wf.write_trajectory(fmt='rumd')
+&gt;&gt;&gt; wf.write_trajectory(additional_field=['particle.mass']) # &lt;code&gt;Particle&lt;/code&gt; must have the attribute &lt;code&gt;mass&lt;/code&gt;.
+&gt;&gt;&gt; wf.write_trajectory(filename='my_custom_name', precision=8)
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=[], precision=6, **kwargs):
+    &#34;&#34;&#34;
+    Write the trajectory file with cluster labels (default) and other
+    additional fields (if any).        
+
+    Parameters
+    ----------
+    filename : str, optional
+        Filename of the output trajectory. Uses a default naming convention
+        if not specified. The default is None.
+    fmt : str, optional
+        Output trajectory format. The default is &#39;xyz&#39;.
+    backend : str, optional
+        Name of the backend to use to write the trajectory. Must be either
+        &#39;atooms&#39; or &#39;mdtraj&#39;. The default is None.
+    additional_fields : list, optional
+        Additional fields (i.e. particle properties) to write in the
+        output trajectory. Note that all the `Particle` objects should
+        have the specified properties as attributes. The default is [].
+    precision : int, optional
+        Number of decimals when writing the output trajectory. The default is 6.
+
+    Returns
+    -------
+    None.
+
+    Examples
+    --------
+    &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;)
+    &gt;&gt;&gt; wf.write_trajectory(fmt=&#39;rumd&#39;)
+    &gt;&gt;&gt; wf.write_trajectory(additional_field=[&#39;particle.mass&#39;]) # `Particle` must have the attribute `mass`.
+    &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)
+    
+    &#34;&#34;&#34;
+    if filename is None:
+        filename = self._output_file(fmt)
+    self.trajectory.write(filename, fmt=fmt, backend=backend,
+                          additional_fields=[&#39;label&#39;] + additional_fields,
+                          precision=precision)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="partycls" href="index.html">partycls</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="partycls.workflow.Workflow" href="#partycls.workflow.Workflow">Workflow</a></code></h4>
+<ul class="two-column">
+<li><code><a title="partycls.workflow.Workflow.centroids" href="#partycls.workflow.Workflow.centroids">centroids</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.clustering_db" href="#partycls.workflow.Workflow.clustering_db">clustering_db</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.descriptor_db" href="#partycls.workflow.Workflow.descriptor_db">descriptor_db</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.dim_reduction_db" href="#partycls.workflow.Workflow.dim_reduction_db">dim_reduction_db</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.disable_output" href="#partycls.workflow.Workflow.disable_output">disable_output</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.fractions" href="#partycls.workflow.Workflow.fractions">fractions</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.labels" href="#partycls.workflow.Workflow.labels">labels</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.populations" href="#partycls.workflow.Workflow.populations">populations</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.run" href="#partycls.workflow.Workflow.run">run</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.scaling_db" href="#partycls.workflow.Workflow.scaling_db">scaling_db</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.set_output_metadata" href="#partycls.workflow.Workflow.set_output_metadata">set_output_metadata</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.write_centroids" href="#partycls.workflow.Workflow.write_centroids">write_centroids</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.write_dataset" href="#partycls.workflow.Workflow.write_dataset">write_dataset</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.write_labels" href="#partycls.workflow.Workflow.write_labels">write_labels</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.write_log" href="#partycls.workflow.Workflow.write_log">write_log</a></code></li>
+<li><code><a title="partycls.workflow.Workflow.write_trajectory" href="#partycls.workflow.Workflow.write_trajectory">write_trajectory</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

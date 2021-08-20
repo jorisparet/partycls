@@ -100,7 +100,34 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
 
     def normalize(self, distribution, method="sin"):
         """
-        Later.
+        Normalize a bond angle distribution.
+
+        Parameters
+        ----------
+        
+        distribution : array
+            Distribution to normalize.
+            
+        method : str, optional
+            Normalization method:
+            - method='sin': by construction, the probability density of
+            has a sinusoidal enveloppe in 3D for uniformly distributed points 
+            on a sphere (default) ;
+            - method='pdf' : gives a flat probability density for uniformly 
+            distributed points on a sphere ;
+
+        Raises
+        ------
+        
+        ValueError
+            If `method` is invalid.
+
+        Returns
+        -------
+        
+        array
+            Normalized distribution.
+
         """
         if method == "sin":
             return distribution / numpy.sum(distribution) / self.dtheta

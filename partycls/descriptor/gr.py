@@ -133,7 +133,31 @@ class RadialDescriptor(StructuralDescriptor):
 
     def normalize(self, distribution, method="r2"):
         """
-        Later.
+        Normalize a radial distribution.
+
+        Parameters
+        ----------
+        
+        distribution : array
+            Distribution to normalize.
+            
+        method : str, optional
+            Normalization method:
+            - method='r2': returns r^2 * g(r) (default);
+            - method='gr' : returns the standard g(r) ;
+
+        Raises
+        ------
+        
+        ValueError
+            If `method` is invalid.
+
+        Returns
+        -------
+        
+        array
+            Normalized distribution.
+            
         """
         if method == "r2":
             # TODO: this normalization is a bit inconsistent
