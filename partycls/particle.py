@@ -1,4 +1,6 @@
 """
+"Point particles in a cartesian reference frame.
+
 This class is inspired by the `atooms` framework authored by Daniele Coslovich
 See https://framagit.org/atooms/atooms 
 """

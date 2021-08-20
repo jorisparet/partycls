@@ -1,3 +1,7 @@
+"""
+Various helper functions for visualization, cluster analysis, etc.
+"""
+
 import numpy
 
 __all__ = ['show_matplotlib',

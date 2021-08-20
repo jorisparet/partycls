@@ -1,3 +1,8 @@
+"""
+Dimensionality reduction techniques (linear and non-linear), to be performed
+on a dataset stored in a numpy array.
+"""
+
 import numpy
 from sklearn.decomposition import PCA as _PCA
 from sklearn.manifold import TSNE as _TSNE

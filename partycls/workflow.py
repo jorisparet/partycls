@@ -1,3 +1,10 @@
+"""
+Workflow for clustering analysis.
+
+A workflow is a procedure that goes through various steps (some of which are 
+optional) to perform a structural clustering on a trajectory.
+"""
+
 from .trajectory import Trajectory
 from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference

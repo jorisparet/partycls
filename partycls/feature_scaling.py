@@ -1,3 +1,8 @@
+"""
+Feature scaling techniques, to be performed on a dataset stored in a numpy
+array.
+"""
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import MaxAbsScaler

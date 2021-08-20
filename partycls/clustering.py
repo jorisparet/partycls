@@ -1,3 +1,7 @@
+"""
+Clustering algorithms.
+"""
+
 import numpy
 from sklearn.cluster import KMeans as _KMeans
 from sklearn.mixture import GaussianMixture as _GaussianMixture

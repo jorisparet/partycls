@@ -1,4 +1,10 @@
 """
+The physical system at hand.
+
+The system of interest in a classical atomistic simulations is
+composed of interacting point particles, usually enclosed in a
+simulation cell.
+
 This class is inspired by the `atooms` framework authored by Daniele Coslovich
 See https://framagit.org/atooms/atooms 
 """
