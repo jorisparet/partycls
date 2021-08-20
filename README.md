@@ -6,7 +6,7 @@ partycls
 Quick start
 -----------
 
-This quick example shows how to use partycls to identify grain boundaries in a polycrystalline system. The system configuration is stored in a trajectory file with a single frame. We use the local distribution of bond angles around each particle as a structural descriptor and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm.
+This quick example shows how to use partycls to identify grain boundaries in a polycrystalline system. The system configuration is stored in a [XYZ](https://en.wikipedia.org/wiki/XYZ_file_format) trajectory file with a single frame. We use the local distribution of bond angles around each particle as a structural descriptor and perform a clustering using the [K-Means](https://en.wikipedia.org/wiki/K-means_clustering) algorithm.
 
 ```python
 from partycls import Trajectory, Workflow
@@ -53,7 +53,7 @@ Features
 
 - partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms).
 - On top of its native descriptors, partycls supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
-- partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms
+- partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms.
 
 Requirements
 ------------
