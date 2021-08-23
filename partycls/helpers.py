@@ -3,8 +3,15 @@ Various helper functions for visualization, cluster analysis, etc.
 """
 
 import numpy
+from sklearn.metrics import adjusted_mutual_info_score as AMI
+from sklearn.metrics import adjusted_rand_score as ARI
+from sklearn.metrics import silhouette_samples, silhouette_score
 
-__all__ = ['show_matplotlib',
+__all__ = ['AMI',
+           'ARI',
+           'silhouette_samples',
+           'silhouette_score',
+           'show_matplotlib',
            'show_ovito',
            'show_3dmol',
            'shannon_entropy',
