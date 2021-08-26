@@ -32,8 +32,15 @@ Various helper functions for visualization, cluster analysis, etc.
 &#34;&#34;&#34;
 
 import numpy
+from sklearn.metrics import adjusted_mutual_info_score as AMI
+from sklearn.metrics import adjusted_rand_score as ARI
+from sklearn.metrics import silhouette_samples, silhouette_score
 
-__all__ = [&#39;show_matplotlib&#39;,
+__all__ = [&#39;AMI&#39;,
+           &#39;ARI&#39;,
+           &#39;silhouette_samples&#39;,
+           &#39;silhouette_score&#39;,
+           &#39;show_matplotlib&#39;,
            &#39;show_ovito&#39;,
            &#39;show_3dmol&#39;,
            &#39;shannon_entropy&#39;,
@@ -529,6 +536,407 @@ def _compute_ICL_ent(weights, epsilon_):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="partycls.helpers.AMI"><code class="name flex">
+<span>def <span class="ident">AMI</span></span>(<span>labels_true, labels_pred, *, average_method='arithmetic')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adjusted Mutual Information between two clusterings.</p>
+<p>Adjusted Mutual Information (AMI) is an adjustment of the Mutual
+Information (MI) score to account for chance. It accounts for the fact that
+the MI is generally higher for two clusterings with a larger number of
+clusters, regardless of whether there is actually more information shared.
+For two clusterings :math:<code>U</code> and :math:<code>V</code>, the AMI is given as::</p>
+<pre><code>AMI(U, V) = [MI(U, V) - E(MI(U, V))] / [avg(H(U), H(V)) - E(MI(U, V))]
+</code></pre>
+<p>This metric is independent of the absolute values of the labels:
+a permutation of the class or cluster label values won't change the
+score value in any way.</p>
+<p>This metric is furthermore symmetric: switching <code>label_true</code> with
+<code>label_pred</code> will return the same score value. This can be useful to
+measure the agreement of two independent label assignments strategies
+on the same dataset when the real ground truth is not known.</p>
+<p>Be mindful that this function is an order of magnitude slower than other
+metrics, such as the Adjusted Rand Index.</p>
+<p>Read more in the :ref:<code>User Guide &lt;mutual_info_score&gt;</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>labels_true</code></strong> :&ensp;<code>int array, shape = [n_samples]</code></dt>
+<dd>A clustering of the data into disjoint subsets.</dd>
+<dt><strong><code>labels_pred</code></strong> :&ensp;<code>int array-like</code> of <code>shape (n_samples,)</code></dt>
+<dd>A clustering of the data into disjoint subsets.</dd>
+<dt><strong><code>average_method</code></strong> :&ensp;<code>str</code>, default=<code>'arithmetic'</code></dt>
+<dd>
+<p>How to compute the normalizer in the denominator. Possible options
+are 'min', 'geometric', 'arithmetic', and 'max'.</p>
+<div class="admonition versionadded">
+<p class="admonition-title">Added in version:&ensp;0.20</p>
+</div>
+<div class="admonition versionchanged">
+<p class="admonition-title">Changed in version:&ensp;0.22</p>
+<p>The default value of <code>average_method</code> changed from 'max' to
+'arithmetic'.</p>
+</div>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>ami</code></strong> :&ensp;<code>float (upperlimited by 1.0)</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The AMI returns a value of 1 when the two partitions are identical
+(ie perfectly matched). Random partitions (independent labellings) have
+an expected AMI around 0 on average hence can be negative.</p>
+<h2 id="see-also">See Also</h2>
+<dl>
+<dt><code>adjusted_rand_score</code></dt>
+<dd>Adjusted Rand Index.</dd>
+<dt><code>mutual_info_score</code></dt>
+<dd>Mutual Information (not adjusted for chance).</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<p>Perfect labelings are both homogeneous and complete, hence have
+score 1.0::</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from sklearn.metrics.cluster import adjusted_mutual_info_score
+adjusted_mutual_info_score([0, 0, 1, 1], [0, 0, 1, 1])
+&hellip; # doctest: +SKIP
+1.0
+adjusted_mutual_info_score([0, 0, 1, 1], [1, 1, 0, 0])
+&hellip; # doctest: +SKIP
+1.0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>If classes members are completely split across different clusters,
+the assignment is totally in-complete, hence the AMI is null::</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>adjusted_mutual_info_score([0, 0, 0, 0], [0, 1, 2, 3])
+&hellip; # doctest: +SKIP
+0.0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="references">References</h2>
+<p>.. [1] <code>Vinh, Epps, and Bailey, (2010). Information Theoretic Measures for
+Clusterings Comparison: Variants, Properties, Normalization and
+Correction for Chance, JMLR
+&lt;http://jmlr.csail.mit.edu/papers/volume11/vinh10a/vinh10a.pdf&gt;</code>_</p>
+<p>.. [2] <code>Wikipedia entry for the Adjusted Mutual Information
+&lt;https://en.wikipedia.org/wiki/Adjusted_Mutual_Information&gt;</code>_</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@_deprecate_positional_args
+def adjusted_mutual_info_score(labels_true, labels_pred, *,
+                               average_method=&#39;arithmetic&#39;):
+    &#34;&#34;&#34;Adjusted Mutual Information between two clusterings.
+
+    Adjusted Mutual Information (AMI) is an adjustment of the Mutual
+    Information (MI) score to account for chance. It accounts for the fact that
+    the MI is generally higher for two clusterings with a larger number of
+    clusters, regardless of whether there is actually more information shared.
+    For two clusterings :math:`U` and :math:`V`, the AMI is given as::
+
+        AMI(U, V) = [MI(U, V) - E(MI(U, V))] / [avg(H(U), H(V)) - E(MI(U, V))]
+
+    This metric is independent of the absolute values of the labels:
+    a permutation of the class or cluster label values won&#39;t change the
+    score value in any way.
+
+    This metric is furthermore symmetric: switching ``label_true`` with
+    ``label_pred`` will return the same score value. This can be useful to
+    measure the agreement of two independent label assignments strategies
+    on the same dataset when the real ground truth is not known.
+
+    Be mindful that this function is an order of magnitude slower than other
+    metrics, such as the Adjusted Rand Index.
+
+    Read more in the :ref:`User Guide &lt;mutual_info_score&gt;`.
+
+    Parameters
+    ----------
+    labels_true : int array, shape = [n_samples]
+        A clustering of the data into disjoint subsets.
+
+    labels_pred : int array-like of shape (n_samples,)
+        A clustering of the data into disjoint subsets.
+
+    average_method : str, default=&#39;arithmetic&#39;
+        How to compute the normalizer in the denominator. Possible options
+        are &#39;min&#39;, &#39;geometric&#39;, &#39;arithmetic&#39;, and &#39;max&#39;.
+
+        .. versionadded:: 0.20
+
+        .. versionchanged:: 0.22
+           The default value of ``average_method`` changed from &#39;max&#39; to
+           &#39;arithmetic&#39;.
+
+    Returns
+    -------
+    ami: float (upperlimited by 1.0)
+       The AMI returns a value of 1 when the two partitions are identical
+       (ie perfectly matched). Random partitions (independent labellings) have
+       an expected AMI around 0 on average hence can be negative.
+
+    See Also
+    --------
+    adjusted_rand_score : Adjusted Rand Index.
+    mutual_info_score : Mutual Information (not adjusted for chance).
+
+    Examples
+    --------
+
+    Perfect labelings are both homogeneous and complete, hence have
+    score 1.0::
+
+      &gt;&gt;&gt; from sklearn.metrics.cluster import adjusted_mutual_info_score
+      &gt;&gt;&gt; adjusted_mutual_info_score([0, 0, 1, 1], [0, 0, 1, 1])
+      ... # doctest: +SKIP
+      1.0
+      &gt;&gt;&gt; adjusted_mutual_info_score([0, 0, 1, 1], [1, 1, 0, 0])
+      ... # doctest: +SKIP
+      1.0
+
+    If classes members are completely split across different clusters,
+    the assignment is totally in-complete, hence the AMI is null::
+
+      &gt;&gt;&gt; adjusted_mutual_info_score([0, 0, 0, 0], [0, 1, 2, 3])
+      ... # doctest: +SKIP
+      0.0
+
+    References
+    ----------
+    .. [1] `Vinh, Epps, and Bailey, (2010). Information Theoretic Measures for
+       Clusterings Comparison: Variants, Properties, Normalization and
+       Correction for Chance, JMLR
+       &lt;http://jmlr.csail.mit.edu/papers/volume11/vinh10a/vinh10a.pdf&gt;`_
+
+    .. [2] `Wikipedia entry for the Adjusted Mutual Information
+       &lt;https://en.wikipedia.org/wiki/Adjusted_Mutual_Information&gt;`_
+    &#34;&#34;&#34;
+    labels_true, labels_pred = check_clusterings(labels_true, labels_pred)
+    n_samples = labels_true.shape[0]
+    classes = np.unique(labels_true)
+    clusters = np.unique(labels_pred)
+    # Special limit cases: no clustering since the data is not split.
+    # This is a perfect match hence return 1.0.
+    if (classes.shape[0] == clusters.shape[0] == 1 or
+            classes.shape[0] == clusters.shape[0] == 0):
+        return 1.0
+    contingency = contingency_matrix(labels_true, labels_pred, sparse=True)
+    contingency = contingency.astype(np.float64,
+                                     **_astype_copy_false(contingency))
+    # Calculate the MI for the two clusterings
+    mi = mutual_info_score(labels_true, labels_pred,
+                           contingency=contingency)
+    # Calculate the expected value for the mutual information
+    emi = expected_mutual_information(contingency, n_samples)
+    # Calculate entropy for each labeling
+    h_true, h_pred = entropy(labels_true), entropy(labels_pred)
+    normalizer = _generalized_average(h_true, h_pred, average_method)
+    denominator = normalizer - emi
+    # Avoid 0.0 / 0.0 when expectation equals maximum, i.e a perfect match.
+    # normalizer should always be &gt;= emi, but because of floating-point
+    # representation, sometimes emi is slightly larger. Correct this
+    # by preserving the sign.
+    if denominator &lt; 0:
+        denominator = min(denominator, -np.finfo(&#39;float64&#39;).eps)
+    else:
+        denominator = max(denominator, np.finfo(&#39;float64&#39;).eps)
+    ami = (mi - emi) / denominator
+    return ami</code></pre>
+</details>
+</dd>
+<dt id="partycls.helpers.ARI"><code class="name flex">
+<span>def <span class="ident">ARI</span></span>(<span>labels_true, labels_pred)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rand index adjusted for chance.</p>
+<p>The Rand Index computes a similarity measure between two clusterings
+by considering all pairs of samples and counting pairs that are
+assigned in the same or different clusters in the predicted and
+true clusterings.</p>
+<p>The raw RI score is then "adjusted for chance" into the ARI score
+using the following scheme::</p>
+<pre><code>ARI = (RI - Expected_RI) / (max(RI) - Expected_RI)
+</code></pre>
+<p>The adjusted Rand index is thus ensured to have a value close to
+0.0 for random labeling independently of the number of clusters and
+samples and exactly 1.0 when the clusterings are identical (up to
+a permutation).</p>
+<p>ARI is a symmetric measure::</p>
+<pre><code>adjusted_rand_score(a, b) == adjusted_rand_score(b, a)
+</code></pre>
+<p>Read more in the :ref:<code>User Guide &lt;adjusted_rand_score&gt;</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>labels_true</code></strong> :&ensp;<code>int array, shape = [n_samples]</code></dt>
+<dd>Ground truth class labels to be used as a reference</dd>
+<dt><strong><code>labels_pred</code></strong> :&ensp;<code>array-like</code> of <code>shape (n_samples,)</code></dt>
+<dd>Cluster labels to evaluate</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>ARI</code></strong> :&ensp;<code>float</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>Similarity score between -1.0 and 1.0. Random labelings have an ARI
+close to 0.0. 1.0 stands for perfect match.</p>
+<h2 id="examples">Examples</h2>
+<p>Perfectly matching labelings have a score of 1 even</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from sklearn.metrics.cluster import adjusted_rand_score
+adjusted_rand_score([0, 0, 1, 1], [0, 0, 1, 1])
+1.0
+adjusted_rand_score([0, 0, 1, 1], [1, 1, 0, 0])
+1.0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Labelings that assign all classes members to the same clusters
+are complete but may not always be pure, hence penalized::</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>adjusted_rand_score([0, 0, 1, 2], [0, 0, 1, 1])
+0.57&hellip;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>ARI is symmetric, so labelings that have pure clusters with members
+coming from the same classes but unnecessary splits are penalized::</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>adjusted_rand_score([0, 0, 1, 1], [0, 0, 1, 2])
+0.57&hellip;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>If classes members are completely split across different clusters, the
+assignment is totally incomplete, hence the ARI is very low::</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>adjusted_rand_score([0, 0, 0, 0], [0, 1, 2, 3])
+0.0</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="references">References</h2>
+<p>.. [Hubert1985] L. Hubert and P. Arabie, Comparing Partitions,
+Journal of Classification 1985
+<a href="https://link.springer.com/article/10.1007%2FBF01908075">https://link.springer.com/article/10.1007%2FBF01908075</a></p>
+<p>.. [Steinley2004] D. Steinley, Properties of the Hubert-Arabie
+adjusted Rand index, Psychological Methods 2004</p>
+<p>.. [wk] <a href="https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index">https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index</a></p>
+<h2 id="see-also">See Also</h2>
+<dl>
+<dt><code>adjusted_mutual_info_score</code></dt>
+<dd>Adjusted Mutual Information.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def adjusted_rand_score(labels_true, labels_pred):
+    &#34;&#34;&#34;Rand index adjusted for chance.
+
+    The Rand Index computes a similarity measure between two clusterings
+    by considering all pairs of samples and counting pairs that are
+    assigned in the same or different clusters in the predicted and
+    true clusterings.
+
+    The raw RI score is then &#34;adjusted for chance&#34; into the ARI score
+    using the following scheme::
+
+        ARI = (RI - Expected_RI) / (max(RI) - Expected_RI)
+
+    The adjusted Rand index is thus ensured to have a value close to
+    0.0 for random labeling independently of the number of clusters and
+    samples and exactly 1.0 when the clusterings are identical (up to
+    a permutation).
+
+    ARI is a symmetric measure::
+
+        adjusted_rand_score(a, b) == adjusted_rand_score(b, a)
+
+    Read more in the :ref:`User Guide &lt;adjusted_rand_score&gt;`.
+
+    Parameters
+    ----------
+    labels_true : int array, shape = [n_samples]
+        Ground truth class labels to be used as a reference
+
+    labels_pred : array-like of shape (n_samples,)
+        Cluster labels to evaluate
+
+    Returns
+    -------
+    ARI : float
+       Similarity score between -1.0 and 1.0. Random labelings have an ARI
+       close to 0.0. 1.0 stands for perfect match.
+
+    Examples
+    --------
+    Perfectly matching labelings have a score of 1 even
+
+      &gt;&gt;&gt; from sklearn.metrics.cluster import adjusted_rand_score
+      &gt;&gt;&gt; adjusted_rand_score([0, 0, 1, 1], [0, 0, 1, 1])
+      1.0
+      &gt;&gt;&gt; adjusted_rand_score([0, 0, 1, 1], [1, 1, 0, 0])
+      1.0
+
+    Labelings that assign all classes members to the same clusters
+    are complete but may not always be pure, hence penalized::
+
+      &gt;&gt;&gt; adjusted_rand_score([0, 0, 1, 2], [0, 0, 1, 1])
+      0.57...
+
+    ARI is symmetric, so labelings that have pure clusters with members
+    coming from the same classes but unnecessary splits are penalized::
+
+      &gt;&gt;&gt; adjusted_rand_score([0, 0, 1, 1], [0, 0, 1, 2])
+      0.57...
+
+    If classes members are completely split across different clusters, the
+    assignment is totally incomplete, hence the ARI is very low::
+
+      &gt;&gt;&gt; adjusted_rand_score([0, 0, 0, 0], [0, 1, 2, 3])
+      0.0
+
+    References
+    ----------
+    .. [Hubert1985] L. Hubert and P. Arabie, Comparing Partitions,
+      Journal of Classification 1985
+      https://link.springer.com/article/10.1007%2FBF01908075
+
+    .. [Steinley2004] D. Steinley, Properties of the Hubert-Arabie
+      adjusted Rand index, Psychological Methods 2004
+
+    .. [wk] https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index
+
+    See Also
+    --------
+    adjusted_mutual_info_score : Adjusted Mutual Information.
+    &#34;&#34;&#34;
+    (tn, fp), (fn, tp) = pair_confusion_matrix(labels_true, labels_pred)
+
+    # Special cases: empty data or full agreement
+    if fn == 0 and fp == 0:
+        return 1.0
+
+    return 2. * (tp * tn - fn * fp) / ((tp + fn) * (fn + tn) +
+                                       (tp + fp) * (fp + tn))</code></pre>
+</details>
+</dd>
 <dt id="partycls.helpers.merge_clusters"><code class="name flex">
 <span>def <span class="ident">merge_clusters</span></span>(<span>weights, n_clusters_min=2, epsilon_=1e-15)</span>
 </code></dt>
@@ -1107,6 +1515,305 @@ The default is 'viridis'.</dd>
         return outfile</code></pre>
 </details>
 </dd>
+<dt id="partycls.helpers.silhouette_samples"><code class="name flex">
+<span>def <span class="ident">silhouette_samples</span></span>(<span>X, labels, *, metric='euclidean', **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the Silhouette Coefficient for each sample.</p>
+<p>The Silhouette Coefficient is a measure of how well samples are clustered
+with samples that are similar to themselves. Clustering models with a high
+Silhouette Coefficient are said to be dense, where samples in the same
+cluster are similar to each other, and well separated, where samples in
+different clusters are not very similar to each other.</p>
+<p>The Silhouette Coefficient is calculated using the mean intra-cluster
+distance (<code>a</code>) and the mean nearest-cluster distance (<code>b</code>) for each
+sample.
+The Silhouette Coefficient for a sample is <code>(b - a) / max(a,
+b)</code>.
+Note that Silhouette Coefficient is only defined if number of labels
+is 2 <code>&lt;= n_labels &lt;= n_samples - 1</code>.</p>
+<p>This function returns the Silhouette Coefficient for each sample.</p>
+<p>The best value is 1 and the worst value is -1. Values near 0 indicate
+overlapping clusters.</p>
+<p>Read more in the :ref:<code>User Guide &lt;silhouette_coefficient&gt;</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>X</code></strong> :&ensp;<code>array-like</code> of <code>shape (n_samples_a, n_samples_a) if metric ==
+"precomputed"</code> or <code>(n_samples_a, n_features) otherwise</code></dt>
+<dd>An array of pairwise distances between samples, or a feature array.</dd>
+<dt><strong><code>labels</code></strong> :&ensp;<code>array-like</code> of <code>shape (n_samples,)</code></dt>
+<dd>Label values for each sample.</dd>
+<dt><strong><code>metric</code></strong> :&ensp;<code>str</code> or <code>callable</code>, default=<code>'euclidean'</code></dt>
+<dd>The metric to use when calculating distance between instances in a
+feature array. If metric is a string, it must be one of the options
+allowed by :func:<code>sklearn.metrics.pairwise.pairwise_distances</code>.
+If <code>X</code> is the distance array itself, use "precomputed" as the metric.
+Precomputed distance matrices must have 0 along the diagonal.</dd>
+</dl>
+<p><code>**kwds</code> : optional keyword parameters
+Any further parameters are passed directly to the distance function.
+If using a <code>scipy.spatial.distance</code> metric, the parameters are still
+metric dependent. See the scipy docs for usage examples.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>silhouette</code></strong> :&ensp;<code>array-like</code> of <code>shape (n_samples,)</code></dt>
+<dd>Silhouette Coefficients for each sample.</dd>
+</dl>
+<h2 id="references">References</h2>
+<p>.. [1] <code>Peter J. Rousseeuw (1987). "Silhouettes: a Graphical Aid to the
+Interpretation and Validation of Cluster Analysis". Computational
+and Applied Mathematics 20: 53-65.
+&lt;https://www.sciencedirect.com/science/article/pii/0377042787901257&gt;</code>_</p>
+<p>.. [2] <code>Wikipedia entry on the Silhouette Coefficient
+&lt;https://en.wikipedia.org/wiki/Silhouette_(clustering)&gt;</code>_</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@_deprecate_positional_args
+def silhouette_samples(X, labels, *, metric=&#39;euclidean&#39;, **kwds):
+    &#34;&#34;&#34;Compute the Silhouette Coefficient for each sample.
+
+    The Silhouette Coefficient is a measure of how well samples are clustered
+    with samples that are similar to themselves. Clustering models with a high
+    Silhouette Coefficient are said to be dense, where samples in the same
+    cluster are similar to each other, and well separated, where samples in
+    different clusters are not very similar to each other.
+
+    The Silhouette Coefficient is calculated using the mean intra-cluster
+    distance (``a``) and the mean nearest-cluster distance (``b``) for each
+    sample.  The Silhouette Coefficient for a sample is ``(b - a) / max(a,
+    b)``.
+    Note that Silhouette Coefficient is only defined if number of labels
+    is 2 ``&lt;= n_labels &lt;= n_samples - 1``.
+
+    This function returns the Silhouette Coefficient for each sample.
+
+    The best value is 1 and the worst value is -1. Values near 0 indicate
+    overlapping clusters.
+
+    Read more in the :ref:`User Guide &lt;silhouette_coefficient&gt;`.
+
+    Parameters
+    ----------
+    X : array-like of shape (n_samples_a, n_samples_a) if metric == \
+            &#34;precomputed&#34; or (n_samples_a, n_features) otherwise
+        An array of pairwise distances between samples, or a feature array.
+
+    labels : array-like of shape (n_samples,)
+        Label values for each sample.
+
+    metric : str or callable, default=&#39;euclidean&#39;
+        The metric to use when calculating distance between instances in a
+        feature array. If metric is a string, it must be one of the options
+        allowed by :func:`sklearn.metrics.pairwise.pairwise_distances`.
+        If ``X`` is the distance array itself, use &#34;precomputed&#34; as the metric.
+        Precomputed distance matrices must have 0 along the diagonal.
+
+    `**kwds` : optional keyword parameters
+        Any further parameters are passed directly to the distance function.
+        If using a ``scipy.spatial.distance`` metric, the parameters are still
+        metric dependent. See the scipy docs for usage examples.
+
+    Returns
+    -------
+    silhouette : array-like of shape (n_samples,)
+        Silhouette Coefficients for each sample.
+
+    References
+    ----------
+
+    .. [1] `Peter J. Rousseeuw (1987). &#34;Silhouettes: a Graphical Aid to the
+       Interpretation and Validation of Cluster Analysis&#34;. Computational
+       and Applied Mathematics 20: 53-65.
+       &lt;https://www.sciencedirect.com/science/article/pii/0377042787901257&gt;`_
+
+    .. [2] `Wikipedia entry on the Silhouette Coefficient
+       &lt;https://en.wikipedia.org/wiki/Silhouette_(clustering)&gt;`_
+
+    &#34;&#34;&#34;
+    X, labels = check_X_y(X, labels, accept_sparse=[&#39;csc&#39;, &#39;csr&#39;])
+
+    # Check for non-zero diagonal entries in precomputed distance matrix
+    if metric == &#39;precomputed&#39;:
+        atol = np.finfo(X.dtype).eps * 100
+        if np.any(np.abs(np.diagonal(X)) &gt; atol):
+            raise ValueError(
+                &#39;The precomputed distance matrix contains non-zero &#39;
+                &#39;elements on the diagonal. Use np.fill_diagonal(X, 0).&#39;
+            )
+
+    le = LabelEncoder()
+    labels = le.fit_transform(labels)
+    n_samples = len(labels)
+    label_freqs = np.bincount(labels)
+    check_number_of_labels(len(le.classes_), n_samples)
+
+    kwds[&#39;metric&#39;] = metric
+    reduce_func = functools.partial(_silhouette_reduce,
+                                    labels=labels, label_freqs=label_freqs)
+    results = zip(*pairwise_distances_chunked(X, reduce_func=reduce_func,
+                                              **kwds))
+    intra_clust_dists, inter_clust_dists = results
+    intra_clust_dists = np.concatenate(intra_clust_dists)
+    inter_clust_dists = np.concatenate(inter_clust_dists)
+
+    denom = (label_freqs - 1).take(labels, mode=&#39;clip&#39;)
+    with np.errstate(divide=&#34;ignore&#34;, invalid=&#34;ignore&#34;):
+        intra_clust_dists /= denom
+
+    sil_samples = inter_clust_dists - intra_clust_dists
+    with np.errstate(divide=&#34;ignore&#34;, invalid=&#34;ignore&#34;):
+        sil_samples /= np.maximum(intra_clust_dists, inter_clust_dists)
+    # nan values are for clusters of size 1, and should be 0
+    return np.nan_to_num(sil_samples)</code></pre>
+</details>
+</dd>
+<dt id="partycls.helpers.silhouette_score"><code class="name flex">
+<span>def <span class="ident">silhouette_score</span></span>(<span>X, labels, *, metric='euclidean', sample_size=None, random_state=None, **kwds)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the mean Silhouette Coefficient of all samples.</p>
+<p>The Silhouette Coefficient is calculated using the mean intra-cluster
+distance (<code>a</code>) and the mean nearest-cluster distance (<code>b</code>) for each
+sample.
+The Silhouette Coefficient for a sample is <code>(b - a) / max(a,
+b)&lt;code&gt;.
+To clarify, &lt;/code&gt;b</code> is the distance between a sample and the nearest
+cluster that the sample is not a part of.
+Note that Silhouette Coefficient is only defined if number of labels
+is <code>2 &lt;= n_labels &lt;= n_samples - 1</code>.</p>
+<p>This function returns the mean Silhouette Coefficient over all samples.
+To obtain the values for each sample, use :func:<code><a title="partycls.helpers.silhouette_samples" href="#partycls.helpers.silhouette_samples">silhouette_samples()</a></code>.</p>
+<p>The best value is 1 and the worst value is -1. Values near 0 indicate
+overlapping clusters. Negative values generally indicate that a sample has
+been assigned to the wrong cluster, as a different cluster is more similar.</p>
+<p>Read more in the :ref:<code>User Guide &lt;silhouette_coefficient&gt;</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>X</code></strong> :&ensp;<code>array-like</code> of <code>shape (n_samples_a, n_samples_a) if metric ==
+"precomputed"</code> or <code>(n_samples_a, n_features) otherwise</code></dt>
+<dd>An array of pairwise distances between samples, or a feature array.</dd>
+<dt><strong><code>labels</code></strong> :&ensp;<code>array-like</code> of <code>shape (n_samples,)</code></dt>
+<dd>Predicted labels for each sample.</dd>
+<dt><strong><code>metric</code></strong> :&ensp;<code>str</code> or <code>callable</code>, default=<code>'euclidean'</code></dt>
+<dd>The metric to use when calculating distance between instances in a
+feature array. If metric is a string, it must be one of the options
+allowed by :func:<code>metrics.pairwise.pairwise_distances
+&lt;sklearn.metrics.pairwise.pairwise_distances&gt;</code>. If <code>X</code> is
+the distance array itself, use <code>metric="precomputed"</code>.</dd>
+<dt><strong><code>sample_size</code></strong> :&ensp;<code>int</code>, default=<code>None</code></dt>
+<dd>The size of the sample to use when computing the Silhouette Coefficient
+on a random subset of the data.
+If <code>sample_size is None</code>, no sampling is used.</dd>
+<dt><strong><code>random_state</code></strong> :&ensp;<code>int, RandomState instance</code> or <code>None</code>, default=<code>None</code></dt>
+<dd>Determines random number generation for selecting a subset of samples.
+Used when <code>sample_size is not None</code>.
+Pass an int for reproducible results across multiple function calls.
+See :term:<code>Glossary &lt;random_state&gt;</code>.</dd>
+<dt><strong><code>**kwds</code></strong> :&ensp;<code>optional keyword parameters</code></dt>
+<dd>Any further parameters are passed directly to the distance function.
+If using a scipy.spatial.distance metric, the parameters are still
+metric dependent. See the scipy docs for usage examples.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>silhouette</code></strong> :&ensp;<code>float</code></dt>
+<dd>Mean Silhouette Coefficient for all samples.</dd>
+</dl>
+<h2 id="references">References</h2>
+<p>.. [1] <code>Peter J. Rousseeuw (1987). "Silhouettes: a Graphical Aid to the
+Interpretation and Validation of Cluster Analysis". Computational
+and Applied Mathematics 20: 53-65.
+&lt;https://www.sciencedirect.com/science/article/pii/0377042787901257&gt;</code>_</p>
+<p>.. [2] <code>Wikipedia entry on the Silhouette Coefficient
+&lt;https://en.wikipedia.org/wiki/Silhouette_(clustering)&gt;</code>_</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@_deprecate_positional_args
+def silhouette_score(X, labels, *, metric=&#39;euclidean&#39;, sample_size=None,
+                     random_state=None, **kwds):
+    &#34;&#34;&#34;Compute the mean Silhouette Coefficient of all samples.
+
+    The Silhouette Coefficient is calculated using the mean intra-cluster
+    distance (``a``) and the mean nearest-cluster distance (``b``) for each
+    sample.  The Silhouette Coefficient for a sample is ``(b - a) / max(a,
+    b)``.  To clarify, ``b`` is the distance between a sample and the nearest
+    cluster that the sample is not a part of.
+    Note that Silhouette Coefficient is only defined if number of labels
+    is ``2 &lt;= n_labels &lt;= n_samples - 1``.
+
+    This function returns the mean Silhouette Coefficient over all samples.
+    To obtain the values for each sample, use :func:`silhouette_samples`.
+
+    The best value is 1 and the worst value is -1. Values near 0 indicate
+    overlapping clusters. Negative values generally indicate that a sample has
+    been assigned to the wrong cluster, as a different cluster is more similar.
+
+    Read more in the :ref:`User Guide &lt;silhouette_coefficient&gt;`.
+
+    Parameters
+    ----------
+    X : array-like of shape (n_samples_a, n_samples_a) if metric == \
+            &#34;precomputed&#34; or (n_samples_a, n_features) otherwise
+        An array of pairwise distances between samples, or a feature array.
+
+    labels : array-like of shape (n_samples,)
+        Predicted labels for each sample.
+
+    metric : str or callable, default=&#39;euclidean&#39;
+        The metric to use when calculating distance between instances in a
+        feature array. If metric is a string, it must be one of the options
+        allowed by :func:`metrics.pairwise.pairwise_distances
+        &lt;sklearn.metrics.pairwise.pairwise_distances&gt;`. If ``X`` is
+        the distance array itself, use ``metric=&#34;precomputed&#34;``.
+
+    sample_size : int, default=None
+        The size of the sample to use when computing the Silhouette Coefficient
+        on a random subset of the data.
+        If ``sample_size is None``, no sampling is used.
+
+    random_state : int, RandomState instance or None, default=None
+        Determines random number generation for selecting a subset of samples.
+        Used when ``sample_size is not None``.
+        Pass an int for reproducible results across multiple function calls.
+        See :term:`Glossary &lt;random_state&gt;`.
+
+    **kwds : optional keyword parameters
+        Any further parameters are passed directly to the distance function.
+        If using a scipy.spatial.distance metric, the parameters are still
+        metric dependent. See the scipy docs for usage examples.
+
+    Returns
+    -------
+    silhouette : float
+        Mean Silhouette Coefficient for all samples.
+
+    References
+    ----------
+
+    .. [1] `Peter J. Rousseeuw (1987). &#34;Silhouettes: a Graphical Aid to the
+       Interpretation and Validation of Cluster Analysis&#34;. Computational
+       and Applied Mathematics 20: 53-65.
+       &lt;https://www.sciencedirect.com/science/article/pii/0377042787901257&gt;`_
+
+    .. [2] `Wikipedia entry on the Silhouette Coefficient
+           &lt;https://en.wikipedia.org/wiki/Silhouette_(clustering)&gt;`_
+
+    &#34;&#34;&#34;
+    if sample_size is not None:
+        X, labels = check_X_y(X, labels, accept_sparse=[&#39;csc&#39;, &#39;csr&#39;])
+        random_state = check_random_state(random_state)
+        indices = random_state.permutation(X.shape[0])[:sample_size]
+        if metric == &#34;precomputed&#34;:
+            X, labels = X[indices].T[indices].T, labels[indices]
+        else:
+            X, labels = X[indices], labels[indices]
+    return np.mean(silhouette_samples(X, labels, metric=metric, **kwds))</code></pre>
+</details>
+</dd>
 <dt id="partycls.helpers.sort_clusters"><code class="name flex">
 <span>def <span class="ident">sort_clusters</span></span>(<span>labels, centroids, func=&lt;function shannon_entropy&gt;)</span>
 </code></dt>
@@ -1203,11 +1910,15 @@ coordinates of a given centroid). The default is shannon_entropy.</dd>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
+<li><code><a title="partycls.helpers.AMI" href="#partycls.helpers.AMI">AMI</a></code></li>
+<li><code><a title="partycls.helpers.ARI" href="#partycls.helpers.ARI">ARI</a></code></li>
 <li><code><a title="partycls.helpers.merge_clusters" href="#partycls.helpers.merge_clusters">merge_clusters</a></code></li>
 <li><code><a title="partycls.helpers.shannon_entropy" href="#partycls.helpers.shannon_entropy">shannon_entropy</a></code></li>
 <li><code><a title="partycls.helpers.show_3dmol" href="#partycls.helpers.show_3dmol">show_3dmol</a></code></li>
 <li><code><a title="partycls.helpers.show_matplotlib" href="#partycls.helpers.show_matplotlib">show_matplotlib</a></code></li>
 <li><code><a title="partycls.helpers.show_ovito" href="#partycls.helpers.show_ovito">show_ovito</a></code></li>
+<li><code><a title="partycls.helpers.silhouette_samples" href="#partycls.helpers.silhouette_samples">silhouette_samples</a></code></li>
+<li><code><a title="partycls.helpers.silhouette_score" href="#partycls.helpers.silhouette_score">silhouette_score</a></code></li>
 <li><code><a title="partycls.helpers.sort_clusters" href="#partycls.helpers.sort_clusters">sort_clusters</a></code></li>
 </ul>
 </li>
