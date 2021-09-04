@@ -292,7 +292,6 @@ class Trajectory:
             system.fold()
 
     def _read(self, first, last, step):
-
         # formats recognized by defaults
         if self.backend is None:
             if self.fmt == 'xyz':
@@ -483,71 +482,63 @@ class Trajectory:
                 self._systems.append(system)
 
     def _parser_atooms(self):
-
         try:
-            from atooms.trajectory import Trajectory as AtoomsTrajectory
-
-            supported = list(AtoomsTrajectory.formats.keys())
-            assert self.fmt in supported, 'the current version of atooms only supports the following formats: {}'.format(
-                supported)
-
-            _Trajectory = AtoomsTrajectory.formats[self.fmt]
-
-            # Read additional fields if the trajectory format allows
-            if self.additional_fields:
-                try:
-                    atooms_traj = _Trajectory(self.filename, mode='r', fields=['id', 'pos'] + self.additional_fields)
-                except TypeError:
-                    print('This trajectory format does not support additional fields')
-                    print('Warning: ignoring additional fields.')
-                    self.additional_fields = []
-                    atooms_traj = _Trajectory(self.filename)
-            else:
-                atooms_traj = _Trajectory(self.filename)
-
-            # Fill the native Trajectory using atooms Trajectory
-            for atooms_sys in atooms_traj:
-                cell = Cell(atooms_sys.cell.side)
-                system = System(cell=cell)
-                for atooms_p in atooms_sys.particle:
-                    pos = atooms_p.position.copy()
-                    spe = atooms_p.species
-                    particle = Particle(position=pos, species=spe)
-                    # additional fields
-                    for field in self.additional_fields:
-                        value = atooms_p.__getattribute__(field)
-                        particle.__setattr__(field, value)
-                    system.particle.append(particle)
-                self._systems.append(system)
-            atooms_traj.close()
-
+            from atooms.trajectory import Trajectory as _Trajectory
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `atooms` module found.')
+        
+        # Read additional fields if the trajectory format allows
+        if self.additional_fields:
+            try:
+                atooms_traj = _Trajectory(self.filename, fmt=self.fmt, fields=['id', 'pos'] + self.additional_fields)
+            except TypeError:
+                print('This trajectory format does not support additional fields')
+                print('Warning: ignoring additional fields.')
+                self.additional_fields = []
+                atooms_traj = _Trajectory(self.filename, fmt=self.fmt)
+        else:
+            atooms_traj = _Trajectory(self.filename, fmt=self.fmt)
+
+        # Fill the native Trajectory using atooms Trajectory
+        for atooms_sys in atooms_traj:
+            cell = Cell(atooms_sys.cell.side)
+            system = System(cell=cell)
+            for atooms_p in atooms_sys.particle:
+                pos = atooms_p.position.copy()
+                spe = atooms_p.species
+                particle = Particle(position=pos, species=spe)
+                # additional fields
+                for field in self.additional_fields:
+                    value = atooms_p.__getattribute__(field)
+                    particle.__setattr__(field, value)
+                system.particle.append(particle)
+            self._systems.append(system)
+        atooms_traj.close()
 
     def _parser_mdtraj(self):
-
         try:
             import mdtraj as md
-            try:
-                md_traj = md.load(self.filename)
-            except ValueError:
-                md_traj = md.load(self.filename, top=self.top)
-            for frame in range(md_traj.n_frames):
-                input_cell = md_traj.unitcell_lengths
-                assert input_cell is not None, 'cell dimensions are needed to read the trajectory'
-                cell = Cell(side=input_cell[frame])
-                system = System(cell=cell)
-                for atom in range(md_traj.n_atoms):
-                    pos = md_traj.xyz[frame, atom]
-                    spe = md_traj[frame].topology.atom(atom).element.symbol
-                    # virtual site
-                    if spe == 'VS':
-                        spe = md_traj[frame].topology.atom(atom).name
-                    particle = Particle(position=pos, species=spe)
-                    system.particle.append(particle)
-                self._systems.append(system)
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `mdtraj` module found.')
+        
+        try:
+            md_traj = md.load(self.filename)
+        except ValueError:
+            md_traj = md.load(self.filename, top=self.top)
+        for frame in range(md_traj.n_frames):
+            input_cell = md_traj.unitcell_lengths
+            assert input_cell is not None, 'cell dimensions are needed to read the trajectory'
+            cell = Cell(side=input_cell[frame])
+            system = System(cell=cell)
+            for atom in range(md_traj.n_atoms):
+                pos = md_traj.xyz[frame, atom]
+                spe = md_traj[frame].topology.atom(atom).element.symbol
+                # virtual site
+                if spe == 'VS':
+                    spe = md_traj[frame].topology.atom(atom).name
+                particle = Particle(position=pos, species=spe)
+                system.particle.append(particle)
+            self._systems.append(system)
 
     def write(self, output_path, fmt='xyz', backend=None, additional_fields=None, precision=6):
         """
@@ -662,29 +653,35 @@ class Trajectory:
             from atooms.system import System as _System
             from atooms.system import Particle as _Particle
             from atooms.system import Cell as _Cell
-
-            _Trajectory = AtoomsTrajectory.formats[fmt]
-
-            # Write additional fields if the trajectory format allows
-            try:
-                with _Trajectory(output_path, 'w', fields=['id', 'pos'] + fields) as atooms_traj:
-                    for n, system in enumerate(self._systems):
-                        new_cell = _Cell(side=system.cell.side)
-                        new_system = _System(cell=new_cell)
-                        for particle in system.particle:
-                            pos = particle.position
-                            spe = particle.species
-                            label = particle.label
-                            new_particle = _Particle(species=spe, position=pos)
-                            new_particle.label = label
-                            new_system.particle.append(new_particle)
-                        atooms_traj.write(new_system, step=n)
-
-            except TypeError:
-                print('This trajectory format does not support additional fields (e.g. cluster labels)')
-
         except ModuleNotFoundError:
             print('No `atooms` module found.')
+
+        # TODO: The reason not to use the factory directly here is to
+        # be able to test if additional fields are allowed. We can
+        # find better ways to do that
+        try:
+            _Trajectory = AtoomsTrajectory.formats[fmt]
+        except KeyError:
+            raise KeyError("Trajectory format `{}` is not supported by atooms".format(fmt))
+
+        # Write additional fields if the trajectory format allows
+        try:
+            atooms_traj = _Trajectory(output_path, 'w', fields=['id', 'pos'] + fields)
+        except TypeError:
+            print('This trajectory format does not support additional fields (e.g. cluster labels)')
+
+        for n, system in enumerate(self._systems):
+            new_cell = _Cell(side=system.cell.side)
+            new_system = _System(cell=new_cell)
+            for particle in system.particle:
+                pos = particle.position
+                spe = particle.species
+                label = particle.label
+                new_particle = _Particle(species=spe, position=pos)
+                new_particle.label = label
+                new_system.particle.append(new_particle)
+            atooms_traj.write(new_system, step=n)
+        atooms_traj.close()
 
     def _write_mdtraj(self, output_path, fmt, fields, precision):
         raise NotImplementedError('Writing output trajectories with the MDTraj backend is currently impossible')
