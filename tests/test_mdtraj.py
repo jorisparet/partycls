@@ -23,7 +23,7 @@ try:
     import networkx
     HAS_NETWORKX = True
 except ModuleNotFoundError:
-    HAS_NETWORK = False
+    HAS_NETWORKX = False
     
 from partycls import Trajectory
 
