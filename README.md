@@ -1,6 +1,12 @@
 partycls
 ========
 
+[![pypi](https://img.shields.io/pypi/v/partycle.svg)](https://pypi.python.org/pypi/partycls/)
+[![version](https://img.shields.io/pypi/pyversions/partycls.svg)](https://pypi.python.org/pypi/partycls/)
+[![license](https://img.shields.io/pypi/l/partycls.svg)](https://en.wikipedia.org/wiki/GNU_General_Public_License)
+[![pipeline](https://framagit.org/coslo/partycls/badges/develop/pipeline.svg)](https://framagit.org/atooms/atooms/badges/develop/pipeline.svg)
+[![coverage report](https://framagit.org/coslo/partycls/badges/develop/coverage.svg)](https://framagit.org/atooms/atooms/-/commits/develop)
+
 **partycls** is a Python package for spatio-temporal cluster analysis of interacting particles. It provides descriptors suitable for applications in condensed matter physics and integrates the necessary tools of unsupervised learning into a streamlined workflow. Thanks to a flexible system of filters, it makes it easy to restrict the analysis to a given subset of particles based on arbitrary particle properties.
 
 Quick start

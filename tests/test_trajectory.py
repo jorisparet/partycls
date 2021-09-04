@@ -19,6 +19,52 @@ class Test(unittest.TestCase):
         traj = Trajectory(os.path.join(data, 'dislocation.xyz'), fmt='xyz')
         self.assertEqual(len(traj[0].particle), 27)
 
+    def _test_read_write(self, fmt, suffix, backend):
+        # Trajectory adds the suffix by itself, which requires passing it explicitly
+        import os
+        import shutil
+        import numpy
+        
+        tmp = '/tmp/partycls_tests'
+        try:
+            os.makedirs(tmp)
+        except OSError:
+            pass
+        output_path = os.path.join(tmp, 'traj.{}'.format(suffix))
+        tw = Trajectory(self.traj.filename)
+        tw.write(output_path=output_path, fmt=fmt, backend=backend)
+        tr = Trajectory(output_path, fmt=fmt, backend=backend)
+        for pi, pj in zip(tr[0].particle, tw[0].particle):
+            self.assertAlmostEqual(pi.position[0], pj.position[0], places=5)
+        try:
+            shutil.rmtree(tmp)
+        except:
+            pass
+        
+    def test_read_write_native(self):
+        self._test_read_write(fmt='xyz', suffix='xyz', backend=None)
+        self._test_read_write(fmt='rumd', suffix='xyz.gz', backend=None)
+
+    def test_read_write_atooms(self):
+        self._test_read_write(fmt='xyz', suffix='xyz', backend='atooms')
+        # This must fail
+        try:
+            self._test_read_write(fmt='inexistent', suffix='xyz', backend='atooms')
+            self.fail('this should have failed')
+        except:
+            pass
+        
+    @unittest.skip('this test currently fails, please fix it')
+    def test_read_write_xyz_mdtraj(self):
+        # This fails because it requires a topology file. Really?!
+        self._test_read_write(fmt='xyz', suffix='xyz', backend='mdtraj')
+        # This must fail
+        try:
+            self._test_read_write(fmt='inexistent', suffix='xyz', backend='mdtraj')
+            self.fail('this should have failed')
+        except:
+            pass
+        
     def test_get_property(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'), 
@@ -67,7 +113,7 @@ class Test(unittest.TestCase):
         Xred = reducer.reduce(X)
         clustering = KMeans(n_clusters=2, n_init=100)
         clustering.fit(Xred)
-        print('Fractions :', clustering.fractions, '(clustering alone)')
+        # print('Fractions :', clustering.fractions, '(clustering alone)')
         
         # Same via workflow
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore',
@@ -78,7 +124,7 @@ class Test(unittest.TestCase):
         wf.clustering.n_init = 100
         wf.disable_output()
         wf.run()
-        print('Fractions :', clustering.fractions, '(via workflow)')
+        # print('Fractions :', clustering.fractions, '(via workflow)')
         self.assertEqual(set(clustering.fractions), set(wf.fractions))
         
 if __name__ == '__main__':

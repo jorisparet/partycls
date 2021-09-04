@@ -1,0 +1,35 @@
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/reference/pip_install/#caching
+#
+# If you want to also cache the installed packages, you have to install
+# them in a virtualenv and cache it as well.
+cache:
+  paths:
+    - .cache/pip
+    - env/
+
+test:f90:
+  image: python:latest
+  coverage: '/^TOTAL.+?(\d+\%)$/'
+  script:
+  - apt-get update
+  - apt-get -q -q -y install g++ gfortran
+  - apt-get -q -q -y install python3
+  - apt-get -q -q -y install python3-pip
+  - python3 -V  # Print out python version for debugging
+  - rm -rf env/
+  - pip3 install virtualenv
+  - virtualenv env
+  - source env/bin/activate
+  - pip install -r requirements.txt
+  - pip install coverage
+  - pip install .
+  - mv partycls partycls.tmp
+  - coverage run --source atooms -m unittest discover -s tests
+  - coverage report -m
+  - mv partycls.tmp partycls
