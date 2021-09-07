@@ -60,6 +60,20 @@ class Test(unittest.TestCase):
         # check if both methods give the same result
         self.assertEqual(set(wf.fractions), set(clustering.fractions),
                          'different cluster fractions')
+
+        # Dummy test of outputs methods
+        tmp = '/tmp/partycls_tests'
+        try:
+            os.makedirs(tmp)
+        except OSError:
+            pass
+        wf.write_log(filename=os.path.join(tmp, 'traj'))
+        wf.write_trajectory(filename=os.path.join(tmp, 'traj'))
+        wf.write_centroids(filename=os.path.join(tmp, 'traj'))
+        try:
+            shutil.rmtree(tmp)
+        except:
+            pass
  
 if __name__ == '__main__':
     unittest.main()
