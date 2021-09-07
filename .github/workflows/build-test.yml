@@ -1,0 +1,35 @@
+# Install Python dependencies, run tests and generate code coverage report
+name: build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install
+      run: |
+        sudo apt-get -qq -y install g++ gfortran
+        pip install -r requirements.txt
+        pip install coverage
+        pip install .
+        mv partycls partycls.tmp
+        
+    - name: Test and coverage
+      run: |
+        coverage run --source partycls -m unittest discover -s tests
+        coverage report -m
