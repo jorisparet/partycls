@@ -203,7 +203,7 @@ class CommunityInference(Clustering):
             descriptor.features = features
 
         MI_previous, labels_previous = self._inference_loop(descriptor)
-        for n in range(self.n_init - 1):
+        for _ in range(self.n_init - 1):
             MI_next, labels_next = self._inference_loop(descriptor)
             # optimization `n` is worse than the previous one
             if MI_next < MI_previous:

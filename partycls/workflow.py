@@ -6,7 +6,8 @@ optional) to perform a structural clustering on a trajectory.
 """
 
 from .trajectory import Trajectory
-from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, \
+    BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_reduction import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
@@ -372,7 +373,7 @@ class Workflow:
         for key in self.output_metadata.keys():
             self.output_metadata[key]['enable'] = False
 
-    def write_trajectory(self, filename=None, fmt='xyz', backend=None, additional_fields=[], precision=6, **kwargs):
+    def write_trajectory(self, filename=None, fmt='xyz', backend=None, additional_fields=None, precision=6, **kwargs):
         """
         Write the trajectory file with cluster labels (default) and other
         additional fields (if any).        
@@ -406,6 +407,8 @@ class Workflow:
         >>> wf.write_trajectory(filename='my_custom_name', precision=8)
         
         """
+        if additional_fields is None:
+            additional_fields = []
         if filename is None:
             filename = self._output_file(fmt)
         self.trajectory.write(filename, fmt=fmt, backend=backend,
