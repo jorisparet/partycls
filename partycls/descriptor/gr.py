@@ -216,7 +216,7 @@ class RadialDescriptor(StructuralDescriptor):
             g = self.normalize(g, method="gr")
             # find position of the n-th minimum in g(r)
             index = 0
-            for _ in range(n_shells):
+            for shell in range(n_shells):
                 g_tmp = g[index:]
                 first_max = numpy.argmax(g_tmp)
                 first_min = numpy.argmin(g_tmp[first_max:]) + first_max

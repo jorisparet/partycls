@@ -262,7 +262,7 @@ class StructuralDescriptor:
         to_dump = []
         for frame in self.groups[group]:
             to_dump_frame = []
-            for _ in frame:
+            for particle in frame:
                 to_dump_frame.append(eval('particle.{}'.format(what)))
             to_dump.append(numpy.array(to_dump_frame))
         return to_dump

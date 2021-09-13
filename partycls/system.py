@@ -180,7 +180,7 @@ class System:
         attr = what.split('.')[-1]
         if what.startswith('particle'):
             data = []
-            for _ in self.particle:
+            for particle in self.particle:
                 if eval(condition):
                     data.append(eval('particle.{}'.format(attr)))
             data = numpy.array(data)
