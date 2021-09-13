@@ -475,7 +475,6 @@ def sort_clusters(labels, centroids, func=shannon_entropy):
         new_centroids[k_new] = centroids[k]
     return new_labels, new_centroids
 
-
 def _compute_delta_ent(i, j, weights):
     """
     Entropy change on merging two clusters (following Baudry) 
