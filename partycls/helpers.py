@@ -21,9 +21,10 @@ __all__ = ['AMI',
 _palette = ["#50514f", "#f25f5c", "#ffe066", "#247ba0", "#70c1b3",
             "#0cce6b", "#c200fb", "#e2a0ff", "#6622cc", "#119822"]
 
+
 def hex_to_rgb(h):
     h = h.lstrip('#')
-    return tuple(int(h[i:i+2], 16) / 256 for i in (0, 2, 4))
+    return tuple(int(h[i:i + 2], 16) / 256 for i in (0, 2, 4))
 
 
 def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
@@ -223,7 +224,8 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
     tmp_file = fh.name
     # Self-contained EXYZ dump (it is not clean to use trajectories here)
     fh.write('{}\n'.format(len(system.particle)))
-    fh.write('Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice="{},0.,0.,0.,{},0.,0.,0.,{}"\n'.format(*system.cell.side))
+    fh.write('Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice="{},0.,0.,0.,{},0.,0.,0.,{}"\n'.format(
+        *system.cell.side))
     for p in system.particle:
         fh.write('{} {} {} {} {} {} {} {}\n'.format(p.species, *p.position, p.radius, *p.color))
     fh.close()
@@ -235,7 +237,7 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
     pipeline.source.data.cell_[0, 0] = system.cell.side[0]
     pipeline.source.data.cell_[1, 1] = system.cell.side[1]
     pipeline.source.data.cell_[2, 2] = system.cell.side[2]
-    pipeline.source.data.cell_[:, 3] = -system.cell.side/2
+    pipeline.source.data.cell_[:, 3] = -system.cell.side / 2
     pipeline.add_to_scene()
 
     views = {'top':    Viewport.Type.Top,

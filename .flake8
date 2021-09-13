@@ -1,0 +1,12 @@
+[flake8]
+show-source = True
+count = True
+statistics = True
+max-line-length = 120
+
+# E241 multiple spaces after ':' [accept variables alignment]
+# W291 trailing whitespace [one space before line break in doc strings!]
+# W293 blank line contains whitespace [essentially all doc strings!]
+# F401 imported but unused [mostly in __init__]
+# W605 invalid escape sequence '\w' [in reg exp!]
+ignore = E241,W291,W293,F401,F403,W605

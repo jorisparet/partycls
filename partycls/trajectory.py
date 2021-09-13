@@ -645,7 +645,7 @@ class Trajectory:
                     line = '{} '.format(particle.species_id - 1)
                     line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
                     # no additional field
-                    #line += '{} '.format(particle.label)
+                    # line += '{} '.format(particle.label)
                     line += '\n'
                     file.write(line)
 

@@ -178,7 +178,7 @@ class RadialDescriptor(StructuralDescriptor):
                 g_b[m] = distribution[m] / wb
             return g_b / const
         else:
-            raise ValueError("unknown value {}".format(methos))
+            raise ValueError("unknown value {}".format(method))
 
     # TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     # TODO: duplicate code with `compute()`
@@ -216,7 +216,7 @@ class RadialDescriptor(StructuralDescriptor):
             g = self.normalize(g, method="gr")
             # find position of the n-th minimum in g(r)
             index = 0
-            for shell in range(n_shells):
+            for _ in range(n_shells):
                 g_tmp = g[index:]
                 first_max = numpy.argmax(g_tmp)
                 first_min = numpy.argmin(g_tmp[first_max:]) + first_max
