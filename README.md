@@ -82,18 +82,34 @@ Documentation
 Installation
 ------------
 
-From [pypi](https://pypi.org/project/partycls/):
+**1.** From [pypi](https://pypi.org/project/partycls/):
 
 ```bash
 pip install partycls
 ```
+----------
 
-From the [code repository](https://github.com/jorisparet/partycls):
+**2.** From the [code repository](https://github.com/jorisparet/partycls):
 
 ```bash
 git clone https://github.com/jorisparet/partycls.git
 cd partycls
 make install
+```
+
+Run the tests using:
+
+```bash
+make test
+```
+
+or manually compile the Fortran source and run the tests:
+
+```bash
+cd partycls/descriptor/
+f2py -c -m realspace_wrap realspace.f90
+cd ../../
+pytest tests/
 ```
 
 Support and contribution
