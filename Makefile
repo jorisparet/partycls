@@ -1,6 +1,6 @@
 PROJECT = partycls
 
-.PHONY: all test install coverage version clean
+.PHONY: all fortran test install coverage version clean
 
 all: version
 
@@ -10,13 +10,14 @@ install: version
 user: version
 	python setup.py install --user
 
-test:
-	mv partycls partycls_tmp
-	python -m unittest discover -s tests; mv partycls_tmp partycls
+fortran:
+	cd partycls/descriptor/; f2py -c -m realspace_wrap realspace.f90; cd ../../
 
-coverage:
-	mv partycls partycls_tmp
-	coverage run --source partycls -m unittest discover -s tests; mv partycls_tmp partycls 
+test: fortran
+	python -m unittest discover -s tests
+
+coverage: fortran
+	coverage run --source partycls -m unittest discover -s tests 
 	coverage report -m
 
 docs:
