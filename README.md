@@ -58,7 +58,7 @@ Features
 --------
 
 - partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms).
-- On top of its native descriptors, partycls supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
+- partycls implements various structural descriptors: radial distribution, bond-angle distribution, standard bond order parameters (see the [original paper](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.28.784)), and locally averaged bond order parameters (see the [original paper](https://aip.scitation.org/doi/10.1063/1.2977970)). On top of these native descriptors, partycls supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
 - partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms.
 
 Requirements
@@ -82,13 +82,13 @@ Documentation
 Installation
 ------------
 
-From pypi:
+From [pypi](https://pypi.org/project/partycls/):
 
 ```bash
 pip install partycls
 ```
 
-From the code repository:
+From the [code repository](https://github.com/jorisparet/partycls):
 
 ```bash
 git clone https://github.com/jorisparet/partycls.git
