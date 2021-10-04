@@ -1,7 +1,7 @@
 numpy
 sklearn
 dscribe # optional
-atooms # optional
+atooms<3 # optional
 mdtraj # optional
 matplotlib # optional
 py3Dmol # optional
