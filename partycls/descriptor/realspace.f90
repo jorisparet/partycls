@@ -104,20 +104,20 @@ CONTAINS
   END SUBROUTINE
 
   
-  SUBROUTINE smoothed_angular_histogram(idx_i, pos_i, pos_1, neigh_i, box, nbins, dtheta, hist)
+  SUBROUTINE smoothed_angular_histogram(idx_i, pos_i, pos_1, spe_i, spe_1, neigh_i, pairs, cutoffs, pow, box, nbins, dtheta, hist)
     ! Parameters
-    INTEGER(8), INTENT(in)  :: idx_i, neigh_i(:), nbins
-    REAL(8), INTENT(in)     :: pos_i(:), pos_1(:,:), box(:), dtheta
-    INTEGER(8), INTENT(out) :: hist(nbins)
+    INTEGER(8), INTENT(in)  :: idx_i, spe_i, spe_1(:), neigh_i(:), pairs(:,:), pow, nbins
+    REAL(8), INTENT(in)     :: pos_i(:), pos_1(:,:), cutoffs(:), box(:), dtheta
+    REAL(8), INTENT(out)    :: hist(nbins)
     ! Variables
     INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, bin
-    REAL(8)    :: r_ij(SIZE(box)), r_ik(SIZE(box)), d_ij, d_ik, hbox(SIZE(box))
-    REAL(8)    :: dotprod, prod, costheta, theta, cutoff
+    REAL(8)    :: r_ij(SIZE(box)), r_ik(SIZE(box)), d_ij, d_ik, rc_ij, rc_ik, hbox(SIZE(box)), w_i
+    REAL(8)    :: dotprod, prod, costheta, theta
     ! Computation
     hbox = box / 2.0
     n_neigh_i = SIZE(neigh_i)
     ! initialize to zero
-    hist = 0
+    hist = 0.0
     ! First neighbor: j
     DO j=1,n_neigh_i
       idx_j = neigh_i(j) + 1 ! python index shift
@@ -145,14 +145,40 @@ CONTAINS
               costheta = DMIN1(1.0_8,costheta)
             END IF
             theta = ACOS(costheta)*180.0/pi
+            ! weights
+            rc_ij = find_cutoff(spe_i, spe_1(j), pairs, cutoffs)
+            rc_ik = find_cutoff(spe_i, spe_1(k), pairs, cutoffs)
+            w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) ) ! TODO: variable for the power
             ! binning
             bin = FLOOR( theta/dtheta ) + 1
-            IF (bin <= nbins) hist(bin) = hist(bin) + 1
+            IF (bin <= nbins) THEN
+              ! weights
+              rc_ij = find_cutoff(spe_i, spe_1(j), pairs, cutoffs)
+              rc_ik = find_cutoff(spe_i, spe_1(k), pairs, cutoffs)
+              w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
+              hist(bin) = hist(bin) + w_i
+            END IF
           END IF
         END DO
       END IF
     END DO
   END SUBROUTINE smoothed_angular_histogram
+
+  
+  FUNCTION find_cutoff(spe_i, spe_j, pairs, cutoffs) RESULT(rcut)
+    ! Parameters
+    INTEGER(8), INTENT(in) :: spe_i, spe_j, pairs(:,:)
+    REAL(8), INTENT(in)    :: cutoffs(:)
+    ! Variables
+    INTEGER(8) :: line
+    REAL(8)    :: rcut
+    ! Computation
+    line = 1
+    DO WHILE (pairs(line,1) /= spe_i .OR. pairs(line,2) /= spe_j)
+      line = line + 1
+    END DO
+    rcut = cutoffs(line)
+  END FUNCTION
   
   
   !!!!!!!!!! PBC !!!!!!!!!!
