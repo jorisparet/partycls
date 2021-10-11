@@ -1,9 +1,10 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
+from .descriptor import StructuralDescriptor
+from .ba import BondAngleDescriptor
 from .realspace_wrap import compute
 
 
-class SmoothedBondAngleDescriptor(AngularStructuralDescriptor):
+class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     """
     Structural descriptor based on bond angles between particles.
     
@@ -58,10 +59,10 @@ class SmoothedBondAngleDescriptor(AngularStructuralDescriptor):
     name = 'smoothed-bond-angle'
     symbol = 'sba'
 
-    def __init__(self, trajectory, dtheta=3.0):
-        AngularStructuralDescriptor.__init__(self, trajectory)
-        self._dtheta = dtheta
-        self.grid = numpy.arange(dtheta / 2.0, 180.0, dtheta, dtype=numpy.float64)
+    def __init__(self, trajectory, dtheta=3.0, cutoff_enlargement=1.3, power_law=8):
+        BondAngleDescriptor.__init__(self, trajectory, dtheta=3.0)
+        self.cutoff_enlargement = cutoff_enlargement
+        self.power_law = power_law        
 
     def compute(self):
         StructuralDescriptor._sanity_checks(self)
@@ -70,8 +71,15 @@ class SmoothedBondAngleDescriptor(AngularStructuralDescriptor):
         pos_0 = self.dump('position', 0)
         pos_1 = self.dump('position', 1)
         idx_0 = self.dump('index', 0)
+        spe_0 = self.dump('species_id', 0)
+        spe_1 = self.dump('species_id', 1)
+        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
+        # override the computation of cutoffs from nearest_neighbors()
+        self._compute_cutoffs()
+        cutoffs = numpy.array(self.cutoffs)
+        cutoffs *= self.cutoff_enlargement
         # compute nearest neighbors
         self.nearest_neighbors(method=self.nearest_neighbors_method)
         for n in range(n_frames):
@@ -79,11 +87,14 @@ class SmoothedBondAngleDescriptor(AngularStructuralDescriptor):
             for i in range(len(idx_0[n])):
                 # individual bond-angle distribution using nearest-neighbors
                 neigh_i = self.neighbors[n][i]
-                hist_n_i = compute.angular_histogram(idx_0[n][i],
-                                                     pos_0[n][i], pos_1[n].T,
-                                                     neigh_i, box,
-                                                     self.n_features,
-                                                     self.dtheta)
+                hist_n_i = compute.smoothed_angular_histogram(idx_0[n][i],
+                                                              pos_0[n][i], pos_1[n].T,
+                                                              spe_0[n][i], spe_1[n],
+                                                              neigh_i,
+                                                              pairs, cutoffs,
+                                                              self.power_law, box,
+                                                              self.n_features,
+                                                              self.dtheta)
                 features[row] = hist_n_i
                 row += 1
         self.features = features
