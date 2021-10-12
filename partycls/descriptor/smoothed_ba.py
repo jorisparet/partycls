@@ -79,8 +79,8 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         # override the computation of cutoffs from nearest_neighbors()
         self._compute_cutoffs()
         cutoffs = numpy.array(self.cutoffs)
-        cutoffs *= self.cutoff_enlargement
-        # compute nearest neighbors
+        # compute nearest neighbors with enlarged cutoffs
+        self.cutoffs = list(self.cutoff_enlargement * numpy.array(self.cutoffs))
         self.nearest_neighbors(method=self.nearest_neighbors_method)
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
