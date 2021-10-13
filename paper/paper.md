@@ -57,7 +57,7 @@ To maintain a consistent API as the code base evolves, partycls will rigorously 
 
 # Examples
 
-As a simple example, we consider the detection of the grain boundaries in a polycrystal formed by differently oriented FCC crystallites [@rosenbrock_structural_2018]. This is easily achieved even with a simple radial descriptor, since that the average radial distribution of particles at the boundaries is different than the one of the crystal in the bulk. The following short piece of code opens the input trajectory stored in the file `grains.xyz`, computes the local radial distribution functions of the particles, applies a standard Z-Score normalization on the data, and finally performs a clustering using the Gaussian mixture model (GMM) with $K=2$ clusters (default):
+As a simple example, we consider the detection of the grain boundaries in a polycrystal formed by differently oriented FCC crystallites [@rosenbrock_structural_2018]. This is easily achieved even with a simple radial descriptor, since the average radial distribution of particles at the boundaries is different than the one of the crystal in the bulk. The following short piece of code opens the input trajectory stored in the file `grains.xyz`, computes the local radial distribution functions of the particles, applies a standard Z-Score normalization on the data, and finally performs a clustering using the Gaussian mixture model (GMM) with $K=2$ clusters (default):
 
 ```python
 from partycls import Workflow
