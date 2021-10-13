@@ -64,6 +64,7 @@ Features
 Requirements
 ------------
 
+* Fortran compiler
 * [numpy](https://pypi.org/project/numpy/)
 * [scikit-learn](https://scikit-learn.org)
 * [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
