@@ -90,9 +90,9 @@ class Test(unittest.TestCase):
         D.cutoffs = self.cutoffs
         X = D.compute()
         scaler = ZScore()
-        X = scaler.scale(X)        
+        X = scaler.scale(X)
 
-        # DPA
+        # Run as backend
         clustering = Clustering(backend=_DummyClustering())
         clustering.fit(X)
         self.assertTrue(clustering.labels is not None)

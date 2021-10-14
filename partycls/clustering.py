@@ -14,7 +14,7 @@ class Clustering:
     """
     Base class for clustering methods.
     
-    If an sk-learn compatible backend is available (see `backend`
+    If a scikit-learn compatible backend is available (see `backend`
     parameter below), it will be used within Strategy.
 
     Parameters
@@ -27,9 +27,9 @@ class Clustering:
         Number of times the clustering will be run with different seeds. 
         The default is 1.
             
-    backend : sk-learn compatible backend, optional
+    backend : scikit-learn compatible backend, optional
         Backend used for the clustering method. If provided, it must
-        be an object implementing an sk-learn compatible interface,
+        be an object implementing an sklearn compatible interface,
         with a `fit()` method and a `labels_` attribute. Duck typing
         is assumed. The default is None.
 
@@ -62,7 +62,7 @@ class Clustering:
 
     def fit(self, X):
         """
-        Run an sk-learn compatible clustering backend (if available) on `X`.
+        Run a scikit-learn compatible clustering backend (if available) on `X`.
 
         Subclasses implementing a specific clustering algorithm must
         override this method.
@@ -115,7 +115,6 @@ class Clustering:
         C_k : numpy.ndarray
             Cluster centroids. C_k[n] is the coordinates of the n-th cluster 
             center.
-
         """
         n_features = X.shape[1]
         C_k = numpy.zeros((self.n_clusters, n_features), dtype=numpy.float64)
