@@ -41,7 +41,7 @@ With the present code, we aim to provide a coherent numerical framework for unsu
 To the best of our knowledge, there is currently no publicly available code that provides and integrates all the necessary tools needed for this kind of analysis.
 Through a variety of structural descriptors, dimensionality reduction methods, clustering algorithms and filtering options, partycls makes it possible to discover the key structural features of a system and to assess the robustness of the results.
 The code has already been used in the context of a recent publication [@paret_assessing_2020] and can be easily extended.
-In particular, future versions will implement clustering in space *and* time, to learn about the dynamics of the system as well.
+In particular, future versions will implement clustering in space *and* time, to learn about the dynamics of the system as well, which could give more insight into the heterogeneous dynamics of amorphous materials [@berthier_dynamical_2011].
 
 # Design
 
