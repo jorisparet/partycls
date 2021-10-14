@@ -19,7 +19,7 @@ class Test(unittest.TestCase):
         D.cutoffs = self.cutoffs
         X = D.compute()
         scaler = ZScore()
-        X = scaler.scale(X)        
+        X = scaler.scale(X)
         reducer = PCA(n_components=3)
         clustering = KMeans(n_clusters=2, n_init=100)
         clustering.fit(X)
@@ -29,7 +29,7 @@ class Test(unittest.TestCase):
         # check if only the dislocated particles are in the same cluster
         self.assertEqual(set(clustering.fractions), set([2/27, 25/27]),
                          'not the expected cluster fractions')
-        
+
         # Same via workflow
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore', clustering='kmeans')
         wf.descriptor.cutoffs = self.cutoffs
@@ -51,7 +51,7 @@ class Test(unittest.TestCase):
         # check if only the dislocated particles are in the same cluster
         self.assertEqual(set(clustering.fractions), set([2/27, 25/27]),
                          'not the expected cluster fractions')
-        
+
         # Same via workflow
         wf = Workflow(self.traj, descriptor='gr', clustering='cinf')
         wf.clustering.n_init = 100
@@ -74,6 +74,29 @@ class Test(unittest.TestCase):
             shutil.rmtree(tmp)
         except:
             pass
- 
+
+    def test_backend(self):
+        from partycls import Trajectory, ZScore, Workflow
+        from partycls.descriptor import BondAngleDescriptor
+        from partycls.clustering import Clustering
+
+        class _DummyClustering:
+
+            def fit(self, X):
+                self.labels_ = [0] * len(X)
+        
+        # Features
+        D = BondAngleDescriptor(self.traj)
+        D.cutoffs = self.cutoffs
+        X = D.compute()
+        scaler = ZScore()
+        X = scaler.scale(X)        
+
+        # DPA
+        clustering = Clustering(backend=_DummyClustering())
+        clustering.fit(X)
+        self.assertTrue(clustering.labels is not None)
+
+        
 if __name__ == '__main__':
     unittest.main()

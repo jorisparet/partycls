@@ -7,13 +7,16 @@ from sklearn.cluster import KMeans as _KMeans
 from sklearn.mixture import GaussianMixture as _GaussianMixture
 from partycls.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
 
-__all__ = ['KMeans', 'GaussianMixture', 'CommunityInference']
+__all__ = ['Clustering', 'KMeans', 'GaussianMixture', 'CommunityInference']
 
 
 class Clustering:
     """
-    Base class (abstract) for clustering methods.
+    Base class for clustering methods.
     
+    If an sk-learn compatible backend is available (see `backend`
+    parameter below), it will be used within Strategy.
+
     Parameters
     ----------
     
@@ -24,6 +27,12 @@ class Clustering:
         Number of times the clustering will be run with different seeds. 
         The default is 1.
             
+    backend : sk-learn compatible backend, optional
+        Backend used for the clustering method. If provided, it must
+        be an object implementing an sk-learn compatible interface,
+        with a `fit()` method and a `labels_` attribute. Duck typing
+        is assumed. The default is None.
+
     Attributes
     ----------
 
@@ -35,19 +44,14 @@ class Clustering:
     
     labels : list of int
         Cluster labels. The default is None. Initialized after the `fit`
-        method was called.
-        
-    backend : compatible backend
-        Backend used for the clustering method if it relies on an external
-        package.
-   
+        method is called.
     """
 
-    def __init__(self, n_clusters=2, n_init=1):
+    def __init__(self, n_clusters=2, n_init=1, backend=None):
         self.n_clusters = n_clusters
         self.n_init = n_init
+        self.backend = backend
         self.labels = None
-        self.backend = None
 
     def __str__(self):
         rep = 'Clustering(method="{}", n_clusters={}, n_init={})'
@@ -57,7 +61,18 @@ class Clustering:
         return self.__str__()
 
     def fit(self, X):
-        pass
+        """
+        Run an sk-learn compatible clustering backend (if available) on `X`.
+
+        Subclasses implementing a specific clustering algorithm must
+        override this method.
+        """
+        if self.backend is not None:
+            if hasattr(X, 'features'):
+                self.backend.fit(X.features)
+            else:
+                self.backend.fit(X)
+            self.labels = self.backend.labels_
 
     @property
     def fractions(self):
