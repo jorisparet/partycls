@@ -57,7 +57,7 @@ print('Cluster membership of the particles', clustering.labels)
 Features
 --------
 
-- partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms).
+- partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). The code is currently optimized for small and medium system sizes (of order 10⁴ particles). Multiple trajectory frames can be analyzed to extend the structural dataset.
 - partycls implements various structural descriptors: radial distribution, bond-angle distribution, standard bond order parameters (see the [original paper](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.28.784)), and locally averaged bond order parameters (see the [original paper](https://aip.scitation.org/doi/10.1063/1.2977970)). On top of these native descriptors, partycls supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
 - partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms.
 
