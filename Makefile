@@ -23,5 +23,8 @@ coverage: fortran
 docs:
 	pdoc -o docs --html env/lib/python3.8/site-packages/partycls
 
+book:
+	jupyter-book build ../partycls
+
 clean:
 	rm -rf ${PROJECT}/*pyc ${PROJECT}/*/*pyc ${PROJECT}/*/*so build
