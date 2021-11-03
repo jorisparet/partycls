@@ -206,7 +206,7 @@ class RadialDescriptor(StructuralDescriptor):
                 g_b[m] = distribution[m] / wb
             return g_b / const
         else:
-            raise ValueError(&#34;unknown value {}&#34;.format(methos))
+            raise ValueError(&#34;unknown value {}&#34;.format(method))
 
     # TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     # TODO: duplicate code with `compute()`
@@ -496,7 +496,7 @@ initialized when the method <code>compute</code> is called (default value is Non
                 g_b[m] = distribution[m] / wb
             return g_b / const
         else:
-            raise ValueError(&#34;unknown value {}&#34;.format(methos))
+            raise ValueError(&#34;unknown value {}&#34;.format(method))
 
     # TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
     # TODO: duplicate code with `compute()`
@@ -744,7 +744,7 @@ range of distances given by <code>bounds</code>.</p>
             g_b[m] = distribution[m] / wb
         return g_b / const
     else:
-        raise ValueError(&#34;unknown value {}&#34;.format(methos))</code></pre>
+        raise ValueError(&#34;unknown value {}&#34;.format(method))</code></pre>
 </details>
 </dd>
 </dl>

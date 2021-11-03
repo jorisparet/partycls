@@ -37,7 +37,8 @@ optional) to perform a structural clustering on a trajectory.
 &#34;&#34;&#34;
 
 from .trajectory import Trajectory
-from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, \
+    BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_reduction import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust
@@ -403,7 +404,7 @@ class Workflow:
         for key in self.output_metadata.keys():
             self.output_metadata[key][&#39;enable&#39;] = False
 
-    def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=[], precision=6, **kwargs):
+    def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=None, precision=6, **kwargs):
         &#34;&#34;&#34;
         Write the trajectory file with cluster labels (default) and other
         additional fields (if any).        
@@ -437,6 +438,8 @@ class Workflow:
         &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)
         
         &#34;&#34;&#34;
+        if additional_fields is None:
+            additional_fields = []
         if filename is None:
             filename = self._output_file(fmt)
         self.trajectory.write(filename, fmt=fmt, backend=backend,
@@ -1103,7 +1106,7 @@ Example: "{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}".</p>
         for key in self.output_metadata.keys():
             self.output_metadata[key][&#39;enable&#39;] = False
 
-    def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=[], precision=6, **kwargs):
+    def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=None, precision=6, **kwargs):
         &#34;&#34;&#34;
         Write the trajectory file with cluster labels (default) and other
         additional fields (if any).        
@@ -1137,6 +1140,8 @@ Example: "{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}".</p>
         &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)
         
         &#34;&#34;&#34;
+        if additional_fields is None:
+            additional_fields = []
         if filename is None:
             filename = self._output_file(fmt)
         self.trajectory.write(filename, fmt=fmt, backend=backend,
@@ -1793,7 +1798,7 @@ if not specified. The default is None.</dd>
 </details>
 </dd>
 <dt id="partycls.workflow.Workflow.write_trajectory"><code class="name flex">
-<span>def <span class="ident">write_trajectory</span></span>(<span>self, filename=None, fmt='xyz', backend=None, additional_fields=[], precision=6, **kwargs)</span>
+<span>def <span class="ident">write_trajectory</span></span>(<span>self, filename=None, fmt='xyz', backend=None, additional_fields=None, precision=6, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Write the trajectory file with cluster labels (default) and other
@@ -1828,7 +1833,7 @@ have the specified properties as attributes. The default is [].</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=[], precision=6, **kwargs):
+<pre><code class="python">def write_trajectory(self, filename=None, fmt=&#39;xyz&#39;, backend=None, additional_fields=None, precision=6, **kwargs):
     &#34;&#34;&#34;
     Write the trajectory file with cluster labels (default) and other
     additional fields (if any).        
@@ -1862,6 +1867,8 @@ have the specified properties as attributes. The default is [].</dd>
     &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)
     
     &#34;&#34;&#34;
+    if additional_fields is None:
+        additional_fields = []
     if filename is None:
         filename = self._output_file(fmt)
     self.trajectory.write(filename, fmt=fmt, backend=backend,

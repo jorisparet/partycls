@@ -50,9 +50,10 @@ __all__ = [&#39;AMI&#39;,
 _palette = [&#34;#50514f&#34;, &#34;#f25f5c&#34;, &#34;#ffe066&#34;, &#34;#247ba0&#34;, &#34;#70c1b3&#34;,
             &#34;#0cce6b&#34;, &#34;#c200fb&#34;, &#34;#e2a0ff&#34;, &#34;#6622cc&#34;, &#34;#119822&#34;]
 
+
 def hex_to_rgb(h):
     h = h.lstrip(&#39;#&#39;)
-    return tuple(int(h[i:i+2], 16) / 256 for i in (0, 2, 4))
+    return tuple(int(h[i:i + 2], 16) / 256 for i in (0, 2, 4))
 
 
 def show_matplotlib(system, color, view=&#39;top&#39;, palette=None, cmap=&#39;viridis&#39;,
@@ -252,7 +253,8 @@ def show_ovito(system, color, view=&#39;top&#39;, palette=None, cmap=&#39;viridi
     tmp_file = fh.name
     # Self-contained EXYZ dump (it is not clean to use trajectories here)
     fh.write(&#39;{}\n&#39;.format(len(system.particle)))
-    fh.write(&#39;Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice=&#34;{},0.,0.,0.,{},0.,0.,0.,{}&#34;\n&#39;.format(*system.cell.side))
+    fh.write(&#39;Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice=&#34;{},0.,0.,0.,{},0.,0.,0.,{}&#34;\n&#39;.format(
+        *system.cell.side))
     for p in system.particle:
         fh.write(&#39;{} {} {} {} {} {} {} {}\n&#39;.format(p.species, *p.position, p.radius, *p.color))
     fh.close()
@@ -264,7 +266,7 @@ def show_ovito(system, color, view=&#39;top&#39;, palette=None, cmap=&#39;viridi
     pipeline.source.data.cell_[0, 0] = system.cell.side[0]
     pipeline.source.data.cell_[1, 1] = system.cell.side[1]
     pipeline.source.data.cell_[2, 2] = system.cell.side[2]
-    pipeline.source.data.cell_[:, 3] = -system.cell.side/2
+    pipeline.source.data.cell_[:, 3] = -system.cell.side / 2
     pipeline.add_to_scene()
 
     views = {&#39;top&#39;:    Viewport.Type.Top,
@@ -1467,7 +1469,8 @@ The default is 'viridis'.</dd>
     tmp_file = fh.name
     # Self-contained EXYZ dump (it is not clean to use trajectories here)
     fh.write(&#39;{}\n&#39;.format(len(system.particle)))
-    fh.write(&#39;Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice=&#34;{},0.,0.,0.,{},0.,0.,0.,{}&#34;\n&#39;.format(*system.cell.side))
+    fh.write(&#39;Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice=&#34;{},0.,0.,0.,{},0.,0.,0.,{}&#34;\n&#39;.format(
+        *system.cell.side))
     for p in system.particle:
         fh.write(&#39;{} {} {} {} {} {} {} {}\n&#39;.format(p.species, *p.position, p.radius, *p.color))
     fh.close()
@@ -1479,7 +1482,7 @@ The default is 'viridis'.</dd>
     pipeline.source.data.cell_[0, 0] = system.cell.side[0]
     pipeline.source.data.cell_[1, 1] = system.cell.side[1]
     pipeline.source.data.cell_[2, 2] = system.cell.side[2]
-    pipeline.source.data.cell_[:, 3] = -system.cell.side/2
+    pipeline.source.data.cell_[:, 3] = -system.cell.side / 2
     pipeline.add_to_scene()
 
     views = {&#39;top&#39;:    Viewport.Type.Top,

@@ -116,7 +116,7 @@ pytest tests/
 Support and contribution
 ------------------------
 
-If you wish to contribute or report an issue, feel free to [contact us](mailto:joris.paret@umontpellier.fr) or to use the [issue tracker](https://github.com/jorisparet/partycls/issues) and [pull requests](https://github.com/jorisparet/partycls/pulls) from the [code repository](https://github.com/jorisparet/partycls).
+If you wish to contribute or report an issue, feel free to [contact us](mailto:joris.paret@gmail.com) or to use the [issue tracker](https://github.com/jorisparet/partycls/issues) and [pull requests](https://github.com/jorisparet/partycls/pulls) from the [code repository](https://github.com/jorisparet/partycls).
 
 We largely follow the [GitHub flow](https://guides.github.com/introduction/flow/) to integrate community contributions. In essence:
 * fork the repository ;
