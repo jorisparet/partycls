@@ -4,6 +4,7 @@ partycls
 [![pypi](https://img.shields.io/pypi/v/partycls.svg)](https://pypi.python.org/pypi/partycls/)
 [![version](https://img.shields.io/badge/python-3.6+-blue.svg)](https://pypi.python.org/pypi/partycls/)
 [![license](https://img.shields.io/pypi/l/partycls.svg)](https://en.wikipedia.org/wiki/GNU_General_Public_License)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03723/status.svg)](https://doi.org/10.21105/joss.03723)
 [![build](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml/badge.svg)](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml)
 ![coverage](https://img.shields.io/badge/coverage-78%25-yellowgreen)
 
@@ -127,9 +128,32 @@ We largely follow the [GitHub flow](https://guides.github.com/introduction/flow/
 
 We also welcome contributions from other platforms, such as GitLab instances. Just let us know where to find your feature branch.
 
+Citing partycls
+---------------
+
+If you use partycls in a scientific publication, please consider citing the following article:
+
+*[partycls: A Python package for structural clustering](https://joss.theoj.org/papers/10.21105/joss.03723). Paret et al., (2021). Journal of Open Source Software, 6(67), 3723*
+
+Bibtex entry:
+```
+@article{Paret2021,
+  doi = {10.21105/joss.03723},
+  url = {https://doi.org/10.21105/joss.03723},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {67},
+  pages = {3723},
+  author = {Joris Paret and Daniele Coslovich},
+  title = {partycls: A Python package for structural clustering},
+  journal = {Journal of Open Source Software}
+}
+```
+
 Authors
 -------
 
 Joris Paret
 
-Daniele Coslovich: https://www.units.it/daniele.coslovich/
+[Daniele Coslovich](https://www.units.it/daniele.coslovich/)
