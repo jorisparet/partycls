@@ -1,5 +1,6 @@
-partycls
-========
+<p align="center">
+<a href="https://github.com/jorisparet/partycls"><img src="https://github.com/jorisparet/partycls/blob/jupyter-book/logo.svg" width="250"></a>
+</p>
 
 [![pypi](https://img.shields.io/pypi/v/partycls.svg)](https://pypi.python.org/pypi/partycls/)
 [![version](https://img.shields.io/badge/python-3.6+-blue.svg)](https://pypi.python.org/pypi/partycls/)
@@ -7,7 +8,7 @@ partycls
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.03723/status.svg)](https://doi.org/10.21105/joss.03723)
 [![build](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml/badge.svg)](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml)
 ![coverage](https://img.shields.io/badge/coverage-78%25-yellowgreen)
-
+  
 **partycls** is a Python package for cluster analysis of systems of interacting particles. By grouping particles that share similar structural or dynamical properties, partycls enables rapid and unsupervised exploration of the system's relevant features. It provides descriptors suitable for applications in condensed matter physics, such as structural analysis of disordered or partially ordered materials, and integrates the necessary tools of unsupervised learning into a streamlined workflow.
 
 Quick start
