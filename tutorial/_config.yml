@@ -1,6 +1,7 @@
 # Book settings
 
-title: "partycls"
+title: ""
+logo: ../logo.svg
 author: Joris Paret and Daniele Coslovich
 
 # Do not execute the notebooks
