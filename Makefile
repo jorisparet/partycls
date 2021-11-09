@@ -24,7 +24,7 @@ docs:
 	pdoc -o docs --force --html partycls
 
 book:
-	jupyter-book build ../partycls
+	jupyter-book build tutorial
 
 clean:
 	rm -rf ${PROJECT}/*pyc ${PROJECT}/*/*pyc ${PROJECT}/*/*so build
