@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2. Workflow &#8212; partycls</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Descriptors" href="3_descriptors.html" />
+    <link rel="prev" title="1. Trajectories" href="1_trajectory.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">partycls</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="README.html">
+   partycls
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1_trajectory.html">
+   1. Trajectories
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. Workflow
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3_descriptors.html">
+   3. Descriptors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4_going_further.html">
+   4. Going further
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/2_workflow.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/jorisparet/partycls"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/jorisparet/partycls/issues/new?title=Issue%20on%20page%20%2F2_workflow.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/jorisparet/partycls/master?urlpath=tree/2_workflow.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-simplest-workflow">
+   2.1. The simplest workflow
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output-files">
+   2.2. Output files
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-customized-workflow">
+   2.3. A customized workflow
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="workflow">
+<h1><span class="section-number">2. </span>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook, we will see how to perform a cluster analysis of the system using the <code class="docutils literal notranslate"><span class="pre">Workflow</span></code> class.</p>
+<div class="section" id="the-simplest-workflow">
+<h2><span class="section-number">2.1. </span>The simplest workflow<a class="headerlink" href="#the-simplest-workflow" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Workflow</span></code> class provides the most straightforward way to perform a spatial clustering of a system.</p>
+<p>To be instantiated, this class only requires one positional argument: the path to a trajectory file in a supported format or an instance of <code class="docutils literal notranslate"><span class="pre">partycls.trajectory.Trajectory</span></code>. See the <strong>Trajectories</strong> notebook for details about trajectories.</p>
+<p>Here we analyze a trajectory obtained from a simulation of a Lennard-Jones binary mixture, known as a Kob-Andersen mixture:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Workflow</span>
+
+<span class="n">wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">)</span>
+<span class="n">wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the most minimalist script: we open a trajectory file through the <code class="docutils literal notranslate"><span class="pre">Workflow</span></code> class, and use the default parameters to perform a clustering.</p>
+<p>Other parameters can be set when creating a workflow:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">descriptor</span></code>: the type of structural descriptor to use to perform the clustering. This must be a short string or an instance of <code class="docutils literal notranslate"><span class="pre">partycls.descriptor.StructuralDescriptor</span></code>. The default value is set to <code class="docutils literal notranslate"><span class="pre">&quot;gr&quot;</span></code>, which is the symbol of the <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code> class. All compatible string aliases are stored in the class attribute <code class="docutils literal notranslate"><span class="pre">descriptor_db</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scaling</span></code>: type of feature scaling to apply on the data. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, but a short string (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;zscore&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;minmax&quot;</span></code>) or an instance of the associated classes is also possible. All compatible string aliases are stored in the class attribute <code class="docutils literal notranslate"><span class="pre">scaling_db</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dim_reduction</span></code>: dimensionality reduction method. Default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, but a short string (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pca&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;tsne&quot;</span></code>) or an instance of the associated classes is also possible. All compatible string aliases are stored in the class attribute <code class="docutils literal notranslate"><span class="pre">dim_redeux_db</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clustering</span></code>: clustering algorithm. Default is <code class="docutils literal notranslate"><span class="pre">&quot;kmeans&quot;</span></code>, but other short strings (<code class="docutils literal notranslate"><span class="pre">&quot;gmm&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;cinf&quot;</span></code>) or an instance of the associated classes is also possible. All compatible string aliases are stored in the class attribute <code class="docutils literal notranslate"><span class="pre">clustering_db</span></code>.</p></li>
+</ul>
+<p>With the three lines of code above, we used the radial distribution of the particles to form clusters using the K-Means algorithm (no feature scaling or dimensionality reduction by default). Let’s have a look at the bulk <em>unnormalized</em> radial distribution, and the distributions restricted to the clusters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># grid and average distribution</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">grid</span>
+<span class="n">p_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">average</span>
+
+<span class="c1"># dataset: all the individual radial distributions of the particles</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">features</span>
+<span class="c1"># distributions of the clusters</span>
+<span class="n">pk_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">centroids</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bulk&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">pk_r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">pk_r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Unnormalized radial distributions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_workflow_3_0.png" src="_images/2_workflow_3_0.png" />
+</div>
+</div>
+<p><strong>N.B.</strong> :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">descriptor.average</span></code> refers to the average feature vector of all the objects in the dataset. In this example, this is the average radial distribution of the particles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clustering.centroids</span></code> are the coordinates of the cluster centers for the dataset <code class="docutils literal notranslate"><span class="pre">data</span></code>. This is the average feature vector of all the objects that belong to this cluster. In this example, the average radial distribution of the clusters.</p></li>
+</ul>
+<p>We see that the bulk distribution (dashed line) has been split into two quite different distributions. Let’s have a look at a more common quantity: the radial distribution function (RDF), <span class="math notranslate nohighlight">\(g(r)\)</span>.</p>
+<p>The class <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code>, used here to compute the radial correlations, implements a normalization function <code class="docutils literal notranslate"><span class="pre">normalize</span></code> that allows for two different normalization specified by a parameter <code class="docutils literal notranslate"><span class="pre">method</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method='r2'</span></code> returns <span class="math notranslate nohighlight">\(r^2g(r)\)</span> (default) ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method='gr'</span></code> returns the standard <span class="math notranslate nohighlight">\(g(r)\)</span> ;</p></li>
+</ul>
+<p>Let us look at the standard <span class="math notranslate nohighlight">\(g(r)\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># normalized g(r)</span>
+<span class="n">g_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">p_r</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<span class="n">g0_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pk_r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<span class="n">g1_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pk_r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot normalized g(r)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bulk&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g0_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g1_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;RDF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_workflow_5_0.png" src="_images/2_workflow_5_0.png" />
+</div>
+</div>
+<p>The numbers, fractions and labels of the clusters are accessible through the following attributes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Populations:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">populations</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fractions;&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">fractions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Labels:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Populations: [ 4653 10497]
+Fractions; [0.30712871 0.69287129]
+Labels: [1 1 1 ... 0 0 0]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="output-files">
+<h2><span class="section-number">2.2. </span>Output files<a class="headerlink" href="#output-files" title="Permalink to this headline">¶</a></h2>
+<p>Unless disabled with <code class="docutils literal notranslate"><span class="pre">wf.disable_output()</span></code>, a set output files is written once the cluster analysis is finished. Some are written by default while some need to be enabled. The output files include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;trajectory&quot;</span></code>: the optimized trajectory file with an additional column for the clusters’ labels (if the output format allows it) ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code>: a log file with all the relevant information about the optimization ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;centroids&quot;</span></code>: a data file with the centroids of the clusters, using the raw features from the descriptor ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;labels&quot;</span></code>: a text file with the clusters’ labels only ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;dataset&quot;</span></code>: a data file with the raw features from the descriptor ;</p></li>
+</ul>
+<p>All the information regarding output files is stored in the <code class="docutils literal notranslate"><span class="pre">output_metadata</span></code> attribute (a dictionary) :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># all possible output files</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;trajectory&#39;, &#39;log&#39;, &#39;centroids&#39;, &#39;labels&#39;, &#39;dataset&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each of these files has its specific options, for example, here are the options for the output trajectory:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># options for the output trajectory</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="s1">&#39;trajectory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="c1"># default values of some options</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Enable output:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="s1">&#39;trajectory&#39;</span><span class="p">][</span><span class="s1">&#39;enable&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Output format:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="s1">&#39;trajectory&#39;</span><span class="p">][</span><span class="s1">&#39;fmt&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;enable&#39;, &#39;writer&#39;, &#39;filename&#39;, &#39;fmt&#39;, &#39;backend&#39;, &#39;additional_fields&#39;, &#39;precision&#39;])
+Enable output: True
+Output format: xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>This can be changed through the method <code class="docutils literal notranslate"><span class="pre">set_output_metadata</span></code>, for example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf</span><span class="o">.</span><span class="n">set_output_metadata</span><span class="p">(</span><span class="s1">&#39;trajectory&#39;</span><span class="p">,</span>
+                       <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;my_traj.xyz.gz&#39;</span><span class="p">,</span>
+                       <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If no <code class="docutils literal notranslate"><span class="pre">filename</span></code> is provided for the output files, a default naming convention will be used.</p>
+<p>The default naming convention of every file is defined by the attribute <code class="docutils literal notranslate"><span class="pre">wf.naming_convention</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">naming_convention</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{filename}.{code}.{descriptor}.{clustering}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each tag in the previous string will be replaced by its value in the current instance of <code class="docutils literal notranslate"><span class="pre">Worfklow</span></code>. This naming convention can be changed by using any combination of the following tags: <code class="docutils literal notranslate"><span class="pre">{filename}</span></code>, <code class="docutils literal notranslate"><span class="pre">{code}</span></code>, <code class="docutils literal notranslate"><span class="pre">{descriptor}</span></code>, <code class="docutils literal notranslate"><span class="pre">{scaling}</span></code>, <code class="docutils literal notranslate"><span class="pre">{dim_reduction}</span></code>, <code class="docutils literal notranslate"><span class="pre">{clustering}</span></code>. For instance, setting</p>
+<p><code class="docutils literal notranslate"><span class="pre">wf.naming_convention</span> <span class="pre">=</span> <span class="pre">&quot;{filename}_{clustering}_{descriptor}&quot;</span></code></p>
+<p>would create output files with names : <code class="docutils literal notranslate"><span class="pre">kalj_N150.xyz_kmeans_gr.log</span></code>, <code class="docutils literal notranslate"><span class="pre">kalj_N150.xyz_kmeans_gr.dataset</span></code>, etc.</p>
+</div>
+<div class="section" id="a-customized-workflow">
+<h2><span class="section-number">2.3. </span>A customized workflow<a class="headerlink" href="#a-customized-workflow" title="Permalink to this headline">¶</a></h2>
+<p>Let us look at a different example, where the <code class="docutils literal notranslate"><span class="pre">Workflow</span></code> needs to be set differently.</p>
+<p>We consider a cubic crystal in which some particles have been dislocated from their original lattice positions. We use angular correlations, a standard feature scaling method (Z-score) and a linear dimensionality reduction technique (PCA) to find the clusters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span><span class="p">,</span> <span class="n">PCA</span>
+
+<span class="c1"># trajectory</span>
+<span class="n">xtal_traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/dislocation_N8000.xyz&#39;</span><span class="p">)</span>
+
+<span class="c1"># bond-angle descriptor</span>
+<span class="n">D_ba</span> <span class="o">=</span> <span class="n">BondAngleDescriptor</span><span class="p">(</span><span class="n">xtal_traj</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c1"># dimensionality reduction method</span>
+<span class="n">redux</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># optimization</span>
+<span class="n">xtal_wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">xtal_traj</span><span class="p">,</span>
+                   <span class="n">descriptor</span><span class="o">=</span><span class="n">D_ba</span><span class="p">,</span>
+                   <span class="n">scaling</span><span class="o">=</span><span class="s1">&#39;zscore&#39;</span><span class="p">,</span>
+                   <span class="n">dim_reduction</span><span class="o">=</span><span class="n">redux</span><span class="p">,</span>  
+                   <span class="n">clustering</span><span class="o">=</span><span class="s1">&#39;kmeans&#39;</span><span class="p">)</span>
+<span class="n">xtal_wf</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">n_init</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">xtal_wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>N.B.</strong> the raw features, rescaled features, and features in the reduced space are accesible through the attributes <code class="docutils literal notranslate"><span class="pre">features</span></code>, <code class="docutils literal notranslate"><span class="pre">scaled_features</span></code> and <code class="docutils literal notranslate"><span class="pre">reduced_features</span></code> respectively.</p>
+<p>Let’s look at the clusters in the 2D latent space corresponding to the two principal components with largest eigenvalues:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># features in latent space and labels</span>
+<span class="n">X_red</span> <span class="o">=</span> <span class="n">xtal_wf</span><span class="o">.</span><span class="n">reduced_features</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">xtal_wf</span><span class="o">.</span><span class="n">labels</span>
+
+<span class="c1"># scatter plot of latent space with clusters&#39; labels</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_red</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_red</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="n">labels</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_workflow_20_0.png" src="_images/2_workflow_20_0.png" />
+</div>
+</div>
+<p>If we now look at the centroids of the clusters (bond angle distribution functions):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># grid and centroids</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">grid</span>
+<span class="n">C_k</span> <span class="o">=</span> <span class="n">xtal_wf</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">centroids</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># make centroids normalized bond angle distributions</span>
+<span class="n">q_0</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">C_k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<span class="n">q_1</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">C_k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">q_0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">q_1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_workflow_22_0.png" src="_images/2_workflow_22_0.png" />
+</div>
+</div>
+<p>This is what is expected for particles on the lattice and for dislocated particles. It is straightforward to see in real space if the clusters are what they should be:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># show the system blank</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">xtal_traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># show the system with labels</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">xtal_traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2_workflow_24_0.png" src="_images/2_workflow_24_0.png" />
+<img alt="_images/2_workflow_24_1.png" src="_images/2_workflow_24_1.png" />
+</div>
+</div>
+<p>Dislocated particles are colored differently from the crystal, as expected.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="1_trajectory.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">1. </span>Trajectories</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="3_descriptors.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">3. </span>Descriptors</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Joris Paret and Daniele Coslovich<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

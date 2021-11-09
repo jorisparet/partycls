@@ -1,0 +1,18 @@
+# Book settings
+
+title: "partycls"
+author: Joris Paret and Daniele Coslovich
+
+# Do not execute the notebooks
+execute:
+  execute_notebooks: "off"
+
+# GitHub repository
+repository:
+  url: https://github.com/jorisparet/partycls
+  branch: master
+
+# GitHub buttons
+html:
+  use_repository_button: true
+  use_issues_button: true
