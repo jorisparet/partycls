@@ -188,8 +188,9 @@ def show_ovito(system, color, view=&#39;top&#39;, palette=None, cmap=&#39;viridi
         The default is &#39;top&#39;.
     palette : list, optional
         List of colors when coloring particles according to a discrete property,
-        such as &#39;species&#39; or &#39;label&#39;. A default palette will be used if not 
-        specified. The default is None.
+        such as &#39;species&#39; or &#39;label&#39;. Colors must be expressed in RGB format through
+        tuples (e.g. palette=[(0,0,1), (1,0,0)]). A default palette will be used if 
+        not specified. The default is None.
     cmap : str, optional
         Name of a matplotlib colormap to use when coloring particles according
         to a continuous property such as &#39;velocity&#39; or &#39;energy&#39;. List of 
@@ -1363,8 +1364,9 @@ in jupyter notebooks.
 The default is 'top'.</dd>
 <dt><strong><code>palette</code></strong> :&ensp;<code>list</code>, optional</dt>
 <dd>List of colors when coloring particles according to a discrete property,
-such as 'species' or 'label'. A default palette will be used if not
-specified. The default is None.</dd>
+such as 'species' or 'label'. Colors must be expressed in RGB format through
+tuples (e.g. palette=[(0,0,1), (1,0,0)]). A default palette will be used if
+not specified. The default is None.</dd>
 <dt><strong><code>cmap</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Name of a matplotlib colormap to use when coloring particles according
 to a continuous property such as 'velocity' or 'energy'. List of
@@ -1404,8 +1406,9 @@ The default is 'viridis'.</dd>
         The default is &#39;top&#39;.
     palette : list, optional
         List of colors when coloring particles according to a discrete property,
-        such as &#39;species&#39; or &#39;label&#39;. A default palette will be used if not 
-        specified. The default is None.
+        such as &#39;species&#39; or &#39;label&#39;. Colors must be expressed in RGB format through
+        tuples (e.g. palette=[(0,0,1), (1,0,0)]). A default palette will be used if 
+        not specified. The default is None.
     cmap : str, optional
         Name of a matplotlib colormap to use when coloring particles according
         to a continuous property such as &#39;velocity&#39; or &#39;energy&#39;. List of 
