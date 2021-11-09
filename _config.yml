@@ -1,0 +1,4 @@
+# in _config.yml
+title: "Partycls"
+execute:
+  execute_notebooks: "off"

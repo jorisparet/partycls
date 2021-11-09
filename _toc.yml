@@ -1,0 +1,8 @@
+# In _toc.yml
+format: jb-book
+root: tutorial/landing-page.md
+chapters:
+- file: tutorial/1_trajectory.ipynb
+- file: tutorial/2_workflow.ipynb
+- file: tutorial/3_descriptors.ipynb
+- file: tutorial/4_going_further.ipynb
