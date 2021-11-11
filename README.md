@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/jorisparet/partycls"><img src="https://github.com/jorisparet/partycls/blob/jupyter-book/logo.svg" width="250"></a>
+<a href="https://github.com/jorisparet/partycls"><img src="https://github.com/jorisparet/partycls/blob/jupyter-book/logo/logo.svg" width="250"></a>
 </p>
 
 [![pypi](https://img.shields.io/pypi/v/partycls.svg)](https://pypi.python.org/pypi/partycls/)
