@@ -1,7 +1,7 @@
 # Book settings
 
 title: ""
-logo: ../logo.svg
+logo: ../logo/logo.svg
 author: Joris Paret and Daniele Coslovich
 
 # Do not execute the notebooks
@@ -15,5 +15,6 @@ repository:
 
 # GitHub buttons
 html:
+  favicon: ../logo/favicon.svg
   use_repository_button: true
   use_issues_button: true
