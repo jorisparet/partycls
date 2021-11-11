@@ -21,7 +21,7 @@ coverage: fortran
 	coverage report -m
 
 docs:
-	pdoc -o docs --force --html partycls
+	pdoc --force -o docs --html partycls --template-dir _pdoc; mv docs/partycls docs/API
 
 book:
 	jupyter-book build tutorial

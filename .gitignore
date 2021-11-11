@@ -6,3 +6,4 @@ __pycache__
 *.pcls.*
 tutorial/.ipynb_checkpoints
 *.so
+_pdoc
