@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>partycls.descriptor.gr API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block}.homelink img{max-width:150px;margin-left:auto;margin-right:auto;margin-bottom:.3em}</style>
+<link rel="shortcut icon" href="https://raw.githubusercontent.com/jorisparet/partycls/master/logo/favicon.svg"/>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>partycls.descriptor.gr</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import numpy
+from .descriptor import StructuralDescriptor
+from .realspace_wrap import compute
+
+
+class RadialDescriptor(StructuralDescriptor):
+    &#34;&#34;&#34;
+    Structural descriptor based on radial correlations between particles.
+    
+    See the parent class for more details.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+        
+    dr : float
+        Bin width.
+        
+    n_shells : int, default: 3
+        Number of coordination shells (based on the RDF of group=0). This sets
+        the upper bound for the distance up to which correlations are computed.
+        
+    bounds : tuple, default: None
+        Lower and upper bounds to describe the radial correlations. If set, 
+        this has the priority over `n_shells`.
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+    
+    Examples:
+    ---------
+    
+    &gt;&gt;&gt; D = RadialDescriptor(&#39;trajectory.xyz&#39;, bounds=(0.0,3.0))
+    &gt;&gt;&gt; D.add_filter(&#34;species == &#39;A&#39;&#34;)
+    &gt;&gt;&gt; D.compute()
+    &#34;&#34;&#34;
+
+    name = &#39;radial&#39;
+    symbol = &#39;gr&#39;
+
+    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None):
+        StructuralDescriptor.__init__(self, trajectory)
+        # set the grid automatically using coordination shells (`n_shells`)
+        #  or user-defined limits (`bounds`) if provided
+        self._set_bounds(dr, n_shells, bounds)
+#        # default normalization (r**2*g(r))
+#        self.normalize = self.squared_distance_RDF_normalization
+
+    @property
+    def n_shells(self):
+        &#34;&#34;&#34;
+        Upper bound for correlation expressed in number of coordinations shells.
+        &#34;&#34;&#34;
+        return self._n_shells
+
+    @n_shells.setter
+    def n_shells(self, value):
+        return self._set_bounds(self._dr, value, None)
+
+    @property
+    def bounds(self):
+        &#34;&#34;&#34;
+        Lower and upper bounds to describe the radial correlations.
+        &#34;&#34;&#34;
+        return self._bounds
+
+    @bounds.setter
+    def bounds(self, value):
+        self._set_bounds(self._dr, None, value)
+
+    @property
+    def dr(self):
+        &#34;&#34;&#34;
+        Grid spacing.
+        &#34;&#34;&#34;
+        return self._dr
+
+    @dr.setter
+    def dr(self, value):
+        self._set_bounds(value, self._n_shells, self._bounds)
+
+    def compute(self):
+        &#34;&#34;&#34;
+        Compute the radial correlations for the particles in group=0 in the 
+        range of distances given by `bounds`.
+
+        Returns
+        -------
+        features : numpy.ndarray
+            Radial correlations.
+
+        &#34;&#34;&#34;
+        StructuralDescriptor._sanity_checks(self)
+        n_frames = len(self.groups[0])
+        pos_0 = self.dump(&#39;position&#39;, 0)
+        pos_1 = self.dump(&#39;position&#39;, 1)
+        idx_0 = self.dump(&#39;index&#39;, 0)
+        idx_1 = self.dump(&#39;index&#39;, 1)
+        features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
+        row = 0
+        for n in range(n_frames):
+            box = self.trajectory[n].cell.side
+            # pos_x arrays need to be transposed to be used with fortran
+            hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
+                                              idx_0[n], idx_1[n], box,
+                                              self.grid, self.dr)
+            # fill the array of features
+            for hist_n_i in hist_n:
+                features[row] = hist_n_i
+                row += 1
+        self.features = features
+        return features
+
+    def normalize(self, distribution, method=&#34;r2&#34;):
+        &#34;&#34;&#34;
+        Normalize a radial distribution.
+
+        Parameters
+        ----------
+        
+        distribution : array
+            Distribution to normalize.
+            
+        method : str, optional
+            Normalization method:
+            - method=&#39;r2&#39;: returns r^2 * g(r) (default);
+            - method=&#39;gr&#39; : returns the standard g(r) ;
+
+        Raises
+        ------
+        
+        ValueError
+            If `method` is invalid.
+
+        Returns
+        -------
+        
+        array
+            Normalized distribution.
+            
+        &#34;&#34;&#34;
+        if method == &#34;r2&#34;:
+            # TODO: this normalization is a bit inconsistent
+            return (self.grid * self.grid) * self.normalize(distribution, method=&#34;gr&#34;)
+        elif method == &#34;gr&#34;:
+            rho = self.trajectory[0].density
+            x_1 = self.group_fraction(1)
+            if self.dimension == 2:
+                const = numpy.pi * self.dr**2
+            if self.dimension == 3:
+                const = 4.0 / 3.0 * numpy.pi * self.dr**3
+            const = const * rho * x_1
+            g_b = numpy.empty_like(self.grid)
+            b_min = numpy.floor(self._bounds[0] / self.dr)  # if r_min != 0
+            for m in range(self.n_features):
+                b = b_min + m + 1
+                wb = (b**3 - (b - 1)**3)
+                g_b[m] = distribution[m] / wb
+            return g_b / const
+        else:
+            raise ValueError(&#34;unknown value {}&#34;.format(method))
+
+    # TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
+    # TODO: duplicate code with `compute()`
+    def _set_bounds(self, dr, n_shells, bounds):
+        # take the smallest side as maximal upper bound for the grid
+        sides = numpy.array(self.trajectory.get_property(&#39;cell.side&#39;))
+        L = numpy.min(sides)
+        # use `n_shells`
+        self._dr = dr
+        if bounds is None:
+            # first define full grid
+            r = numpy.arange(self._dr / 2, L / 2, self._dr, dtype=numpy.float64)
+            self._bounds = (r[0], r[-1])  # temporary
+            self.grid = r  # temporary
+            # arrays
+            pos_0 = self.dump(&#39;position&#39;, 0)
+            pos_1 = self.dump(&#39;position&#39;, 1)
+            idx_0 = self.dump(&#39;index&#39;, 0)
+            idx_1 = self.dump(&#39;index&#39;, 1)
+            box = self.trajectory[0].cell.side
+            all_hist = numpy.empty((self.size, r.size), dtype=numpy.int64)
+            n_frames = len(self.groups[0])
+            row = 0
+            for n in range(n_frames):
+                # pos_x arrays need to be transposed to be used with fortran
+                hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
+                                                  idx_0[n], idx_1[n], box,
+                                                  r, self._dr)
+                # fill the array of features
+                for hist_n_i in hist_n:
+                    all_hist[row] = hist_n_i
+                    row += 1
+            # g(r)
+            g = numpy.sum(all_hist, axis=0)
+            g = self.normalize(g, method=&#34;gr&#34;)
+            # find position of the n-th minimum in g(r)
+            index = 0
+            for shell in range(n_shells):
+                g_tmp = g[index:]
+                first_max = numpy.argmax(g_tmp)
+                first_min = numpy.argmin(g_tmp[first_max:]) + first_max
+                index += first_min
+            # set grid and bounds
+            self.grid = r[0:index + 1]
+            self._n_shells = n_shells
+            self._bounds = (r[0], r[index])
+
+        # use user-defined limits if provided
+        else:
+            if len(bounds) == 2 and bounds[0] &lt; bounds[1] and bounds[1] &lt;= L / 2:
+                rmin, rmax = bounds
+                r = numpy.arange(rmin + (self._dr / 2), rmax, self._dr, dtype=numpy.float64)
+                # set grid and bounds
+                self.grid = r
+                self._n_shells = None
+                self._bounds = (r[0], r[-1])
+            else:
+                raise ValueError(&#39;`bounds` is not correctly defined.&#39;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="partycls.descriptor.gr.RadialDescriptor"><code class="flex name class">
+<span>class <span class="ident">RadialDescriptor</span></span>
+<span>(</span><span>trajectory, dr=0.1, n_shells=3, bounds=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Structural descriptor based on radial correlations between particles.</p>
+<p>See the parent class for more details.</p>
+<h2 id="parameters">Parameters</h2>
+<p>trajectory : str or an instance of <code>Trajectory</code>.
+Trajectory on which the structural descriptor will be computed.</p>
+<dl>
+<dt><strong><code>dr</code></strong> :&ensp;<code>float</code></dt>
+<dd>Bin width.</dd>
+<dt><strong><code>n_shells</code></strong> :&ensp;<code>int</code>, default<code>: 3</code></dt>
+<dd>Number of coordination shells (based on the RDF of group=0). This sets
+the upper bound for the distance up to which correlations are computed.</dd>
+<dt><strong><code>bounds</code></strong> :&ensp;<code>tuple</code>, default<code>: None</code></dt>
+<dd>Lower and upper bounds to describe the radial correlations. If set,
+this has the priority over <code>n_shells</code>.</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>trajectory</code></strong> :&ensp;<code>Trajectory</code></dt>
+<dd>Trajectory on which the structural descriptor will be computed.</dd>
+<dt><strong><code>active_filters</code></strong> :&ensp;<code>list</code> of <code>str</code></dt>
+<dd>All the active filters on both groups prior to the computation of the
+descriptor.</dd>
+<dt><strong><code>dimension</code></strong> :&ensp;<code>int</code></dt>
+<dd>Spatial dimension of the descriptor (2 or 3).</dd>
+<dt><strong><code>grid</code></strong> :&ensp;<code>array</code></dt>
+<dd>Grid over which the structural features will be computed.</dd>
+<dt><strong><code>features</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>Array of all the structural features for the particles in group=0 in
+accordance with the defined filters (if any). This attribute is
+initialized when the method <code>compute</code> is called (default value is None).</dd>
+</dl>
+<h2 id="examples">Examples:</h2>
+<pre><code class="language-python-repl">&gt;&gt;&gt; D = RadialDescriptor('trajectory.xyz', bounds=(0.0,3.0))
+&gt;&gt;&gt; D.add_filter(&quot;species == 'A'&quot;)
+&gt;&gt;&gt; D.compute()
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RadialDescriptor(StructuralDescriptor):
+    &#34;&#34;&#34;
+    Structural descriptor based on radial correlations between particles.
+    
+    See the parent class for more details.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+        
+    dr : float
+        Bin width.
+        
+    n_shells : int, default: 3
+        Number of coordination shells (based on the RDF of group=0). This sets
+        the upper bound for the distance up to which correlations are computed.
+        
+    bounds : tuple, default: None
+        Lower and upper bounds to describe the radial correlations. If set, 
+        this has the priority over `n_shells`.
+    
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+    
+    Examples:
+    ---------
+    
+    &gt;&gt;&gt; D = RadialDescriptor(&#39;trajectory.xyz&#39;, bounds=(0.0,3.0))
+    &gt;&gt;&gt; D.add_filter(&#34;species == &#39;A&#39;&#34;)
+    &gt;&gt;&gt; D.compute()
+    &#34;&#34;&#34;
+
+    name = &#39;radial&#39;
+    symbol = &#39;gr&#39;
+
+    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None):
+        StructuralDescriptor.__init__(self, trajectory)
+        # set the grid automatically using coordination shells (`n_shells`)
+        #  or user-defined limits (`bounds`) if provided
+        self._set_bounds(dr, n_shells, bounds)
+#        # default normalization (r**2*g(r))
+#        self.normalize = self.squared_distance_RDF_normalization
+
+    @property
+    def n_shells(self):
+        &#34;&#34;&#34;
+        Upper bound for correlation expressed in number of coordinations shells.
+        &#34;&#34;&#34;
+        return self._n_shells
+
+    @n_shells.setter
+    def n_shells(self, value):
+        return self._set_bounds(self._dr, value, None)
+
+    @property
+    def bounds(self):
+        &#34;&#34;&#34;
+        Lower and upper bounds to describe the radial correlations.
+        &#34;&#34;&#34;
+        return self._bounds
+
+    @bounds.setter
+    def bounds(self, value):
+        self._set_bounds(self._dr, None, value)
+
+    @property
+    def dr(self):
+        &#34;&#34;&#34;
+        Grid spacing.
+        &#34;&#34;&#34;
+        return self._dr
+
+    @dr.setter
+    def dr(self, value):
+        self._set_bounds(value, self._n_shells, self._bounds)
+
+    def compute(self):
+        &#34;&#34;&#34;
+        Compute the radial correlations for the particles in group=0 in the 
+        range of distances given by `bounds`.
+
+        Returns
+        -------
+        features : numpy.ndarray
+            Radial correlations.
+
+        &#34;&#34;&#34;
+        StructuralDescriptor._sanity_checks(self)
+        n_frames = len(self.groups[0])
+        pos_0 = self.dump(&#39;position&#39;, 0)
+        pos_1 = self.dump(&#39;position&#39;, 1)
+        idx_0 = self.dump(&#39;index&#39;, 0)
+        idx_1 = self.dump(&#39;index&#39;, 1)
+        features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
+        row = 0
+        for n in range(n_frames):
+            box = self.trajectory[n].cell.side
+            # pos_x arrays need to be transposed to be used with fortran
+            hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
+                                              idx_0[n], idx_1[n], box,
+                                              self.grid, self.dr)
+            # fill the array of features
+            for hist_n_i in hist_n:
+                features[row] = hist_n_i
+                row += 1
+        self.features = features
+        return features
+
+    def normalize(self, distribution, method=&#34;r2&#34;):
+        &#34;&#34;&#34;
+        Normalize a radial distribution.
+
+        Parameters
+        ----------
+        
+        distribution : array
+            Distribution to normalize.
+            
+        method : str, optional
+            Normalization method:
+            - method=&#39;r2&#39;: returns r^2 * g(r) (default);
+            - method=&#39;gr&#39; : returns the standard g(r) ;
+
+        Raises
+        ------
+        
+        ValueError
+            If `method` is invalid.
+
+        Returns
+        -------
+        
+        array
+            Normalized distribution.
+            
+        &#34;&#34;&#34;
+        if method == &#34;r2&#34;:
+            # TODO: this normalization is a bit inconsistent
+            return (self.grid * self.grid) * self.normalize(distribution, method=&#34;gr&#34;)
+        elif method == &#34;gr&#34;:
+            rho = self.trajectory[0].density
+            x_1 = self.group_fraction(1)
+            if self.dimension == 2:
+                const = numpy.pi * self.dr**2
+            if self.dimension == 3:
+                const = 4.0 / 3.0 * numpy.pi * self.dr**3
+            const = const * rho * x_1
+            g_b = numpy.empty_like(self.grid)
+            b_min = numpy.floor(self._bounds[0] / self.dr)  # if r_min != 0
+            for m in range(self.n_features):
+                b = b_min + m + 1
+                wb = (b**3 - (b - 1)**3)
+                g_b[m] = distribution[m] / wb
+            return g_b / const
+        else:
+            raise ValueError(&#34;unknown value {}&#34;.format(method))
+
+    # TODO: do not compute the g(r) on the whole trajectory only for one cutoff...
+    # TODO: duplicate code with `compute()`
+    def _set_bounds(self, dr, n_shells, bounds):
+        # take the smallest side as maximal upper bound for the grid
+        sides = numpy.array(self.trajectory.get_property(&#39;cell.side&#39;))
+        L = numpy.min(sides)
+        # use `n_shells`
+        self._dr = dr
+        if bounds is None:
+            # first define full grid
+            r = numpy.arange(self._dr / 2, L / 2, self._dr, dtype=numpy.float64)
+            self._bounds = (r[0], r[-1])  # temporary
+            self.grid = r  # temporary
+            # arrays
+            pos_0 = self.dump(&#39;position&#39;, 0)
+            pos_1 = self.dump(&#39;position&#39;, 1)
+            idx_0 = self.dump(&#39;index&#39;, 0)
+            idx_1 = self.dump(&#39;index&#39;, 1)
+            box = self.trajectory[0].cell.side
+            all_hist = numpy.empty((self.size, r.size), dtype=numpy.int64)
+            n_frames = len(self.groups[0])
+            row = 0
+            for n in range(n_frames):
+                # pos_x arrays need to be transposed to be used with fortran
+                hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
+                                                  idx_0[n], idx_1[n], box,
+                                                  r, self._dr)
+                # fill the array of features
+                for hist_n_i in hist_n:
+                    all_hist[row] = hist_n_i
+                    row += 1
+            # g(r)
+            g = numpy.sum(all_hist, axis=0)
+            g = self.normalize(g, method=&#34;gr&#34;)
+            # find position of the n-th minimum in g(r)
+            index = 0
+            for shell in range(n_shells):
+                g_tmp = g[index:]
+                first_max = numpy.argmax(g_tmp)
+                first_min = numpy.argmin(g_tmp[first_max:]) + first_max
+                index += first_min
+            # set grid and bounds
+            self.grid = r[0:index + 1]
+            self._n_shells = n_shells
+            self._bounds = (r[0], r[index])
+
+        # use user-defined limits if provided
+        else:
+            if len(bounds) == 2 and bounds[0] &lt; bounds[1] and bounds[1] &lt;= L / 2:
+                rmin, rmax = bounds
+                r = numpy.arange(rmin + (self._dr / 2), rmax, self._dr, dtype=numpy.float64)
+                # set grid and bounds
+                self.grid = r
+                self._n_shells = None
+                self._bounds = (r[0], r[-1])
+            else:
+                raise ValueError(&#39;`bounds` is not correctly defined.&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="partycls.descriptor.descriptor.StructuralDescriptor" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor">StructuralDescriptor</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="partycls.descriptor.gr.RadialDescriptor.name"><code class="name">var <span class="ident">name</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="partycls.descriptor.gr.RadialDescriptor.symbol"><code class="name">var <span class="ident">symbol</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="partycls.descriptor.gr.RadialDescriptor.bounds"><code class="name">var <span class="ident">bounds</span></code></dt>
+<dd>
+<div class="desc"><p>Lower and upper bounds to describe the radial correlations.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def bounds(self):
+    &#34;&#34;&#34;
+    Lower and upper bounds to describe the radial correlations.
+    &#34;&#34;&#34;
+    return self._bounds</code></pre>
+</details>
+</dd>
+<dt id="partycls.descriptor.gr.RadialDescriptor.dr"><code class="name">var <span class="ident">dr</span></code></dt>
+<dd>
+<div class="desc"><p>Grid spacing.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def dr(self):
+    &#34;&#34;&#34;
+    Grid spacing.
+    &#34;&#34;&#34;
+    return self._dr</code></pre>
+</details>
+</dd>
+<dt id="partycls.descriptor.gr.RadialDescriptor.n_shells"><code class="name">var <span class="ident">n_shells</span></code></dt>
+<dd>
+<div class="desc"><p>Upper bound for correlation expressed in number of coordinations shells.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def n_shells(self):
+    &#34;&#34;&#34;
+    Upper bound for correlation expressed in number of coordinations shells.
+    &#34;&#34;&#34;
+    return self._n_shells</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="partycls.descriptor.gr.RadialDescriptor.compute"><code class="name flex">
+<span>def <span class="ident">compute</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the radial correlations for the particles in group=0 in the
+range of distances given by <code>bounds</code>.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>features</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Radial correlations.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute(self):
+    &#34;&#34;&#34;
+    Compute the radial correlations for the particles in group=0 in the 
+    range of distances given by `bounds`.
+
+    Returns
+    -------
+    features : numpy.ndarray
+        Radial correlations.
+
+    &#34;&#34;&#34;
+    StructuralDescriptor._sanity_checks(self)
+    n_frames = len(self.groups[0])
+    pos_0 = self.dump(&#39;position&#39;, 0)
+    pos_1 = self.dump(&#39;position&#39;, 1)
+    idx_0 = self.dump(&#39;index&#39;, 0)
+    idx_1 = self.dump(&#39;index&#39;, 1)
+    features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
+    row = 0
+    for n in range(n_frames):
+        box = self.trajectory[n].cell.side
+        # pos_x arrays need to be transposed to be used with fortran
+        hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
+                                          idx_0[n], idx_1[n], box,
+                                          self.grid, self.dr)
+        # fill the array of features
+        for hist_n_i in hist_n:
+            features[row] = hist_n_i
+            row += 1
+    self.features = features
+    return features</code></pre>
+</details>
+</dd>
+<dt id="partycls.descriptor.gr.RadialDescriptor.normalize"><code class="name flex">
+<span>def <span class="ident">normalize</span></span>(<span>self, distribution, method='r2')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Normalize a radial distribution.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>distribution</code></strong> :&ensp;<code>array</code></dt>
+<dd>Distribution to normalize.</dd>
+<dt><strong><code>method</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Normalization method:
+- method='r2': returns r^2 * g(r) (default);
+- method='gr' : returns the standard g(r) ;</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If <code>method</code> is invalid.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>array</code></dt>
+<dd>Normalized distribution.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def normalize(self, distribution, method=&#34;r2&#34;):
+    &#34;&#34;&#34;
+    Normalize a radial distribution.
+
+    Parameters
+    ----------
+    
+    distribution : array
+        Distribution to normalize.
+        
+    method : str, optional
+        Normalization method:
+        - method=&#39;r2&#39;: returns r^2 * g(r) (default);
+        - method=&#39;gr&#39; : returns the standard g(r) ;
+
+    Raises
+    ------
+    
+    ValueError
+        If `method` is invalid.
+
+    Returns
+    -------
+    
+    array
+        Normalized distribution.
+        
+    &#34;&#34;&#34;
+    if method == &#34;r2&#34;:
+        # TODO: this normalization is a bit inconsistent
+        return (self.grid * self.grid) * self.normalize(distribution, method=&#34;gr&#34;)
+    elif method == &#34;gr&#34;:
+        rho = self.trajectory[0].density
+        x_1 = self.group_fraction(1)
+        if self.dimension == 2:
+            const = numpy.pi * self.dr**2
+        if self.dimension == 3:
+            const = 4.0 / 3.0 * numpy.pi * self.dr**3
+        const = const * rho * x_1
+        g_b = numpy.empty_like(self.grid)
+        b_min = numpy.floor(self._bounds[0] / self.dr)  # if r_min != 0
+        for m in range(self.n_features):
+            b = b_min + m + 1
+            wb = (b**3 - (b - 1)**3)
+            g_b[m] = distribution[m] / wb
+        return g_b / const
+    else:
+        raise ValueError(&#34;unknown value {}&#34;.format(method))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="partycls.descriptor.descriptor.StructuralDescriptor" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor">StructuralDescriptor</a></b></code>:
+<ul class="hlist">
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.add_filter" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.add_filter">add_filter</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.average" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.average">average</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.clear_all_filters" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.clear_all_filters">clear_all_filters</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.clear_filters" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.clear_filters">clear_filters</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.dump" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.dump">dump</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.get_group_property" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.get_group_property">get_group_property</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.group_fraction" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.group_fraction">group_fraction</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.group_size" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.group_size">group_size</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.n_features" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.n_features">n_features</a></code></li>
+<li><code><a title="partycls.descriptor.descriptor.StructuralDescriptor.size" href="descriptor.html#partycls.descriptor.descriptor.StructuralDescriptor.size">size</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="Home" href="https://htmlpreview.github.io/?https://github.com/jorisparet/partycls/blob/master/docs/partycls/index.html">
+<img class="logo" src="https://raw.githubusercontent.com/jorisparet/partycls/master/logo/logo.svg" alt="Logo">
+</a>
+</header>
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search docs" aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<!-- joris: before <h1>Index</h1> -->
+<h1><a href="index.html">Index</a></h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="partycls.descriptor" href="index.html">partycls.descriptor</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="partycls.descriptor.gr.RadialDescriptor" href="#partycls.descriptor.gr.RadialDescriptor">RadialDescriptor</a></code></h4>
+<ul class="two-column">
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.bounds" href="#partycls.descriptor.gr.RadialDescriptor.bounds">bounds</a></code></li>
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.compute" href="#partycls.descriptor.gr.RadialDescriptor.compute">compute</a></code></li>
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.dr" href="#partycls.descriptor.gr.RadialDescriptor.dr">dr</a></code></li>
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.n_shells" href="#partycls.descriptor.gr.RadialDescriptor.n_shells">n_shells</a></code></li>
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.name" href="#partycls.descriptor.gr.RadialDescriptor.name">name</a></code></li>
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.normalize" href="#partycls.descriptor.gr.RadialDescriptor.normalize">normalize</a></code></li>
+<li><code><a title="partycls.descriptor.gr.RadialDescriptor.symbol" href="#partycls.descriptor.gr.RadialDescriptor.symbol">symbol</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+By Joris Paret and Daniele Coslovich. © Copyright 2021.
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
