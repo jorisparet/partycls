@@ -7,3 +7,4 @@ __pycache__
 tutorial/.ipynb_checkpoints
 *.so
 _pdoc
+tutorial/_build
