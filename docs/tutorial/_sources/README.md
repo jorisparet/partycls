@@ -17,5 +17,5 @@ We provide several tutorials through a collection of Jupyter notebooks, with exa
 4. [Going further](4_going_further)
 
 :::{seealso}
-See the full [API documentation](https://htmlpreview.github.io/?https://github.com/jorisparet/partycls/blob/master/docs/partycls/index.html) for a more detailed description of the code.
+See the full [API documentation](https://jorisparet.github.io/partycls/docs/API/) for a more detailed description of the code.
 :::
