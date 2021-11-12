@@ -80,7 +80,7 @@ Documentation
 -------------
 
 - See the [tutorials](https://jorisparet.github.io/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
-- Full [API documentation](https://jorisparet.github.io/partycls/docs/).
+- Full [API documentation](https://jorisparet.github.io/partycls/docs/API/).
 
 Installation
 ------------
