@@ -18,3 +18,4 @@ html:
   favicon: ../logo/favicon.svg
   use_repository_button: true
   use_issues_button: true
+  baseurl: https://jorisparet.github.io/partycls/docs/tutorial/
