@@ -1,0 +1,7 @@
+*.pcls.*
+_pdoc/
+build/
+dist/
+partycls.egg-info/
+partycls/
+tests/
