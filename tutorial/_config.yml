@@ -16,7 +16,8 @@ repository:
 
 # Binder
 launch_buttons:
-  notebook_interface: https://mybinder.org
+  notebook_interface: "jupyterlab"
+  binder_url: "https://mybinder.org"
 
 # GitHub buttons
 html:
