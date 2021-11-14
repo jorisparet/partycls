@@ -11,7 +11,12 @@ execute:
 # GitHub repository
 repository:
   url: https://github.com/jorisparet/partycls
+  path_to_book: tutorial
   branch: master
+
+# Binder
+launch_buttons:
+  notebook_interface: https://mybinder.org
 
 # GitHub buttons
 html:
