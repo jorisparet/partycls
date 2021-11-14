@@ -16,6 +16,8 @@ We provide several tutorials through a collection of Jupyter notebooks, with exa
 3. [Descriptors](3_descriptors)
 4. [Going further](4_going_further)
 
+These notebooks can be launched into an interactive session on *Binder*. Currently, all the dependencies (including the optional ones) will be installed before launching the notebooks. The session can thus take a few minutes to start.
+
 ```{warning}
 If you download the notebooks, be sure to download the content of the [data](https://github.com/jorisparet/partycls/tree/master/data) folder as well before executing them. The data folder should be placed one level above the folder containing the notebooks (`../data/`) for the paths to remain correct.
 ```
