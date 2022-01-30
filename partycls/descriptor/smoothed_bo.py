@@ -4,6 +4,43 @@ from .bo import BondOrientationalDescriptor
 from .realspace_wrap import compute
 
 class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
+    """
+    Smoothed bond orientational descriptor.
+    
+    Cutoffs `rc_ij` for the pair (i,j) of nearest neighbors are computed using 
+    the corresponding partial RDF, g_ij(r), but more neighbors are considered 
+    by looking further away from the central particle, using a 
+    `cutoff_enlargement` parameter. The value of q_lm between the central 
+    particle i and one of its neighbors j is then weighted by an exponential
+    decay w(r_ij) that depends on the distance from i, such that:
+        
+    w(r_ij, r_ik) = exp[ -(r_ij/rc_ij)^n) ]
+    
+    See the parent class for more details.
+    
+    Parameters
+    ----------
+    
+    trajectory : str or an instance of `Trajectory`.
+        Trajectory on which the structural descriptor will be computed.
+        
+    lmin : int, default: 0
+        Minimum degree. This set the lower bound of the grid.
+        
+    lmax : int, default: 8
+        Minimum degree. This set the upper bound of the grid.
+        
+    orders: list, default: None
+        Specific values of orders to compute, e.g. orders=[4,6]. This has
+        the priority over `lmin` and `lmax`.
+        
+    cutoff_enlargement : float
+        Consider neighbors j `cutoff_enlargement * rc_ij` away from the central
+        particle i.
+        
+    power_law : int
+        Value `n` for the power law decay w(r).
+    """
 
     name = 'smoothed bond-orientational'
     symbol = 'sbo'
