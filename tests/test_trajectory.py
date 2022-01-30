@@ -7,6 +7,12 @@ from partycls import Trajectory
 from partycls.descriptor import BondAngleDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans
 
+try:
+    import atooms
+    HAS_ATOOMS = True
+except ModuleNotFoundError:
+    HAS_ATOOMS = False
+
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -23,7 +29,6 @@ class Test(unittest.TestCase):
         # Trajectory adds the suffix by itself, which requires passing it explicitly
         import os
         import shutil
-        import numpy
         
         tmp = '/tmp/partycls_tests'
         try:
@@ -45,6 +50,7 @@ class Test(unittest.TestCase):
         self._test_read_write(fmt='xyz', suffix='xyz', backend=None)
         self._test_read_write(fmt='rumd', suffix='xyz.gz', backend=None)
 
+    @unittest.skipIf(not HAS_ATOOMS, 'no atooms module')
     def test_read_write_atooms(self):
         self._test_read_write(fmt='xyz', suffix='xyz', backend='atooms')
         # This must fail
@@ -53,8 +59,9 @@ class Test(unittest.TestCase):
             self.fail('this should have failed')
         except:
             pass
-        
-    @unittest.skip('this test currently fails, please fix it')
+    
+    # TODO: implement writing trajectories with MDTraj
+    @unittest.skip('Not implemented yet')
     def test_read_write_xyz_mdtraj(self):
         # This fails because it requires a topology file. Really?!
         self._test_read_write(fmt='xyz', suffix='xyz', backend='mdtraj')

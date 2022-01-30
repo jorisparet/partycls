@@ -159,8 +159,9 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
         The default is 'top'.
     palette : list, optional
         List of colors when coloring particles according to a discrete property,
-        such as 'species' or 'label'. A default palette will be used if not 
-        specified. The default is None.
+        such as 'species' or 'label'. Colors must be expressed in RGB format through
+	tuples (e.g. palette=[(0,0,1), (1,0,0)]). A default palette will be used if 
+	not specified. The default is None.
     cmap : str, optional
         Name of a matplotlib colormap to use when coloring particles according
         to a continuous property such as 'velocity' or 'energy'. List of 

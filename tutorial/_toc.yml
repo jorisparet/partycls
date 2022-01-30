@@ -1,0 +1,12 @@
+# In _toc.yml
+format: jb-book
+root: README.md
+
+parts:
+- caption: Tutorials
+  numbered: True
+  chapters:
+    - file: 1_trajectory.ipynb
+    - file: 2_workflow.ipynb
+    - file: 3_descriptors.ipynb
+    - file: 4_going_further.ipynb

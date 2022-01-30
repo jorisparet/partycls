@@ -45,7 +45,6 @@ class Test(unittest.TestCase):
 
         # Sanity checks
         self.assertEqual(len(traj), 19)
-        print('Why 19 and not 27?')
         self.assertEqual(len(traj[0].particle), 303)
         self.assertEqual(list(traj[0].distinct_species), ['0', '1', '2'])
         self.assertEqual(list(traj[0].cell.side), [6.32053, 6.32053, 6.32053])

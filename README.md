@@ -1,12 +1,14 @@
-partycls
-========
+<p align="center">
+<a href="https://github.com/jorisparet/partycls"><img src="https://github.com/jorisparet/partycls/blob/jupyter-book/logo/logo.svg" width="250"></a>
+</p>
 
 [![pypi](https://img.shields.io/pypi/v/partycls.svg)](https://pypi.python.org/pypi/partycls/)
 [![version](https://img.shields.io/badge/python-3.6+-blue.svg)](https://pypi.python.org/pypi/partycls/)
 [![license](https://img.shields.io/pypi/l/partycls.svg)](https://en.wikipedia.org/wiki/GNU_General_Public_License)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03723/status.svg)](https://doi.org/10.21105/joss.03723)
 [![build](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml/badge.svg)](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml)
 ![coverage](https://img.shields.io/badge/coverage-78%25-yellowgreen)
-
+  
 **partycls** is a Python package for cluster analysis of systems of interacting particles. By grouping particles that share similar structural or dynamical properties, partycls enables rapid and unsupervised exploration of the system's relevant features. It provides descriptors suitable for applications in condensed matter physics, such as structural analysis of disordered or partially ordered materials, and integrates the necessary tools of unsupervised learning into a streamlined workflow.
 
 Quick start
@@ -25,7 +27,7 @@ traj[0].show(color='label', backend='ovito')
 
 ![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_labels.png)
 
-The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be tuned and customized, check out the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) to see how and for further examples.
+The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be tuned and customized, check out the [tutorials](https://jorisparet.github.io/partycls/docs/tutorial/) to see how and for further examples.
 
 Thanks to a flexible system of filters, partycls makes it easy to restrict the analysis to a given subset of particles based on arbitrary particle properties. Say we have a binary mixture composed of particles with types A and B, and we are only interested in analyzing the bond angles of B particles in a vertical slice:
 
@@ -57,13 +59,14 @@ print('Cluster membership of the particles', clustering.labels)
 Features
 --------
 
-- partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms).
+- partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). The code is currently optimized for small and medium system sizes (of order 10⁴ particles). Multiple trajectory frames can be analyzed to extend the structural dataset.
 - partycls implements various structural descriptors: radial distribution, bond-angle distribution, standard bond order parameters (see the [original paper](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.28.784)), and locally averaged bond order parameters (see the [original paper](https://aip.scitation.org/doi/10.1063/1.2977970)). On top of these native descriptors, partycls supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
 - partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms.
 
 Requirements
 ------------
 
+* Fortran compiler
 * [numpy](https://pypi.org/project/numpy/)
 * [scikit-learn](https://scikit-learn.org)
 * [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
@@ -76,8 +79,8 @@ Requirements
 Documentation
 -------------
 
-- See the [tutorials](https://github.com/jorisparet/partycls/tree/master/tutorial) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
-- Full [API documentation](https://htmlpreview.github.io/?https://github.com/jorisparet/partycls/blob/master/docs/partycls/index.html).
+- See the [tutorials](https://jorisparet.github.io/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
+- Full [API documentation](https://jorisparet.github.io/partycls/docs/API/).
 
 Installation
 ------------
@@ -115,7 +118,7 @@ pytest tests/
 Support and contribution
 ------------------------
 
-If you wish to contribute or report an issue, feel free to [contact us](mailto:joris.paret@umontpellier.fr) or to use the [issue tracker](https://github.com/jorisparet/partycls/issues) and [pull requests](https://github.com/jorisparet/partycls/pulls) from the [code repository](https://github.com/jorisparet/partycls).
+If you wish to contribute or report an issue, feel free to [contact us](mailto:joris.paret@gmail.com) or to use the [issue tracker](https://github.com/jorisparet/partycls/issues) and [pull requests](https://github.com/jorisparet/partycls/pulls) from the [code repository](https://github.com/jorisparet/partycls).
 
 We largely follow the [GitHub flow](https://guides.github.com/introduction/flow/) to integrate community contributions. In essence:
 * fork the repository ;
@@ -126,9 +129,32 @@ We largely follow the [GitHub flow](https://guides.github.com/introduction/flow/
 
 We also welcome contributions from other platforms, such as GitLab instances. Just let us know where to find your feature branch.
 
+Citing partycls
+---------------
+
+If you use partycls in a scientific publication, please consider citing the following article:
+
+*[partycls: A Python package for structural clustering](https://joss.theoj.org/papers/10.21105/joss.03723). Paret et al., (2021). Journal of Open Source Software, 6(67), 3723*
+
+Bibtex entry:
+```
+@article{Paret2021,
+  doi = {10.21105/joss.03723},
+  url = {https://doi.org/10.21105/joss.03723},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {67},
+  pages = {3723},
+  author = {Joris Paret and Daniele Coslovich},
+  title = {partycls: A Python package for structural clustering},
+  journal = {Journal of Open Source Software}
+}
+```
+
 Authors
 -------
 
 Joris Paret
 
-Daniele Coslovich: http://www-dft.ts.infn.it/~coslovich/
+[Daniele Coslovich](https://www.units.it/daniele.coslovich/)
