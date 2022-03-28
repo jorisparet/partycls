@@ -439,7 +439,56 @@ CONTAINS
     q_l = rotational_invariant(l, q_lm)  
   END FUNCTION smoothed_ql
 
-    
+
+  !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS !!!!!!!!!!
+  FUNCTION radial_qlm(l, r, delta, neigh_i, pos_i, pos_1, box) RESULT(qlmrd)
+    ! parameters
+    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+    REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_1(:,:), box(:)
+    ! variables
+    COMPLEX(8)             :: qlmrd(2*l+1), harm
+    REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
+    REAL(8)                :: d_ij(SIZE(neigh_i)), Z(SIZE(neigh_i)), sq_shell
+    INTEGER(8)             :: j, ni, m
+    qlmrd(:) = (0.0, 0.0)
+    sq_shell = 2 * delta*delta
+    ! r_ij (cartesian)
+    DO j=1,SIZE(neigh_i)
+      ni = neigh_i(j)+1 ! python index shift 
+      r_xyz(:,j) = pos_1(:,ni)
+    END DO
+    r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
+    r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
+    r_xyz(3,:) = r_xyz(3,:) - pos_i(3)
+    CALL pbc_(r_xyz, box)
+    ! weights
+    d_ij = SQRT(SUM(r_xyz**2, 1))
+    DO j=1,SIZE(neigh_i)
+      Z(j) = EXP(- (d_ij(j) - r )**2 / sq_shell )
+    END DO
+    ! r_ij (spherical)
+    r_sph = cartesian_to_spherical(r_xyz)
+    DO m=0,2*l
+      DO j=1,SIZE(neigh_i)
+        harm = ylm(l, m-l, r_sph(2,j), r_sph(3,j))
+        qlmrd(m+1) = qlmrd(m+1) + Z(j) * harm
+      END DO
+    END DO
+    qlmrd = qlmrd / SUM(Z) !SIZE(neigh_i) !/ SUM(w_i)
+  END FUNCTION radial_qlm    
+
+  
+  !!!!!!!!!! ROTATIONAL INVARIANT OF DISTANCE-DEPENDENT BOP !!!!!!!!!!
+  FUNCTION radial_ql(l, r, delta, neigh_i, pos_i, pos_1, box) RESULT(q_lrd)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+    REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_1(:,:), box(:)
+    COMPLEX(8)             :: q_lmrd(2*l+1)
+    REAL(8)                :: q_lrd
+    q_lmrd = radial_qlm(l, r, delta, neigh_i, pos_i, pos_1, box)
+    q_lrd = rotational_invariant(l, q_lmrd)  
+  END FUNCTION radial_ql
+
+  
   SUBROUTINE nearest_neighbors(idx_i, idx_1, pos_i, pos_1, spe_i, spe_1, pairs, box, cutoffs, neigh_i)
     ! Parameters
     INTEGER(8), INTENT(in)     :: idx_i, idx_1(:)
@@ -479,7 +528,7 @@ CONTAINS
       END IF
     END DO
   END SUBROUTINE nearest_neighbors
-  
+
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !     Fortran implementation of the SANN algorithm                        !
