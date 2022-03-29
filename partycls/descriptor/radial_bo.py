@@ -64,7 +64,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     
     
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5):
-        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax)
+        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
         # Set the grid of distances
         self._set_bounds(dr, bounds, distance_grid)
         self.delta = delta
@@ -131,13 +131,17 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                 # compute BO parameters for particle `i`
                 neigh_i = self.neighbors[n][i]
                 hist_n_i = numpy.empty_like(features[0], dtype=numpy.float64)
-                for ln, l in enumerate(self.grid):
-                    for rn, r in enumerate(self.distance_grid):
-                        hist_n_i[ln+rn] = compute.radial_ql(l, r, self.delta, 
-                                                         neigh_i, 
-                                                         pos_0[n][i], 
-                                                         pos_1[n].T,
-                                                         box)
+                feature_idx = 0
+                for l in self.grid:
+                    for r in self.distance_grid:
+                        hist_n_i[feature_idx] = compute.radial_ql(l, r, 
+                                                                  self.delta, 
+                                                                  neigh_i, 
+                                                                  pos_0[n][i], 
+                                                                  pos_1[n].T,
+                                                                  box)
+                        feature_idx += 1
+                        
                 features[row] = hist_n_i
                 row += 1
         self.features = features
