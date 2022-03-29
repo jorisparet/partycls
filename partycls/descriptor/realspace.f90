@@ -463,9 +463,10 @@ CONTAINS
     CALL pbc_(r_xyz, box)
     ! weights
     d_ij = SQRT(SUM(r_xyz**2, 1))
-    DO j=1,SIZE(neigh_i)
-      Z(j) = EXP(- (d_ij(j) - r )**2 / sq_shell )
-    END DO
+    Z = EXP(- (d_ij - r )**2 / sq_shell )
+    !DO j=1,SIZE(neigh_i)
+    !  Z(j) = EXP(- (d_ij(j) - r )**2 / sq_shell )
+    !END DO
     ! r_ij (spherical)
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l
@@ -497,7 +498,7 @@ CONTAINS
     INTEGER(8), INTENT(in)     :: pairs(:,:)
     REAL(8), INTENT(in)        :: box(:)
     REAL(8), INTENT(in)        :: cutoffs(:)
-    INTEGER(8), INTENT(out)    :: neigh_i(100) ! max. number of neighbors is assumed to be 100
+    INTEGER(8), INTENT(out)    :: neigh_i(500) ! max. number of neighbors is assumed to be 500
     ! Variables
     INTEGER(8)                 :: np1, j, idxj, n_neigh_i, spe_j, line
     REAL(8)                    :: r_ij(SIZE(box)), dij_sq, rcut, rcut_sq, hbox(SIZE(box))
