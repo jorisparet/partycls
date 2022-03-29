@@ -46,7 +46,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     symbol = 'sbo'
     
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None, cutoff_enlargement=1.3, power_law=8):
-        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax)
+        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
         self.cutoff_enlargement = cutoff_enlargement
         self.power_law = power_law       
 
