@@ -441,9 +441,9 @@ CONTAINS
 
 
   !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION radial_qlm(l, r, delta, neigh_i, pos_i, pos_1, box) RESULT(qlmrd)
+  FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_1, box) RESULT(qlmrd)
     ! parameters
-    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
     REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_1(:,:), box(:)
     ! variables
     COMPLEX(8)             :: qlmrd(2*l+1), harm
@@ -463,7 +463,7 @@ CONTAINS
     CALL pbc_(r_xyz, box)
     ! weights
     d_ij = SQRT(SUM(r_xyz**2, 1))
-    Z = EXP(- (d_ij - r )**2 / sq_shell )
+    Z = EXP(- (d_ij - r )**exponent / sq_shell )
     !DO j=1,SIZE(neigh_i)
     !  Z(j) = EXP(- (d_ij(j) - r )**2 / sq_shell )
     !END DO
@@ -480,12 +480,12 @@ CONTAINS
 
   
   !!!!!!!!!! ROTATIONAL INVARIANT OF DISTANCE-DEPENDENT BOP !!!!!!!!!!
-  FUNCTION radial_ql(l, r, delta, neigh_i, pos_i, pos_1, box) RESULT(q_lrd)
-    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+  FUNCTION radial_ql(l, r, delta, exponent, neigh_i, pos_i, pos_1, box) RESULT(q_lrd)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
     REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_1(:,:), box(:)
     COMPLEX(8)             :: q_lmrd(2*l+1)
     REAL(8)                :: q_lrd
-    q_lmrd = radial_qlm(l, r, delta, neigh_i, pos_i, pos_1, box)
+    q_lmrd = radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_1, box)
     q_lrd = rotational_invariant(l, q_lmrd)  
   END FUNCTION radial_ql
 
