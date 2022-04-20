@@ -63,12 +63,13 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     symbol = 'rbo'
     
     
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5):
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5, exponent=2):
         BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
         # Set the grid of distances
         self._set_bounds(dr, bounds, distance_grid)
         self.delta = delta
         self.skin = skin
+        self.exponent = exponent
         
     @property
     def bounds(self):
@@ -135,7 +136,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                 for l in self.grid:
                     for r in self.distance_grid:
                         hist_n_i[feature_idx] = compute.radial_ql(l, r, 
-                                                                  self.delta, 
+                                                                  self.delta,
+                                                                  self.exponent,
                                                                   neigh_i, 
                                                                   pos_0[n][i], 
                                                                   pos_1[n].T,
