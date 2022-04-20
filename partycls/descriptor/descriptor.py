@@ -460,6 +460,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                     neigh_i = neigh_i[neigh_i >= 0]
                     self.neighbors[n].append(neigh_i)
 
+        if method == 'NN':
+            for n in range(n_frames):
+                self.neighbors[n] = numpy.array(self.dump('neighbors', 0)[n])
+
     # TODO: if fixed-cutoff method, let the user choose `dr`
     def _compute_cutoffs(self):
         from .gr import RadialDescriptor
