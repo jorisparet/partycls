@@ -451,7 +451,6 @@ CONTAINS
     REAL(8)                :: d_ij(SIZE(neigh_i)), Z(SIZE(neigh_i)), sq_shell
     INTEGER(8)             :: j, ni, m
     qlmrd(:) = (0.0, 0.0)
-    sq_shell = 2 * delta*delta
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
       ni = neigh_i(j)+1 ! python index shift 
@@ -463,7 +462,7 @@ CONTAINS
     CALL pbc_(r_xyz, box)
     ! weights
     d_ij = SQRT(SUM(r_xyz**2, 1))
-    Z = EXP(- (d_ij - r )**exponent / sq_shell )
+    Z = EXP(- 0.5d0 * ((d_ij - r) / delta)**exponent)
     !DO j=1,SIZE(neigh_i)
     !  Z(j) = EXP(- (d_ij(j) - r )**2 / sq_shell )
     !END DO
