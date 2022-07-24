@@ -9,7 +9,7 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     
     def __init__(self, trajectory):
         AngularStructuralDescriptor.__init__(self, trajectory)
-        self.grid = numpy.zeros(1)
+        self.grid = numpy.zeros(1, dtype=numpy.float64)
         
     def compute(self):
         StructuralDescriptor._sanity_checks(self)

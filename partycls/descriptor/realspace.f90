@@ -174,10 +174,11 @@ CONTAINS
     ! Variables
     INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, N_ba
     REAL(8)    :: r_ij(SIZE(box)), r_ik(SIZE(box)), d_ij, d_ik, hbox(SIZE(box))
-    REAL(8)    :: dotprod, prod, costheta, theta_kij
+    REAL(8)    :: dotprod, prod, costheta_kij, costheta_tetra
     ! Computation
     hbox = box / 2.0
     n_neigh_i = SIZE(neigh_i)
+    costheta_tetra = -0.333806859233771 ! cos(109.5°)
     N_ba = 0
     tetra = 0.0
     ! First neighbor: j
@@ -198,17 +199,16 @@ CONTAINS
             N_ba = N_ba + 1
             dotprod = SUM(r_ij*r_ik)
             prod = d_ij*d_ik
-            costheta = dotprod/prod
+            costheta_kij = dotprod/prod
             ! enforce cos(theta) >= -1
-            IF (costheta <= 0.0) THEN
-              costheta = DMAX1(-1.0_8,costheta)
+            IF (costheta_kij <= 0.0) THEN
+              costheta_kij = DMAX1(-1.0_8,costheta_kij)
             END IF
             ! enforce cos(theta) <= 1
-            IF (costheta > 0.0) THEN
-              costheta = DMIN1(1.0_8,costheta)
+            IF (costheta_kij > 0.0) THEN
+              costheta_kij = DMIN1(1.0_8,costheta_kij)
             END IF
-            theta_kij = ACOS(costheta)*180.0/pi ! angle in degree
-            tetra = tetra + ABS(theta_kij - 109.5)
+            tetra = tetra + ABS(costheta_kij - costheta_tetra)
           END IF
         END DO
       END IF
