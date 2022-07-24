@@ -166,6 +166,57 @@ CONTAINS
   END SUBROUTINE smoothed_angular_histogram
 
   
+  SUBROUTINE tetrahedrality(idx_i, pos_i, pos_1, neigh_i, box, tetra)
+    ! Parameters
+    INTEGER(8), INTENT(in)  :: idx_i, neigh_i(:)
+    REAL(8), INTENT(in)     :: pos_i(:), pos_1(:,:), box(:)
+    REAL(8), INTENT(out)    :: tetra
+    ! Variables
+    INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, N_ba
+    REAL(8)    :: r_ij(SIZE(box)), r_ik(SIZE(box)), d_ij, d_ik, hbox(SIZE(box))
+    REAL(8)    :: dotprod, prod, costheta, theta_kij
+    ! Computation
+    hbox = box / 2.0
+    n_neigh_i = SIZE(neigh_i)
+    N_ba = 0
+    tetra = 0.0
+    ! First neighbor: j
+    DO j=1,n_neigh_i
+      idx_j = neigh_i(j) + 1 ! python index shift
+      IF (idx_j /= idx_i) THEN ! pass if j=i
+        r_ij(:) = pos_i - pos_1(:,idx_j)
+        CALL pbc(r_ij, box, hbox)
+        d_ij = SQRT(SUM(r_ij**2))
+        ! Second neighbor: k
+        DO k=1,n_neigh_i
+          idx_k = neigh_i(k) + 1 ! python index shift
+          IF (idx_k /= idx_i .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
+            r_ik(:) = pos_i - pos_1(:,idx_k)
+            CALL pbc(r_ik, box, hbox)
+            d_ik = SQRT(SUM(r_ik**2))
+            ! angle (k,i,j)
+            N_ba = N_ba + 1
+            dotprod = SUM(r_ij*r_ik)
+            prod = d_ij*d_ik
+            costheta = dotprod/prod
+            ! enforce cos(theta) >= -1
+            IF (costheta <= 0.0) THEN
+              costheta = DMAX1(-1.0_8,costheta)
+            END IF
+            ! enforce cos(theta) <= 1
+            IF (costheta > 0.0) THEN
+              costheta = DMIN1(1.0_8,costheta)
+            END IF
+            theta_kij = ACOS(costheta)*180.0/pi ! angle in degree
+            tetra = tetra + ABS(theta_kij - 109.5)
+          END IF
+        END DO
+      END IF
+    END DO
+    tetra = tetra / N_ba
+  END SUBROUTINE tetrahedrality
+  
+  
   FUNCTION find_cutoff(spe_i, spe_j, pairs, cutoffs) RESULT(rcut)
     ! Parameters
     INTEGER(8), INTENT(in) :: spe_i, spe_j, pairs(:,:)
