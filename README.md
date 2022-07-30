@@ -155,6 +155,6 @@ Bibtex entry:
 Authors
 -------
 
-Joris Paret
+[Joris Paret](https://jorisparet.github.io/)
 
 [Daniele Coslovich](https://www.units.it/daniele.coslovich/)
