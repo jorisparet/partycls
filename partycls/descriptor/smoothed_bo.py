@@ -8,13 +8,13 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     Smoothed bond orientational descriptor.
     
     Cutoffs `rc_ij` for the pair (i,j) of nearest neighbors are computed using 
-    the corresponding partial RDF, g_ij(r), but more neighbors are considered 
-    by looking further away from the central particle, using a 
-    `cutoff_enlargement` parameter. The value of q_lm between the central 
-    particle i and one of its neighbors j is then weighted by an exponential
-    decay w(r_ij) that depends on the distance from i, such that:
+    the corresponding partial RDF (or provided cutoffs), but more 
+    neighbors are considered by looking further away from the central particle,
+    using a `cutoff_enlargement` parameter. The value of q_lm between the 
+    central particle i and one of its neighbors j is then weighted by an 
+    exponential decay w(r_ij) that depends on the distance from i, such that:
         
-    w(r_ij, r_ik) = exp[ -(r_ij/rc_ij)^n) ]
+    w(r_ij) = exp[ -(r_ij/rc_ij)^n) ]
     
     See the parent class for more details.
     
@@ -30,25 +30,57 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     lmax : int, default: 8
         Minimum degree. This set the upper bound of the grid.
         
-    orders: list, default: None
+    orders : list, default: None
         Specific values of orders to compute, e.g. orders=[4,6]. This has
         the priority over `lmin` and `lmax`.
         
-    cutoff_enlargement : float
+    cutoff_enlargement : float, default: 1.3
         Consider neighbors j `cutoff_enlargement * rc_ij` away from the central
         particle i.
         
-    power_law : int
-        Value `n` for the power law decay w(r).
+    exponent: int, default : 8
+        Exponent `n` in the power law for the exponential decay in w(r).
+        
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+        
+    cutoffs : list of float
+        List of enlarged cutoff distances to identify the nearest neighbors 
+        using the fixed-cutoff ('FC') method.
+        
+    standard_cutoffs_FC : list of float
+        List of standard cutoffs (i.e. not enlarged) with the fixed-cutoff 
+        ('FC') method.
+        
+    nearest_neighbors_method : str, default: 'FC'
+        Nearest neighbor method, 'FC' or 'SANN'.
     """
 
     name = 'smoothed bond-orientational'
     symbol = 'sbo'
     
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, cutoff_enlargement=1.3, power_law=8):
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, cutoff_enlargement=1.3, exponent=8):
         BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
         self.cutoff_enlargement = cutoff_enlargement
-        self.power_law = power_law       
+        self.exponent = exponent       
 
     def compute(self):
         StructuralDescriptor._sanity_checks(self)
@@ -62,12 +94,22 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
-        # override the computation of cutoffs from nearest_neighbors()
-        self._compute_cutoffs()
-        cutoffs = numpy.array(self.cutoffs)
+        
+        # compute cutoffs for the descriptor if not provided
+        if None in self.cutoffs:
+            if self.nearest_neighbors_method != 'FC':
+                print("Warning: using fixed cutoffs for the computation of \
+                      the descriptor. Neighbors are determined using the \
+                     `{}` method.".format(self.nearest_neighbors_method))
+            self._compute_cutoffs()
+        # store the standard FC cutoffs
+        self.standard_cutoffs_FC = numpy.array(self.cutoffs)
+        
         # compute nearest neighbors with enlarged cutoffs
+        # if the method for neighbors is different than
         self.cutoffs = list(self.cutoff_enlargement * numpy.array(self.cutoffs))
         self.nearest_neighbors(method=self.nearest_neighbors_method)
+        
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
@@ -77,8 +119,8 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = compute.smoothed_ql(l, neigh_i, pos_0[n][i], pos_1[n].T,
                                                        spe_0[n][i], spe_1[n], pairs,
-                                                       box, cutoffs,
-                                                       self.power_law)
+                                                       box, self.standard_cutoffs_FC,
+                                                       self.exponent)
                 features[row] = hist_n_i
                 row += 1
         self.features = features
