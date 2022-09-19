@@ -24,7 +24,8 @@ aliases = {'position': 'particle.position',
            'label': 'particle.label',
            'index': 'particle.index',
            'mass': 'particle.mass',
-           'radius': 'particle.radius'}
+           'radius': 'particle.radius',
+           'neighbors': 'particle.neighbors'}
 
 
 class Particle:
