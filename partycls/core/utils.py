@@ -19,6 +19,10 @@ def tipify(s):
     """
     if '_' in s:
         return s
+    elif ',' in s:
+        s = s.split(sep=',')
+        s = [tipify(s_i) for s_i in s]
+        return s
     else:
         try:
             return int(s)
