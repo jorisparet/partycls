@@ -371,6 +371,7 @@ class Trajectory:
                 # Look for additional fields
                 if self.additional_fields:
                     starting_idx = dimension + 1
+                    
                     # community/cluster label
                     default_cluster_fields = ['cluster', 'community', 'label']
                     read_cluster_field = True in [
@@ -381,11 +382,23 @@ class Trajectory:
                         if has_cluster_field:
                             cluster_field_name = default_cluster_fields[cluster_field_mask.index(True)]
                             cidx = other_fields.index(cluster_field_name)
+                            
+                    # neighbors
+                    default_neighbors_fields = ['neighbor', 'neighbors', 'neighbour', 'neighbours', 'neigh']
+                    read_neigh_field = True in [
+                        ngh_field in self.additional_fields for ngh_field in default_neighbors_fields]
+                    if read_neigh_field:
+                        neigh_field_mask = [nf in other_fields for nf in default_neighbors_fields]
+                        has_neighbors_field = True in neigh_field_mask
+                        if has_neighbors_field:
+                            neighbors_field_name = default_neighbors_fields[neigh_field_mask.index(True)]
+                            nidx = other_fields.index(neighbors_field_name)
+                            
                     # other additional fields
                     fields_to_read = []
                     fields_to_read_idx = []
                     for field in self.additional_fields:
-                        if field not in default_cluster_fields:
+                        if field not in [*default_cluster_fields, *default_neighbors_fields]:
                             fidx = other_fields.index(field)
                             fields_to_read.append(field)
                             fields_to_read_idx.append(fidx)
@@ -407,6 +420,8 @@ class Trajectory:
                     if self.additional_fields:
                         if read_cluster_field and has_cluster_field:
                             particle.label = int(line[starting_idx + cidx])
+                        if read_neigh_field and has_neighbors_field:
+                            particle.neighbors = tipify(line[starting_idx + nidx])
                         for field_name, field_idx in zip(fields_to_read, fields_to_read_idx):
                             val = tipify(line[starting_idx + field_idx])
                             particle.__setattr__(field_name, val)

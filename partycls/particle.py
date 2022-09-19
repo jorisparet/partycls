@@ -25,13 +25,14 @@ aliases = {'position': 'particle.position',
            'index': 'particle.index',
            'mass': 'particle.mass',
            'radius': 'particle.radius',
-           'neighbors': 'particle.neighbors'}
+           'neighbors': 'particle.neighbors',
+           'neighbours': 'particle.neighbors'}
 
 
 class Particle:
     """
-    A particle is defined by its position, its type, and an optional cluster
-    label (default is -1).
+    A particle is defined by its position, its type, and additional attributes
+    like a radius, a cluster label, a list of neighbors, etc.
     
     Parameters
     ----------
@@ -49,6 +50,9 @@ class Particle:
         
     radius : float, optional, defaut: 0.5
         Particle radius.
+        
+    neighbors : list of int, default: None
+        Indices the particle's neighbors.
     
     Attributes
     ----------
@@ -65,6 +69,9 @@ class Particle:
     radius : float
         Particle radius.
         
+    neighbors : list of int
+        Indices the particle's neighbors.
+        
     index : int
         A unique index to identify the particle.
     
@@ -75,7 +82,7 @@ class Particle:
     >>> p = Particle([0.0, 0.0], species='B')
     """
 
-    def __init__(self, position=None, species='A', label=-1, radius=0.5):
+    def __init__(self, position=None, species='A', label=-1, radius=0.5, neighbors=None):
         if position is None:
             self.position = numpy.zeros(3)
         else:
@@ -83,8 +90,10 @@ class Particle:
         self.species = species
         # Cluster label
         self.label = label
-        # Particle radois
+        # Particle radius
         self.radius = radius
+        # Neighbors
+        self.neighbors = neighbors
         # Index of the particle
         self.index = id(self)
 

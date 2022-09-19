@@ -352,7 +352,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         Nearest neighbor method, 'FC' or 'SANN'.
         
     neighbors : list
-        Lists of nearest neighbors for all the particles in group=0. Empty by
+        Lists of nearest neighbors for all the particles in group=0. None by
         default and filled when calling the method `nearest_neighbors`.
     """
 
@@ -362,6 +362,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         # 'FC' = Fixed Cutoff (default)
         # 'SANN' = Solid Angle Nearest Neighbors
         self.nearest_neighbors_method = 'FC'
+        self.neighbors = None
 
     def set_cutoff(self, s1, s2, rcut, mirror=True):
         """
@@ -462,7 +463,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
 
         if method == 'NN':
             for n in range(n_frames):
-                self.neighbors[n] = numpy.array(self.dump('neighbors', 0)[n])
+                self.neighbors[n] = numpy.array(self.dump('neighbors', group=0)[n])
 
     # TODO: if fixed-cutoff method, let the user choose `dr`
     def _compute_cutoffs(self):
