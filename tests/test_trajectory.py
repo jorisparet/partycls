@@ -72,6 +72,17 @@ class Test(unittest.TestCase):
         except:
             pass
         
+    def test_additional_list_field(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'traj_with_neighbors.xyz'), 
+                          additional_fields=['radius', 'neighbors'])       
+        neighbors_all = traj.dump('neighbors')
+        self.assertEqual(list(neighbors_all[0][0]), [1,2,3])
+        self.assertEqual(list(neighbors_all[1][1]), [2,3])
+        neighbors_A = traj.dump('neighbors', subset="species == 'A'")
+        self.assertEqual(list(neighbors_A[0][0]), [1,2,3])
+        self.assertEqual(list(neighbors_A[1][0]), [1,2])
+        
     def test_get_property(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'), 
