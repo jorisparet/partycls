@@ -52,7 +52,7 @@ class Particle:
         Particle radius.
         
     neighbors : list of int, default: None
-        Indices the particle's neighbors.
+        Zero-based indices of the particle's neighbors in the System.
     
     Attributes
     ----------
@@ -70,7 +70,7 @@ class Particle:
         Particle radius.
         
     neighbors : list of int
-        Indices the particle's neighbors.
+        Zero-based indices of the particle's neighbors in the System.
         
     index : int
         A unique index to identify the particle.

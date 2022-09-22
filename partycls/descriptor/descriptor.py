@@ -328,12 +328,13 @@ class AngularStructuralDescriptor(StructuralDescriptor):
       the cutoffs between each possible pair of species (s1, s2) ;
     - "Solid-Angle based Nearest Neighbors" (symbol: 'SANN'): see van Meel et al. (https://doi.org/10.1063/1.4729313)
     
-    The nearest-neighbors method can be changed by modifying the attribute `nearest_neighbors_method`
-    to 'FC' (default) or 'SANN'.
+    Neighbors can also be read from the trajectory file directly. Otherwise, 
+    they can be computed by changing the attribute `nearest_neighbors_method`
+    to 'FC' or 'SANN'.
     
-    When using the 'FC' method, it is also possible to specify the cutoffs manually
-    for a pair of species (s1, s2) by using the method `set_cutoff`. The cutoffs
-    that were not set manually will be computed automatically.
+    When using the 'FC' method, it is also possible to specify the cutoffs 
+    manually for a pair of species (s1, s2) by using the method `set_cutoff`. 
+    The cutoffs that were not set manually will be computed automatically.
     
     Parameters
     ----------
@@ -348,8 +349,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         List of cutoff distances to identify the nearest neighbors using
         the fixed-cutoff ('FC') method.
         
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
+    nearest_neighbors_method : str, default: 'auto'
+        Nearest neighbor method, 'FC' or 'SANN'. If method is 'auto', neighbors
+        are read directly from the trajectory (if provided). If no neighbors 
+        are found, it uses method='FC' instead.
         
     neighbors : list
         Lists of nearest neighbors for all the particles in group=0. None by
@@ -361,7 +364,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         self.cutoffs = [None for n in range(len(self.trajectory[0].pairs_of_species))]
         # 'FC' = Fixed Cutoff (default)
         # 'SANN' = Solid Angle Nearest Neighbors
-        self.nearest_neighbors_method = 'FC'
+        self.nearest_neighbors_method = 'auto'
         self.neighbors = None
 
     def set_cutoff(self, s1, s2, rcut, mirror=True):
@@ -384,7 +387,6 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         Returns
         -------
         None.
-
         """
         pairs = self.trajectory[0].pairs_of_species
         idx_12 = pairs.index((s1, s2))
@@ -393,36 +395,52 @@ class AngularStructuralDescriptor(StructuralDescriptor):
             idx_21 = pairs.index((s2, s1))
             self.cutoffs[idx_21] = rcut
 
-    # TODO: define self.neighbors as an attribute for the class
-    def nearest_neighbors(self, method='FC'):
+    def nearest_neighbors(self, method='auto'):
         """
         Compute the nearest neighbors of particles in group=0 using one of the
         following methods:
         - "Fixed cutoff" (method='FC'): uses the partial radial distribution functions 
           to compute the cutoffs between each possible pair of species (s1, s2) ;
         - "Solid-Angle based Nearest Neighbors" (method='SANN'): see  
-           van Meel et al. (https://doi.org/10.1063/1.4729313) ;        
+           van Meel et al. (https://doi.org/10.1063/1.4729313) ;
 
         Parameters
         ----------
-        method : str, optional
-            Method to identify nearest neighbors. Must be 'FC' or 'SANN'.
-            The default is 'FC'.
+        method : str, default: 'auto'
+            Method to identify nearest neighbors. Must be 'FC' or 'SANN'. If
+            method is 'auto', neighbors are read directly from the trajectory
+            (if provided). If no neighbors are found, it uses method='FC' 
+            instead.
 
         Returns
         -------
         None.
-
         """
-        # indices
+        #  number of frames
+        n_frames = len(self.groups[0])
+        #  list of neighbors
+        self.neighbors = [[] for n in range(n_frames)]
+        
+        # Read neighbors from the trajectory
+        if method == 'auto':
+            for n in range(n_frames):
+                self.neighbors[n] = numpy.array(self.dump('neighbors', group=0)[n])
+            # if no neighbors in the trajectory, fallback to method='FC'
+            if None in self.neighbors[0]:
+                self.nearest_neighbors_method = 'FC'
+                self.nearest_neighbors(method=self.nearest_neighbors_method)
+            return
+                
+        # Compute neighbors
+        #  indices
         idx_0 = self.dump('index', 0)
         idx_1 = self.dump('index', 1)
         idx_all = self.trajectory.get_property('index')
-        # species
+        #  species
         spe_0 = self.dump('species_id', 0)
         spe_1 = self.dump('species_id', 1)
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        # positions
+        #  positions
         pos_0 = self.dump('position', 0)
         pos_1 = self.dump('position', 1)
         pos_all = self.trajectory.get_property('position')
@@ -430,13 +448,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         if None in self.cutoffs:
             self._compute_cutoffs()
         cutoffs = numpy.array(self.cutoffs)
-        # boundaries
-        n_frames = len(self.groups[0])
+        #  boundaries
         box = self.trajectory[0].cell.side
-        # list of neighbors
-        self.neighbors = [[] for n in range(n_frames)]
 
-        # Fixed cutoff
+        # Fixed cutoff ('FC')
         if method == 'FC':
             for n in range(n_frames):
                 for i in range(len(idx_0[n])):
@@ -446,8 +461,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                                                         pairs, box, cutoffs)
                     neigh_i = neigh_i[neigh_i >= 0]
                     self.neighbors[n].append(neigh_i)
+            return
 
-        #  Solid Angle Nearest Neighbors (SANN)
+        #  Solid Angle Nearest Neighbors ('SANN')
         #   This will find all neighbors of `i`
         #   (including particles not in group=1)
         if method == 'SANN':
@@ -460,10 +476,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                                            rmax, box)
                     neigh_i = neigh_i[neigh_i >= 0]
                     self.neighbors[n].append(neigh_i)
-
-        if method == 'NN':
-            for n in range(n_frames):
-                self.neighbors[n] = numpy.array(self.dump('neighbors', group=0)[n])
+            return
 
     # TODO: if fixed-cutoff method, let the user choose `dr`
     def _compute_cutoffs(self):
