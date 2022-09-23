@@ -6,6 +6,8 @@ import os
 from partycls import Trajectory
 from partycls.descriptor import RadialDescriptor, BondAngleDescriptor
 from partycls.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptor import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
+from partycls.descriptor import TetrahedralDescriptor
 
 from numpy import float32
 
@@ -52,6 +54,43 @@ class Test(unittest.TestCase):
         self._compute(D)
         self.assertEqual(float32(D.average[0]), float32(0.02164681),
                          'wrong average value for qbar_1')
+        
+    def test_smoothed_bo(self):
+        # test average q_1
+        D = SmoothedBondOrientationalDescriptor(self.traj, 
+                                                cutoff_enlargement=1.3,
+                                                exponent=8)
+        D.cutoffs = self.cutoffs
+        self._compute(D)
+        self.assertEqual(float32(D.average[0]), float32(0.06444802),
+                         'wrong average value for qs_1')        
+        # test convergence towards Steinhardt BO
+        D = SmoothedBondOrientationalDescriptor(self.traj, 
+                                                cutoff_enlargement=1.01,
+                                                exponent=9223372036854775807)
+        D.cutoffs = self.cutoffs
+        self._compute(D)
+        self.assertAlmostEqual(float32(D.average[0]), float32(0.09393699),
+                         places=3, msg='wrong average value for qs_1')
+        self.assertAlmostEqual(float32(D.average[1]), float32(0.10234044),
+                         places=3, msg='wrong average value for qs_2')
+        self.assertAlmostEqual(float32(D.average[7]), float32(0.28741154),
+                         places=3, msg='wrong average value for qs_7')
+        
+    
+    def test_smoothed_ba(self):
+        pass
+    
+    def test_radial_bo(self):
+        pass
+    
+    def test_tetrahedral(self):
+        D = TetrahedralDescriptor(self.traj)
+        D.cutoffs = self.cutoffs
+        self._compute(D)
+        # test average
+        self.assertEqual(float32(D.average[0]), float32(0.48001548248253856),
+                         'wrong average value for the tetrahedrality')
 
 if __name__ == '__main__':
     unittest.main()
