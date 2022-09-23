@@ -70,8 +70,10 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         List of standard cutoffs (i.e. not enlarged) with the fixed-cutoff 
         ('FC') method.
         
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
+    nearest_neighbors_method : str, default: 'auto'
+        Nearest neighbor method, 'FC' or 'SANN'. If method is 'auto', neighbors
+        are read directly from the trajectory (if provided). If no neighbors 
+        are found, it uses method='FC' instead.
     """
 
     name = 'smoothed bond-orientational'
@@ -95,18 +97,18 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
         
-        # compute cutoffs for the descriptor if not provided
+        # Force 'FC' to compute neighbors
+        if self.nearest_neighbors_method != 'FC':
+            print("Warning: overriding the computation of nearest neighbors by using extended cutoffs.")
+            self.nearest_neighbors_method = 'FC'
+        
+        # Recompute cutoffs if not provided
         if None in self.cutoffs:
-            if self.nearest_neighbors_method != 'FC':
-                print("Warning: using fixed cutoffs for the computation of \
-                      the descriptor. Neighbors are determined using the \
-                     `{}` method.".format(self.nearest_neighbors_method))
             self._compute_cutoffs()
         # store the standard FC cutoffs
         self.standard_cutoffs_FC = numpy.array(self.cutoffs)
         
         # compute nearest neighbors with enlarged cutoffs
-        # if the method for neighbors is different than
         self.cutoffs = list(self.cutoff_enlargement * numpy.array(self.cutoffs))
         self.nearest_neighbors(method=self.nearest_neighbors_method)
         
