@@ -12,7 +12,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     particle at once. The value of q_lm between the central particle i and one 
     of its neighbors j is thus weighted by
     
-    w(r_ij, r, delta) = exp[ -(r_ij-r)^2 / (2 delta^2) ]
+    w(r_ij, r, delta) = exp[-0.5 * ((r_ij-r)^n / delta^n)  ]
     
     where `r` is an arbitrary distance in the predefined grid of distances and
     `delta` is a shell width for the decay of the exponential around r. The 
@@ -34,11 +34,11 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     lmax : int, default: 8
         Minimum degree. This set the upper bound of the grid.
         
-    orders: list, default: None
+    orders : list, default: None
         Specific values of orders to compute, e.g. orders=[4,6]. This has
         the priority over `lmin` and `lmax`.
         
-    bounds : tuple of floats, default: (1,2.5)
+    bounds : tuple of floats, default: (1, 2.5)
         Lower and upper bounds (r_min, r_max) to define the grid of distances.
         
     dr : float, default: 0.1
@@ -51,12 +51,46 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     delta : float, default: 0.1
         Shell width to probe the local density at a distance r from the central
         particle using an exponential decay of the form:
-        w(r_ij, r, \delta) = exp[ -(r_ij-r)^2 / (2 \delta^2) ]
+        w(r_ij, r, \delta) = exp[-0.5 * (r_ij-r)^2 / (2 \delta^2) ]
         
     skin : float, default: 2.5
         Skin width (in units of `delta`) to consider neighbors further than the
         upper bound r_max of the grid of distances. Neighbors will then be 
         identified up to r_max + skin_width * delta.
+        
+    Attributes
+    ----------
+    
+    trajectory : Trajectory
+        Trajectory on which the structural descriptor will be computed.
+        
+    active_filters : list of str
+        All the active filters on both groups prior to the computation of the
+        descriptor.
+        
+    dimension : int
+        Spatial dimension of the descriptor (2 or 3).
+        
+    grid : array
+        Grid over which the structural features will be computed.
+        
+    features : ndarray
+        Array of all the structural features for the particles in group=0 in
+        accordance with the defined filters (if any). This attribute is 
+        initialized when the method `compute` is called (default value is None).
+        
+    cutoffs : list of float
+        List of enlarged cutoff distances to identify the nearest neighbors 
+        using the fixed-cutoff ('FC') method.
+        
+    standard_cutoffs_FC : list of float
+        List of standard cutoffs (i.e. not enlarged) with the fixed-cutoff 
+        ('FC') method.
+        
+    nearest_neighbors_method : str, default: 'auto'
+        Nearest neighbor method, 'FC' or 'SANN'. If method is 'auto', neighbors
+        are read directly from the trajectory (if provided). If no neighbors 
+        are found, it uses method='FC' instead.
     """
     
     name = 'radial bond-orientational'
@@ -120,12 +154,20 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         idx_0 = self.dump('index', 0)
         features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
+        
         # compute the neighbors up to the largest distance in the grid + some skin distance
         R_cut = self.distance_grid[-1] + self.skin * self.delta
+        if self.nearest_neighbors_method != 'FC':
+            print("Warning: overriding the computation of nearest neighbors by using fixed cutoffs at a distance R={rcut:.6f}.".format(rcut=R_cut))
+            self.nearest_neighbors_method = 'FC'
+        else:
+            # override any provided cutoff
+            if any(self.cutoffs):
+                print("Warning: overriding the provided cutoffs with R={rcut:.6f}.".format(rcut=R_cut))
         n_pairs = len(self.trajectory[0].pairs_of_species)
         self.cutoffs = numpy.array([R_cut for i in range(n_pairs)])
-        self.nearest_neighbors(method='FC')
-        print("Warning: overriding the computation of nearest neighbors by using fixed cutoffs at a distance R={rcut:.6f}".format(rcut=R_cut))
+        self.nearest_neighbors(method=self.nearest_neighbors_method)
+        
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
