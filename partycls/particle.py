@@ -25,8 +25,9 @@ aliases = {'position': 'particle.position',
            'index': 'particle.index',
            'mass': 'particle.mass',
            'radius': 'particle.radius',
-           'neighbors': 'particle.neighbors',
-           'neighbours': 'particle.neighbors'}
+           'nearest_neighbors': 'particle.nearest_neighbors',
+           'neighbors': 'particle.nearest_neighbors',
+           'neighbours': 'particle.nearest_neighbors'}
 
 
 class Particle:
@@ -51,8 +52,8 @@ class Particle:
     radius : float, optional, defaut: 0.5
         Particle radius.
         
-    neighbors : list of int, default: None
-        Zero-based indices of the particle's neighbors in the System.
+    nearest_neighbors : list of int, default: None
+        Zero-based indices of the particle's nearest neighbors in the System.
     
     Attributes
     ----------
@@ -69,8 +70,8 @@ class Particle:
     radius : float
         Particle radius.
         
-    neighbors : list of int
-        Zero-based indices of the particle's neighbors in the System.
+    nearest_neighbors : list of int
+        Zero-based indices of the particle's nearest neighbors in the System.
         
     index : int
         A unique index to identify the particle.
@@ -82,7 +83,7 @@ class Particle:
     >>> p = Particle([0.0, 0.0], species='B')
     """
 
-    def __init__(self, position=None, species='A', label=-1, radius=0.5, neighbors=None):
+    def __init__(self, position=None, species='A', label=-1, radius=0.5, nearest_neighbors=None):
         if position is None:
             self.position = numpy.zeros(3)
         else:
@@ -93,7 +94,7 @@ class Particle:
         # Particle radius
         self.radius = radius
         # Neighbors
-        self.neighbors = neighbors
+        self.nearest_neighbors = nearest_neighbors
         # Index of the particle
         self.index = id(self)
 
