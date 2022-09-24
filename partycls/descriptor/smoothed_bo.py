@@ -107,7 +107,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
             for i in range(len(idx_0[n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.smoothed_ql(l, self._generalized_neighbors[n][i], 
+                    hist_n_i[ln] = compute.smoothed_ql(l, self._extended_neighbors[n][i], 
                                                        pos_0[n][i], pos_1[n].T,
                                                        spe_0_id[n][i], spe_1_id[n], pairs,
                                                        box[n], standard_cutoffs,

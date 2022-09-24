@@ -1,5 +1,5 @@
 import numpy
-from .descriptor import StructuralDescriptor
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .bo import BondOrientationalDescriptor
 from .realspace_wrap import compute
 
@@ -148,30 +148,23 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     def compute(self):
         # set up
         StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
-        # compute the neighbors up to the largest distance in the grid + some skin distance
+        box = self.trajectory.dump('cell.side')
+        # compute generalized neighbors with extended cutoffs
+        # based on the largest distance in the distance grid
         R_cut = self.distance_grid[-1] + self.skin * self.delta
-        if self.nearest_neighbors_method != 'FC':
-            print("Warning: overriding the computation of nearest neighbors by using fixed cutoffs at a distance R={rcut:.6f}.".format(rcut=R_cut))
-            self.nearest_neighbors_method = 'FC'
-        else:
-            # override any provided cutoff
-            if any(self.cutoffs):
-                print("Warning: overriding the provided cutoffs with R={rcut:.6f}.".format(rcut=R_cut))
         n_pairs = len(self.trajectory[0].pairs_of_species)
-        self.cutoffs = numpy.array([R_cut for i in range(n_pairs)])
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
-        
+        extended_cutoffs = numpy.array([R_cut for i in range(n_pairs)])
+        AngularStructuralDescriptor._compute_neighbors_fixed_cutoffs(self, extended_cutoffs)
+        # computation        
         for n in range(n_frames):
-            box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # compute BO parameters for particle `i`
-                neigh_i = self.neighbors[n][i]
                 hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
                 feature_idx = 0
                 for l in self.grid:
@@ -179,12 +172,11 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                         hist_n_i[feature_idx] = compute.radial_ql(l, r, 
                                                                   self.delta,
                                                                   self.exponent,
-                                                                  neigh_i, 
+                                                                  self._extended_neighbors[n][i], 
                                                                   pos_0[n][i], 
                                                                   pos_1[n].T,
-                                                                  box)
+                                                                  box[n])
                         feature_idx += 1
-                        
                 self.features[row] = hist_n_i
                 row += 1
         return self.features

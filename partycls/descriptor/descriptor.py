@@ -454,7 +454,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         This is different from nearest neighbors in the trajectory.
         """
         n_frames = len(self.trajectory)
-        self._generalized_neighbors = [[] for n in range(n_frames)]
+        self._extended_neighbors = [[] for n in range(n_frames)]
         #  indices
         idx_0 = self.dump('index', group=0)
         idx_1 = self.dump('index', group=1)
@@ -475,7 +475,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                                                               pairs_of_species_id, box[frame],
                                                               cutoffs)
                 neigh_i = neigh_i[neigh_i >= 0]
-                self._generalized_neighbors[frame].append(neigh_i)
+                self._extended_neighbors[frame].append(neigh_i)
 
     def nearest_neighbors(self, method='auto'):
         """
