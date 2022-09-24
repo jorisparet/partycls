@@ -173,9 +173,11 @@ class Trajectory:
         #  box
         box = self.dump('cell.side')
         #  compute cutoffs or use the provided ones
-        if cutoffs is None and None in self.nearest_neighbors_cutoffs:
-            self.compute_nearest_neighbors_cutoffs()
+        if cutoffs is None:
+            if None in self.nearest_neighbors_cutoffs:
+                self.compute_nearest_neighbors_cutoffs()
         else:
+            print(cutoffs)
             if len(cutoffs) != len(pairs_of_species_id):
                 raise ValueError("Incorrect number of cutoffs")
             else:
