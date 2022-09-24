@@ -43,6 +43,9 @@ try:
     
     args["ext_modules"] = [Extension('partycls.descriptor.realspace_wrap',
                                      sources=['partycls/descriptor/realspace.f90'],
+                                     extra_f90_compile_args=[]),
+                           Extension('partycls.neighbors_wrap',
+                                     sources=['partycls/neighbors.f90'],
                                      extra_f90_compile_args=[])]
 
 except (ModuleNotFoundError, ImportError):

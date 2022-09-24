@@ -9,7 +9,8 @@ import numpy
 from .system import System
 from .particle import Particle
 from .cell import Cell
-from .core.utils import tipify
+from .core.utils import tipify, NearestNeighborsMethod, _nearest_neighbors_methods_
+from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 
 class Trajectory:
@@ -91,6 +92,17 @@ class Trajectory:
             self.additional_fields = additional_fields
         self._systems = []
         self._read(first, last, step)
+        # nearest neighbors
+        self._nearest_neighbors_method = NearestNeighborsMethod.Auto
+        self.nearest_neighbors_cutoffs = [None for pair in self._systems[0].pairs_of_species]
+
+    @property 
+    def nearest_neighbors_method(self):
+        return self._nearest_neighbors_method.value
+
+    @nearest_neighbors_method.setter
+    def nearest_neighbors_method(self, value):
+        self._nearest_neighbors_method = NearestNeighborsMethod(value.lower())
 
     def __getitem__(self, item):
         return self._systems[item]
@@ -117,9 +129,141 @@ class Trajectory:
         Returns
         -------
         None.
-
         """
         self._systems.pop(frame)
+
+    def compute_nearest_neighbors(self, method=None, cutoffs=None, dr=0.1):
+        """
+        Compute the nearest neighbors for all the particles in the trajectory using
+        the provided method.
+
+        Parameters
+        ----------
+        method : str, default: None
+            Method to identify the nearest neighbors. Must be one of {}.
+            None defaults to 'auto'. If method is 'auto', neighbors are read 
+            directly from the trajectory file (if provided). If no neighbors
+            are found, it uses method='{}' instead.
+
+        Returns
+        -------
+        None.
+        """.format(_nearest_neighbors_methods_, NearestNeighborsMethod.Fixed.value)
+        # Convert method to enum
+        if method is not None:
+            self._nearest_neighbors_method = NearestNeighborsMethod(method.lower())
+
+        # Read neighbors from the trajectory file (default)
+        if self._nearest_neighbors_method is NearestNeighborsMethod.Auto:
+            neighbors = self.dump('nearest_neighbors') 
+            # if no neighbors in the system, fallback to fixed-cutoffs method
+            if None in neighbors[0]:
+                self.compute_nearest_neighbors(method=NearestNeighborsMethod.Fixed.value,
+                                               cutoffs=cutoffs)
+            return        
+
+        # Compute neighbors
+        #  positions
+        positions = self.dump('position')
+        #  species
+        species_id = self.dump('species_id')
+        pairs_of_species_id = numpy.asarray(self._systems[0].pairs_of_species_id)
+        #  indices
+        indices = self.dump('index')
+        #  box
+        box = self.dump('cell.side')
+        #  compute cutoffs or use the provided ones
+        if cutoffs is None:
+            self.compute_nearest_neighbors_cutoffs()
+        else:
+            if len(cutoffs) != len(pairs_of_species_id):
+                raise ValueError("Incorrect number of cutoffs")
+            else:
+                self.nearest_neighbors_cutoffs = cutoffs
+        
+        # Computation
+        #  Fixed-cutoffs ('fixed')
+        if self._nearest_neighbors_method is NearestNeighborsMethod.Fixed:
+            for frame, system in enumerate(self._systems):
+                for p in system.particle:
+                    neigh_i = nearest_neighbors_f90.fixed_cutoffs(p.index, indices[frame],
+                                                                  p.position, positions[frame].T,
+                                                                  p.species_id, species_id[frame],
+                                                                  pairs_of_species_id, box[frame],
+                                                                  self.nearest_neighbors_cutoffs)
+                    neigh_i = neigh_i[neigh_i >= 0]
+                    p.nearest_neighbors = list(neigh_i)
+            return
+
+        # Solid-Angle Nearest Neighbors ('sann')
+        if self._nearest_neighbors_method is NearestNeighborsMethod.SANN:
+            rmax = 1.5 * numpy.max(self.nearest_neighbors_cutoffs)
+            for frame, system in enumerate(self._systems):
+                for p in system.particle:
+                    neigh_i = nearest_neighbors_f90.sann(p.position, positions[frame].T,
+                                                         p.index, indices[frame],
+                                                         rmax, box[frame])
+                    neigh_i = neigh_i[neigh_i >= 0]
+                    p.nearest_neighbors = list(neigh_i)
+            return
+
+        # Voronoi neighbors
+        if self._nearest_neighbors_method is NearestNeighborsMethod.Voronoi:
+            raise NotImplementedError("Needs an interface with voro++")
+
+    def set_nearest_neighbors_cutoff(self, s_a, s_b, rcut, mirror=True):
+        """
+        Set the nearest-neighbor cutoff for the pair of species (s1, s2).
+        The cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
+        parameter is True (default).        
+
+        Parameters
+        ----------
+        s_a : str
+            Symbol of the first species.
+        s_b : str
+            Symbol of the second species.
+        rcut : float
+            Value of the cutoff for the pair (s_a,s_b).
+        mirror : bool, optional
+            Set the cutoff for the mirror pair (s_a,s_b). The default is True.
+
+        Returns
+        -------
+        None.
+        """
+        pairs = self._systems[0].pairs_of_species
+        idx_ab = pairs.index((s_a, s_b))
+        self.nearest_neighbors_cutoffs[idx_ab] = rcut
+        if mirror:
+            idx_ba = pairs.index((s_b, s_a))
+            self.nearest_neighbors_cutoffs[idx_ba] = rcut
+
+    def compute_nearest_neighbors_cutoffs(self, dr=0.1):
+        from .descriptor import RadialDescriptor
+        pairs = self._systems[0].pairs_of_species
+        for pair in pairs:
+            if self.nearest_neighbors_cutoffs[pairs.index(pair)] is None:
+                s_a, s_b = pair
+                # use the smallest side of the smallest box in case of
+                #  non-constant volume trajectory
+                L = numpy.min(self.dump('cell.side'))
+                bounds = (0.0, L / 2)
+                descriptor = RadialDescriptor(self, dr=dr, bounds=bounds)
+                descriptor.add_filter("species == '{}'".format(s_a), group=0)
+                descriptor.add_filter("species == '{}'".format(s_b), group=1)
+                descriptor.compute()
+                # grid and average descriptor
+                r = descriptor.grid
+                h_ab = descriptor.average
+                # normalized g(r)
+                g_ab = descriptor.normalize(h_ab, method="gr")
+                # find the first minimum of g_ab(r)
+                first_max = numpy.argmax(g_ab)
+                first_min = numpy.argmin(g_ab[first_max:]) + first_max
+                rcut = r[first_min]
+                # set the cutoff
+                self.set_nearest_neighbors_cutoff(s_a, s_b, rcut)
 
     def get_property(self, what, subset=None):
         """

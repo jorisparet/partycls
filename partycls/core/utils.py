@@ -1,4 +1,5 @@
 import re
+import enum
 from partycls.particle import aliases
 
 
@@ -69,3 +70,12 @@ def standardize_condition(condition):
         return condition
     else:
         raise ValueError('"{}" is not a valid condition'.format(condition))
+
+@enum.unique
+class NearestNeighborsMethod(enum.Enum):
+    Auto = 'auto'
+    Fixed = 'fixed'
+    SANN = 'sann'
+    Voronoi = 'voronoi'
+
+_nearest_neighbors_methods_ = [method.value for method in NearestNeighborsMethod]
