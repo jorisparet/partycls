@@ -172,7 +172,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
             for i in range(len(idx_0[n])):
                 # compute BO parameters for particle `i`
                 neigh_i = self.neighbors[n][i]
-                hist_n_i = numpy.empty_like(features[0], dtype=numpy.float64)
+                hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
                 feature_idx = 0
                 for l in self.grid:
                     for r in self.distance_grid:

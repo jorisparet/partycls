@@ -66,6 +66,8 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         
     def compute(self):
         StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
+        AngularStructuralDescriptor._filter_neighbors(self)
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays
@@ -77,11 +79,9 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # individual bond-angle distribution using nearest-neighbors
-                neigh_i = self.neighbors[n][i]
                 tetra_i = compute.tetrahedrality(idx_0[n][i],
                                                  pos_0[n][i], pos_1[n].T,
-                                                 neigh_i, box)
+                                                 self._neighbors[n][i], box)
                 self.features[row] = tetra_i
                 row += 1
         return self.features
