@@ -36,7 +36,6 @@ class Test(unittest.TestCase):
 
     def test_angular(self):
         D = BondAngleDescriptor(self.traj, dtheta=3.0)
-        D.cutoffs = self.cutoffs
         self._compute(D)
         q = D.normalize(D.average, method="pdf")
         self.assertEqual(float32(q[22]), float32(0.015544709),
@@ -44,7 +43,6 @@ class Test(unittest.TestCase):
         
     def test_steinhardt(self):
         D = BondOrientationalDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
         self._compute(D)
         # test value of q_1
         self.assertEqual(float32(D.average[0]), float32(0.09393699),
@@ -52,7 +50,7 @@ class Test(unittest.TestCase):
         
     def test_lechner_dellago(self):
         D = LechnerDellagoDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
+        # D.cutoffs = self.cutoffs
         self._compute(D)
         self.assertEqual(float32(D.average[0]), float32(0.02164681),
                          'wrong average value for qbar_1')
@@ -62,7 +60,6 @@ class Test(unittest.TestCase):
         D = SmoothedBondOrientationalDescriptor(self.traj, 
                                                 cutoff_enlargement=1.3,
                                                 exponent=8)
-        D.cutoffs = self.cutoffs
         self._compute(D)
         self.assertEqual(float32(D.average[0]), float32(0.06444802),
                          'wrong average value for qs_1')        
@@ -70,7 +67,6 @@ class Test(unittest.TestCase):
         D = SmoothedBondOrientationalDescriptor(self.traj, 
                                                 cutoff_enlargement=1.01,
                                                 exponent=9223372036854775807)
-        D.cutoffs = self.cutoffs
         self._compute(D)
         self.assertAlmostEqual(float32(D.average[0]), float32(0.09393699),
                          places=3, msg='wrong average value for qs_1')

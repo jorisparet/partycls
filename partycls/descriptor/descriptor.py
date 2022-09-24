@@ -3,7 +3,7 @@ from partycls.trajectory import Trajectory
 from partycls.core.utils import standardize_condition
 from .realspace_wrap import compute
 from partycls.particle import aliases
-
+from partycls.neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 class StructuralDescriptor:
     """
@@ -447,6 +447,35 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         # if not, compute them using the method specified in the trajectory
         if neighbors_None:
             self.trajectory.compute_nearest_neighbors()
+
+    def _compute_neighbors_fixed_cutoffs(self, cutoffs):
+        """
+        Compute the neighbors of particles in group=0 at given distances.
+        This is different from nearest neighbors in the trajectory.
+        """
+        n_frames = len(self.trajectory)
+        self._generalized_neighbors = [[] for n in range(n_frames)]
+        #  indices
+        idx_0 = self.dump('index', group=0)
+        idx_1 = self.dump('index', group=1)
+        #  species
+        spe_0_id = self.dump('species_id', group=0)
+        spe_1_id = self.dump('species_id', group=1)
+        pairs_of_species_id = numpy.asarray(self.trajectory[0].pairs_of_species_id)
+        #  positions
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        #  box
+        box = self.trajectory.dump('cell.side')
+        for frame in range(n_frames):
+            for i in range(len(idx_0[frame])):
+                neigh_i = nearest_neighbors_f90.fixed_cutoffs(idx_0[frame][i], idx_1[frame],
+                                                              pos_0[frame][i], pos_1[frame].T,
+                                                              spe_0_id[frame][i], spe_1_id[frame],
+                                                              pairs_of_species_id, box[frame],
+                                                              cutoffs)
+                neigh_i = neigh_i[neigh_i >= 0]
+                self._generalized_neighbors[frame].append(neigh_i)
 
     def nearest_neighbors(self, method='auto'):
         """

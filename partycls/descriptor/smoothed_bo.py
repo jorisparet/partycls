@@ -1,5 +1,5 @@
 import numpy
-from .descriptor import StructuralDescriptor
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .bo import BondOrientationalDescriptor
 from .realspace_wrap import compute
 
@@ -24,7 +24,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
         
-    lmin : int, default: 0
+    lmin : int, default: 1
         Minimum degree. This set the lower bound of the grid.
         
     lmax : int, default: 8
@@ -87,40 +87,30 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     def compute(self):
         # set up
         StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
-        spe_0 = self.dump('species_id', group=0)
-        spe_1 = self.dump('species_id', group=1)
+        spe_0_id = self.dump('species_id', group=0)
+        spe_1_id = self.dump('species_id', group=1)
+        box = self.trajectory.dump('cell.side')
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        # Force 'FC' to compute neighbors
-        if self.nearest_neighbors_method != 'FC':
-            print("Warning: overriding the computation of nearest neighbors by using extended cutoffs.")
-            self.nearest_neighbors_method = 'FC'
-        
-        # Recompute cutoffs if not provided
-        if None in self.cutoffs:
-            self._compute_cutoffs()
-        # store the standard FC cutoffs
-        self.standard_cutoffs_FC = numpy.array(self.cutoffs)
-        
-        # compute nearest neighbors with enlarged cutoffs
-        self.cutoffs = list(self.cutoff_enlargement * numpy.array(self.cutoffs))
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
-        
+        # compute generalized neighbors with extended cutoffs
+        standard_cutoffs = numpy.asarray(self.trajectory.nearest_neighbors_cutoffs)
+        extended_cutoffs = self.cutoff_enlargement * standard_cutoffs
+        AngularStructuralDescriptor._compute_neighbors_fixed_cutoffs(self, extended_cutoffs)
+        # computation
         for n in range(n_frames):
-            box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # compute BO parameters for particle `i`
-                neigh_i = self.neighbors[n][i]
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.smoothed_ql(l, neigh_i, pos_0[n][i], pos_1[n].T,
-                                                       spe_0[n][i], spe_1[n], pairs,
-                                                       box, self.standard_cutoffs_FC,
+                    hist_n_i[ln] = compute.smoothed_ql(l, self._generalized_neighbors[n][i], 
+                                                       pos_0[n][i], pos_1[n].T,
+                                                       spe_0_id[n][i], spe_1_id[n], pairs,
+                                                       box[n], standard_cutoffs,
                                                        self.exponent)
                 self.features[row] = hist_n_i
                 row += 1
