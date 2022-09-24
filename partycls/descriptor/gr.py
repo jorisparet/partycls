@@ -110,26 +110,26 @@ class RadialDescriptor(StructuralDescriptor):
             Radial correlations.
 
         """
-        StructuralDescriptor._sanity_checks(self)
-        n_frames = len(self.groups[0])
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        idx_1 = self.dump('index', 1)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.int64)
+        n_frames = len(self.trajectory)
         row = 0
+        # all relevant arrays
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
+        idx_1 = self.dump('index', group=1)
+        # computation
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
-            # pos_x arrays need to be transposed to be used with fortran
             hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
                                               idx_0[n], idx_1[n], box,
                                               self.grid, self.dr)
             # fill the array of features
             for hist_n_i in hist_n:
-                features[row] = hist_n_i
+                self.features[row] = hist_n_i
                 row += 1
-        self.features = features
-        return features
+        return self.features
 
     def normalize(self, distribution, method="r2"):
         """

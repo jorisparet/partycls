@@ -16,6 +16,8 @@ class Test(unittest.TestCase):
     def setUp(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         self.traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), first=0, last=10)
+        self.traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        self.traj.nearest_neighbors_method = 'fixed'
         self.cutoffs = [1.45, 1.25, 1.25, 1.075]
 
     def _compute(self, D):

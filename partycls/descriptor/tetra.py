@@ -65,14 +65,13 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         self.grid = numpy.zeros(1, dtype=numpy.float64)
         
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
-        # all relevant arrays
-        n_frames = len(self.groups[0])
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
+        StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        n_frames = len(self.trajectory)
         row = 0
+        # all relevant arrays
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
         # compute nearest neighbors
         self.nearest_neighbors(method=self.nearest_neighbors_method)
         for n in range(n_frames):
@@ -83,7 +82,6 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
                 tetra_i = compute.tetrahedrality(idx_0[n][i],
                                                  pos_0[n][i], pos_1[n].T,
                                                  neigh_i, box)
-                features[row] = tetra_i
+                self.features[row] = tetra_i
                 row += 1
-        self.features = features
-        return features    
+        return self.features

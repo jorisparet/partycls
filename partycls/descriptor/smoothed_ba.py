@@ -86,18 +86,17 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         self.exponent = exponent        
 
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
-        # all relevant arrays
-        n_frames = len(self.groups[0])
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        spe_0 = self.dump('species_id', 0)
-        spe_1 = self.dump('species_id', 1)
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        n_frames = len(self.trajectory)
         row = 0
-        
+        # all relevant arrays
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
+        spe_0 = self.dump('species_id', group=0)
+        spe_1 = self.dump('species_id', group=1)
+        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         # compute cutoffs for the descriptor if not provided
         if None in self.cutoffs:
             if self.nearest_neighbors_method != 'FC':
@@ -125,7 +124,6 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
                                                               self.exponent, box,
                                                               self.n_features,
                                                               self.dtheta)
-                features[row] = hist_n_i
+                self.features[row] = hist_n_i
                 row += 1
-        self.features = features
-        return features
+        return self.features

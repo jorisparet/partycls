@@ -16,7 +16,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
         
-    lmin : int, default: 0
+    lmin : int, default: 1
         Minimum degree. This set the lower bound of the grid.
         
     lmax : int, default: 8
@@ -80,28 +80,26 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         self._bounds(1, 8, values)
 
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
-        # all relevant arrays
-        n_frames = len(self.groups[0])
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
+        AngularStructuralDescriptor._filter_neighbors(self)
+        n_frames = len(self.trajectory)
         row = 0
-        # compute nearest neighbors
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
+        # all relevant arrays
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
+        # computation
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # compute BO parameters for particle `i`
-                neigh_i = self.neighbors[n][i]
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.ql(l, neigh_i, pos_0[n][i], pos_1[n].T, box)
-                features[row] = hist_n_i
+                    hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_1[n].T, box)
+                self.features[row] = hist_n_i
                 row += 1
-        self.features = features
-        return features
+        return self.features
 
     def _bounds(self, lmin, lmax, orders):
         if orders is None:
@@ -178,46 +176,39 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
                                              lmax=lmax, orders=orders)
 
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
-        # all relevant arrays
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
+        AngularStructuralDescriptor._filter_neighbors(self)
+        AngularStructuralDescriptor._filter_subsidiary_neighbors(self)
         n_frames = len(self.groups[0])
+        row = 0
+        # all relevant arrays
         pos_0 = self.dump('position', 0)
         pos_1 = self.dump('position', 1)
         idx_0 = self.dump('index', 0)
         idx_1 = self.dump('index', 1)
         spe_1 = self.dump('species_id', 1)
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
         row = 0
-        # compute nearest neighbors
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
+        # computation
         cutoffs = numpy.array(self.cutoffs)
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # neighbors of neighbors of i
-                neigh_i = self.neighbors[n][i]
-                neigh_neigh_i = []
-                # TODO: SANN for neighbors of j if set as nearest_neighbors_method
-                for j in neigh_i:
-                    neigh_j = compute.nearest_neighbors(idx_1[n][j], idx_1[n],
-                                                        pos_1[n][j], pos_1[n].T,
-                                                        spe_1[n][j], spe_1[n],
-                                                        pairs, box, cutoffs)
-                    neigh_j = numpy.asarray(neigh_j[neigh_j >= 0])
-                    neigh_neigh_i.append(neigh_j)
-                # compute BO parameters for particle `i`
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = self._qbar_l(l, neigh_i, neigh_neigh_i, pos_0[n][i], pos_1[n], box)
+                    hist_n_i[ln] = self._qbar_l(l,
+                                                self._neighbors[n][i],
+                                                self._subsidiary_neighbors[n][i],
+                                                pos_0[n][i], pos_1[n], box)
                     # TODO: improve Fortran calculation for Lechner-Dellago
                     # hist_n_i[ln] = compute.qbarl(l, numpy.array(neigh_i),
                     #                               numpy.array(neigh_neigh_i).T,
                     #                               pos_0[n][i], pos_1[n].T, box)
-                features[row] = hist_n_i
+                self.features[row] = hist_n_i
                 row += 1
-        self.features = features
-        return features
+        return self.features
 
     def _qbar_lm(self, l, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
         Nbar_b = len(neigh_i) + 1

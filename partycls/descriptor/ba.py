@@ -73,30 +73,28 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         self.grid = numpy.arange(value / 2.0, 180.0, value, dtype=numpy.float64)
 
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
-        # all relevant arrays
-        n_frames = len(self.groups[0])
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.int64)
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.int64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
+        AngularStructuralDescriptor._filter_neighbors(self)
+        n_frames = len(self.trajectory)
         row = 0
-        # compute nearest neighbors
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
+        # all relevant arrays
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
+        # computation
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # individual bond-angle distribution using nearest-neighbors
-                neigh_i = self.neighbors[n][i]
                 hist_n_i = compute.angular_histogram(idx_0[n][i],
                                                      pos_0[n][i], pos_1[n].T,
-                                                     neigh_i, box,
+                                                     self._neighbors[n][i], box,
                                                      self.n_features,
                                                      self.dtheta)
-                features[row] = hist_n_i
+                self.features[row] = hist_n_i
                 row += 1
-        self.features = features
-        return features
+        return self.features
 
     def normalize(self, distribution, method="sin"):
         """

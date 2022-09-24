@@ -160,7 +160,7 @@ class StructuralDescriptor:
             # Actually remove them
             for p_to_rem in to_remove:
                 frame.remove(p_to_rem)
-        self._sanity_checks()
+        self._group_check()
 
     def clear_filters(self, group=0):
         """
@@ -312,8 +312,15 @@ class StructuralDescriptor:
         """
         return dist
 
-    def _sanity_checks(self):
-        assert (self.group_size(0) > 0 and self.group_size(1) > 0), 'groups cannot be empty.'
+    def _group_check(self):
+        # check that groups are not empty
+        for gn in range(2):
+            if self.group_size(gn) == 0:
+                raise AssertionError("group {} is empty. Check the filters on your descriptor.".format(gn))        
+
+    def _set_up(self, dtype=numpy.int64):
+        # initialize the data matrix
+        self.features = numpy.empty((self.size, self.n_features), dtype=dtype)
 
 
 class AngularStructuralDescriptor(StructuralDescriptor):
@@ -394,6 +401,52 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         if mirror:
             idx_21 = pairs.index((s2, s1))
             self.cutoffs[idx_21] = rcut
+
+    def _filter_neighbors(self):
+        """
+        Create a separate list of neighbors from the neighbors in the trajectory
+        by removing those that are not in group=1 for partial correlations.
+        """
+        n_frames = len(self.trajectory)
+        self._neighbors = [[] for n in range(n_frames)]
+        for frame, system in enumerate(self.trajectory):
+            for pi in self.groups[0][frame]:
+                neigh_pi = pi.nearest_neighbors
+                selected_neigh_pi = []
+                for j in neigh_pi:
+                    pj = system.particle[j]
+                    if pj in self.groups[1][frame]:
+                        selected_neigh_pi.append(j)    
+                self._neighbors[frame].append(selected_neigh_pi)
+
+    def _filter_subsidiary_neighbors(self):
+        n_frames = len(self.trajectory)
+        self._subsidiary_neighbors = [[] for n in range(n_frames)]
+        for frame, system in enumerate(self.trajectory):
+            for neigh_pi in self._neighbors[frame]:
+                selected_neigh_neigh_pi = []
+                for j in neigh_pi:
+                    pj = system.particle[j]
+                    neigh_pj = pj.nearest_neighbors
+                    selected_neigh_pj = []
+                    for k in neigh_pj:
+                        pk = system.particle[k]
+                        if pk in self.groups[1][frame]:
+                            selected_neigh_pj.append(k)
+                    selected_neigh_neigh_pi.append(selected_neigh_pj)
+                self._subsidiary_neighbors[frame].append(selected_neigh_neigh_pi)
+
+    def _manage_nearest_neighbors(self):
+        # check if nearest neighbors were already computed
+        neighbors_None = False
+        for system in self.trajectory:
+            nearest_neighbors = system.dump('nearest_neighbors')
+            if None in nearest_neighbors:
+                neighbors_None = True
+                break
+        # if not, compute them using the method specified in the trajectory
+        if neighbors_None:
+            self.trajectory.compute_nearest_neighbors()
 
     def nearest_neighbors(self, method='auto'):
         """

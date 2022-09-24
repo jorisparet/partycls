@@ -146,15 +146,14 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         return len(self.grid) * len(self._distance_grid)
     
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
-        # all relevant arrays
-        n_frames = len(self.groups[0])
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        features = numpy.empty((self.size, self.n_features), dtype=numpy.float64)
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        n_frames = len(self.trajectory)
         row = 0
-        
+        # all relevant arrays
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
         # compute the neighbors up to the largest distance in the grid + some skin distance
         R_cut = self.distance_grid[-1] + self.skin * self.delta
         if self.nearest_neighbors_method != 'FC':
@@ -186,10 +185,9 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                                                                   box)
                         feature_idx += 1
                         
-                features[row] = hist_n_i
+                self.features[row] = hist_n_i
                 row += 1
-        self.features = features
-        return features
+        return self.features
         
     def _set_bounds(self, dr, bounds, distance_grid):
         # take the smallest side as maximal upper bound for the distance grid
