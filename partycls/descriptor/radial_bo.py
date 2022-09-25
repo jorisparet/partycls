@@ -78,19 +78,13 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-        
-    cutoffs : list of float
-        List of enlarged cutoff distances to identify the nearest neighbors 
-        using the fixed-cutoff ('FC') method.
-        
-    standard_cutoffs_FC : list of float
-        List of standard cutoffs (i.e. not enlarged) with the fixed-cutoff 
-        ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'auto'
-        Nearest neighbor method, 'FC' or 'SANN'. If method is 'auto', neighbors
-        are read directly from the trajectory (if provided). If no neighbors 
-        are found, it uses method='FC' instead.
+
+    Examples:
+    ---------
+    
+    >>> D = RadialBondOrientationalDescriptor('trajectory.xyz', distance_grid=[1.0, 1.1, 1.2], delta=0.2)
+    >>> D.add_filter("species == 'A'", group=0)
+    >>> D.compute()
     """
     
     name = 'radial bond-orientational'
@@ -161,7 +155,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         R_cut = self.distance_grid[-1] + self.skin * self.delta
         n_pairs = len(self.trajectory[0].pairs_of_species)
         extended_cutoffs = numpy.array([R_cut for i in range(n_pairs)])
-        AngularStructuralDescriptor._compute_neighbors_fixed_cutoffs(self, extended_cutoffs)
+        AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation        
         for n in range(n_frames):
             for i in range(len(idx_0[n])):

@@ -329,50 +329,18 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     
     See the parent class for more details.
     
-    Descriptors that exploit angular correlations and require nearest-neighbors information 
-    will inherit of this class. Two methods to identify nearest-neighbors are available:
-    - "Fixed cutoff" (symbol: 'FC'): uses the partial radial distribution functions to compute
-      the cutoffs between each possible pair of species (s1, s2) ;
-    - "Solid-Angle based Nearest Neighbors" (symbol: 'SANN'): see van Meel et al. (https://doi.org/10.1063/1.4729313)
-    
-    Neighbors can also be read from the trajectory file directly. Otherwise, 
-    they can be computed by changing the attribute `nearest_neighbors_method`
-    to 'FC' or 'SANN'.
-    
-    When using the 'FC' method, it is also possible to specify the cutoffs 
-    manually for a pair of species (s1, s2) by using the method `set_cutoff`. 
-    The cutoffs that were not set manually will be computed automatically.
+    Descriptors that exploit angular correlations and require 
+    neighbors information  will inherit of this class.
     
     Parameters
     ----------
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
-    
-    Attributes
-    ----------
-    
-    cutoffs : list of float
-        List of cutoff distances to identify the nearest neighbors using
-        the fixed-cutoff ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'auto'
-        Nearest neighbor method, 'FC' or 'SANN'. If method is 'auto', neighbors
-        are read directly from the trajectory (if provided). If no neighbors 
-        are found, it uses method='FC' instead.
-        
-    neighbors : list
-        Lists of nearest neighbors for all the particles in group=0. None by
-        default and filled when calling the method `nearest_neighbors`.
     """
 
     def __init__(self, trajectory):
         StructuralDescriptor.__init__(self, trajectory)
-        self.cutoffs = [None for n in range(len(self.trajectory[0].pairs_of_species))]
-        # 'FC' = Fixed Cutoff (default)
-        # 'SANN' = Solid Angle Nearest Neighbors
-        self.nearest_neighbors_method = 'auto'
-        self.neighbors = None
 
     def set_cutoff(self, s1, s2, rcut, mirror=True):
         """
@@ -404,8 +372,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
 
     def _filter_neighbors(self):
         """
-        Create a separate list of neighbors from the neighbors in the trajectory
-        by removing those that are not in group=1 for partial correlations.
+        Create a list of neighbors separate from the trajectory for particles
+        in group=0 by removing the neighbors that are not in group=1
+        (e.g. for partial correlations).
         """
         n_frames = len(self.trajectory)
         self._neighbors = [[] for n in range(n_frames)]
@@ -420,6 +389,11 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                 self._neighbors[frame].append(selected_neigh_pi)
 
     def _filter_subsidiary_neighbors(self):
+        """
+        Create a subsidiary list of neighbors for the neighbors of
+        particles in group=0 by removing the neighbors that are not
+        in group=1 (e.g. for partial correlations).
+        """
         n_frames = len(self.trajectory)
         self._subsidiary_neighbors = [[] for n in range(n_frames)]
         for frame, system in enumerate(self.trajectory):
@@ -437,6 +411,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                 self._subsidiary_neighbors[frame].append(selected_neigh_neigh_pi)
 
     def _manage_nearest_neighbors(self):
+        """
+        
+        """
         # check if nearest neighbors were already computed
         neighbors_None = False
         for system in self.trajectory:
@@ -448,10 +425,11 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         if neighbors_None:
             self.trajectory.compute_nearest_neighbors()
 
-    def _compute_neighbors_fixed_cutoffs(self, cutoffs):
+    def _compute_extended_neighbors(self, cutoffs):
         """
-        Compute the neighbors of particles in group=0 at given distances.
-        This is different from nearest neighbors in the trajectory.
+        Compute the extended neighbors of particles in group=0 at given distances.
+        This is different from the **nearest** neighbors in the trajectory for which
+        the nearest neighbors are clearly defined on the basis of various methods.
         """
         n_frames = len(self.trajectory)
         self._extended_neighbors = [[] for n in range(n_frames)]
@@ -476,117 +454,6 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                                                               cutoffs)
                 neigh_i = neigh_i[neigh_i >= 0]
                 self._extended_neighbors[frame].append(neigh_i)
-
-    def nearest_neighbors(self, method='auto'):
-        """
-        Compute the nearest neighbors of particles in group=0 using one of the
-        following methods:
-        - "Fixed cutoff" (method='FC'): uses the partial radial distribution functions 
-          to compute the cutoffs between each possible pair of species (s1, s2) ;
-        - "Solid-Angle based Nearest Neighbors" (method='SANN'): see  
-           van Meel et al. (https://doi.org/10.1063/1.4729313) ;
-
-        Parameters
-        ----------
-        method : str, default: 'auto'
-            Method to identify nearest neighbors. Must be 'FC' or 'SANN'. If
-            method is 'auto', neighbors are read directly from the trajectory
-            (if provided). If no neighbors are found, it uses method='FC' 
-            instead.
-
-        Returns
-        -------
-        None.
-        """
-        #  number of frames
-        n_frames = len(self.groups[0])
-        #  list of neighbors
-        self.neighbors = [[] for n in range(n_frames)]
-        
-        # Read neighbors from the trajectory
-        if method == 'auto':
-            for n in range(n_frames):
-                self.neighbors[n] = numpy.array(self.dump('neighbors', group=0)[n])
-            # if no neighbors in the trajectory, fallback to method='FC'
-            if None in self.neighbors[0]:
-                self.nearest_neighbors_method = 'FC'
-                self.nearest_neighbors(method=self.nearest_neighbors_method)
-            return
-                
-        # Compute neighbors
-        #  indices
-        idx_0 = self.dump('index', 0)
-        idx_1 = self.dump('index', 1)
-        idx_all = self.trajectory.get_property('index')
-        #  species
-        spe_0 = self.dump('species_id', 0)
-        spe_1 = self.dump('species_id', 1)
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        #  positions
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        pos_all = self.trajectory.get_property('position')
-        # compute all/missing cutoffs
-        if None in self.cutoffs:
-            self._compute_cutoffs()
-        cutoffs = numpy.array(self.cutoffs)
-        #  boundaries
-        box = self.trajectory[0].cell.side
-
-        # Fixed cutoff ('FC')
-        if method == 'FC':
-            for n in range(n_frames):
-                for i in range(len(idx_0[n])):
-                    neigh_i = compute.nearest_neighbors(idx_0[n][i], idx_1[n],
-                                                        pos_0[n][i], pos_1[n].T,
-                                                        spe_0[n][i], spe_1[n],
-                                                        pairs, box, cutoffs)
-                    neigh_i = neigh_i[neigh_i >= 0]
-                    self.neighbors[n].append(neigh_i)
-            return
-
-        #  Solid Angle Nearest Neighbors ('SANN')
-        #   This will find all neighbors of `i`
-        #   (including particles not in group=1)
-        if method == 'SANN':
-            # scaling factor for first guess as trying neighbors
-            rmax = 1.5 * numpy.max(cutoffs)
-            for n in range(n_frames):
-                for i in range(len(idx_0[n])):
-                    neigh_i = compute.sann(pos_0[n][i], pos_all[n].T,
-                                           idx_0[n][i], idx_all[n], idx_1[n],
-                                           rmax, box)
-                    neigh_i = neigh_i[neigh_i >= 0]
-                    self.neighbors[n].append(neigh_i)
-            return
-
-    # TODO: if fixed-cutoff method, let the user choose `dr`
-    def _compute_cutoffs(self):
-        from .gr import RadialDescriptor
-        pairs = self.trajectory[0].pairs_of_species
-        for pair in pairs:
-            if self.cutoffs[pairs.index(pair)] is None:
-                s1, s2 = pair
-                # use the smallest side of the smallest box in case of
-                #  non-constant volume trajectory
-                sides = numpy.array(self.trajectory.get_property('cell.side'))
-                L = numpy.min(sides)
-                bounds = (0.0, L / 2)
-                descriptor = RadialDescriptor(self.trajectory, dr=0.1, bounds=bounds)
-                descriptor.add_filter("species == '{}'".format(s1), group=0)
-                descriptor.add_filter("species == '{}'".format(s2), group=1)
-                descriptor.compute()
-                # grid and average descriptor
-                r = descriptor.grid
-                h_12 = descriptor.average
-                # normalized g(r)
-                g_12 = descriptor.normalize(h_12, method="gr")
-                # find the first minimum of g_12(r)
-                first_max = numpy.argmax(g_12)
-                first_min = numpy.argmin(g_12[first_max:]) + first_max
-                rcut = r[first_min]
-                # set the cutoff
-                self.set_cutoff(s1, s2, rcut)
 
 
 class DummyDescriptor(StructuralDescriptor):

@@ -46,19 +46,12 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-        
-    cutoffs : list of float
-        List of cutoff distances to identify the nearest neighbors using
-        the fixed-cutoff ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
     
     Examples:
     ---------
     
     >>> D = BondOrientationalDescriptor('trajectory.xyz', orders=[4,6])
-    >>> D.nearest_neighbors_method = 'FC'
+    >>> D.add_filter("species == 'A'", group=0)
     >>> D.compute()
     """
 
@@ -121,7 +114,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
         
-    lmin : int, default: 0
+    lmin : int, default: 1
         Minimum degree. This set the lower bound of the grid.
         
     lmax : int, default: 8
@@ -151,20 +144,12 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-        
-    cutoffs : list of float
-        List of cutoff distances to identify the nearest neighbors using
-        the fixed-cutoff ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
     
     Examples:
     ---------
     
     >>> D = LechnerDellagoDescriptor('trajectory.xyz', orders=[4,6])
-    >>> D.nearest_neighbors_method = 'FC'
-    >>> D.add_filter("species == 'A'")
+    >>> D.add_filter("species == 'A'", group=0)
     >>> D.compute()
     """
 
@@ -184,15 +169,11 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         n_frames = len(self.groups[0])
         row = 0
         # all relevant arrays
-        pos_0 = self.dump('position', 0)
-        pos_1 = self.dump('position', 1)
-        idx_0 = self.dump('index', 0)
-        idx_1 = self.dump('index', 1)
-        spe_1 = self.dump('species_id', 1)
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
+        pos_0 = self.dump('position', group=0)
+        pos_1 = self.dump('position', group=1)
+        idx_0 = self.dump('index', group=0)
         row = 0
         # computation
-        cutoffs = numpy.array(self.cutoffs)
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):

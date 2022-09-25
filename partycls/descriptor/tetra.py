@@ -19,7 +19,6 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
-        
     
     Attributes
     ----------
@@ -41,19 +40,12 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-        
-    cutoffs : list of float
-        List of cutoff distances to identify the nearest neighbors using
-        the fixed-cutoff ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
     
     Examples:
     ---------
     
     >>> D = TetrahedralDescriptor('trajectory.xyz')
-    >>> D.nearest_neighbors_method = 'FC'
+    >>> D.add_filter("species == 'A'", group=0)
     >>> D.compute()
     """
     
@@ -74,8 +66,7 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
-        # compute nearest neighbors
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
+        # computation
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):

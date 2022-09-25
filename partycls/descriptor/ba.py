@@ -38,20 +38,12 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-        
-    cutoffs : list of float
-        List of cutoff distances to identify the nearest neighbors using
-        the fixed-cutoff ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
     
     Examples:
     ---------
     
     >>> D = BondAngleDescriptor('trajectory.xyz', dtheta=2.0)
-    >>> D.nearest_neighbors_method = 'SANN'
-    >>> D.add_filter("species == 'A'")
+    >>> D.add_filter("species == 'A'", group=0)
     >>> D.compute()    
     """
 

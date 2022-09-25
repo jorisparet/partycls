@@ -57,24 +57,12 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
         
-    cutoffs : list of float
-        List of enlarged cutoff distances to identify the nearest neighbors 
-        using the fixed-cutoff ('FC') method.
-        
-    standard_cutoffs_FC : list of float
-        List of standard cutoffs (i.e. not enlarged) with the fixed-cutoff 
-        ('FC') method.
-        
-    nearest_neighbors_method : str, default: 'FC'
-        Nearest neighbor method, 'FC' or 'SANN'.
-        
     Examples:
     ---------
     
     >>> D = SmoothedBondAngleDescriptor('trajectory.xyz', cutoff_enlargement=1.3, exponent=8)
-    >>> D.nearest_neighbors_method = 'SANN'
-    >>> D.add_filter("species == 'A'")
-    >>> D.compute()   
+    >>> D.add_filter("species == 'A'", group=0)
+    >>> D.compute()
     """
 
     name = 'smoothed-bond-angle'
@@ -102,7 +90,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         # compute extended neighbors with extended cutoffs
         standard_cutoffs = numpy.asarray(self.trajectory.nearest_neighbors_cutoffs)
         extended_cutoffs = self.cutoff_enlargement * standard_cutoffs
-        AngularStructuralDescriptor._compute_neighbors_fixed_cutoffs(self, extended_cutoffs)
+        AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation
         for n in range(n_frames):
             for i in range(len(idx_0[n])):

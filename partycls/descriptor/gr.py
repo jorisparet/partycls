@@ -51,7 +51,7 @@ class RadialDescriptor(StructuralDescriptor):
     ---------
     
     >>> D = RadialDescriptor('trajectory.xyz', bounds=(0.0,3.0))
-    >>> D.add_filter("species == 'A'")
+    >>> D.add_filter("species == 'A'", group=0)
     >>> D.compute()
     """
 
