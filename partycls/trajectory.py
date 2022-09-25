@@ -132,6 +132,120 @@ class Trajectory:
         """
         self._systems.pop(frame)
 
+    def get_property(self, what, subset=None):
+        """
+        Return a list of numpy arrays with the system property specified by 
+        `what`. The list size is the number of systems in the trajectory.
+
+        Parameters
+        ----------
+        what : str
+            Requested system property.
+            
+            `what` must be of the form 
+            "particle.<attribute>" or "cell.<attribute>". 
+            
+            The following particle aliases are accepted:
+            - 'position': 'particle.position'
+            - 'pos': 'particle.position'
+            - 'position[0]': 'particle.position[0]', 
+            - 'pos[0]': 'particle.position[0]'
+            - 'x': 'particle.position[0]'
+            - 'position[1]': 'particle.position[1]',
+            - 'pos[1]': 'particle.position[1]'
+            - 'y': 'particle.position[1]'
+            - 'position[2]': 'particle.position[2]'
+            - 'pos[2]': 'particle.position[2]'
+            - 'z': 'particle.position[2]'
+            - 'species': 'particle.species'
+            - 'spe': 'particle.species'
+            - 'label': 'particle.label'
+            - 'index': 'particle.index'
+            - 'mass': 'particle.mass'
+            - 'radius': 'particle.radius'
+            - 'nearest_neighbors': 'particle.nearest_neighbors'
+            - 'neighbors': 'particle.nearest_neighbors'
+            - 'neighbours': 'particle.nearest_neighbors'
+            - 'voronoi_signature': 'particle.voronoi_signature'
+            - 'signature': 'particle.voronoi_signature'
+
+        subset : str, optional
+            Subset of particles for which the property must be dumped. Must be 
+            of the form "particle.<attribute>" unless "<attribute>" is an 
+            alias. The default is None (all particles will be included).
+            This is ignored if `what` is cell property.
+
+        Returns
+        -------
+        to_dump : list
+            List of the requested system property with length equal to the 
+            number of frames in the trajectory. Each element of the list is a
+            numpy.ndarray of the requested system property.
+            
+        Examples
+        --------
+        >>> traj = Trajectory('trajectory.xyz')
+        >>> pos = traj.get_property('position')
+        >>> spe = traj.get_property('species')
+        >>> sides = traj.get_property('cell.side')
+        
+        """
+        to_dump = []
+        for system in self._systems:
+            to_dump.append(system.get_property(what, subset))
+        return to_dump
+
+    def dump(self, what, subset=None):
+        """
+        Alias for the method get_property().
+        """
+        return self.get_property(what, subset=subset)
+
+    def set_property(self, what, value, subset=None):
+        """
+        Set a property `what` to `value` for all the particles in the 
+        trajectory or for a given subset of particles specified by `subset`.
+
+        Parameters
+        ----------
+        what : str
+            Name of the property to set. This is considered to be a particle
+            property by default, unless it starts with "cell", e.g. 
+            "cell.side".
+            
+        value : int, float, list, or numpy.ndarray
+            Value(s) of the property to set. An instance of `int` or `float`
+            will set the same value for all concerned particles. An instance
+            of `list` or `numpy.ndarray` will assign a specific value to each
+            particle. In this case, the shape of `value` should respect the
+            number of frames in the trajectory and the number of concerned
+            particles.
+            
+        subset : str, optional
+            Particles to which the property must be set. The default is None.
+            This is ignored if `what` is cell property.
+
+        Returns
+        -------
+        None.
+
+        Examples
+        --------
+        >>> traj.set_property('mass', 1.0)
+        >>> traj.set_property('radius', 0.5, "species == 'A'")
+        >>> labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
+                      [1, 1, 0]]
+        >>> traj.set_property('label', labels, "species == 'B'")
+
+        """
+        if not isinstance(value, (list, numpy.ndarray)):
+            for system in self._systems:
+                system.set_property(what, value, subset=subset)
+        else:
+            assert len(value) == self.__len__(), '`value` should have the same length than the Trajectory.'
+            for frame, system in enumerate(self._systems):
+                system.set_property(what, value[frame], subset=subset)
+
     def compute_nearest_neighbors(self, method=None, cutoffs=None, dr=0.1):
         """
         Compute the nearest neighbors for all the particles in the trajectory using
@@ -227,6 +341,9 @@ class Trajectory:
             self.nearest_neighbors_cutoffs[idx_ba] = rcut
 
     def compute_nearest_neighbors_cutoffs(self, dr=0.1):
+        """
+        
+        """
         from .descriptor import RadialDescriptor
         pairs = self._systems[0].pairs_of_species
         for pair in pairs:
@@ -252,114 +369,18 @@ class Trajectory:
                 # set the cutoff
                 self.set_nearest_neighbors_cutoff(s_a, s_b, rcut)
 
-    def get_property(self, what, subset=None):
+    def compute_voronoi_signatures(self):
         """
-        Return a list of numpy arrays with the system property specified by 
-        `what`. The list size is the number of systems in the trajectory.
-
-        Parameters
-        ----------
-        what : str
-            Requested system property.
-            
-            `what` must be of the form 
-            "particle.<attribute>" or "cell.<attribute>". 
-            
-            The following particle aliases are accepted:
-            - 'position': 'particle.position'
-            - 'pos': 'particle.position'
-            - 'position[0]': 'particle.position[0]', 
-            - 'pos[0]': 'particle.position[0]'
-            - 'x': 'particle.position[0]'
-            - 'position[1]': 'particle.position[1]',
-            - 'pos[1]': 'particle.position[1]'
-            - 'y': 'particle.position[1]'
-            - 'position[2]': 'particle.position[2]'
-            - 'pos[2]': 'particle.position[2]'
-            - 'z': 'particle.position[2]'
-            - 'species': 'particle.species'
-            - 'spe': 'particle.species'
-            - 'label': 'particle.label'
-            - 'index': 'particle.index'
-            - 'mass': 'particle.mass'
-            - 'radius': 'particle.radius'
-
-        subset : str, optional
-            Subset of particles for which the property must be dumped. Must be 
-            of the form "particle.<attribute>" unless "<attribute>" is an 
-            alias. The default is None (all particles will be included).
-            This is ignored if `what` is cell property.
-
-        Returns
-        -------
-        to_dump : list
-            List of the requested system property with length equal to the 
-            number of frames in the trajectory. Each element of the list is a
-            numpy.ndarray of the requested system property.
-            
-        Examples
-        --------
-        >>> traj = Trajectory('trajectory.xyz')
-        >>> pos = traj.get_property('position')
-        >>> spe = traj.get_property('species')
-        >>> sides = traj.get_property('cell.side')
+        Compute the Voronoi signatures of all the particles in the trajectory
+        using the radical Voronoi tessellation method.
         
+        Particle radii must be set using the `set_property` method if the 
+        original trajectory file does not contain such information.
+
+        Creates a `voronoi_signature` property for the particles.
         """
-        to_dump = []
         for system in self._systems:
-            to_dump.append(system.get_property(what, subset))
-        return to_dump
-
-    def dump(self, what, subset=None):
-        """
-        Alias for the method get_property().
-        """
-        return self.get_property(what, subset=subset)
-
-    def set_property(self, what, value, subset=None):
-        """
-        Set a property `what` to `value` for all the particles in the 
-        trajectory or for a given subset of particles specified by `subset`.
-
-        Parameters
-        ----------
-        what : str
-            Name of the property to set. This is considered to be a particle
-            property by default, unless it starts with "cell", e.g. 
-            "cell.side".
-            
-        value : int, float, list, or numpy.ndarray
-            Value(s) of the property to set. An instance of `int` or `float`
-            will set the same value for all concerned particles. An instance
-            of `list` or `numpy.ndarray` will assign a specific value to each
-            particle. In this case, the shape of `value` should respect the
-            number of frames in the trajectory and the number of concerned
-            particles.
-            
-        subset : str, optional
-            Particles to which the property must be set. The default is None.
-            This is ignored if `what` is cell property.
-
-        Returns
-        -------
-        None.
-
-        Examples
-        --------
-        >>> traj.set_property('mass', 1.0)
-        >>> traj.set_property('radius', 0.5, "species == 'A'")
-        >>> labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
-                      [1, 1, 0]]
-        >>> traj.set_property('label', labels, "species == 'B'")
-
-        """
-        if not isinstance(value, (list, numpy.ndarray)):
-            for system in self._systems:
-                system.set_property(what, value, subset=subset)
-        else:
-            assert len(value) == self.__len__(), '`value` should have the same length than the Trajectory.'
-            for frame, system in enumerate(self._systems):
-                system.set_property(what, value[frame], subset=subset)
+            system.compute_voronoi_signatures()
 
     def show(self, frames=None, backend='matplotlib', color='species', **kwargs):
         """

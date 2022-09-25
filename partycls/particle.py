@@ -29,7 +29,9 @@ aliases = {'position': 'particle.position',
            'radius': 'particle.radius',
            'nearest_neighbors': 'particle.nearest_neighbors',
            'neighbors': 'particle.nearest_neighbors',
-           'neighbours': 'particle.nearest_neighbors'}
+           'neighbours': 'particle.nearest_neighbors',
+           'voronoi_signature': 'particle.voronoi_signature',
+           'signature': 'particle.voronoi_signature'}
 
 
 class Particle:
