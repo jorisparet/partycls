@@ -177,7 +177,6 @@ class Trajectory:
             if None in self.nearest_neighbors_cutoffs:
                 self.compute_nearest_neighbors_cutoffs()
         else:
-            print(cutoffs)
             if len(cutoffs) != len(pairs_of_species_id):
                 raise ValueError("Incorrect number of cutoffs")
             else:
@@ -223,7 +222,12 @@ class Trajectory:
                     limits = [[-L/2, L/2] for L in system.cell.side]
                     radii = system.dump('radius')
                     periodic = system.cell.periodic
-                    #TODO: set this value correctly
+                    # For efficiency, voro++ divides the box into a
+                    #  grid of cubic blocks. In order to achieve maximum
+                    #  performance, a block should contain 3-8 particles.
+                    #  To do so, one can compute the side of a cube that
+                    #  would contain 5.5 particles based on the number
+                    #  density.
                     dispersion = 1.0
                     # computation
                     voronoi = pyvoro.compute_voronoi(positions,

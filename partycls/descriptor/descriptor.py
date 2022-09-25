@@ -250,9 +250,9 @@ class StructuralDescriptor:
         --------
         >>> traj = Trajectory('trajectory.xyz')
         >>> D = StructuralDescriptor(traj)
-        >>> D.get_group_property('position', 0)
-        >>> D.get_group_property('x', 1)
-        >>> D.get_group_property('energy', 0)
+        >>> D.get_group_property('position', group=0)
+        >>> D.get_group_property('x', group=1)
+        >>> D.get_group_property('energy', group=0)
         
         """
         if what in aliases:

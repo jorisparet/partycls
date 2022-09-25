@@ -83,13 +83,13 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
+        box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
-            box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_1[n].T, box)
+                    hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_1[n].T, box[n])
                 self.features[row] = hist_n_i
                 row += 1
         return self.features
@@ -172,17 +172,16 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
-        row = 0
+        box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
-            box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = self._qbar_l(l,
                                                 self._neighbors[n][i],
                                                 self._subsidiary_neighbors[n][i],
-                                                pos_0[n][i], pos_1[n], box)
+                                                pos_0[n][i], pos_1[n], box[n])
                     # TODO: improve Fortran calculation for Lechner-Dellago
                     # hist_n_i[ln] = compute.qbarl(l, numpy.array(neigh_i),
                     #                               numpy.array(neigh_neigh_i).T,
