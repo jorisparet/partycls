@@ -101,7 +101,7 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
         property_set.sort()
         color_db = discrete_colors
     else:
-        color_db = colormap(property_vals)
+        color_db = colormap(list(property_vals))
 
     # list of individual colors
     colors = []
@@ -124,8 +124,9 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
         Y = sign(yi) * pos[:, abs(yi) - 1]
         Z = sign(zi) * pos[:, abs(zi) - 1]
         order = argsort(Z)
+        sizes = numpy.array((scale * R[order])**2, dtype=numpy.int64)
         ax.scatter(X[order], Y[order], c=colors[order],
-                   marker='o', ec='k', s=(scale * R[order])**2,
+                   marker='o', ec='k', s=sizes,
                    linewidths=linewidth, alpha=alpha)
     # plot 2D
     if system.n_dimensions == 2:
