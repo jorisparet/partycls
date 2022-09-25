@@ -209,9 +209,39 @@ class Trajectory:
                     p.nearest_neighbors = list(neigh_i)
             return
 
-        # Voronoi neighbors
+        # Voronoi neighbors ('voronoi')
         if self._nearest_neighbors_method is NearestNeighborsMethod.Voronoi:
-            raise NotImplementedError("Needs an interface with voro++")
+            try:
+                import pyvoro
+
+                if self._systems[0].n_dimensions == 2:
+                    raise NotImplementedError("The computation of Voronoi neighbors is currently not possible in dimension 2.")
+
+                for system in self._systems:
+                    # parameters
+                    positions = system.dump('position')
+                    limits = [[-L/2, L/2] for L in system.cell.side]
+                    radii = system.dump('radius')
+                    periodic = system.cell.periodic
+                    #TODO: set this value correctly
+                    dispersion = 1.0
+                    # computation
+                    voronoi = pyvoro.compute_voronoi(positions,
+                                                     limits, 
+                                                     dispersion,
+                                                     radii=radii,
+                                                     periodic=periodic)
+                    # attribution
+                    for i, pi in enumerate(system.particle):
+                        neigh_i = []
+                        for face in voronoi[i]['faces']:
+                            neigh_i.append(face['adjacent_cell'])
+                        pi.nearest_neighbors = neigh_i
+
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError('No `pyvoro` module found.')
+            return
+
 
     def set_nearest_neighbors_cutoff(self, s_a, s_b, rcut, mirror=True):
         """
