@@ -183,7 +183,7 @@ class System:
             for particle in self.particle:
                 if eval(condition):
                     data.append(eval('particle.{}'.format(attr)))
-            data = numpy.array(data)
+            data = numpy.array(data, dtype=object)
         elif what.startswith('cell'):
             what = what.split('.')[-1]
             regexp = re.search(r'(\w+)\[(\w+)\]', what)
