@@ -69,15 +69,15 @@ class DscribeDescriptor(StructuralDescriptor):
         row = 0
         # computation
         for i, system in enumerate(self.trajectory):
-            positions = self.dump('position', 1)[i]
+            positions = self.dump('position', group=1)[i]
             if self._chemistry:
-                species = self.dump('species', 1)[i]
+                species = self.dump('species', group=1)[i]
             else:
-                species = ['H'] * len(self.dump('species', 1)[i])
+                species = ['H'] * len(self.dump('species', group=1)[i])
             side = system.cell.side
             system = _arrays_to_ase_atoms(positions, species, side,
                                           pbc=self._periodic)
-            other_positions = self.dump('position', 0)[i]
+            other_positions = self.dump('position', group=0)[i]
             features = self.backend.create(system, positions=other_positions)
             self.features[row: row + features.shape[0], :] = features
             row += features.shape[0]
