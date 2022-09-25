@@ -12,6 +12,7 @@ user: version
 
 fortran:
 	cd partycls/descriptor/; f2py -c -m realspace_wrap realspace.f90; cd ../../
+	cd partycls/; f2py -c -m neighbors_wrap neighbors.f90; cd ../
 
 test: fortran
 	python -m unittest discover -s tests
