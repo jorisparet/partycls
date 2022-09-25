@@ -781,7 +781,11 @@ class Trajectory:
                     line = '{} '.format(particle.species)
                     line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
                     for field in additional_fields:
-                        line += '{} '.format(particle.__getattribute__(field))
+                        attribute = particle.__getattribute__(field)
+                        if isinstance(attribute, list):
+                            line += '{} '.format(','.join(map(str, attribute)))
+                        else:
+                            line += '{} '.format(attribute)
                     line += '\n'
                     file.write(line)
 
