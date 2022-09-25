@@ -145,15 +145,33 @@ class Trajectory:
             directly from the trajectory file (if provided). If no neighbors
             are found, it uses method='{}' instead.
 
+        cutoffs : list, default: None
+            List containing the cutoffs distances for each pair of species
+            in the system (for method 'fixed' and 'sann'). If None, cutoffs
+            will be computed automatically.
+
+        dr : float, default: 0.1
+            Radial grid spacing for computing the cutoffs on the basis of
+            the first minimum of each partial radial distribution function
+            in the trajectory, if cutoffs are not provided.
+
         Returns
         -------
         None.
         """.format(_nearest_neighbors_methods_, NearestNeighborsMethod.Fixed.value)
-        # Convert method to enum
-        if method is not None:
-            self._nearest_neighbors_method = NearestNeighborsMethod(method.lower())
 
-        # Read neighbors from the trajectory file (default)
+        # Convert method to Enum
+        if method is not None:
+            try:
+                method = NearestNeighborsMethod(method.lower())
+                self._nearest_neighbors_method = method
+            except ValueError:
+                raise ValueError('Incorrect method for nearest neighbors.\
+                    Should be one of {}'.format(_nearest_neighbors_methods_))
+        else:
+            self._nearest_neighbors_method = NearestNeighborsMethod.Auto
+
+        # Read neighbors from the trajectory file if method is 'auto' (default)
         if self._nearest_neighbors_method is NearestNeighborsMethod.Auto:
             neighbors = self.dump('nearest_neighbors') 
             # if no neighbors in the system, fallback to fixed-cutoffs method
@@ -162,90 +180,23 @@ class Trajectory:
                                                cutoffs=cutoffs)
             return        
 
-        # Compute neighbors
-        #  positions
-        positions = self.dump('position')
-        #  species
-        species_id = self.dump('species_id')
-        pairs_of_species_id = numpy.asarray(self._systems[0].pairs_of_species_id)
-        #  indices
-        indices = self.dump('index')
-        #  box
-        box = self.dump('cell.side')
-        #  compute cutoffs or use the provided ones
-        if cutoffs is None:
-            if None in self.nearest_neighbors_cutoffs:
-                self.compute_nearest_neighbors_cutoffs()
-        else:
-            if len(cutoffs) != len(pairs_of_species_id):
-                raise ValueError("Incorrect number of cutoffs")
+        # Compute cutoffs if not provided (for 'fixed' and 'sann')
+        if self._nearest_neighbors_method in [NearestNeighborsMethod.Fixed,
+                                              NearestNeighborsMethod.SANN]:
+            pairs_of_species = numpy.asarray(self._systems[0].pairs_of_species)
+            if cutoffs is None:
+                if None in self.nearest_neighbors_cutoffs:
+                    self.compute_nearest_neighbors_cutoffs()
             else:
-                self.nearest_neighbors_cutoffs = cutoffs
-        
-        # Computation
-        #  Fixed-cutoffs ('fixed')
-        if self._nearest_neighbors_method is NearestNeighborsMethod.Fixed:
-            for frame, system in enumerate(self._systems):
-                for p in system.particle:
-                    neigh_i = nearest_neighbors_f90.fixed_cutoffs(p.index, indices[frame],
-                                                                  p.position, positions[frame].T,
-                                                                  p.species_id, species_id[frame],
-                                                                  pairs_of_species_id, box[frame],
-                                                                  self.nearest_neighbors_cutoffs)
-                    neigh_i = neigh_i[neigh_i >= 0]
-                    p.nearest_neighbors = list(neigh_i)
-            return
+                if len(cutoffs) != len(pairs_of_species):
+                    raise ValueError("Incorrect number of cutoffs")
+                else:
+                    self.nearest_neighbors_cutoffs = cutoffs
 
-        # Solid-Angle Nearest Neighbors ('sann')
-        if self._nearest_neighbors_method is NearestNeighborsMethod.SANN:
-            rmax = 1.5 * numpy.max(self.nearest_neighbors_cutoffs)
-            for frame, system in enumerate(self._systems):
-                for p in system.particle:
-                    neigh_i = nearest_neighbors_f90.sann(p.position, positions[frame].T,
-                                                         p.index, indices[frame],
-                                                         rmax, box[frame])
-                    neigh_i = neigh_i[neigh_i >= 0]
-                    p.nearest_neighbors = list(neigh_i)
-            return
-
-        # Voronoi neighbors ('voronoi')
-        if self._nearest_neighbors_method is NearestNeighborsMethod.Voronoi:
-            try:
-                import pyvoro
-
-                if self._systems[0].n_dimensions == 2:
-                    raise NotImplementedError("The computation of Voronoi neighbors is currently not possible in dimension 2.")
-
-                for system in self._systems:
-                    # parameters
-                    positions = system.dump('position')
-                    limits = [[-L/2, L/2] for L in system.cell.side]
-                    radii = system.dump('radius')
-                    periodic = system.cell.periodic
-                    # For efficiency, voro++ divides the box into a
-                    #  grid of cubic blocks. In order to achieve maximum
-                    #  performance, a block should contain 3-8 particles.
-                    #  To do so, one can compute the side of a cube that
-                    #  would contain 5.5 particles based on the number
-                    #  density.
-                    dispersion = 1.0
-                    # computation
-                    voronoi = pyvoro.compute_voronoi(positions,
-                                                     limits, 
-                                                     dispersion,
-                                                     radii=radii,
-                                                     periodic=periodic)
-                    # attribution
-                    for i, pi in enumerate(system.particle):
-                        neigh_i = []
-                        for face in voronoi[i]['faces']:
-                            neigh_i.append(face['adjacent_cell'])
-                        pi.nearest_neighbors = neigh_i
-
-            except ModuleNotFoundError:
-                raise ModuleNotFoundError('No `pyvoro` module found.')
-            return
-
+        # Iterate over the systems
+        for system in self._systems:
+            system.compute_nearest_neighbors(self._nearest_neighbors_method,
+                                             self.nearest_neighbors_cutoffs)
 
     def set_nearest_neighbors_cutoff(self, s_a, s_b, rcut, mirror=True):
         """

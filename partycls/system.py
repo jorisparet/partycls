@@ -12,7 +12,8 @@ See https://framagit.org/atooms/atooms
 import re
 import numpy
 from .particle import aliases
-from .core.utils import standardize_condition
+from .core.utils import standardize_condition, NearestNeighborsMethod, _nearest_neighbors_methods_
+from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 
 class System:
@@ -114,6 +115,96 @@ class System:
         for i, species_i in enumerate(self.distinct_species):
             fractions[i] = numpy.sum(species == species_i) / len(self.particle)
         return fractions
+
+    def compute_nearest_neighbors(self, method, cutoffs):
+        """
+        Compute the nearest neighbors for all the particles in the trajectory using
+        the provided method.
+
+        Parameters
+        ----------
+        method : str, default: None
+            Method to identify the nearest neighbors. Must be one of 
+            ['fixed', 'sann', 'voronoi].
+
+        cutoffs : list
+            List containing the cutoffs distances for each pair of species
+            in the system (for method 'fixed' and 'sann').
+
+        Returns
+        -------
+        None.
+        """
+
+        # Set up
+        if isinstance(method, str):
+            method = NearestNeighborsMethod(method.lower())
+        positions = self.dump('position')
+        species_id = self.dump('species_id')
+        pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
+        indices = self.dump('index')
+        box = self.dump('cell.side')
+        
+        # Computation
+        #  Fixed-cutoffs ('fixed')
+        if method is NearestNeighborsMethod.Fixed:
+            for p in self.particle:
+                neigh_i = nearest_neighbors_f90.fixed_cutoffs(p.index, indices,
+                                                              p.position, positions.T,
+                                                              p.species_id, species_id,
+                                                              pairs_of_species_id, box,
+                                                              cutoffs)
+                neigh_i = neigh_i[neigh_i >= 0]
+                p.nearest_neighbors = list(neigh_i)
+            return
+        
+        #  Solid-Angle Nearest Neighbors ('sann')
+        if method is NearestNeighborsMethod.SANN:
+            rmax = 1.5 * numpy.max(cutoffs)
+            for p in self.particle:
+                neigh_i = nearest_neighbors_f90.sann(p.position, positions.T,
+                                                     p.index, indices,
+                                                     rmax, box)
+                neigh_i = neigh_i[neigh_i >= 0]
+                p.nearest_neighbors = list(neigh_i)
+            return
+
+        #  Voronoi neighbors ('voronoi')
+        if method is NearestNeighborsMethod.Voronoi:
+            try:
+                import pyvoro
+
+                if self.n_dimensions == 2:
+                    raise NotImplementedError("The computation of Voronoi neighbors is currently not possible in dimension 2.")
+
+                # parameters
+                positions = self.dump('position')
+                limits = [[-L/2, L/2] for L in self.cell.side]
+                radii = self.dump('radius')
+                periodic = self.cell.periodic
+                # For efficiency, voro++ divides the box into a
+                #  grid of cubic blocks. In order to achieve maximum
+                #  performance, a block should contain 3-8 particles.
+                #  To do so, one can compute the side of a cube that
+                #  would contain 5.5 particles based on the number
+                #  density to set the block size (i.e. dispersion).
+                dispersion = (5.5 / self.density)**(1.0/3.0)
+                # computation
+                voronoi = pyvoro.compute_voronoi(positions,
+                                                 limits, 
+                                                 dispersion,
+                                                 radii=radii,
+                                                 periodic=periodic)
+                # attribution
+                for i, pi in enumerate(self.particle):
+                    neigh_i = []
+                    for face in voronoi[i]['faces']:
+                        neigh_i.append(face['adjacent_cell'])
+                    pi.nearest_neighbors = neigh_i
+
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError('No `pyvoro` module found.')
+            return
 
     def get_property(self, what, subset=None):
         """
