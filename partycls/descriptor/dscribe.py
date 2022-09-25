@@ -39,7 +39,6 @@ class DscribeDescriptor(StructuralDescriptor):
     _chemistry = False
 
     def __init__(self, trajectory, backend, *args, **kwargs):
-
         StructuralDescriptor.__init__(self, trajectory)
         self.name = backend.__name__
         self.symbol = backend.__name__.lower()
@@ -64,9 +63,11 @@ class DscribeDescriptor(StructuralDescriptor):
         self.grid = range(self.backend.get_number_of_features())
 
     def compute(self):
-        StructuralDescriptor._sanity_checks(self)
+        # set up
+        StructuralDescriptor._set_up(self, dtype=numpy.float64)
         self.features = numpy.empty((self.size, self.n_features))
         row = 0
+        # computation
         for i, system in enumerate(self.trajectory):
             positions = self.dump('position', 1)[i]
             if self._chemistry:
@@ -80,7 +81,6 @@ class DscribeDescriptor(StructuralDescriptor):
             features = self.backend.create(system, positions=other_positions)
             self.features[row: row + features.shape[0], :] = features
             row += features.shape[0]
-
         return self.features
 
     def normalize(self, dist):

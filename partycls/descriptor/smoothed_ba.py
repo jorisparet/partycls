@@ -1,5 +1,5 @@
 import numpy
-from .descriptor import StructuralDescriptor
+from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .ba import BondAngleDescriptor
 from .realspace_wrap import compute
 
@@ -88,40 +88,30 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     def compute(self):
         # set up
         StructuralDescriptor._set_up(self, dtype=numpy.float64)
+        AngularStructuralDescriptor._manage_nearest_neighbors(self)
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
-        spe_0 = self.dump('species_id', group=0)
-        spe_1 = self.dump('species_id', group=1)
+        spe_0_id = self.dump('species_id', group=0)
+        spe_1_id = self.dump('species_id', group=1)
+        box = self.trajectory.dump('cell.side')
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        # compute cutoffs for the descriptor if not provided
-        if None in self.cutoffs:
-            if self.nearest_neighbors_method != 'FC':
-                print("Warning: using fixed cutoffs for the computation of \
-                      the descriptor. Neighbors are determined using the \
-                     `{}` method.".format(self.nearest_neighbors_method))
-            self._compute_cutoffs()
-        # store the standard FC cutoffs
-        self.standard_cutoffs_FC = numpy.array(self.cutoffs)
-        
-        # compute nearest neighbors with enlarged cutoffs
-        self.cutoffs = list(self.cutoff_enlargement * numpy.array(self.cutoffs))
-        self.nearest_neighbors(method=self.nearest_neighbors_method)
-       
+        # compute extended neighbors with extended cutoffs
+        standard_cutoffs = numpy.asarray(self.trajectory.nearest_neighbors_cutoffs)
+        extended_cutoffs = self.cutoff_enlargement * standard_cutoffs
+        AngularStructuralDescriptor._compute_neighbors_fixed_cutoffs(self, extended_cutoffs)
+        # computation
         for n in range(n_frames):
-            box = self.trajectory[n].cell.side
             for i in range(len(idx_0[n])):
-                # individual bond-angle distribution using nearest-neighbors
-                neigh_i = self.neighbors[n][i]
                 hist_n_i = compute.smoothed_angular_histogram(idx_0[n][i],
                                                               pos_0[n][i], pos_1[n].T,
-                                                              spe_0[n][i], spe_1[n],
-                                                              neigh_i,
-                                                              pairs, self.standard_cutoffs_FC,
-                                                              self.exponent, box,
+                                                              spe_0_id[n][i], spe_1_id[n],
+                                                              self._extended_neighbors[n][i],
+                                                              pairs, standard_cutoffs,
+                                                              self.exponent, box[n],
                                                               self.n_features,
                                                               self.dtheta)
                 self.features[row] = hist_n_i

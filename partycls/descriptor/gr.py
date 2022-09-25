@@ -125,7 +125,6 @@ class RadialDescriptor(StructuralDescriptor):
             hist_n = compute.radial_histogram(pos_0[n].T, pos_1[n].T,
                                               idx_0[n], idx_1[n], box,
                                               self.grid, self.dr)
-            # fill the array of features
             for hist_n_i in hist_n:
                 self.features[row] = hist_n_i
                 row += 1

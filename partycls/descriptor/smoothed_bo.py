@@ -98,7 +98,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         spe_1_id = self.dump('species_id', group=1)
         box = self.trajectory.dump('cell.side')
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
-        # compute generalized neighbors with extended cutoffs
+        # compute extended neighbors with extended cutoffs
         standard_cutoffs = numpy.asarray(self.trajectory.nearest_neighbors_cutoffs)
         extended_cutoffs = self.cutoff_enlargement * standard_cutoffs
         AngularStructuralDescriptor._compute_neighbors_fixed_cutoffs(self, extended_cutoffs)

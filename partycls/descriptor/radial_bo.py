@@ -156,7 +156,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         pos_1 = self.dump('position', group=1)
         idx_0 = self.dump('index', group=0)
         box = self.trajectory.dump('cell.side')
-        # compute generalized neighbors with extended cutoffs
+        # compute extended neighbors with extended cutoffs
         # based on the largest distance in the distance grid
         R_cut = self.distance_grid[-1] + self.skin * self.delta
         n_pairs = len(self.trajectory[0].pairs_of_species)
