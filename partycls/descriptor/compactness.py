@@ -72,7 +72,7 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
         #  the selected particles are stored in the
         #  filtered lists `self._neighbors` and 
         #  `self._subsidiary_neighbors`.
-        idx_0 = self.dump('index', group=0)
+        idx_0 = self.dump('internal_id', group=0)
         pos = self.trajectory.dump('position')
         radii = self.trajectory.dump('radius')
         box = self.trajectory.dump('cell.side')

@@ -82,7 +82,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
-        idx_0 = self.dump('index', group=0)
+        idx_0 = self.dump('internal_id', group=0)
         box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
@@ -171,7 +171,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
-        idx_0 = self.dump('index', group=0)
+        idx_0 = self.dump('internal_id', group=0)
         box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):

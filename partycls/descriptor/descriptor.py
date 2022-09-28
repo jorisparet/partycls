@@ -235,9 +235,15 @@ class StructuralDescriptor:
             - 'species': 'particle.species'
             - 'spe': 'particle.species'
             - 'label': 'particle.label'
-            - 'index': 'particle.index'
+            - 'internal_id': 'particle.internal_id'
+            - 'id': 'particle.internal_id'
             - 'mass': 'particle.mass'
             - 'radius': 'particle.radius'
+            - 'nearest_neighbors': 'particle.nearest_neighbors'
+            - 'neighbors': 'particle.nearest_neighbors'
+            - 'neighbours': 'particle.nearest_neighbors'
+            - 'voronoi_signature': 'particle.voronoi_signature'
+            - 'signature': 'particle.voronoi_signature'
 
         Returns
         -------
@@ -434,8 +440,8 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         n_frames = len(self.trajectory)
         self._extended_neighbors = [[] for n in range(n_frames)]
         #  indices
-        idx_0 = self.dump('index', group=0)
-        idx_1 = self.dump('index', group=1)
+        idx_0 = self.dump('internal_id', group=0)
+        idx_1 = self.dump('internal_id', group=1)
         #  species
         spe_0_id = self.dump('species_id', group=0)
         spe_1_id = self.dump('species_id', group=1)

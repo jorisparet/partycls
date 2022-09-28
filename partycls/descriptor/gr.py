@@ -117,8 +117,8 @@ class RadialDescriptor(StructuralDescriptor):
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
-        idx_0 = self.dump('index', group=0)
-        idx_1 = self.dump('index', group=1)
+        idx_0 = self.dump('internal_id', group=0)
+        idx_1 = self.dump('internal_id', group=1)
         # computation
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
@@ -195,8 +195,8 @@ class RadialDescriptor(StructuralDescriptor):
             # arrays
             pos_0 = self.dump('position', 0)
             pos_1 = self.dump('position', 1)
-            idx_0 = self.dump('index', 0)
-            idx_1 = self.dump('index', 1)
+            idx_0 = self.dump('internal_id', 0)
+            idx_1 = self.dump('internal_id', 1)
             box = self.trajectory[0].cell.side
             all_hist = numpy.empty((self.size, r.size), dtype=numpy.int64)
             n_frames = len(self.groups[0])
