@@ -8,17 +8,17 @@ from partycls.descriptor import RadialDescriptor, BondAngleDescriptor
 from partycls.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
 from partycls.descriptor import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
 from partycls.descriptor import TetrahedralDescriptor
+from partycls.descriptor import CompactnessDescriptor
 
 from numpy import float32
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        data = os.path.join(os.path.dirname(__file__), '../data/')
-        self.traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), first=0, last=10)
-        self.traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        self.data_dir = os.path.join(os.path.dirname(__file__), '../data/')
+        self.traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), first=0, last=10)
         self.traj.nearest_neighbors_method = 'fixed'
-        self.cutoffs = [1.45, 1.25, 1.25, 1.075]
+        self.traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
 
     def _compute(self, D):
         D.add_filter("species == 'B'", group=0)
@@ -89,6 +89,16 @@ class Test(unittest.TestCase):
         # test average
         self.assertEqual(float32(D.average[0]), float32(0.48001548248253856),
                          'wrong average value for the tetrahedrality')
+
+    def test_compactness(self):
+        traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
+        traj.compute_nearest_neighbors(method='voronoi')
+        traj.set_property("radius", 0.54, subset="species == 'A'")
+        traj.set_property("radius", 0.44, subset="species == 'B'")
+        D = CompactnessDescriptor(traj)
+        D.compute()
+        self.assertEqual(float32(D.average[0]), float32(0.12505058),
+                         'wrong average value for compactness')
 
 if __name__ == '__main__':
     unittest.main()
