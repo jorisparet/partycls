@@ -53,6 +53,17 @@ class System:
             particle = []
         self.particle = particle
         self.cell = cell
+        # nearest neighbors
+        self._nearest_neighbors_method = NearestNeighborsMethod.Auto
+        self.nearest_neighbors_cutoffs = [None for pair in self.pairs_of_species]
+
+    @property 
+    def nearest_neighbors_method(self):
+        return self._nearest_neighbors_method.value
+
+    @nearest_neighbors_method.setter
+    def nearest_neighbors_method(self, value):
+        self._nearest_neighbors_method = NearestNeighborsMethod(value.lower())
 
     @property
     def n_dimensions(self):
@@ -310,11 +321,13 @@ class System:
         # Set up
         if isinstance(method, str):
             method = NearestNeighborsMethod(method.lower())
+            self._nearest_neighbors_method = method
         positions = self.dump('position')
         species_id = self.dump('species_id')
         pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
         indices = self.dump('index')
         box = self.dump('cell.side')
+        self.nearest_neighbors_cutoffs = cutoffs
         
         # Computation
         #  Fixed-cutoffs ('fixed')
