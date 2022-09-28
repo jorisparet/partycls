@@ -540,17 +540,39 @@ CONTAINS
   END FUNCTION radial_ql
 
   
-!  FUNCTION compactness(pos_i, pos_1, neigh_i, box)
-!    ! parameters
-!    INTEGER(8), INTENT(in) :: neigh_i(:)
-!    REAL(8), INTENT(in)    :: pos_i(:), pos_1(:,:), box(:)
-!    ! variables
-!    ...
-!    ! tetrahedra
-!    ...
-!    ! compactness
-!    ...
-!  END FUNCTION compactness
+  !!!!!!!!!! COMPACTNESS !!!!!!!!!!
+  SUBROUTINE compactness(pos, tetrahedra, radii, box, thetas)
+    ! parameters
+    INTEGER(8), INTENT(in) :: tetrahedra(:,:)
+    REAL(8), INTENT(in)    :: pos(:,:), radii(:), box(:)
+    REAL(8), INTENT(OUT)   :: thetas
+    ! variables
+    INTEGER(8)             :: tetra_idx, j, j_idx, k, k_idx
+    REAL(8)                :: delta, norm, d_perfect, d_actual
+    REAL(8)                :: r_jk(SIZE(box)), hbox(SIZE(box)), theta(SIZE(tetrahedra,2))
+    ! computation
+    hbox = box / 2.0
+    DO tetra_idx=1,SIZE(tetrahedra,2)
+      delta = 0.0
+      norm = 0.0
+      DO j=1,4
+        j_idx = tetrahedra(j, tetra_idx) + 1 ! python index shift
+        DO k=1,4
+          k_idx = tetrahedra(k, tetra_idx) + 1 ! python index shift
+          IF (k_idx > j_idx) THEN
+            d_perfect = radii(j_idx) + radii(k_idx)
+            r_jk(:) = pos(:,j_idx) - pos(:,k_idx)
+            CALL pbc(r_jk, box, hbox)
+            d_actual = SQRT(SUM(r_jk**2))
+            delta = delta + ABS(d_actual - d_perfect)
+            norm = norm + d_perfect
+          END IF
+        END DO
+      END DO
+      theta(tetra_idx) = delta / norm
+    END DO
+    thetas = SUM(theta) / SIZE(theta)
+  END SUBROUTINE compactness
 
   
 END MODULE compute

@@ -10,4 +10,5 @@ from .bo import BondOrientationalDescriptor, LechnerDellagoDescriptor
 from .smoothed_bo import SmoothedBondOrientationalDescriptor
 from .radial_bo import RadialBondOrientationalDescriptor
 from .tetra import TetrahedralDescriptor
+from .compactness import CompactnessDescriptor
 from .dscribe import *
