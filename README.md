@@ -69,23 +69,24 @@ Requirements
 * Fortran compiler
 * [numpy](https://pypi.org/project/numpy/)
 * [scikit-learn](https://scikit-learn.org)
-* [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
+* [optional] [MDTraj](https://www.mdtraj.org) (additional trajectory formats)
 * [optional] [atooms](https://framagit.org/atooms/atooms) < 3.0.0 (additional trajectory formats)
-* [optional] [dscribe](https://singroup.github.io/dscribe) (additional descriptors)
-* [optional] [matplotlib](https://matplotlib.org/) (visualization)
-* [optional] [ovito](https://ovito.org/) (visualization)
-* [optional] [py3Dmol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
+* [optional] [DScribe](https://singroup.github.io/dscribe) (additional descriptors)
+* [optional] [Matplotlib](https://matplotlib.org/) (visualization)
+* [optional] [OVITO](https://ovito.org/) (visualization)
+* [optional] [Py3DMol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
+* [optional] [pyvoro](https://github.com/joe-jordan/pyvoro) (Voronoi neighbors)
 
 Documentation
 -------------
 
-- See the [tutorials](https://jorisparet.github.io/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
-- Full [API documentation](https://jorisparet.github.io/partycls/docs/API/).
+- See the [tutorials](https://www.jorisparet.com/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
+- Full [API documentation](https://www.jorisparet.com/partycls/docs/API/).
 
 Installation
 ------------
 
-**1.** From [pypi](https://pypi.org/project/partycls/):
+**1.** From [PyPI](https://pypi.org/project/partycls/):
 
 ```bash
 pip install partycls
@@ -109,7 +110,9 @@ make test
 or manually compile the Fortran source and run the tests:
 
 ```bash
-cd partycls/descriptor/
+cd partycls/
+f2py -c -m neighbors_wrap neighbors.f90
+cd descriptor/
 f2py -c -m realspace_wrap realspace.f90
 cd ../../
 pytest tests/
@@ -155,6 +158,6 @@ Bibtex entry:
 Authors
 -------
 
-Joris Paret
+[Joris Paret](https://www.jorisparet.com/)
 
 [Daniele Coslovich](https://www.units.it/daniele.coslovich/)
