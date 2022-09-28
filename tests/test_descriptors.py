@@ -84,7 +84,6 @@ class Test(unittest.TestCase):
     
     def test_tetrahedral(self):
         D = TetrahedralDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
         self._compute(D)
         # test average
         self.assertEqual(float32(D.average[0]), float32(0.48001548248253856),
