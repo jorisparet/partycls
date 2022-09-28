@@ -4,8 +4,15 @@ from .realspace_wrap import compute
 
 class CompactnessDescriptor(AngularStructuralDescriptor):
     """
+    Compactness descriptor.
+
     Structural descriptor based on the compactness metric (or packing
     efficiency) defined by Tong & Tanaka (https://doi.org/10.1103/PhysRevX.8.011041).
+
+    Measures the compactness of the local environment around a central particle
+    and computes its deviation from an ideal packing configuration.
+
+    This descriptor is scalar. Therefore, the `grid` attribute is not relevant.
     
     See the parent class for more details.
     

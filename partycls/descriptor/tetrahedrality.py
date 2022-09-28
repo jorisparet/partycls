@@ -10,7 +10,7 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     particle i and all the pairs of its nearest neighbors (j,k) from the ideal 
     angle in a tetrahedron (109.5°).
     
-    This descriptor is scalar. Therefore, the `grid` attribute is not relevant. 
+    This descriptor is scalar. Therefore, the `grid` attribute is not relevant.
     
     See the parent class for more details.
     

@@ -6,7 +6,7 @@ from .realspace_wrap import compute
 
 class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     """
-    Smoothed bond angle descriptor.
+    Smoothed bond-angle descriptor.
     
     Cutoffs `rc_ij` for the pair (i,j) of nearest neighbors are computed using 
     the corresponding partial RDF, g_ij(r), but more neighbors are considered 
