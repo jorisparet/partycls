@@ -211,7 +211,7 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
         property_set.sort()
         color_db = discrete_colors
     else:
-        color_db = colormap(property_vals)
+        color_db = colormap(list(property_vals))
     
     # individual particle color
     for pn, p in enumerate(system.particle):
@@ -355,7 +355,7 @@ def shannon_entropy(px, dx=1.0):
     S = 0.0
     P = px * dx
     for p in P:
-        if p != 0.0:
+        if p > 0.0:
             S += p * numpy.log(p)
     return -S
 
@@ -488,8 +488,10 @@ def _compute_delta_ent(i, j, weights):
     for w in weights:  # each w is a vector of weights (this is a loop over particles)
         w_merge = w[i] + w[j]  # for this particle, add the weights for cluster i and j
         delta_ent += w_merge * numpy.log(w_merge)
-        delta_ent -= w[i] * numpy.log(w[i])
-        delta_ent -= w[j] * numpy.log(w[j])
+        if w[i] > 0.0:
+            delta_ent -= w[i] * numpy.log(w[i])
+        if w[j] > 0.0:
+            delta_ent -= w[j] * numpy.log(w[j])
     return delta_ent
 
 

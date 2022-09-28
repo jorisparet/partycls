@@ -23,8 +23,8 @@ class Test(unittest.TestCase):
     def test_show_ovito(self):
         from partycls.helpers import show_ovito
         s = self.traj[0]
-        fig = show_ovito(s, 'species')
-        fig = show_ovito(s, 'radius')
+        fig = show_ovito(s, 'species', outfile='ovito_species.png')
+        fig = show_ovito(s, 'radius', outfile='ovito_radius.png')
 
     def test_sort_merge_clusters(self):
         # Adapted from 4th tutorial
