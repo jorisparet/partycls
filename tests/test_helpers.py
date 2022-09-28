@@ -54,8 +54,8 @@ class Test(unittest.TestCase):
 
         # Sort clusters
         new_labels, new_centroids = sort_clusters(C.labels, C.centroids(X_red))
-        self.assertEqual(list(new_labels), [1, 0, 1, 1, 2, 1, 2, 0, 1,
-                                            0, 1, 3, 3, 0, 3, 1, 0, 3, 0, 1, 3, 0, 0, 3, 0, 0, 3])
+        self.assertEqual(list(new_labels), [0, 1, 0, 0, 3, 0, 3, 1, 0, 1, 0, 2, 2,
+                                            1, 2, 0, 1, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2])
         
         # Use weights from GMM to merge the clusters into `n_cluster_min`
         # this returns new weights and new labels
