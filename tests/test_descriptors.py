@@ -4,6 +4,7 @@ import unittest
 import os
 
 from partycls import Trajectory
+from partycls.descriptor.descriptor import AngularStructuralDescriptor
 from partycls.descriptor import RadialDescriptor, BondAngleDescriptor
 from partycls.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
 from partycls.descriptor import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
@@ -26,6 +27,35 @@ class Test(unittest.TestCase):
         D.add_filter("species == 'B'", group=0)
         D.compute()
         
+    def test_filtered_neighbors(self):
+        traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        traj.compute_nearest_neighbors()
+        D = AngularStructuralDescriptor(self.traj)
+        # filters
+        filter_g0 = "species == 'B'"
+        filter_g1 = "species == 'A'"
+        D.add_filter(filter_g0, group=0)
+        D.add_filter(filter_g1, group=1)
+        # filter neighbors that are not in group=1 in the descriptor
+        D._filter_neighbors()
+        # compare original neighbors and filtered neighbors
+        original_neighbors = traj[0].dump('neighbors', subset=filter_g0)
+        filtered_neighbors = D._neighbors[0]
+        for i in range(len(D.groups[0][0])):
+            original_set = set(original_neighbors[i])
+            filtered_set = set(filtered_neighbors[i])
+            # neighbors that were filtered out in `filtered_neighbors`
+            filtered_out = filtered_set ^ original_set
+            # are the two sets identical if we include filtered-out neighbors again?
+            self.assertEqual((filtered_set | filtered_out), original_set,
+                             'sets are different')
+            # are filtered-out particles of type 'B'?
+            for j in filtered_out:
+                self.assertEqual(traj[0].particle[j].species, 'B',
+                                 'particle was not filtered properly')
+
     def test_radial(self):
         D = RadialDescriptor(self.traj, dr=0.1)
         self._compute(D)
