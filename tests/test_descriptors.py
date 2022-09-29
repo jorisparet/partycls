@@ -125,14 +125,14 @@ class Test(unittest.TestCase):
 
     def test_compactness(self):
         # use only one frame
-        traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
+        traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'), last=0)
         traj.compute_nearest_neighbors(method='voronoi')
         # radii based on the first peak of g_aa(r)
         traj.set_property("radius", 0.54, subset="species == 'A'")
-        traj.set_property("radius", 0.44, subset="species == 'B'")
+        traj.set_property("radius", 0.43, subset="species == 'B'")
         D = CompactnessDescriptor(traj)
         D.compute()
-        self.assertEqual(float32(D.average[0]), float32(0.12505058),
+        self.assertEqual(float32(D.average[0]), float32(0.11607557),
                          'wrong average value for compactness')
 
 if __name__ == '__main__':
