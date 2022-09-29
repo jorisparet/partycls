@@ -7,6 +7,7 @@ from partycls import Trajectory
 from partycls.descriptor import RadialDescriptor, BondAngleDescriptor
 from partycls.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
 from partycls.descriptor import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
+from partycls.descriptor import RadialBondOrientationalDescriptor
 from partycls.descriptor import TetrahedralDescriptor
 from partycls.descriptor import CompactnessDescriptor
 
@@ -80,7 +81,30 @@ class Test(unittest.TestCase):
         pass
     
     def test_radial_bo(self):
-        pass
+        D = RadialBondOrientationalDescriptor(self.traj, bounds=(1.1, 1.5), dr=0.1)
+        # bounds
+        self.assertEqual(set(map(float32, D.distance_grid)),
+                         set(map(float32, [1.15, 1.25, 1.35, 1.45])),
+                         'incorrect bounds')
+        # distance grid
+        grid = [1.1, 1.2, 1.3]
+        D.distance_grid = grid
+        self.assertEqual(set( map(float32, D.distance_grid) ),
+                         set( map(float32, grid)),
+                         'incorrect distance grid')
+        self.assertEqual(D.bounds, (1.1, 1.3), 
+                         'incorrect bounds associated to distance grid')
+        # mixed grid
+        self.assertEqual(D.mixed_grid[0], (1, 1.1),
+                         'incorrect mixed grid')
+        self.assertEqual(D.mixed_grid[-1], (8, 1.3),
+                         'incorrect mixed grid')
+        # test average
+        self._compute(D)
+        self.assertEqual(float32(D.average[0]), float32(0.27672228),
+                         'wrong average value for tuple (l,r)={}'.format(D.mixed_grid[0]))
+        self.assertEqual(float32(D.average[-1]), float32(0.43605693),
+                         'wrong average value for tuple (l,r)={}'.format(D.mixed_grid[-1]))
     
     def test_tetrahedral(self):
         D = TetrahedralDescriptor(self.traj)
