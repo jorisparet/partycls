@@ -87,6 +87,7 @@ class Test(unittest.TestCase):
                          set(map(float32, [1.15, 1.25, 1.35, 1.45])),
                          'incorrect bounds')
         D.dr = 0.2
+        self.assertEqual(D.dr, 0.2, 'wrong value for dr')
         D.bounds = (1.1, 1.9)
         self.assertEqual(set(map(float32, D.distance_grid)),
                          set(map(float32, [1.2, 1.4, 1.6, 1.8])),
