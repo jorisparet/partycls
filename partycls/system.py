@@ -323,6 +323,8 @@ class System:
         if isinstance(method, str):
             method = NearestNeighborsMethod(method.lower())
             self._nearest_neighbors_method = method
+        else:
+            self._nearest_neighbors_method = method
         positions = self.dump('position')
         species_id = self.dump('species_id')
         pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
