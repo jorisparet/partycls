@@ -184,7 +184,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
             for i in range(len(idx_0[n])):
                 hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
                 feature_idx = 0
-                for l in self.grid:
+                for l in self._orders:
                     for r in self._distance_grid:
                         hist_n_i[feature_idx] = compute.radial_ql(l, r, 
                                                                   self.delta,
