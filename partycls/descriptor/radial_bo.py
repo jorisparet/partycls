@@ -109,7 +109,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
 
     @bounds.setter
     def bounds(self, value):
-        self._set_bounds(self._dr, value, self._distance_grid)
+        self._set_bounds(self._dr, value, None)
 
     @property
     def dr(self):
@@ -120,7 +120,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
 
     @dr.setter
     def dr(self, value):
-        self._set_bounds(value, self._bounds, self._distance_grid)
+        self._set_bounds(value, self._bounds, None)
     
     @property
     def distance_grid(self):
@@ -204,7 +204,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                     rmin, rmax = bounds
                     r = numpy.arange(rmin + (self._dr / 2), rmax, self._dr, dtype=numpy.float64)
                     # set grid and bounds
-                    self.distance_grid = r
+                    self._distance_grid = r
                     self._bounds = (r[0], r[-1])
             else:
                 raise ValueError('`bounds` is not correctly defined.')

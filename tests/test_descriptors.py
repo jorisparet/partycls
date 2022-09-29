@@ -86,6 +86,11 @@ class Test(unittest.TestCase):
         self.assertEqual(set(map(float32, D.distance_grid)),
                          set(map(float32, [1.15, 1.25, 1.35, 1.45])),
                          'incorrect bounds')
+        D.dr = 0.2
+        D.bounds = (1.1, 1.9)
+        self.assertEqual(set(map(float32, D.distance_grid)),
+                         set(map(float32, [1.2, 1.4, 1.6, 1.8])),
+                         'incorrect bounds')
         # distance grid
         grid = [1.1, 1.2, 1.3]
         D.distance_grid = grid
