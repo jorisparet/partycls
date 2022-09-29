@@ -72,8 +72,9 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : array
-        Grid of bond orientational orders `l` over which the structural features
-        will be computed.
+        Grid of bond orientational orders `l` and distances `r` over which 
+        the descriptor will be computed. It takes the form a of a list of
+        tuples (l,r).
         
     features : ndarray
         Array of all the structural features for the particles in group=0 in
@@ -107,6 +108,9 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         
     @property
     def orders(self):
+        """
+        Grid of bond orders `l` used to compute the descriptor. 
+        """
         return self._orders
 
     @orders.setter
@@ -138,20 +142,13 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def distance_grid(self):
         """
-        Grid of distances over which to evaluate the descriptor.
+        Grid of distances used to compute the descriptor.
         """
         return self._distance_grid
     
     @distance_grid.setter
     def distance_grid(self, value):
         self._set_bounds_distances(self._dr, self._bounds, value)
-    
-    @property
-    def n_features(self):
-        """
-        Number of features of the descriptor.
-        """
-        return len(self.grid) * len(self._distance_grid)
     
     @property
     def mixed_grid(self):
