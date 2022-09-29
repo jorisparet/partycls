@@ -83,7 +83,28 @@ class Test(unittest.TestCase):
         
     
     def test_smoothed_ba(self):
+        # compute the descriptor on particles A for better statistics
         D = SmoothedBondAngleDescriptor(self.traj)
+        D.add_filter("species == 'A'", group=0)
+        D.compute()
+        # value at the peak
+        q = D.normalize(D.average, method="pdf")
+        self.assertEqual(float32(q[18]), float32(0.012082007), 
+                         'wrong average value for first peak')
+        # convergence towards non-smoothed descriptor
+        #  sba
+        D_sba = SmoothedBondAngleDescriptor(self.traj, dtheta=3.0, cutoff_enlargement=1.05, exponent=1000000000)
+        D_sba.add_filter("species == 'A'")
+        D_sba.compute()
+        q_sba = D_sba.normalize(D_sba.average, method="pdf")
+        #  ba
+        D_ba = BondAngleDescriptor(self.traj)
+        D_ba.add_filter("species == 'A'")
+        D_ba.compute()
+        q_ba = D.normalize(D_ba.average, method="pdf")
+        #  compare
+        self.assertAlmostEqual(max(q_sba), max(q_ba), places=3,
+                               msg='wrong average value for first peak')
     
     def test_radial_bo(self):
         D = RadialBondOrientationalDescriptor(self.traj, bounds=(1.1, 1.5), dr=0.1)
