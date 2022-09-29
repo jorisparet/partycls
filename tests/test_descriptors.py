@@ -20,6 +20,7 @@ class Test(unittest.TestCase):
         self.traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), first=0, last=10)
         self.traj.nearest_neighbors_method = 'fixed'
         self.traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        self.traj.compute_nearest_neighbors()
 
     def _compute(self, D):
         D.add_filter("species == 'B'", group=0)
@@ -82,7 +83,7 @@ class Test(unittest.TestCase):
         
     
     def test_smoothed_ba(self):
-        pass
+        D = SmoothedBondAngleDescriptor(self.traj)
     
     def test_radial_bo(self):
         D = RadialBondOrientationalDescriptor(self.traj, bounds=(1.1, 1.5), dr=0.1)
@@ -125,7 +126,7 @@ class Test(unittest.TestCase):
 
     def test_compactness(self):
         # use only one frame
-        traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'), last=0)
+        traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'))
         traj.compute_nearest_neighbors(method='voronoi')
         # radii based on the first peak of g_aa(r)
         traj.set_property("radius", 0.54, subset="species == 'A'")
