@@ -72,7 +72,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : array
-        Grid over which the structural features will be computed.
+        Grid of bond orientational orders `l` over which the structural features
+        will be computed.
         
     features : ndarray
         Array of all the structural features for the particles in group=0 in
@@ -113,7 +114,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def dr(self):
         """
-        Grid spacing.
+        Grid spacing for the distance grid.
         """
         return self._dr
 
@@ -139,6 +140,18 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         """
         return len(self.grid) * len(self._distance_grid)
     
+    @property
+    def mixed_grid(self):
+        """
+        Mixed grid of bond orientational orders `l` and
+        distances `r` in the form of a list of tuples (l,r).
+        """
+        mixed_grid = []
+        for l in self.grid:
+            for r in self._distance_grid:
+                mixed_grid.append((l,r))
+        return mixed_grid
+
     def compute(self):
         # set up
         StructuralDescriptor._set_up(self, dtype=numpy.float64)
@@ -162,7 +175,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                 hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
                 feature_idx = 0
                 for l in self.grid:
-                    for r in self.distance_grid:
+                    for r in self._distance_grid:
                         hist_n_i[feature_idx] = compute.radial_ql(l, r, 
                                                                   self.delta,
                                                                   self.exponent,
@@ -181,7 +194,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         L = numpy.min(sides)
         
         if distance_grid is not None:
-            self._distance_grid = numpy.asarray(distance_grid, dtype=numpy.float64)
+            self._distance_grid = numpy.array(distance_grid, dtype=numpy.float64)
             self._dr = None
             self._bounds = (self._distance_grid[0], self._distance_grid[-1])
         
