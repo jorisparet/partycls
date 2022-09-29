@@ -281,8 +281,7 @@ class Trajectory:
                 method = NearestNeighborsMethod(method.lower())
                 self._nearest_neighbors_method = method
             except ValueError:
-                raise ValueError('Incorrect method for nearest neighbors.\
-                    Should be one of {}'.format(_nearest_neighbors_methods_))
+                raise ValueError('Incorrect method for nearest neighbors. Should be one of {}.'.format(_nearest_neighbors_methods_))
         else:
             self._nearest_neighbors_method = NearestNeighborsMethod.Auto
 
@@ -304,7 +303,8 @@ class Trajectory:
                     self.compute_nearest_neighbors_cutoffs()
             else:
                 if len(cutoffs) != len(pairs_of_species):
-                    raise ValueError("Incorrect number of cutoffs")
+                    raise ValueError("Incorrect number of cutoffs: {} were provided while {} are expected.".format(
+                        len(cutoffs), len(pairs_of_species)))
                 else:
                     self.nearest_neighbors_cutoffs = cutoffs
 
