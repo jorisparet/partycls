@@ -7,6 +7,8 @@ from partycls import Trajectory
 from partycls.descriptor import BondAngleDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans
 
+from numpy import float32
+
 try:
     import atooms
     HAS_ATOOMS = True
@@ -18,7 +20,6 @@ class Test(unittest.TestCase):
     def setUp(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         self.traj = Trajectory(os.path.join(data, 'dislocation.xyz'), fmt='xyz')
-        self.cutoffs = [1.45, 1.25, 1.25, 1.075]
 
     def test_xyz(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
@@ -83,6 +84,20 @@ class Test(unittest.TestCase):
         self.assertEqual(list(neighbors_A[0][0]), [1,2,3])
         self.assertEqual(list(neighbors_A[1][0]), [1,2])
         
+    def test_additional_field_label(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'traj_with_labels.xyz'),
+                                       additional_fields=['cluster'])
+        # check if 'cluster' was correctly set to Particle.label
+        expected_labels = [1,0,1,1,1,0]
+        count = 0
+        for system in traj:
+            for particle in system.particle:
+                self.assertEqual(particle.label, expected_labels[count],
+                                 'incorrect particle label')
+                count += 1
+            
+
     def test_get_property(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'), 
@@ -120,9 +135,35 @@ class Test(unittest.TestCase):
         traj.set_property('radius', 0.7, "species == 'A'")
         self.assertEqual(list(traj[0].dump('radius', "species == 'A'")), [0.7])
 
+    def test_compute_fixed_cutoffs(self):
+        # test 
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'wahn_N1000.xyz'))
+        # compute cutoffs
+        traj.compute_nearest_neighbors_cutoffs(dr=0.1)
+        self.assertEqual(set(map(float32, traj.nearest_neighbors_cutoffs)),
+                         set(map(float32, [1.45, 1.35, 1.35, 1.25])),
+                         'wrong computed cutoffs')
+
+    def test_voronoi_signatures(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'wahn_N1000.xyz'))
+        # compute voronoi signatures
+        traj.set_property('radius', 0.525, subset="species == 'A'")
+        traj.set_property('radius', 0.475, subset="species == 'B'")
+        traj.compute_voronoi_signatures()
+        # check a few signatures
+        signatures = traj[0].dump('signature')
+        self.assertEqual(signatures[5], '0_0_12', 'wrong Voronoi signature')
+        self.assertEqual(signatures[20], '0_2_8_2', 'wrong Voronoi signature')
+
+    def test_show(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=3)
+        traj.show(backend='matplotlib', outfile='traj_show_matplotlib')
+
     def test_angular_zscore_pca_kmeans(self):
         D = BondAngleDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
         D.add_filter("species == 'A'", group=0)
         X = D.compute()
         scaler = ZScore()
@@ -137,7 +178,6 @@ class Test(unittest.TestCase):
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore',
                       dim_reduction='pca', clustering='kmeans')
         wf.descriptor.add_filter('species == "A"', group=0)
-        wf.descriptor.cutoffs = self.cutoffs
         wf.dim_reduction.n_components = 3
         wf.clustering.n_init = 100
         wf.disable_output()

@@ -243,7 +243,7 @@ class Trajectory:
             for system in self._systems:
                 system.set_property(what, value, subset=subset)
         else:
-            assert len(value) == self.__len__(), '`value` should have the same length than the Trajectory.'
+            assert len(value) == self.__len__(), '`value` should have the same length as the Trajectory.'
             for frame, system in enumerate(self._systems):
                 system.set_property(what, value[frame], subset=subset)
 
