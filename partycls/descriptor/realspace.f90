@@ -46,7 +46,7 @@ CONTAINS
           CALL pbc(r_ij, box, hbox)
           d_ij_sq = SUM(r_ij**2)
           ! histogram
-          bin = FLOOR(SQRT(d_ij_sq) / dr) + FLOOR(rmin / dr) + 1
+          bin = FLOOR(SQRT(d_ij_sq) / dr) - FLOOR(rmin / dr) + 1
           IF (bin >= 1 .AND. bin <= nbins) hist(i, bin) = hist(i, bin) + 1
         END IF
       END DO
