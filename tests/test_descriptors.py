@@ -30,11 +30,25 @@ class Test(unittest.TestCase):
         D = RadialDescriptor(self.traj, dr=0.1)
         self._compute(D)
         # check automatically computed bounds
-        self.assertEqual(D.bounds, (0.05, 2.45), 'wrong bounds for the radial grid')
+        self.assertEqual(D.bounds, (0.05, 2.45),
+                         'wrong bounds for the radial grid')
         # check average value of g(r) at the first peak
         gr = D.normalize(D.average, method="gr")
         self.assertEqual(float32(gr[8]), float32(2.939288),
                          'wrong average value at the first peak of g(r)')
+        # check g(r) is still correct with non-trivial bounds
+        # (max. is at bin=3 instead of bin=8 when rmin=0.5)
+        D_shifted = RadialDescriptor(self.traj, bounds=(0.5, 2.5), dr=0.1)
+        self._compute(D_shifted)
+        g_shifted = D_shifted.normalize(D_shifted.average, method="gr")
+        self.assertEqual(float32(gr[8]), float32(g_shifted[3]),
+                         'the two g(r) are not equal at the first peak')
+        # check dr changes the grid dynamically
+        len_old = len(D.grid)
+        D.dr = 0.05
+        len_new = len(D.grid)
+        self.assertGreater(len_new, len_old, 'incorrect grid size')
+
 
     def test_angular(self):
         D = BondAngleDescriptor(self.traj, dtheta=3.0)
