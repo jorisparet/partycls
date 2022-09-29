@@ -94,12 +94,25 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5, exponent=2):
         BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
-        # Set the grid of distances
-        self._set_bounds(dr, bounds, distance_grid)
+        # dummy values, to be set in the following lines
+        self._distance_grid = [-1]
+        self._orders = [-1]
+        # set the grid of distances {r}
+        self._set_bounds_distances(dr, bounds, distance_grid)
+        # set the grid of orders {l} (overwrites method from BondOrientationalDescriptor)
+        self._set_bounds_orders(lmin, lmax, orders)
         self.delta = delta
         self.skin = skin
         self.exponent = exponent
         
+    @property
+    def orders(self):
+        return self._orders
+
+    @orders.setter
+    def orders(self, value):
+        return self._set_bounds_orders(1, 8, value)
+
     @property
     def bounds(self):
         """
@@ -109,7 +122,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
 
     @bounds.setter
     def bounds(self, value):
-        self._set_bounds(self._dr, value, None)
+        self._set_bounds_distances(self._dr, value, None)
 
     @property
     def dr(self):
@@ -120,7 +133,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
 
     @dr.setter
     def dr(self, value):
-        self._set_bounds(value, self._bounds, None)
+        self._set_bounds_distances(value, self._bounds, None)
     
     @property
     def distance_grid(self):
@@ -131,7 +144,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     
     @distance_grid.setter
     def distance_grid(self, value):
-        self._set_bounds(self._dr, self._bounds, value)
+        self._set_bounds_distances(self._dr, self._bounds, value)
     
     @property
     def n_features(self):
@@ -188,7 +201,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                 row += 1
         return self.features
         
-    def _set_bounds(self, dr, bounds, distance_grid):
+    def _set_bounds_distances(self, dr, bounds, distance_grid):
         # take the smallest side as maximal upper bound for the distance grid
         sides = numpy.array(self.trajectory.get_property('cell.side'))
         L = numpy.min(sides)
@@ -208,3 +221,17 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                     self._bounds = (r[0], r[-1])
             else:
                 raise ValueError('`bounds` is not correctly defined.')
+
+        # update (l,r) grid
+        self._set_grid()
+
+    def _set_bounds_orders(self, lmin, lmax, orders):
+        if orders is None:
+            self._orders = numpy.array(range(lmin, lmax + 1))
+        else:
+            self._orders = numpy.array(orders)
+        # update (l,r) grid
+        self._set_grid()
+
+    def _set_grid(self):
+        self.grid = [(l,r) for l in self._orders for r in self._distance_grid]
