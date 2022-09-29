@@ -183,10 +183,10 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
     """
     try:
         from ovito.io import import_file
+        from ovito.vis import Viewport, TachyonRenderer
     except ImportError:
         print('install ovito to display the particles')
         return
-    from ovito.vis import Viewport, TachyonRenderer
     import os
     import tempfile
     from .core.utils import tipify
@@ -304,7 +304,11 @@ def show_3dmol(system, color, palette=None):
         py3Dmol view.
 
     """
-    import py3Dmol
+    try:
+        import py3Dmol
+    except ImportError:
+        print('install py3Dmol to display the particles')
+        return
     from .trajectory import tipify
 
     if palette is None:
