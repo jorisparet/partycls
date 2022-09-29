@@ -43,9 +43,13 @@ class Test(unittest.TestCase):
                          'wrong average value at the peak \theta=67.5°')
         
     def test_steinhardt(self):
-        D = BondOrientationalDescriptor(self.traj)
-        self._compute(D)
+        D = BondOrientationalDescriptor(self.traj, lmin=2, lmax=4)
+        # grid
+        self.assertEqual(set(D.grid), set([2,3,4]), 'wrong grid')
+        D.orders = [1,2,3,4,5,6,7,8]
+        self.assertEqual(set(D.grid), set([1,2,3,4,5,6,7,8]), 'wrong grid')
         # test value of q_1
+        self._compute(D)
         self.assertEqual(float32(D.average[0]), float32(0.09393699),
                          'wrong average value for q_1')
         
