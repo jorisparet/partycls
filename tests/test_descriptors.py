@@ -90,8 +90,10 @@ class Test(unittest.TestCase):
                          'wrong average value for the tetrahedrality')
 
     def test_compactness(self):
+        # use only one frame
         traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
         traj.compute_nearest_neighbors(method='voronoi')
+        # radii based on the first peak of g_aa(r)
         traj.set_property("radius", 0.54, subset="species == 'A'")
         traj.set_property("radius", 0.44, subset="species == 'B'")
         D = CompactnessDescriptor(traj)
