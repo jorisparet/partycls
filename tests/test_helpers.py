@@ -26,6 +26,14 @@ class Test(unittest.TestCase):
         fig = show_ovito(s, 'species', outfile='ovito_species.png')
         fig = show_ovito(s, 'radius', outfile='ovito_radius.png')
 
+    def test_show_3dmol(self):
+        from partycls.helpers import show_3dmol
+        from random import randint
+        s = self.traj[0]
+        for p in s.particle:
+            p.label = randint(0,1)
+        view = show_3dmol(s, 'label')
+
     def test_sort_merge_clusters(self):
         # Adapted from 4th tutorial
         import random
