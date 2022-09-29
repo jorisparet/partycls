@@ -348,34 +348,6 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     def __init__(self, trajectory):
         StructuralDescriptor.__init__(self, trajectory)
 
-    def set_cutoff(self, s1, s2, rcut, mirror=True):
-        """
-        Set the nearest-neighbor cutoff for the pair of species (s1, s2).
-        The cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
-        parameter is True (default).        
-
-        Parameters
-        ----------
-        s1 : str
-            Symbol of the first species.
-        s2 : str
-            Symbol of the second species.
-        rcut : float
-            Value of the cutoff for the pair (s1,s2).
-        mirror : bool, optional
-            Set the cutoff for the mirror pair (s2,s1). The default is True.
-
-        Returns
-        -------
-        None.
-        """
-        pairs = self.trajectory[0].pairs_of_species
-        idx_12 = pairs.index((s1, s2))
-        self.cutoffs[idx_12] = rcut
-        if mirror:
-            idx_21 = pairs.index((s2, s1))
-            self.cutoffs[idx_21] = rcut
-
     def _filter_neighbors(self):
         """
         Create a list of neighbors separate from the trajectory for particles
@@ -418,7 +390,8 @@ class AngularStructuralDescriptor(StructuralDescriptor):
 
     def _manage_nearest_neighbors(self):
         """
-        
+        Check if nearest neighbors were already computed. If not,
+        compute them using the method specified in the trajectory.
         """
         # check if nearest neighbors were already computed
         neighbors_None = False
