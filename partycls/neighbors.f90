@@ -15,18 +15,18 @@ CONTAINS
   END SUBROUTINE pbc
 
   !!!!!!!!!! FIXED-CUTOFFS !!!!!!!!!!
-  SUBROUTINE fixed_cutoffs(idx_i, idx_all, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs, neigh_i)
+  SUBROUTINE fixed_cutoffs(idx_i, idx_all, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs_sq, neigh_i)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, idx_all(:)
     REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:)
     INTEGER(8), INTENT(in)  :: spe_i, spe_all(:)
     INTEGER(8), INTENT(in)  :: pairs(:,:)
     REAL(8), INTENT(in)     :: box(:)
-    REAL(8), INTENT(in)     :: cutoffs(:)
+    REAL(8), INTENT(in)     :: cutoffs_sq(:)
     INTEGER(8), INTENT(out) :: neigh_i(500) ! max. number of neighbors is assumed to be 500
     ! Variables
     INTEGER(8) :: j, num_neigh_i, line
-    REAL(8)    :: hbox(SIZE(box)), rcut, rcut_sq, r_ij(SIZE(box)), dij_sq
+    REAL(8)    :: hbox(SIZE(box)), rcut_sq, r_ij(SIZE(box)), dij_sq
     ! Computation
     hbox = box / 2.0
     neigh_i = -1 ! set all neighbors to -1
@@ -38,15 +38,14 @@ CONTAINS
         DO WHILE (pairs(line,1) /= spe_i .OR. pairs(line,2) /= spe_all(j))
           line = line + 1
         END DO
-        rcut = cutoffs(line)
-        rcut_sq = rcut * rcut
+        rcut_sq = cutoffs_sq(line)
         ! test j as a neighbor of i
         r_ij(:) = pos_i - pos_all(:,j)
         CALL pbc(r_ij, box, hbox)
         dij_sq = SUM(r_ij**2)
         IF (dij_sq <= rcut_sq) THEN
           num_neigh_i = num_neigh_i + 1
-          neigh_i(num_neigh_i) = j - 1 ! python index shift
+          neigh_i(num_neigh_i) = idx_all(j)
         END IF
       END IF
     END DO
