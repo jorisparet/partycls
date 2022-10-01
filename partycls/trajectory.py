@@ -560,7 +560,7 @@ class Trajectory:
                             fields_to_read_idx.append(fidx)
 
                 # Loop over particles
-                for _ in range(n_particles):
+                for n in range(n_particles):
                     line = trajectory.readline().split()
                     # particle type
                     p_type = line[0]
@@ -572,6 +572,7 @@ class Trajectory:
 
                     # create the Particle object
                     particle = Particle(position=p_pos, species=p_type)
+                    particle._index = n
                     # set the additional fields
                     if self.additional_fields:
                         if read_cluster_field and has_cluster_field:
@@ -630,7 +631,7 @@ class Trajectory:
                 dimension = len(sides)
 
                 # Loop over particles
-                for _ in range(n_particles):
+                for n in range(n_particles):
                     line = trajectory.readline().split()
                     # particle type
                     p_type = line[0]
@@ -649,6 +650,7 @@ class Trajectory:
                         p_label = -1
                     # create the Particle object
                     particle = Particle(position=p_pos, species=p_type, label=p_label)
+                    particle._index = n
                     system.particle.append(particle)
 
                 # Add system to trajectory
@@ -676,10 +678,11 @@ class Trajectory:
         for atooms_sys in atooms_traj:
             cell = Cell(atooms_sys.cell.side)
             system = System(cell=cell)
-            for atooms_p in atooms_sys.particle:
+            for n, atooms_p in enumerate(atooms_sys.particle):
                 pos = atooms_p.position.copy()
                 spe = atooms_p.species
                 particle = Particle(position=pos, species=spe)
+                particle._index = n
                 # additional fields
                 for field in self.additional_fields:
                     value = atooms_p.__getattribute__(field)
@@ -710,6 +713,7 @@ class Trajectory:
                 if spe == 'VS':
                     spe = md_traj[frame].topology.atom(atom).name
                 particle = Particle(position=pos, species=spe)
+                particle._index = atom
                 system.particle.append(particle)
             self._systems.append(system)
 
