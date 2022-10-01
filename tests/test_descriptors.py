@@ -85,7 +85,7 @@ class Test(unittest.TestCase):
         self._compute(D)
         q = D.normalize(D.average, method="pdf")
         self.assertEqual(float32(q[22]), float32(0.015544709),
-                         'wrong average value at the peak \theta=67.5°')
+                         'wrong average value at the peak theta=67.5°')
         
     def test_steinhardt(self):
         D = BondOrientationalDescriptor(self.traj, lmin=2, lmax=4)
@@ -115,15 +115,15 @@ class Test(unittest.TestCase):
                          'wrong average value for qs_1')        
         # test convergence towards Steinhardt BO
         D = SmoothedBondOrientationalDescriptor(self.traj, 
-                                                cutoff_enlargement=1.01,
-                                                exponent=9223372036854775807)
+                                                cutoff_enlargement=1.3,
+                                                exponent=1000000000)
         self._compute(D)
         self.assertAlmostEqual(float32(D.average[0]), float32(0.09393699),
-                         places=3, msg='wrong average value for qs_1')
+                         places=8, msg='wrong average value for qs_1 (not converged)')
         self.assertAlmostEqual(float32(D.average[1]), float32(0.10234044),
-                         places=3, msg='wrong average value for qs_2')
+                         places=8, msg='wrong average value for qs_2 (not converged)')
         self.assertAlmostEqual(float32(D.average[7]), float32(0.28741154),
-                         places=3, msg='wrong average value for qs_7')
+                         places=8, msg='wrong average value for qs_7 (not converged)')
         
     
     def test_smoothed_ba(self):
@@ -137,7 +137,9 @@ class Test(unittest.TestCase):
                          'wrong average value for first peak')
         # convergence towards non-smoothed descriptor
         #  sba
-        D_sba = SmoothedBondAngleDescriptor(self.traj, dtheta=3.0, cutoff_enlargement=1.05, exponent=1000000000)
+        D_sba = SmoothedBondAngleDescriptor(self.traj, dtheta=3.0, 
+                                            cutoff_enlargement=1.3,
+                                            exponent=1000000000)
         D_sba.add_filter("species == 'A'", group=0)
         D_sba.compute()
         q_sba = D_sba.normalize(D_sba.average, method="pdf")
@@ -147,8 +149,8 @@ class Test(unittest.TestCase):
         D_ba.compute()
         q_ba = D.normalize(D_ba.average, method="pdf")
         #  compare
-        self.assertAlmostEqual(max(q_sba), max(q_ba), places=3,
-                               msg='wrong average value for first peak')
+        self.assertAlmostEqual(max(q_sba), max(q_ba), places=8,
+                               msg='wrong average value for first peak (not converged)')
     
     def test_radial_bo(self):
         D = RadialBondOrientationalDescriptor(self.traj, bounds=(1.1, 1.5), dr=0.1)
