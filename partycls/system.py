@@ -328,28 +328,33 @@ class System:
         positions = self.dump('position')
         species_id = self.dump('species_id')
         pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
-        indices = self.dump('internal_id')
+        #indices = self.dump('internal_id')
+        indices = self.dump('particle._index')
         box = self.dump('cell.side')
         self.nearest_neighbors_cutoffs = cutoffs
         
         # Computation
         #  Fixed-cutoffs ('fixed')
         if method is NearestNeighborsMethod.Fixed:
+            positions = positions.T
+            cutoffs_sq = numpy.array(cutoffs)**2
             for p in self.particle:
-                neigh_i = nearest_neighbors_f90.fixed_cutoffs(p.internal_id, indices,
-                                                              p.position, positions.T,
+                neigh_i = nearest_neighbors_f90.fixed_cutoffs(p._index, indices,
+                                                              p.position, positions,
                                                               p.species_id, species_id,
                                                               pairs_of_species_id, box,
-                                                              cutoffs)
+                                                              cutoffs_sq)
                 neigh_i = neigh_i[neigh_i >= 0]
                 p.nearest_neighbors = list(neigh_i)
             return
         
         #  Solid-Angle Nearest Neighbors ('sann')
+        print("CAREFUL: indices was changed to _index")
         if method is NearestNeighborsMethod.SANN:
+            positions = positions.T
             rmax = 1.5 * numpy.max(cutoffs)
             for p in self.particle:
-                neigh_i = nearest_neighbors_f90.sann(p.position, positions.T,
+                neigh_i = nearest_neighbors_f90.sann(p._index, positions,
                                                      p.internal_id, indices,
                                                      rmax, box)
                 neigh_i = neigh_i[neigh_i >= 0]
@@ -365,7 +370,6 @@ class System:
                     raise NotImplementedError("The computation of Voronoi neighbors is currently not possible in dimension 2.")
 
                 # parameters
-                positions = self.dump('position')
                 limits = [[-L/2, L/2] for L in self.cell.side]
                 radii = self.dump('radius')
                 periodic = self.cell.periodic

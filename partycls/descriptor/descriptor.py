@@ -413,8 +413,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         n_frames = len(self.trajectory)
         self._extended_neighbors = [[] for n in range(n_frames)]
         #  indices
-        idx_0 = self.dump('internal_id', group=0)
-        idx_1 = self.dump('internal_id', group=1)
+        # idx_0 = self.dump('internal_id', group=0)
+        # idx_1 = self.dump('internal_id', group=1)
+        idx_0 = self.dump('_index', group=0)
+        idx_1 = self.dump('_index', group=1)
         #  species
         spe_0_id = self.dump('species_id', group=0)
         spe_1_id = self.dump('species_id', group=1)
@@ -424,13 +426,16 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         pos_1 = self.dump('position', group=1)
         #  box
         box = self.trajectory.dump('cell.side')
+        #  cutoffs squared
+        cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
         for frame in range(n_frames):
+            pos_1_frame = pos_1[frame].T
             for i in range(len(idx_0[frame])):
                 neigh_i = nearest_neighbors_f90.fixed_cutoffs(idx_0[frame][i], idx_1[frame],
-                                                              pos_0[frame][i], pos_1[frame].T,
+                                                              pos_0[frame][i], pos_1_frame,
                                                               spe_0_id[frame][i], spe_1_id[frame],
                                                               pairs_of_species_id, box[frame],
-                                                              cutoffs)
+                                                              cutoffs_sq)
                 neigh_i = neigh_i[neigh_i >= 0]
                 self._extended_neighbors[frame].append(neigh_i)
 
