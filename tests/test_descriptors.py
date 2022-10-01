@@ -111,7 +111,7 @@ class Test(unittest.TestCase):
                                                 cutoff_enlargement=1.3,
                                                 exponent=8)
         self._compute(D)
-        self.assertEqual(float32(D.average[0]), float32(0.06444802),
+        self.assertEqual(float32(D.average[0]), float32(0.052115675),
                          'wrong average value for qs_1')        
         # test convergence towards Steinhardt BO
         D = SmoothedBondOrientationalDescriptor(self.traj, 
@@ -133,17 +133,17 @@ class Test(unittest.TestCase):
         D.compute()
         # value at the peak
         q = D.normalize(D.average, method="pdf")
-        self.assertEqual(float32(q[18]), float32(0.012082007), 
+        self.assertEqual(float32(q[18]), float32(0.01290775), 
                          'wrong average value for first peak')
         # convergence towards non-smoothed descriptor
         #  sba
         D_sba = SmoothedBondAngleDescriptor(self.traj, dtheta=3.0, cutoff_enlargement=1.05, exponent=1000000000)
-        D_sba.add_filter("species == 'A'")
+        D_sba.add_filter("species == 'A'", group=0)
         D_sba.compute()
         q_sba = D_sba.normalize(D_sba.average, method="pdf")
         #  ba
         D_ba = BondAngleDescriptor(self.traj)
-        D_ba.add_filter("species == 'A'")
+        D_ba.add_filter("species == 'A'", group=0)
         D_ba.compute()
         q_ba = D.normalize(D_ba.average, method="pdf")
         #  compare

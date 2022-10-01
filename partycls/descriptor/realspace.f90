@@ -147,10 +147,6 @@ CONTAINS
               costheta = DMIN1(1.0_8,costheta)
             END IF
             theta = ACOS(costheta)*180.0/pi
-            ! weights
-            rc_ij = find_cutoff(spe_i, spe_all(idx_j), pairs, cutoffs)
-            rc_ik = find_cutoff(spe_i, spe_all(idx_k), pairs, cutoffs)
-            w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
             ! binning
             bin = FLOOR( theta/dtheta ) + 1
             IF (bin <= nbins) THEN
