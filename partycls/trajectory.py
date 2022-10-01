@@ -160,8 +160,6 @@ class Trajectory:
             - 'species': 'particle.species'
             - 'spe': 'particle.species'
             - 'label': 'particle.label'
-            - 'internal_id': 'particle.internal_id'
-            - 'id': 'particle.internal_id'
             - 'mass': 'particle.mass'
             - 'radius': 'particle.radius'
             - 'nearest_neighbors': 'particle.nearest_neighbors'

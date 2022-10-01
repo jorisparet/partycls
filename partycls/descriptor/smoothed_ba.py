@@ -82,7 +82,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')
-        idx_0 = self.dump('internal_id', group=0)
+        idx_0 = self.dump('_index', group=0)
         spe_0_id = self.dump('species_id', group=0)
         spe_all_id = self.trajectory.dump('species_id')
         box = self.trajectory.dump('cell.side')
@@ -93,7 +93,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation
         for n in range(n_frames):
-            for i in range(len(idx_0[n])):
+            for i in range(len(self.groups[0][n])):
                 hist_n_i = compute.smoothed_angular_histogram(idx_0[n][i],
                                                               pos_0[n][i], pos_all[n].T,
                                                               spe_0_id[n][i], spe_all_id[n],

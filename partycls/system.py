@@ -156,8 +156,6 @@ class System:
             - 'species': 'particle.species'
             - 'spe': 'particle.species'
             - 'label': 'particle.label'
-            - 'internal_id': 'particle.internal_id'
-            - 'id': 'particle.internal_id'
             - 'mass': 'particle.mass'
             - 'radius': 'particle.radius'
             - 'nearest_neighbors': 'particle.nearest_neighbors'
@@ -328,7 +326,6 @@ class System:
         positions = self.dump('position')
         species_id = self.dump('species_id')
         pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
-        #indices = self.dump('internal_id')
         indices = self.dump('particle._index')
         box = self.dump('cell.side')
         self.nearest_neighbors_cutoffs = cutoffs
@@ -354,8 +351,8 @@ class System:
             positions = positions.T
             rmax = 1.5 * numpy.max(cutoffs)
             for p in self.particle:
-                neigh_i = nearest_neighbors_f90.sann(p._index, positions,
-                                                     p.internal_id, indices,
+                neigh_i = nearest_neighbors_f90.sann(p.position, positions,
+                                                     p._index, indices,
                                                      rmax, box)
                 neigh_i = neigh_i[neigh_i >= 0]
                 p.nearest_neighbors = list(neigh_i)

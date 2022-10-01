@@ -24,8 +24,6 @@ aliases = {'position': 'particle.position',
            'species_id': 'particle.species_id',
            'spe_id': 'particle.species_id',
            'label': 'particle.label',
-           'internal_id': 'particle.internal_id',
-           'id': 'particle.internal_id',
            'mass': 'particle.mass',
            'radius': 'particle.radius',
            'nearest_neighbors': 'particle.nearest_neighbors',
@@ -77,9 +75,6 @@ class Particle:
         
     nearest_neighbors : list of int
         Zero-based indices of the particle's nearest neighbors in the System.
-        
-    internal_id : int
-        A unique number to identify the particle.
     
     Examples
     --------
@@ -100,8 +95,6 @@ class Particle:
         self.radius = radius
         # Neighbors
         self.nearest_neighbors = nearest_neighbors
-        # Index of the particle
-        self.internal_id = id(self)
 
     def __str__(self):
         rep = 'Particle('

@@ -170,11 +170,10 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
-        idx_0 = self.dump('internal_id', group=0)
         box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
-            for i in range(len(idx_0[n])):
+            for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = self._qbar_l(l,

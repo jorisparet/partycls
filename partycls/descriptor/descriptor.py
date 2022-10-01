@@ -235,8 +235,6 @@ class StructuralDescriptor:
             - 'species': 'particle.species'
             - 'spe': 'particle.species'
             - 'label': 'particle.label'
-            - 'internal_id': 'particle.internal_id'
-            - 'id': 'particle.internal_id'
             - 'mass': 'particle.mass'
             - 'radius': 'particle.radius'
             - 'nearest_neighbors': 'particle.nearest_neighbors'
@@ -413,8 +411,6 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         n_frames = len(self.trajectory)
         self._extended_neighbors = [[] for n in range(n_frames)]
         #  indices
-        # idx_0 = self.dump('internal_id', group=0)
-        # idx_1 = self.dump('internal_id', group=1)
         idx_0 = self.dump('_index', group=0)
         idx_1 = self.dump('_index', group=1)
         #  species

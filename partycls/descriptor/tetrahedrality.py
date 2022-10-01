@@ -65,7 +65,7 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')
-        idx_0 = self.dump('internal_id', group=0)
+        idx_0 = self.dump('_index', group=0)
         # computation
         for n in range(n_frames):
             box = self.trajectory[n].cell.side
