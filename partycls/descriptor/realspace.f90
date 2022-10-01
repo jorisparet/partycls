@@ -54,10 +54,10 @@ CONTAINS
   END SUBROUTINE
 
   
-  SUBROUTINE angular_histogram(idx_i, pos_i, pos_1, neigh_i, box, nbins, dtheta, hist)
+  SUBROUTINE angular_histogram(idx_i, pos_i, pos_all, neigh_i, box, nbins, dtheta, hist)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, neigh_i(:), nbins
-    REAL(8), INTENT(in)     :: pos_i(:), pos_1(:,:), box(:), dtheta
+    REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:), box(:), dtheta
     INTEGER(8), INTENT(out) :: hist(nbins)
     ! Variables
     INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, bin
@@ -71,15 +71,15 @@ CONTAINS
     ! First neighbor: j
     DO j=1,n_neigh_i
       idx_j = neigh_i(j) + 1 ! python index shift
-      IF (idx_j /= idx_i) THEN ! pass if j=i
-        r_ij(:) = pos_i - pos_1(:,idx_j)
+      IF (idx_j /= idx_i+1) THEN ! pass if j=i
+        r_ij(:) = pos_i - pos_all(:,idx_j)
         CALL pbc(r_ij, box, hbox)
         d_ij = SQRT(SUM(r_ij**2))
         ! Second neighbor: k
         DO k=1,n_neigh_i
           idx_k = neigh_i(k) + 1 ! python index shift
-          IF (idx_k /= idx_i .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
-            r_ik(:) = pos_i - pos_1(:,idx_k)
+          IF (idx_k /= idx_i+1 .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
+            r_ik(:) = pos_i - pos_all(:,idx_k)
             CALL pbc(r_ik, box, hbox)
             d_ik = SQRT(SUM(r_ik**2))
             ! angle (k,i,j)
@@ -105,10 +105,11 @@ CONTAINS
   END SUBROUTINE
 
   
-  SUBROUTINE smoothed_angular_histogram(idx_i, pos_i, pos_1, spe_i, spe_1, neigh_i, pairs, cutoffs, pow, box, nbins, dtheta, hist)
+  SUBROUTINE smoothed_angular_histogram(idx_i, pos_i, pos_all, spe_i, spe_all, neigh_i, &
+                                        pairs, cutoffs, pow, box, nbins, dtheta, hist)
     ! Parameters
-    INTEGER(8), INTENT(in)  :: idx_i, spe_i, spe_1(:), neigh_i(:), pairs(:,:), pow, nbins
-    REAL(8), INTENT(in)     :: pos_i(:), pos_1(:,:), cutoffs(:), box(:), dtheta
+    INTEGER(8), INTENT(in)  :: idx_i, spe_i, spe_all(:), neigh_i(:), pairs(:,:), pow, nbins
+    REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:), cutoffs(:), box(:), dtheta
     REAL(8), INTENT(out)    :: hist(nbins)
     ! Variables
     INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, bin
@@ -122,15 +123,15 @@ CONTAINS
     ! First neighbor: j
     DO j=1,n_neigh_i
       idx_j = neigh_i(j) + 1 ! python index shift
-      IF (idx_j /= idx_i) THEN ! pass if j=i
-        r_ij(:) = pos_i - pos_1(:,idx_j)
+      IF (idx_j /= idx_i+1) THEN ! pass if j=i
+        r_ij(:) = pos_i - pos_all(:,idx_j)
         CALL pbc(r_ij, box, hbox)
         d_ij = SQRT(SUM(r_ij**2))
         ! Second neighbor: k
         DO k=1,n_neigh_i
           idx_k = neigh_i(k) + 1 ! python index shift
-          IF (idx_k /= idx_i .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
-            r_ik(:) = pos_i - pos_1(:,idx_k)
+          IF (idx_k /= idx_i+1 .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
+            r_ik(:) = pos_i - pos_all(:,idx_k)
             CALL pbc(r_ik, box, hbox)
             d_ik = SQRT(SUM(r_ik**2))
             ! angle (k,i,j)
@@ -147,15 +148,15 @@ CONTAINS
             END IF
             theta = ACOS(costheta)*180.0/pi
             ! weights
-            rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
-            rc_ik = find_cutoff(spe_i, spe_1(idx_k), pairs, cutoffs)
+            rc_ij = find_cutoff(spe_i, spe_all(idx_j), pairs, cutoffs)
+            rc_ik = find_cutoff(spe_i, spe_all(idx_k), pairs, cutoffs)
             w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
             ! binning
             bin = FLOOR( theta/dtheta ) + 1
             IF (bin <= nbins) THEN
               ! weights
-              rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
-              rc_ik = find_cutoff(spe_i, spe_1(idx_k), pairs, cutoffs)
+              rc_ij = find_cutoff(spe_i, spe_all(idx_j), pairs, cutoffs)
+              rc_ik = find_cutoff(spe_i, spe_all(idx_k), pairs, cutoffs)
               w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
               hist(bin) = hist(bin) + w_i
             END IF
@@ -166,10 +167,10 @@ CONTAINS
   END SUBROUTINE smoothed_angular_histogram
 
   
-  SUBROUTINE tetrahedrality(idx_i, pos_i, pos_1, neigh_i, box, tetra)
+  SUBROUTINE tetrahedrality(idx_i, pos_i, pos_all, neigh_i, box, tetra)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, neigh_i(:)
-    REAL(8), INTENT(in)     :: pos_i(:), pos_1(:,:), box(:)
+    REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:), box(:)
     REAL(8), INTENT(out)    :: tetra
     ! Variables
     INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, N_ba
@@ -184,15 +185,15 @@ CONTAINS
     ! First neighbor: j
     DO j=1,n_neigh_i
       idx_j = neigh_i(j) + 1 ! python index shift
-      IF (idx_j /= idx_i) THEN ! pass if j=i
-        r_ij(:) = pos_i - pos_1(:,idx_j)
+      IF (idx_j /= idx_i+1) THEN ! pass if j=i
+        r_ij(:) = pos_i - pos_all(:,idx_j)
         CALL pbc(r_ij, box, hbox)
         d_ij = SQRT(SUM(r_ij**2))
         ! Second neighbor: k
         DO k=1,n_neigh_i
           idx_k = neigh_i(k) + 1 ! python index shift
-          IF (idx_k /= idx_i .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
-            r_ik(:) = pos_i - pos_1(:,idx_k)
+          IF (idx_k /= idx_i+1 .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
+            r_ik(:) = pos_i - pos_all(:,idx_k)
             CALL pbc(r_ik, box, hbox)
             d_ik = SQRT(SUM(r_ik**2))
             ! angle (k,i,j)
@@ -443,10 +444,10 @@ CONTAINS
   
 
   !!!!!!!!!! SMOOTHED COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_1, spe_i, spe_1, pairs, cutoffs, pow, box) RESULT(qlm)
+  FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, cutoffs, pow, box) RESULT(qlm)
     ! parameters
-    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_1(:), pairs(:,:), pow
-    REAL(8), INTENT(in)    :: pos_i(:), pos_1(:,:), cutoffs(:), box(:)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pairs(:,:), pow
+    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:), box(:)
     ! variables
     COMPLEX(8)             :: qlm(2*l+1), harm
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
@@ -456,7 +457,7 @@ CONTAINS
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
       idx_j = neigh_i(j) + 1 ! python index shift 
-      r_xyz(:,j) = pos_1(:,idx_j)
+      r_xyz(:,j) = pos_all(:,idx_j)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
     r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
@@ -466,7 +467,7 @@ CONTAINS
     d_ij = SQRT(SUM(r_xyz**2, 1))
     DO j=1,SIZE(neigh_i)
       idx_j = neigh_i(j) + 1 ! python index shift
-      rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
+      rc_ij = find_cutoff(spe_i, spe_all(idx_j), pairs, cutoffs)
       w_i(j) = EXP(-(d_ij(j) / rc_ij)**pow)
     END DO
     ! r_ij (spherical)
@@ -482,21 +483,21 @@ CONTAINS
 
 
   !!!!!!!!!! SMOOTHED STEINHARDT !!!!!!!!!!
-  FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_1, spe_i, spe_1, pairs, box, cutoffs, pow) RESULT(q_l)
-    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_1(:), pairs(:,:), pow
-    REAL(8), INTENT(in)    :: pos_i(:), pos_1(:,:), cutoffs(:), box(:)
+  FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs, pow) RESULT(q_l)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pairs(:,:), pow
+    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:), box(:)
     COMPLEX(8)             :: q_lm(2*l+1)
     REAL(8)                :: q_l
-    q_lm = smoothed_qlm(l, neigh_i, pos_i, pos_1, spe_i, spe_1, pairs, cutoffs, pow, box)
+    q_lm = smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, cutoffs, pow, box)
     q_l = rotational_invariant(l, q_lm)  
   END FUNCTION smoothed_ql
 
 
   !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_1, box) RESULT(qlmrd)
+  FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(qlmrd)
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
-    REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_1(:,:), box(:)
+    REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_all(:,:), box(:)
     ! variables
     COMPLEX(8)             :: qlmrd(2*l+1), harm
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
@@ -506,7 +507,7 @@ CONTAINS
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
       ni = neigh_i(j)+1 ! python index shift 
-      r_xyz(:,j) = pos_1(:,ni)
+      r_xyz(:,j) = pos_all(:,ni)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
     r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
@@ -531,12 +532,12 @@ CONTAINS
 
   
   !!!!!!!!!! ROTATIONAL INVARIANT OF DISTANCE-DEPENDENT BOP !!!!!!!!!!
-  FUNCTION radial_ql(l, r, delta, exponent, neigh_i, pos_i, pos_1, box) RESULT(q_lrd)
+  FUNCTION radial_ql(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(q_lrd)
     INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
-    REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_1(:,:), box(:)
+    REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_all(:,:), box(:)
     COMPLEX(8)             :: q_lmrd(2*l+1)
     REAL(8)                :: q_lrd
-    q_lmrd = radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_1, box)
+    q_lmrd = radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_all, box)
     q_lrd = rotational_invariant(l, q_lmrd)  
   END FUNCTION radial_ql
 
