@@ -180,6 +180,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation        
         for n in range(n_frames):
+            pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
                 feature_idx = 0
@@ -190,7 +191,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                                                                   self.exponent,
                                                                   self._extended_neighbors[n][i], 
                                                                   pos_0[n][i], 
-                                                                  pos_all[n].T,
+                                                                  pos_all_n,
                                                                   box[n])
                         feature_idx += 1
                 self.features[row] = hist_n_i

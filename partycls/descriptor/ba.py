@@ -75,13 +75,14 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')
         idx_0 = self.dump('_index', group=0)
+        box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
-            box = self.trajectory[n].cell.side
+            pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = compute.angular_histogram(idx_0[n][i],
-                                                     pos_0[n][i], pos_all[n].T,
-                                                     self._neighbors[n][i], box,
+                                                     pos_0[n][i], pos_all_n,
+                                                     self._neighbors[n][i], box[n],
                                                      self.n_features,
                                                      self.dtheta)
                 self.features[row] = hist_n_i

@@ -72,16 +72,17 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
         #  the selected particles are stored in the
         #  filtered lists `self._neighbors` and 
         #  `self._subsidiary_neighbors`.
-        pos = self.trajectory.dump('position')
+        pos_all = self.trajectory.dump('position')
         radii = self.trajectory.dump('radius')
         box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
+            pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 tetra_i = self.tetrahedra(i, 
                                           self._neighbors[n][i],
                                           self._subsidiary_neighbors[n][i])
-                theta_i = compute.compactness(pos[n].T, tetra_i.T, radii[n], box[n])
+                theta_i = compute.compactness(pos_all_n, tetra_i.T, radii[n], box[n])
                 self.features[row] = theta_i
                 row += 1
         return self.features

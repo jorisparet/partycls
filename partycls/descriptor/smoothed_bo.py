@@ -97,11 +97,12 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation
         for n in range(n_frames):
+            pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = compute.smoothed_ql(l, self._extended_neighbors[n][i], 
-                                                       pos_0[n][i], pos_all[n].T,
+                                                       pos_0[n][i], pos_all_n,
                                                        spe_0_id[n][i], spe_all_id[n], pairs,
                                                        box[n], standard_cutoffs,
                                                        self.exponent)

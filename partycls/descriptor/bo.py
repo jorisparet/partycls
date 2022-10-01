@@ -85,10 +85,11 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
+            pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_all[n].T, box[n])
+                    hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_all_n, box[n])
                 self.features[row] = hist_n_i
                 row += 1
         return self.features
