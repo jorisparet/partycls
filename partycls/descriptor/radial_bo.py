@@ -170,8 +170,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
-        pos_1 = self.dump('position', group=1)
-        idx_0 = self.dump('internal_id', group=0)
+        pos_all = self.trajectory.dump('position')
         box = self.trajectory.dump('cell.side')
         # compute extended neighbors with extended cutoffs
         # based on the largest distance in the distance grid
@@ -181,7 +180,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation        
         for n in range(n_frames):
-            for i in range(len(idx_0[n])):
+            for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
                 feature_idx = 0
                 for l in self._orders:
@@ -191,7 +190,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                                                                   self.exponent,
                                                                   self._extended_neighbors[n][i], 
                                                                   pos_0[n][i], 
-                                                                  pos_1[n].T,
+                                                                  pos_all[n].T,
                                                                   box[n])
                         feature_idx += 1
                 self.features[row] = hist_n_i

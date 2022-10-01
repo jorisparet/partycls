@@ -147,15 +147,15 @@ CONTAINS
             END IF
             theta = ACOS(costheta)*180.0/pi
             ! weights
-            rc_ij = find_cutoff(spe_i, spe_1(j), pairs, cutoffs)
-            rc_ik = find_cutoff(spe_i, spe_1(k), pairs, cutoffs)
+            rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
+            rc_ik = find_cutoff(spe_i, spe_1(idx_k), pairs, cutoffs)
             w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) ) ! TODO: variable for the power
             ! binning
             bin = FLOOR( theta/dtheta ) + 1
             IF (bin <= nbins) THEN
               ! weights
-              rc_ij = find_cutoff(spe_i, spe_1(j), pairs, cutoffs)
-              rc_ik = find_cutoff(spe_i, spe_1(k), pairs, cutoffs)
+              rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
+              rc_ik = find_cutoff(spe_i, spe_1(idx_k), pairs, cutoffs)
               w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
               hist(bin) = hist(bin) + w_i
             END IF
@@ -451,12 +451,12 @@ CONTAINS
     COMPLEX(8)             :: qlm(2*l+1), harm
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     REAL(8)                :: d_ij(SIZE(neigh_i)), rc_ij, w_i(SIZE(neigh_i))
-    INTEGER(8)             :: j, ni, m
+    INTEGER(8)             :: j, idx_j, m
     qlm(:) = (0.0, 0.0)
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
-      ni = neigh_i(j)+1 ! python index shift 
-      r_xyz(:,j) = pos_1(:,ni)
+      idx_j = neigh_i(j)+1 ! python index shift 
+      r_xyz(:,j) = pos_1(:,idx_j)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
     r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
@@ -465,7 +465,8 @@ CONTAINS
     ! weights
     d_ij = SQRT(SUM(r_xyz**2, 1))
     DO j=1,SIZE(neigh_i)
-      rc_ij = find_cutoff(spe_i, spe_1(j), pairs, cutoffs)
+      idx_j = neigh_i(j)+1 ! python index shift
+      rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
       w_i(j) = EXP(-(d_ij(j) / rc_ij)**pow)
     END DO
     ! r_ij (spherical)

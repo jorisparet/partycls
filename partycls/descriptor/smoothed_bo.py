@@ -86,24 +86,23 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
-        pos_1 = self.dump('position', group=1)
-        idx_0 = self.dump('internal_id', group=0)
+        pos_all = self.trajectory.dump('position')
         spe_0_id = self.dump('species_id', group=0)
-        spe_1_id = self.dump('species_id', group=1)
+        spe_all_id = self.trajectory.dump('species_id')
         box = self.trajectory.dump('cell.side')
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
+        pairs = numpy.array(self.trajectory[0].pairs_of_species_id)
         # compute extended neighbors with extended cutoffs
-        standard_cutoffs = numpy.asarray(self.trajectory.nearest_neighbors_cutoffs)
+        standard_cutoffs = numpy.array(self.trajectory.nearest_neighbors_cutoffs)
         extended_cutoffs = self.cutoff_enlargement * standard_cutoffs
         AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
         # computation
         for n in range(n_frames):
-            for i in range(len(idx_0[n])):
+            for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = compute.smoothed_ql(l, self._extended_neighbors[n][i], 
-                                                       pos_0[n][i], pos_1[n].T,
-                                                       spe_0_id[n][i], spe_1_id[n], pairs,
+                                                       pos_0[n][i], pos_all[n].T,
+                                                       spe_0_id[n][i], spe_all_id[n], pairs,
                                                        box[n], standard_cutoffs,
                                                        self.exponent)
                 self.features[row] = hist_n_i

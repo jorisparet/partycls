@@ -81,10 +81,10 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
-        pos_1 = self.dump('position', group=1)
+        pos_all = self.trajectory.dump('position')
         idx_0 = self.dump('internal_id', group=0)
         spe_0_id = self.dump('species_id', group=0)
-        spe_1_id = self.dump('species_id', group=1)
+        spe_all_id = self.trajectory.dump('species_id')
         box = self.trajectory.dump('cell.side')
         pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         # compute extended neighbors with extended cutoffs
@@ -95,8 +95,8 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         for n in range(n_frames):
             for i in range(len(idx_0[n])):
                 hist_n_i = compute.smoothed_angular_histogram(idx_0[n][i],
-                                                              pos_0[n][i], pos_1[n].T,
-                                                              spe_0_id[n][i], spe_1_id[n],
+                                                              pos_0[n][i], pos_all[n].T,
+                                                              spe_0_id[n][i], spe_all_id[n],
                                                               self._extended_neighbors[n][i],
                                                               pairs, standard_cutoffs,
                                                               self.exponent, box[n],
