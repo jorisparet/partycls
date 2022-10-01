@@ -111,7 +111,7 @@ class RadialDescriptor(StructuralDescriptor):
 
         """
         # set up
-        StructuralDescriptor._set_up(self, dtype=numpy.int64)
+        self._set_up(dtype=numpy.int64)
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays

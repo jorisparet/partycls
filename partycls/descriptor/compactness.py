@@ -60,10 +60,10 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
         
     def compute(self):
         # set up
-        StructuralDescriptor._set_up(self, dtype=numpy.float64)
-        AngularStructuralDescriptor._manage_nearest_neighbors(self)
-        AngularStructuralDescriptor._filter_neighbors(self)
-        AngularStructuralDescriptor._filter_subsidiary_neighbors(self)
+        self._set_up(dtype=numpy.float64)
+        self._manage_nearest_neighbors()
+        self._filter_neighbors()
+        self._filter_subsidiary_neighbors()
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays

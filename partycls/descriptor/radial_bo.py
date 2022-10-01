@@ -164,8 +164,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
 
     def compute(self):
         # set up
-        StructuralDescriptor._set_up(self, dtype=numpy.float64)
-        AngularStructuralDescriptor._manage_nearest_neighbors(self)
+        self._set_up(dtype=numpy.float64)
+        self._manage_nearest_neighbors()
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays
@@ -177,7 +177,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         R_cut = self.distance_grid[-1] + self.skin * self.delta
         n_pairs = len(self.trajectory[0].pairs_of_species)
         extended_cutoffs = numpy.array([R_cut for i in range(n_pairs)])
-        AngularStructuralDescriptor._compute_extended_neighbors(self, extended_cutoffs)
+        self._compute_extended_neighbors(extended_cutoffs)
         # computation        
         for n in range(n_frames):
             pos_all_n = pos_all[n].T
