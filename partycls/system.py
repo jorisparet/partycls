@@ -346,7 +346,6 @@ class System:
             return
         
         #  Solid-Angle Nearest Neighbors ('sann')
-        print("CAREFUL: indices was changed to _index")
         if method is NearestNeighborsMethod.SANN:
             positions = positions.T
             rmax = 1.5 * numpy.max(cutoffs)
