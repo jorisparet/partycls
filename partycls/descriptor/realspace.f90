@@ -149,7 +149,7 @@ CONTAINS
             ! weights
             rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
             rc_ik = find_cutoff(spe_i, spe_1(idx_k), pairs, cutoffs)
-            w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) ) ! TODO: variable for the power
+            w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
             ! binning
             bin = FLOOR( theta/dtheta ) + 1
             IF (bin <= nbins) THEN
@@ -455,7 +455,7 @@ CONTAINS
     qlm(:) = (0.0, 0.0)
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
-      idx_j = neigh_i(j)+1 ! python index shift 
+      idx_j = neigh_i(j) + 1 ! python index shift 
       r_xyz(:,j) = pos_1(:,idx_j)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
@@ -465,7 +465,7 @@ CONTAINS
     ! weights
     d_ij = SQRT(SUM(r_xyz**2, 1))
     DO j=1,SIZE(neigh_i)
-      idx_j = neigh_i(j)+1 ! python index shift
+      idx_j = neigh_i(j) + 1 ! python index shift
       rc_ij = find_cutoff(spe_i, spe_1(idx_j), pairs, cutoffs)
       w_i(j) = EXP(-(d_ij(j) / rc_ij)**pow)
     END DO
