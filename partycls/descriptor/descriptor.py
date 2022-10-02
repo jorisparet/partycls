@@ -268,7 +268,7 @@ class StructuralDescriptor:
             to_dump_frame = []
             for particle in frame:
                 to_dump_frame.append(eval('particle.{}'.format(what)))
-            to_dump.append(numpy.array(to_dump_frame))
+            to_dump.append(numpy.array(to_dump_frame, dtype=object))
         return to_dump
 
     def dump(self, what, group):
@@ -334,7 +334,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     See the parent class for more details.
     
     Descriptors that exploit angular correlations and require 
-    neighbors information  will inherit of this class.
+    neighbors information will inherit from this class.
     
     Parameters
     ----------
@@ -346,23 +346,48 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     def __init__(self, trajectory):
         StructuralDescriptor.__init__(self, trajectory)
 
+    def _manage_nearest_neighbors(self):
+        """
+        Check if nearest neighbors were already computed. If not,
+        compute them using the method specified in the trajectory.
+        """
+        # check if nearest neighbors were already computed
+        neighbors_None = False
+        for system in self.trajectory:
+            nearest_neighbors = system.dump('nearest_neighbors')
+            if None in nearest_neighbors:
+                neighbors_None = True
+                break
+        # if not, compute them using the method specified in the trajectory
+        if neighbors_None:
+            self.trajectory.compute_nearest_neighbors()
+
     def _filter_neighbors(self):
         """
         Create a list of neighbors separate from the trajectory for particles
         in group=0 by removing the neighbors that are not in group=1
         (e.g. for partial correlations).
         """
-        n_frames = len(self.trajectory)
-        self._neighbors = [[] for n in range(n_frames)]
-        for frame, system in enumerate(self.trajectory):
-            for pi in self.groups[0][frame]:
-                neigh_pi = pi.nearest_neighbors
-                selected_neigh_pi = []
-                for j in neigh_pi:
-                    pj = system.particle[j]
-                    if pj in self.groups[1][frame]:
-                        selected_neigh_pi.append(j)    
-                self._neighbors[frame].append(selected_neigh_pi)
+        # is there an active filter on group=1?
+        needs_filtering = False
+        for _, group in self.active_filters:
+            if group == 1:
+                needs_filtering = True
+                break
+        # if no filter, use unfiltered neighbors from the trajectory
+        if not needs_filtering:
+            self._neighbors = self.dump('nearest_neighbors', group=0)
+        # else filter out nearest neighbors not in group=1
+        else:
+            n_frames = len(self.trajectory)
+            idx_1 = self.dump('_index', group=1)
+            self._neighbors = [[] for _ in range(n_frames)]
+            for n in range(n_frames):
+                idx_1_frame = set(idx_1[n])
+                for pi in self.groups[0][n]:
+                    neigh_pi = set(pi.nearest_neighbors)
+                    selected_neigh_pi = list(neigh_pi & idx_1_frame)
+                    self._neighbors[n].append(selected_neigh_pi)
 
     def _filter_subsidiary_neighbors(self):
         """
@@ -385,22 +410,6 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                             selected_neigh_pj.append(k)
                     selected_neigh_neigh_pi.append(selected_neigh_pj)
                 self._subsidiary_neighbors[frame].append(selected_neigh_neigh_pi)
-
-    def _manage_nearest_neighbors(self):
-        """
-        Check if nearest neighbors were already computed. If not,
-        compute them using the method specified in the trajectory.
-        """
-        # check if nearest neighbors were already computed
-        neighbors_None = False
-        for system in self.trajectory:
-            nearest_neighbors = system.dump('nearest_neighbors')
-            if None in nearest_neighbors:
-                neighbors_None = True
-                break
-        # if not, compute them using the method specified in the trajectory
-        if neighbors_None:
-            self.trajectory.compute_nearest_neighbors()
 
     def _compute_extended_neighbors(self, cutoffs):
         """
