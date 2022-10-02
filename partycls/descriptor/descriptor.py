@@ -383,10 +383,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
             idx_1 = self.dump('_index', group=1)
             self._neighbors = [[] for _ in range(n_frames)]
             for n in range(n_frames):
-                idx_1_frame = set(idx_1[n])
+                idx_1_n = set(idx_1[n])
                 for pi in self.groups[0][n]:
                     neigh_pi = set(pi.nearest_neighbors)
-                    selected_neigh_pi = list(neigh_pi & idx_1_frame)
+                    selected_neigh_pi = list(neigh_pi & idx_1_n)
                     self._neighbors[n].append(selected_neigh_pi)
 
     def _filter_subsidiary_neighbors(self):
@@ -396,20 +396,17 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         in group=1 (e.g. for partial correlations).
         """
         n_frames = len(self.trajectory)
+        idx_1 = self.dump('_index', group=1)
         self._subsidiary_neighbors = [[] for n in range(n_frames)]
-        for frame, system in enumerate(self.trajectory):
-            for neigh_pi in self._neighbors[frame]:
+        for n, system in enumerate(self.trajectory):
+            idx_1_n = set(idx_1[n])
+            for neigh_pi in self._neighbors[n]:
                 selected_neigh_neigh_pi = []
                 for j in neigh_pi:
-                    pj = system.particle[j]
-                    neigh_pj = pj.nearest_neighbors
-                    selected_neigh_pj = []
-                    for k in neigh_pj:
-                        pk = system.particle[k]
-                        if pk in self.groups[1][frame]:
-                            selected_neigh_pj.append(k)
+                    neigh_pj = set(system.particle[j].nearest_neighbors)
+                    selected_neigh_pj = list(neigh_pj & idx_1_n)
                     selected_neigh_neigh_pi.append(selected_neigh_pj)
-                self._subsidiary_neighbors[frame].append(selected_neigh_neigh_pi)
+                self._subsidiary_neighbors[n].append(selected_neigh_neigh_pi)
 
     def _compute_extended_neighbors(self, cutoffs):
         """
