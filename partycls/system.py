@@ -12,7 +12,7 @@ See https://framagit.org/atooms/atooms
 import re
 import numpy
 from .particle import aliases
-from .core.utils import standardize_condition, NearestNeighborsMethod, _nearest_neighbors_methods_
+from .core.utils import standardize_condition, NearestNeighborsMethod
 from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 
