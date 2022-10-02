@@ -109,7 +109,7 @@ CONTAINS
                                         pairs, cutoffs, pow, box, nbins, dtheta, hist)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, spe_i, spe_all(:), neigh_i(:), pairs(:,:), pow, nbins
-    REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:), cutoffs(:), box(:), dtheta
+    REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:), dtheta
     REAL(8), INTENT(out)    :: hist(nbins)
     ! Variables
     INTEGER(8) :: j, k, idx_j, idx_k, n_neigh_i, bin
@@ -151,8 +151,8 @@ CONTAINS
             bin = FLOOR( theta/dtheta ) + 1
             IF (bin <= nbins) THEN
               ! weights
-              rc_ij = find_cutoff(spe_i, spe_all(idx_j), pairs, cutoffs)
-              rc_ik = find_cutoff(spe_i, spe_all(idx_k), pairs, cutoffs)
+              rc_ij = cutoffs(spe_i, spe_all(idx_j))
+              rc_ik = cutoffs(spe_i, spe_all(idx_k))
               w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
               hist(bin) = hist(bin) + w_i
             END IF
@@ -212,22 +212,6 @@ CONTAINS
     END DO
     tetra = tetra / N_ba
   END SUBROUTINE tetrahedrality
-  
-  
-  FUNCTION find_cutoff(spe_i, spe_j, pairs, cutoffs) RESULT(rcut)
-    ! Parameters
-    INTEGER(8), INTENT(in) :: spe_i, spe_j, pairs(:,:)
-    REAL(8), INTENT(in)    :: cutoffs(:)
-    ! Variables
-    INTEGER(8) :: line
-    REAL(8)    :: rcut
-    ! Computation
-    line = 1
-    DO WHILE (pairs(line,1) /= spe_i .OR. pairs(line,2) /= spe_j)
-      line = line + 1
-    END DO
-    rcut = cutoffs(line)
-  END FUNCTION
   
   
   !!!!!!!!!! PBC !!!!!!!!!!
@@ -443,7 +427,7 @@ CONTAINS
   FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, cutoffs, pow, box) RESULT(qlm)
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pairs(:,:), pow
-    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:), box(:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
     COMPLEX(8)             :: qlm(2*l+1), harm
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
@@ -463,7 +447,7 @@ CONTAINS
     d_ij = SQRT(SUM(r_xyz**2, 1))
     DO j=1,SIZE(neigh_i)
       idx_j = neigh_i(j) + 1 ! python index shift
-      rc_ij = find_cutoff(spe_i, spe_all(idx_j), pairs, cutoffs)
+      rc_ij = cutoffs(spe_i, spe_all(idx_j))
       w_i(j) = EXP(-(d_ij(j) / rc_ij)**pow)
     END DO
     ! r_ij (spherical)
@@ -481,7 +465,7 @@ CONTAINS
   !!!!!!!!!! SMOOTHED STEINHARDT !!!!!!!!!!
   FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs, pow) RESULT(q_l)
     INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pairs(:,:), pow
-    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:), box(:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
     COMPLEX(8)             :: q_lm(2*l+1)
     REAL(8)                :: q_l
     q_lm = smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, cutoffs, pow, box)
