@@ -38,6 +38,10 @@ class System:
         
     cell : Cell
         The cell where all the particles lie.
+
+    nearest_neighbors_cutoffs : list of float
+        List of nearest neighbors cutoffs for each pair of species
+        in the system.
     
     Examples
     --------
@@ -59,6 +63,10 @@ class System:
 
     @property 
     def nearest_neighbors_method(self):
+        """
+        Method used to identify the nearest neighbors of all the particles
+        in the system. Should be one of ['fixed', 'sann', 'voronoi'].
+        """
         return self._nearest_neighbors_method.value
 
     @nearest_neighbors_method.setter
@@ -255,7 +263,6 @@ class System:
         >>> labels = [0, 1, 0] # 3 particles in the subset
         >>> sys.set_property('label', labels, "species == 'B'")
         >>> sys.set_property('cell.side[0]', 2.0)
-
         """
 
         # Set the property to a given subset?
@@ -299,8 +306,15 @@ class System:
 
     def compute_nearest_neighbors(self, method, cutoffs):
         """
-        Compute the nearest neighbors for all the particles in the trajectory using
-        the provided method.
+        Compute the nearest neighbors for all the particles in the system using the
+        provided method. Neighbors are stored in the `nearest_neighbors` particle 
+        property.
+
+        Available methods are:
+        - 'fixed': use fixed cutoffs for each pair of species in the trajectory.
+        - 'sann': solid-angle based nearest neighbor algorithm
+            (see https://doi.org/10.1063/1.4729313).
+        - 'voronoi': radical Voronoi tessellation method (uses particles' radii).        
 
         Parameters
         ----------
@@ -310,11 +324,19 @@ class System:
 
         cutoffs : list
             List containing the cutoffs distances for each pair of species
-            in the system (for method 'fixed' and 'sann').
+            in the system (for method 'fixed' and 'sann'). For method 'sann', 
+            cutoffs are required as a first guess to identify the nearest neighbors.
+            Leave None for method 'voronoi'.
 
         Returns
         -------
         None.
+
+        Examples
+        --------
+        >>> sys.compute_nearest_neighbors('fixed', [1.5, 1.4, 1.4, 1.3])
+        >>> sys.compute_nearest_neighbors('sann', [1.5, 1.4, 1.4, 1.3])
+        >>> sys.compute_nearest_neighbors('voronoi', None)
         """
 
         # Set up
@@ -404,6 +426,10 @@ class System:
         original trajectory file does not contain such information.
 
         Creates a `voronoi_signature` property for the particles.
+        
+        Returns
+        -------
+        None.
         """
         try:
             import pyvoro
@@ -448,10 +474,12 @@ class System:
         backend : str, optional
             Name of the backend to use for visualization. 
             The default is 'matplotlib'.
+
         color : str, optional
             Name of the particle property to use as basis for coloring the 
             particles. This property must be defined for all the particles in the system.
             The default is 'species'.
+
         **kwargs : additional keyworded arguments (backend-dependent).
 
         Raises
@@ -461,13 +489,12 @@ class System:
 
         Returns
         -------
-        Figure or View (backend-dependent)
+        Figure or View (backend-dependent).
         
         Examples
         --------
         >>> sys.show(frame=0, color='label', backend='3dmol')
         >>> sys.show(frame=1, color='energy', backend='matplotlib', cmap='viridis')
-
         """
         from .helpers import show_matplotlib, show_ovito, show_3dmol
         if backend == 'matplotlib':
@@ -487,7 +514,6 @@ class System:
         Returns
         -------
         None.
-
         """
         for p in self.particle:
             p.fold(self.cell)

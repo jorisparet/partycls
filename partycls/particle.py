@@ -118,8 +118,7 @@ class Particle:
 
         Returns
         -------
-        None
-
+        None.
         """
         def _periodic_vector_unfolded(vec, box):
             return vec - numpy.rint(vec / box) * box

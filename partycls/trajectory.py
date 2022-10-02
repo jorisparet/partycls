@@ -71,6 +71,10 @@ class Trajectory:
         List of additional particle properties that were extracted from the
         original trajectory file.
     
+    nearest_neighbors_cutoffs : list of float
+        List of nearest neighbors cutoffs for each pair of species
+        in the trajectory.
+
     Examples
     --------
     
@@ -98,6 +102,10 @@ class Trajectory:
 
     @property 
     def nearest_neighbors_method(self):
+        """
+        Method used to identify the nearest neighbors of all the particles in
+        the trajectory. Should be one of ['auto', 'fixed', 'sann', 'voronoi'].
+        """
         return self._nearest_neighbors_method.value
 
     @nearest_neighbors_method.setter
@@ -187,7 +195,6 @@ class Trajectory:
         >>> pos = traj.get_property('position')
         >>> spe = traj.get_property('species')
         >>> sides = traj.get_property('cell.side')
-        
         """
         to_dump = []
         for system in self._systems:
@@ -235,7 +242,6 @@ class Trajectory:
         >>> labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
                       [1, 1, 0]]
         >>> traj.set_property('label', labels, "species == 'B'")
-
         """
         if not isinstance(value, (list, numpy.ndarray)):
             for system in self._systems:
@@ -248,20 +254,31 @@ class Trajectory:
     def compute_nearest_neighbors(self, method=None, cutoffs=None, dr=0.1):
         """
         Compute the nearest neighbors for all the particles in the trajectory using
-        the provided method.
+        the provided method. Neighbors are stored in the `nearest_neighbors` particle 
+        property.
+        
+        Available methods are:
+        - 'auto': read neighbors from the trajectory file, if explicitly requested
+            with the `additional_fields` argument in the constructor.
+        - 'fixed': use fixed cutoffs for each pair of species in the trajectory.
+        - 'sann': solid-angle based nearest neighbor algorithm
+            (see https://doi.org/10.1063/1.4729313).
+        - 'voronoi': radical Voronoi tessellation method (uses particles' radii).
 
         Parameters
         ----------
         method : str, default: None
-            Method to identify the nearest neighbors. Must be one of {}.
-            None defaults to 'auto'. If method is 'auto', neighbors are read 
-            directly from the trajectory file (if provided). If no neighbors
-            are found, it uses method='{}' instead.
+            Method to identify the nearest neighbors. Must be one of 
+            ['auto', 'fixed', 'sann', 'voronoi']. None defaults to 'auto'. If 
+            method is 'auto', neighbors are read directly from the trajectory file,
+            if specified with the `additional_fields` argument in the constructor.
+            If no neighbors are found, falls back to method='fixed' instead.
 
         cutoffs : list, default: None
             List containing the cutoffs distances for each pair of species
-            in the system (for method 'fixed' and 'sann'). If None, cutoffs
-            will be computed automatically.
+            in the trajectory (for method 'fixed' and 'sann'). If None, cutoffs
+            will be computed automatically. For method 'sann', cutoffs are
+            required as a first guess to identify the nearest neighbors.
 
         dr : float, default: 0.1
             Radial grid spacing for computing the cutoffs on the basis of
@@ -271,7 +288,13 @@ class Trajectory:
         Returns
         -------
         None.
-        """.format(_nearest_neighbors_methods_, NearestNeighborsMethod.Fixed.value)
+
+        Examples
+        --------
+        >>> traj.compute_nearest_neighbors(method='fixed', cutoffs=[1.5, 1.4, 1.4, 1.3])
+        >>> traj.compute_nearest_neighbors(method='sann', cutoffs=[1.5, 1.4, 1.4, 1.3])
+        >>> traj.compute_nearest_neighbors(method='voronoi')
+        """
 
         # Convert method to Enum
         if method is not None:
@@ -313,8 +336,8 @@ class Trajectory:
 
     def set_nearest_neighbors_cutoff(self, s_a, s_b, rcut, mirror=True):
         """
-        Set the nearest-neighbor cutoff for the pair of species (s1, s2).
-        The cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
+        Set the nearest-neighbor cutoff for the pair of species (s1, s2). The
+        cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
         parameter is True (default).        
 
         Parameters
@@ -341,7 +364,19 @@ class Trajectory:
 
     def compute_nearest_neighbors_cutoffs(self, dr=0.1):
         """
-        
+        Compute the nearest neighbors cutoffs on the basis of the first
+        minimum of the partial radial distribution function between each
+        pair of species in the trajectory.
+
+        Parameters
+        ----------
+        dr : float, default: 0.1
+            Bin width for the radial grid used to compute the partial
+            radial distribution functions.
+
+        Returns
+        -------
+        None.
         """
         from .descriptor import RadialDescriptor
         pairs = self._systems[0].pairs_of_species
@@ -377,6 +412,10 @@ class Trajectory:
         original trajectory file does not contain such information.
 
         Creates a `voronoi_signature` property for the particles.
+        
+        Returns
+        -------
+        None.
         """
         for system in self._systems:
             system.compute_voronoi_signatures()
@@ -392,13 +431,16 @@ class Trajectory:
         ----------
         frames : list of int, optional
             Indices of the frames to show. The default is None (shows all frames).
+
         backend : str, optional
             Name of the backend to use for visualization. 
             The default is 'matplotlib'.
+
         color : str, optional
             Name of the particle property to use as basis for coloring the 
             particles. This property must be defined for all the particles in 
             the system. The default is 'species'.
+
         **kwargs : additional keyworded arguments (backend-dependent).
 
         Raises
@@ -415,7 +457,6 @@ class Trajectory:
         >>> traj.show(frames=[0,1,2], color='label', backend='3dmol')
         >>> traj.show(frames=[0,1], color='energy', backend='matplotlib', cmap='viridis')
         >>> traj[0].show() # use the iterability of Trajectory objects
-
         """
         # show all frames (default)
         if frames is None:
@@ -439,7 +480,6 @@ class Trajectory:
         Returns
         -------
         None.
-
         """
         for system in self._systems:
             system.fold()
@@ -723,15 +763,19 @@ class Trajectory:
         ----------
         output_path : str
             Name of the output trajectory file.
+
         fmt : str, optional
             Format of the output trajectory file. The default is 'xyz'.
+
         backend : str, optional
             Name of a third-party package to use when writing the output
             trajectory. The default is None.
-        additional_fields : list of str, optional
+
+        additional_fields : list of str, optional, default: None
             Additional fields (i.e. particle properties) to write in the output
             trajectory. Not all trajectory formats allow for additional fields. 
-            The default is [].
+            The default is to not write any additional particle property.
+
         precision : int, optional
             Number of decimals when writing the output trajectory. 
             The default is 6.
@@ -745,7 +789,6 @@ class Trajectory:
         Returns
         -------
         None.
-
         """
         if additional_fields is None:
             additional_fields = []
