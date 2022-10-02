@@ -327,9 +327,9 @@ CONTAINS
   
 
   !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION qlm(l, neigh_i, pos_i, pos_j, box)
+  FUNCTION qlm(l, neigh_i, pos_i, pos_all, box)
     INTEGER(8), INTENT(in) :: l, neigh_i(:)
-    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), box(:)
     COMPLEX(8)             :: qlm(2*l+1), harm
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     INTEGER(8)             :: j, ni, m
@@ -337,7 +337,7 @@ CONTAINS
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
       ni = neigh_i(j)+1 ! python index shift 
-      r_xyz(:,j) = pos_j(:,ni)
+      r_xyz(:,j) = pos_all(:,ni)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
     r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
@@ -354,6 +354,28 @@ CONTAINS
     qlm = qlm / SIZE(neigh_i)
   END FUNCTION qlm
 
+  
+  !!!!!!!!!! ROTATIONAL INVARIANT OF ORDER l !!!!!!!!!!
+  ! difference at the ~8th digit compared to Python 
+  FUNCTION rotational_invariant(l, q_lm) RESULT(q_l)
+    INTEGER(8), INTENT(in) :: l
+    COMPLEX(8), INTENT(in) :: q_lm(:)
+    REAL(8)                :: s, q_l
+    s = REAL( SUM(q_lm * CONJG(q_lm)) )
+    q_l = SQRT( 4.0*pi / REAL(2*l+1) * s )
+  END FUNCTION rotational_invariant
+    
+
+  !!!!!!!!!! STEINHARDT !!!!!!!!!!
+  FUNCTION ql(l, neigh_i, pos_i, pos_all, box) RESULT(q_l)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:)
+    REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), box(:)    
+    COMPLEX(8)             :: q_lm(2*l+1)
+    REAL(8)                :: q_l
+    q_lm = qlm(l, neigh_i, pos_i, pos_all, box)
+    q_l = rotational_invariant(l, q_lm)  
+  END FUNCTION ql
+  
 !  !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
 !  ! For the generalization in Fortran of Lechner-Dellago 
 !  FUNCTION qlm(l, neigh_i, pos_i, pos_j, box)
@@ -387,56 +409,34 @@ CONTAINS
 !    END DO
 !    qlm = qlm / n_neigh_i
 !  END FUNCTION qlm
-  
-
-  !!!!!!!!!! ROTATIONAL INVARIANT OF ORDER l !!!!!!!!!!
-  ! difference at the ~8th digit compared to Python 
-  FUNCTION rotational_invariant(l, q_lm) RESULT(q_l)
-    INTEGER(8), INTENT(in) :: l
-    COMPLEX(8), INTENT(in) :: q_lm(:)
-    REAL(8)                :: s, q_l
-    s = REAL( SUM(q_lm * CONJG(q_lm)) )
-    q_l = SQRT( 4.0*pi / REAL(2*l+1) * s )
-  END FUNCTION rotational_invariant
-    
-
-  !!!!!!!!!! STEINHARDT !!!!!!!!!!
-  FUNCTION ql(l, neigh_i, pos_i, pos_j, box) RESULT(q_l)
-    INTEGER(8), INTENT(in) :: l, neigh_i(:)
-    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)    
-    COMPLEX(8)             :: q_lm(2*l+1)
-    REAL(8)                :: q_l
-    q_lm = qlm(l, neigh_i, pos_i, pos_j, box)
-    q_l = rotational_invariant(l, q_lm)  
-  END FUNCTION ql
 
 
   !!!!!!!!!! AVERAGE COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
-    INTEGER(8), INTENT(in) :: l, neigh_i(:), neigh_neigh_i(:,:)
-    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
-    INTEGER(8)             :: nbar_b, kn, k
-    COMPLEX(8)             :: q_lm_i(2*l+1), q_lm_k(SIZE(neigh_i), 2*l+1), qbarlm(2*l+1)
-    nbar_b = SIZE(neigh_i) + 1
-    q_lm_i = qlm(l, neigh_i, pos_i, pos_j, box)
-    DO kn=1,SIZE(neigh_i)
-      k = neigh_i(kn)+1 ! python index shift
-      q_lm_k(kn,:) = qlm(l, neigh_neigh_i(:,kn), pos_j(:,k), pos_j, box)
-    END DO
-    qbarlm = q_lm_i + SUM(q_lm_k, 1)
-    qbarlm = qbarlm / nbar_b
-  END FUNCTION qbarlm
+!  FUNCTION qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
+!    INTEGER(8), INTENT(in) :: l, neigh_i(:), neigh_neigh_i(:,:)
+!    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+!    INTEGER(8)             :: nbar_b, kn, k
+!    COMPLEX(8)             :: q_lm_i(2*l+1), q_lm_k(SIZE(neigh_i), 2*l+1), qbarlm(2*l+1)
+!    nbar_b = SIZE(neigh_i) + 1
+!    q_lm_i = qlm(l, neigh_i, pos_i, pos_j, box)
+!    DO kn=1,SIZE(neigh_i)
+!      k = neigh_i(kn)+1 ! python index shift
+!      q_lm_k(kn,:) = qlm(l, neigh_neigh_i(:,kn), pos_j(:,k), pos_j, box)
+!    END DO
+!    qbarlm = q_lm_i + SUM(q_lm_k, 1)
+!    qbarlm = qbarlm / nbar_b
+!  END FUNCTION qbarlm
 
 
   !!!!!!!!!! LECHNER-DELLAGO !!!!!!!!!!
-  FUNCTION qbarl(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box) RESULT(qbar_l)
-    INTEGER(8), INTENT(in) :: l, neigh_i(:), neigh_neigh_i(:,:)
-    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
-    COMPLEX(8)             :: qbar_lm(2*l+1)
-    REAL(8)                :: qbar_l
-    qbar_lm = qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
-    qbar_l = rotational_invariant(l, qbar_lm)
-  END FUNCTION qbarl
+!  FUNCTION qbarl(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box) RESULT(qbar_l)
+!    INTEGER(8), INTENT(in) :: l, neigh_i(:), neigh_neigh_i(:,:)
+!    REAL(8), INTENT(in)    :: pos_i(:), pos_j(:,:), box(:)
+!    COMPLEX(8)             :: qbar_lm(2*l+1)
+!    REAL(8)                :: qbar_l
+!    qbar_lm = qbarlm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
+!    qbar_l = rotational_invariant(l, qbar_lm)
+!  END FUNCTION qbarl
   
 
   !!!!!!!!!! SMOOTHED COMPLEX VECTORS !!!!!!!!!!

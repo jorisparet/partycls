@@ -170,17 +170,18 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
-        pos_1 = self.dump('position', group=1)
+        pos_all = self.trajectory.dump('position')
         box = self.trajectory.dump('cell.side')
         # computation
         for n in range(n_frames):
+            pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = self._qbar_l(l,
                                                 self._neighbors[n][i],
                                                 self._subsidiary_neighbors[n][i],
-                                                pos_0[n][i], pos_1[n], box[n])
+                                                pos_0[n][i], pos_all_n, box[n])
                     # TODO: improve Fortran calculation for Lechner-Dellago
                     # hist_n_i[ln] = compute.qbarl(l, numpy.array(neigh_i),
                     #                               numpy.array(neigh_neigh_i).T,
@@ -189,19 +190,19 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
                 row += 1
         return self.features
 
-    def _qbar_lm(self, l, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
+    def _qbar_lm(self, l, neigh_i, neigh_neigh_i, pos_i, pos_all, box):
         Nbar_b = len(neigh_i) + 1
-        q_lm_i = compute.qlm(l, neigh_i, pos_i, pos_j.T, box)
+        q_lm_i = compute.qlm(l, neigh_i, pos_i, pos_all, box)
         q_lm_k = []
         for kn in range(len(neigh_i)):
             k = neigh_i[kn]
-            q_lm_k.append(compute.qlm(l, neigh_neigh_i[kn], pos_j[k], pos_j.T, box))
+            q_lm_k.append(compute.qlm(l, neigh_neigh_i[kn], pos_all[:,k], pos_all, box))
         qbar_lm = q_lm_i + numpy.sum(q_lm_k, axis=0)
         return qbar_lm / Nbar_b
 
-    def _qbar_l(self, l, neigh_i, neigh_neigh_i, pos_i, pos_j, box):
+    def _qbar_l(self, l, neigh_i, neigh_neigh_i, pos_i, pos_all, box):
         """
         Rotational invariant of order l for particle `i`.
         """
-        qbar_lm = self._qbar_lm(l, neigh_i, neigh_neigh_i, pos_i, pos_j, box)
+        qbar_lm = self._qbar_lm(l, neigh_i, neigh_neigh_i, pos_i, pos_all, box)
         return compute.rotational_invariant(l, qbar_lm)
