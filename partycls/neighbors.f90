@@ -22,10 +22,10 @@ CONTAINS
     INTEGER(8), INTENT(in)  :: spe_i, spe_all(:)
     INTEGER(8), INTENT(in)  :: pairs(:,:)
     REAL(8), INTENT(in)     :: box(:)
-    REAL(8), INTENT(in)     :: cutoffs_sq(:)
+    REAL(8), INTENT(in)     :: cutoffs_sq(:,:)
     INTEGER(8), INTENT(out) :: neigh_i(500) ! max. number of neighbors is assumed to be 500
     ! Variables
-    INTEGER(8) :: j, num_neigh_i, line
+    INTEGER(8) :: j, num_neigh_i
     REAL(8)    :: hbox(SIZE(box)), rcut_sq, r_ij(SIZE(box)), dij_sq
     ! Computation
     hbox = box / 2.0
@@ -34,11 +34,7 @@ CONTAINS
     DO j=1,SIZE(idx_all)
       IF (idx_all(j) /= idx_i) THEN
         ! find appropriate cutoff for pair (i,j)
-        line = 1
-        DO WHILE (pairs(line,1) /= spe_i .OR. pairs(line,2) /= spe_all(j))
-          line = line + 1
-        END DO
-        rcut_sq = cutoffs_sq(line)
+        rcut_sq = cutoffs_sq(spe_i, spe_all(j))
         ! test j as a neighbor of i
         r_ij(:) = pos_i - pos_all(:,j)
         CALL pbc(r_ij, box, hbox)

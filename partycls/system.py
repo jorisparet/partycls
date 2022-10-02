@@ -326,6 +326,7 @@ class System:
         positions = self.dump('position')
         species_id = self.dump('species_id')
         pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
+        n_species = len(self.distinct_species)
         indices = self.dump('particle._index')
         box = self.dump('cell.side')
         self.nearest_neighbors_cutoffs = cutoffs
@@ -334,7 +335,8 @@ class System:
         #  Fixed-cutoffs ('fixed')
         if method is NearestNeighborsMethod.Fixed:
             positions = positions.T
-            cutoffs_sq = numpy.array(cutoffs)**2
+            cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
+            cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
             for p in self.particle:
                 neigh_i = nearest_neighbors_f90.fixed_cutoffs(p._index, indices,
                                                               p.position, positions,

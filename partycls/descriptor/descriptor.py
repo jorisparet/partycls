@@ -417,6 +417,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         spe_0_id = self.dump('species_id', group=0)
         spe_1_id = self.dump('species_id', group=1)
         pairs_of_species_id = numpy.asarray(self.trajectory[0].pairs_of_species_id)
+        n_species = len(self.trajectory[0].distinct_species)
         #  positions
         pos_0 = self.dump('position', group=0)
         pos_1 = self.dump('position', group=1)
@@ -424,6 +425,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         box = self.trajectory.dump('cell.side')
         #  cutoffs squared
         cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
+        cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
         for frame in range(n_frames):
             pos_1_frame = pos_1[frame].T
             for i in range(len(idx_0[frame])):
