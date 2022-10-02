@@ -67,11 +67,6 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
         n_frames = len(self.trajectory)
         row = 0
         # all relevant arrays
-        #  N.B. we can use arrays from the trajectory
-        #  instead of arrays from the groups because
-        #  the selected particles are stored in the
-        #  filtered lists `self._neighbors` and 
-        #  `self._subsidiary_neighbors`.
         pos_all = self.trajectory.dump('position')
         radii = self.trajectory.dump('radius')
         box = self.trajectory.dump('cell.side')
