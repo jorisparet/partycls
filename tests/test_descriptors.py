@@ -12,6 +12,7 @@ from partycls.descriptor import RadialBondOrientationalDescriptor
 from partycls.descriptor import TetrahedralDescriptor
 from partycls.descriptor import CompactnessDescriptor
 
+import numpy
 from numpy import float32
 
 class Test(unittest.TestCase):
@@ -81,11 +82,40 @@ class Test(unittest.TestCase):
 
 
     def test_angular(self):
+        # Average distribution
         D = BondAngleDescriptor(self.traj, dtheta=3.0)
         self._compute(D)
         q = D.normalize(D.average, method="pdf")
         self.assertEqual(float32(q[22]), float32(0.015544709),
                          'wrong average value at the peak theta=67.5°')
+        
+        # Partial distributions
+        #  trajectory
+        traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'))
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.4250, 1.3250, 1.3250, 1.2750] #[1.45, 1.175, 1.175, 1.05]
+        traj.compute_nearest_neighbors()
+        #  distributions
+        #   B-all
+        D_B = BondAngleDescriptor(traj)
+        D_B.add_filter("species == 'B'", group=0)
+        _ = D_B.compute()
+        #   # B-A
+        D_BA = BondAngleDescriptor(traj)
+        D_BA.add_filter("species == 'B'", group=0)
+        D_BA.add_filter("species == 'A'", group=1)
+        _ = D_BA.compute()
+        #   B-B
+        D_BB = BondAngleDescriptor(traj)
+        D_BB.add_filter("species == 'B'", group=0)
+        D_BB.add_filter("species == 'B'", group=1)
+        _ = D_BB.compute()
+        #  check error on the average of the partials
+        x_A, x_B = traj[0].chemical_fractions
+        q_B = D_B.normalize(D_B.average, method='pdf')
+        q_part = D_B.normalize(x_A*D_BA.average + x_B*D_BB.average, method='pdf')
+        mean_avg_err = numpy.abs(q_part - q_B).mean()
+        self.assertLess(mean_avg_err, 1e-3, 'average error is too large')
         
     def test_steinhardt(self):
         D = BondOrientationalDescriptor(self.traj, lmin=2, lmax=4)
