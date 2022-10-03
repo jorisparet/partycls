@@ -15,7 +15,7 @@ CONTAINS
   END SUBROUTINE pbc
 
   
-  !!!!!!!!!! FIXED-CUTOFFS !!!!!!!!!!
+  !!!!!!!!!! FIXED-CUTOFFS ALL PARTICLES !!!!!!!!!!
   SUBROUTINE fixed_cutoffs_all(pos, spe, box, cutoffs_sq, nn, neigh)
     ! Parameters
     REAL(8), INTENT(in)       :: pos(:,:)
@@ -45,37 +45,37 @@ CONTAINS
     END DO
   END SUBROUTINE fixed_cutoffs_all
 
-  
-  !!!!!!!!!! FIXED-CUTOFFS !!!!!!!!!!
-  SUBROUTINE fixed_cutoffs_distinct(idx_i, idx_all, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs_sq, neigh_i)
+
+  !!!!!!!!!! FIXED-CUTOFFS DISTINCT SETS !!!!!!!!!!
+  SUBROUTINE fixed_cutoffs_distinct(idx_0, idx_1, pos_0, pos_1, spe_0, spe_1, box, cutoffs_sq, nn_0, neigh_0)
     ! Parameters
-    INTEGER(8), INTENT(in)  :: idx_i, idx_all(:)
-    REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:)
-    INTEGER(8), INTENT(in)  :: spe_i, spe_all(:)
-    INTEGER(8), INTENT(in)  :: pairs(:,:)
-    REAL(8), INTENT(in)     :: box(:)
-    REAL(8), INTENT(in)     :: cutoffs_sq(:,:)
-    INTEGER(8), INTENT(out) :: neigh_i(500) ! max. number of neighbors is assumed to be 500
+    INTEGER(8), INTENT(in)    :: idx_0(:), idx_1(:)
+    REAL(8), INTENT(in)       :: pos_0(:,:), pos_1(:,:)
+    INTEGER(8), INTENT(in)    :: spe_0(:), spe_1(:)
+    REAL(8), INTENT(in)       :: box(:)
+    REAL(8), INTENT(in)       :: cutoffs_sq(:,:)
+    INTEGER(8), INTENT(inout) :: nn_0(:), neigh_0(:,:)
     ! Variables
-    INTEGER(8) :: j, num_neigh_i
+    INTEGER(8) :: i, j, idx_i, idx_j, spe_i, spe_j
     REAL(8)    :: hbox(SIZE(box)), rcut_sq, r_ij(SIZE(box)), dij_sq
     ! Computation
     hbox = box / 2.0
-    neigh_i = -1 ! set all neighbors to -1
-    num_neigh_i = 0
-    DO j=1,SIZE(idx_all)
-      IF (idx_all(j) /= idx_i) THEN
-        ! find appropriate cutoff for pair (i,j)
-        rcut_sq = cutoffs_sq(spe_i, spe_all(j))
-        ! test j as a neighbor of i
-        r_ij(:) = pos_i - pos_all(:,j)
-        CALL pbc(r_ij, box, hbox)
-        dij_sq = SUM(r_ij**2)
-        IF (dij_sq <= rcut_sq) THEN
-          num_neigh_i = num_neigh_i + 1
-          neigh_i(num_neigh_i) = idx_all(j)
+    DO i=1,SIZE(idx_0)
+      idx_i = idx_0(i)
+      spe_i = spe_0(i)
+      DO j=1,SIZE(idx_1)
+        idx_j = idx_1(j)
+        spe_j = spe_1(j)
+        IF (idx_j /= idx_i) THEN
+          r_ij = pos_0(:,i) - pos_1(:,j)
+          CALL pbc(r_ij, box, hbox)
+          dij_sq = DOT_PRODUCT(r_ij, r_ij)
+          IF (dij_sq < cutoffs_sq(spe_i, spe_j)) THEN
+            nn_0(i) = nn_0(i) + 1
+            neigh_0(i, nn_0(i)) = j - 1 ! python index shift
+          END IF
         END IF
-      END IF
+      END DO
     END DO
   END SUBROUTINE fixed_cutoffs_distinct
   

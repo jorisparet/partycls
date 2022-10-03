@@ -415,14 +415,13 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         the nearest neighbors are clearly defined on the basis of various methods.
         """
         n_frames = len(self.trajectory)
-        self._extended_neighbors = [[] for n in range(n_frames)]
+        self._extended_neighbors = [[] for _ in range(n_frames)]
         #  indices
         idx_0 = self.dump('_index', group=0)
         idx_1 = self.dump('_index', group=1)
         #  species
         spe_0_id = self.dump('species_id', group=0)
         spe_1_id = self.dump('species_id', group=1)
-        pairs_of_species_id = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         n_species = len(self.trajectory[0].distinct_species)
         #  positions
         pos_0 = self.dump('position', group=0)
@@ -432,16 +431,19 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         #  cutoffs squared
         cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
         cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
-        for frame in range(n_frames):
-            pos_1_frame = pos_1[frame].T
-            for i in range(len(idx_0[frame])):
-                neigh_i = nearest_neighbors_f90.fixed_cutoffs_distinct(idx_0[frame][i], idx_1[frame],
-                                                                       pos_0[frame][i], pos_1_frame,
-                                                                       spe_0_id[frame][i], spe_1_id[frame],
-                                                                       pairs_of_species_id, box[frame],
-                                                                       cutoffs_sq)
-                neigh_i = neigh_i[neigh_i >= 0]
-                self._extended_neighbors[frame].append(neigh_i)
+        for n in range(n_frames):
+            n_0 = len(idx_0[n])
+            neighbors = numpy.zeros((n_0, 100), dtype=numpy.int64, order='F')
+            num_neighbors = numpy.zeros(n_0, dtype=numpy.int64)
+            pos_0_n = pos_0[n].T
+            pos_1_n = pos_1[n].T
+            nearest_neighbors_f90.fixed_cutoffs_distinct(idx_0[n], idx_1[n],
+                                                         pos_0_n, pos_1_n,
+                                                         spe_0_id[n], spe_1_id[n],
+                                                         box[n], cutoffs_sq,
+                                                         num_neighbors, neighbors)
+            for i, neigh_i in enumerate(neighbors):
+                self._extended_neighbors[n].append(neigh_i[0:num_neighbors[i]])
 
 
 class DummyDescriptor(StructuralDescriptor):
