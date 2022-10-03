@@ -435,11 +435,11 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         for frame in range(n_frames):
             pos_1_frame = pos_1[frame].T
             for i in range(len(idx_0[frame])):
-                neigh_i = nearest_neighbors_f90.fixed_cutoffs(idx_0[frame][i], idx_1[frame],
-                                                              pos_0[frame][i], pos_1_frame,
-                                                              spe_0_id[frame][i], spe_1_id[frame],
-                                                              pairs_of_species_id, box[frame],
-                                                              cutoffs_sq)
+                neigh_i = nearest_neighbors_f90.fixed_cutoffs_distinct(idx_0[frame][i], idx_1[frame],
+                                                                       pos_0[frame][i], pos_1_frame,
+                                                                       spe_0_id[frame][i], spe_1_id[frame],
+                                                                       pairs_of_species_id, box[frame],
+                                                                       cutoffs_sq)
                 neigh_i = neigh_i[neigh_i >= 0]
                 self._extended_neighbors[frame].append(neigh_i)
 

@@ -347,7 +347,6 @@ class System:
             self._nearest_neighbors_method = method
         positions = self.dump('position')
         species_id = self.dump('species_id')
-        pairs_of_species_id = numpy.asarray(self.pairs_of_species_id)
         n_species = len(self.distinct_species)
         indices = self.dump('particle._index')
         box = self.dump('cell.side')
@@ -356,17 +355,16 @@ class System:
         # Computation
         #  Fixed-cutoffs ('fixed')
         if method is NearestNeighborsMethod.Fixed:
+            num_part = len(self.particle)
             positions = positions.T
             cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
             cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
-            for p in self.particle:
-                neigh_i = nearest_neighbors_f90.fixed_cutoffs(p._index, indices,
-                                                              p.position, positions,
-                                                              p.species_id, species_id,
-                                                              pairs_of_species_id, box,
-                                                              cutoffs_sq)
-                neigh_i = neigh_i[neigh_i >= 0]
-                p.nearest_neighbors = list(neigh_i)
+            neighbors = -1 * numpy.ones((num_part, 100), dtype=numpy.int64, order='F')
+            num_neighbors = numpy.zeros(num_part, dtype=numpy.int64)
+            nearest_neighbors_f90.fixed_cutoffs_all(positions, species_id, box,
+                                                    cutoffs_sq, num_neighbors, neighbors)
+            for i, neigh_i in enumerate(neighbors):
+                self.particle[i].nearest_neighbors = list(neigh_i[0:num_neighbors[i]])
             return
         
         #  Solid-Angle Nearest Neighbors ('sann')

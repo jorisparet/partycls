@@ -14,8 +14,40 @@ CONTAINS
       END WHERE
   END SUBROUTINE pbc
 
+  
   !!!!!!!!!! FIXED-CUTOFFS !!!!!!!!!!
-  SUBROUTINE fixed_cutoffs(idx_i, idx_all, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs_sq, neigh_i)
+  SUBROUTINE fixed_cutoffs_all(pos, spe, box, cutoffs_sq, nn, neigh)
+    ! Parameters
+    REAL(8), INTENT(in)       :: pos(:,:)
+    INTEGER(8), INTENT(in)    :: spe(:)
+    REAL(8), INTENT(in)       :: box(:)
+    REAL(8), INTENT(in)       :: cutoffs_sq(:,:)
+    INTEGER(8), INTENT(inout) :: nn(:), neigh(:,:)
+    ! Variables
+    INTEGER(8) :: i, j, spe_i, spe_j
+    REAL(8)    :: hbox(SIZE(box)), r_ij(SIZE(box)), dij_sq
+    ! Computation
+    hbox = box / 2.0
+    DO i=1,SIZE(pos,2)
+      spe_i = spe(i)
+      DO j=i+1,SIZE(pos,2)
+        spe_j = spe(j)
+        r_ij = pos(:,i) - pos(:,j)
+        CALL pbc(r_ij, box, hbox)
+        dij_sq = DOT_PRODUCT(r_ij, r_ij)
+        IF (dij_sq < cutoffs_sq(spe_i, spe_j)) THEN
+          nn(i) = nn(i) + 1
+          nn(j) = nn(j) + 1
+          neigh(i, nn(i)) = j - 1 ! python index shift
+          neigh(j, nn(j)) = i - 1 ! python index shift
+        END IF
+      END DO
+    END DO
+  END SUBROUTINE fixed_cutoffs_all
+
+  
+  !!!!!!!!!! FIXED-CUTOFFS !!!!!!!!!!
+  SUBROUTINE fixed_cutoffs_distinct(idx_i, idx_all, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs_sq, neigh_i)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, idx_all(:)
     REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:)
@@ -45,8 +77,9 @@ CONTAINS
         END IF
       END IF
     END DO
-  END SUBROUTINE fixed_cutoffs
-
+  END SUBROUTINE fixed_cutoffs_distinct
+  
+  
   !!!!!!!!!! SANN !!!!!!!!!!
   ! van Meel, Filion, Valeriani and Frenkel November (2011)
   SUBROUTINE sann(pos_i, pos_all, idx_i, idx_all, rcutoff, box, selectedneighbors)
