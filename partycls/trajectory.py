@@ -7,7 +7,7 @@ See https://framagit.org/atooms/atooms
 
 import numpy
 from .system import System
-from .particle import Particle
+from .particle import Particle, aliases
 from .cell import Cell
 from .core.utils import tipify, NearestNeighborsMethod, _nearest_neighbors_methods_
 from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
@@ -820,11 +820,18 @@ class Trajectory:
     def _write_xyz(self, output_path, additional_fields, precision):
         if not output_path.endswith('.xyz'):
             output_path += '.xyz'
+        # deal with additional fields that are aliases
+        processed_fields = []
+        for field in additional_fields:
+            if field in aliases.keys():
+                processed_fields.append(aliases[field].split('.')[-1])
+            else:
+                processed_fields.append(field)
         with open(output_path, 'w') as file:
             for system in self._systems:
                 file.write('{}\n'.format(len(system.particle)))
                 columns = 'columns:id,pos,'
-                for field in additional_fields:
+                for field in processed_fields:
                     columns += '{},'.format(field)
                 columns = columns[:-1]
                 header = columns + ' cell:{}\n'
@@ -832,7 +839,7 @@ class Trajectory:
                 for particle in system.particle:
                     line = '{} '.format(particle.species)
                     line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
-                    for field in additional_fields:
+                    for field in processed_fields:
                         attribute = particle.__getattribute__(field)
                         if isinstance(attribute, list):
                             line += '{} '.format(','.join(map(str, attribute)))
