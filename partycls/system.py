@@ -359,7 +359,7 @@ class System:
             positions = positions.T
             cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
             cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
-            neighbors = -1 * numpy.ones((num_part, 100), dtype=numpy.int64, order='F')
+            neighbors = numpy.zeros((num_part, 100), dtype=numpy.int64, order='F')
             num_neighbors = numpy.zeros(num_part, dtype=numpy.int64)
             nearest_neighbors_f90.fixed_cutoffs_all(positions, species_id, box,
                                                     cutoffs_sq, num_neighbors, neighbors)
