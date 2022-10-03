@@ -90,7 +90,6 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         spe_0_id = self.dump('species_id', group=0)
         spe_all_id = self.trajectory.dump('species_id')
         box = self.trajectory.dump('cell.side')
-        pairs = numpy.array(self.trajectory[0].pairs_of_species_id)
         n_species = len(self.trajectory[0].distinct_species)
         # compute extended neighbors with extended cutoffs
         standard_cutoffs = numpy.array(self.trajectory.nearest_neighbors_cutoffs)
@@ -105,7 +104,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = compute.smoothed_ql(l, self._extended_neighbors[n][i], 
                                                        pos_0[n][i], pos_all_n,
-                                                       spe_0_id[n][i], spe_all_id[n], pairs,
+                                                       spe_0_id[n][i], spe_all_id[n],
                                                        box[n], standard_cutoffs,
                                                        self.exponent)
                 self.features[row] = hist_n_i

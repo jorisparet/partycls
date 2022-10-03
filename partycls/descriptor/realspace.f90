@@ -106,9 +106,9 @@ CONTAINS
 
   
   SUBROUTINE smoothed_angular_histogram(idx_i, pos_i, pos_all, spe_i, spe_all, neigh_i, &
-                                        pairs, cutoffs, pow, box, nbins, dtheta, hist)
+                                        cutoffs, pow, box, nbins, dtheta, hist)
     ! Parameters
-    INTEGER(8), INTENT(in)  :: idx_i, spe_i, spe_all(:), neigh_i(:), pairs(:,:), pow, nbins
+    INTEGER(8), INTENT(in)  :: idx_i, spe_i, spe_all(:), neigh_i(:), pow, nbins
     REAL(8), INTENT(in)     :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:), dtheta
     REAL(8), INTENT(out)    :: hist(nbins)
     ! Variables
@@ -264,6 +264,7 @@ CONTAINS
     INTEGER(8)             :: i, ll
     REAL(8)                :: fact, pll, pmm, pmmp1, somx2
     LOGICAL                :: neg
+    pll = 0.0
     neg = (m < 0)
     m = ABS(m)
     pmm = 1.0 ! compute P^m_m
@@ -424,9 +425,9 @@ CONTAINS
   
 
   !!!!!!!!!! SMOOTHED COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, cutoffs, pow, box) RESULT(qlm)
+  FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, cutoffs, pow, box) RESULT(qlm)
     ! parameters
-    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pairs(:,:), pow
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pow
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
     COMPLEX(8)             :: qlm(2*l+1), harm
@@ -463,12 +464,12 @@ CONTAINS
 
 
   !!!!!!!!!! SMOOTHED STEINHARDT !!!!!!!!!!
-  FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, box, cutoffs, pow) RESULT(q_l)
-    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pairs(:,:), pow
+  FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_all, spe_i, spe_all, box, cutoffs, pow) RESULT(q_l)
+    INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pow
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
     COMPLEX(8)             :: q_lm(2*l+1)
     REAL(8)                :: q_l
-    q_lm = smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, pairs, cutoffs, pow, box)
+    q_lm = smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, cutoffs, pow, box)
     q_l = rotational_invariant(l, q_lm)  
   END FUNCTION smoothed_ql
 
@@ -481,7 +482,7 @@ CONTAINS
     ! variables
     COMPLEX(8)             :: qlmrd(2*l+1), harm
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
-    REAL(8)                :: d_ij(SIZE(neigh_i)), Z(SIZE(neigh_i)), sq_shell
+    REAL(8)                :: d_ij(SIZE(neigh_i)), Z(SIZE(neigh_i))
     INTEGER(8)             :: j, ni, m
     qlmrd(:) = (0.0, 0.0)
     ! r_ij (cartesian)
@@ -496,9 +497,6 @@ CONTAINS
     ! weights
     d_ij = SQRT(SUM(r_xyz**2, 1))
     Z = EXP(- 0.5d0 * ((d_ij - r) / delta)**exponent)
-    !DO j=1,SIZE(neigh_i)
-    !  Z(j) = EXP(- (d_ij(j) - r )**2 / sq_shell )
-    !END DO
     ! r_ij (spherical)
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l

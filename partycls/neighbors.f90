@@ -57,7 +57,7 @@ CONTAINS
     INTEGER(8), INTENT(inout) :: nn_0(:), neigh_0(:,:)
     ! Variables
     INTEGER(8) :: i, j, idx_i, idx_j, spe_i, spe_j
-    REAL(8)    :: hbox(SIZE(box)), rcut_sq, r_ij(SIZE(box)), dij_sq
+    REAL(8)    :: hbox(SIZE(box)), r_ij(SIZE(box)), dij_sq
     ! Computation
     hbox = box / 2.0
     DO i=1,SIZE(idx_0)

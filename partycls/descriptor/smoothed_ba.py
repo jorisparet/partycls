@@ -86,7 +86,6 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         spe_0_id = self.dump('species_id', group=0)
         spe_all_id = self.trajectory.dump('species_id')
         box = self.trajectory.dump('cell.side')
-        pairs = numpy.asarray(self.trajectory[0].pairs_of_species_id)
         n_species = len(self.trajectory[0].distinct_species)
         # compute extended neighbors with extended cutoffs
         standard_cutoffs = numpy.asarray(self.trajectory.nearest_neighbors_cutoffs)
@@ -101,7 +100,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
                                                               pos_0[n][i], pos_all_n,
                                                               spe_0_id[n][i], spe_all_id[n],
                                                               self._extended_neighbors[n][i],
-                                                              pairs, standard_cutoffs,
+                                                              standard_cutoffs,
                                                               self.exponent, box[n],
                                                               self.n_features,
                                                               self.dtheta)
