@@ -97,7 +97,6 @@ class Test(unittest.TestCase):
                                  'incorrect particle label')
                 count += 1
             
-
     def test_get_property(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'), 
@@ -136,7 +135,6 @@ class Test(unittest.TestCase):
         self.assertEqual(list(traj[0].dump('radius', "species == 'A'")), [0.7])
 
     def test_compute_fixed_cutoffs(self):
-        # test 
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'wahn_N1000.xyz'))
         # compute cutoffs
@@ -144,6 +142,30 @@ class Test(unittest.TestCase):
         self.assertEqual(set(map(float32, traj.nearest_neighbors_cutoffs)),
                          set(map(float32, [1.45, 1.35, 1.35, 1.25])),
                          'wrong computed cutoffs')
+
+    def test_neighbors_fixed(self):
+        # compute neighbors
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_cutoffs = [1.45, 1.175, 1.175, 1.05]
+        traj.compute_nearest_neighbors(method='fixed')
+        # check neighbors
+        ngh = traj[0].particle[17].nearest_neighbors
+        self.assertEqual(set(ngh), set([3, 19, 22, 34, 37, 48, 63, 67,
+                         71, 79, 96, 102, 108, 124, 126, 145]),
+                         'wrong neighbors with method "fixed"')
+
+    def test_neighbors_sann(self):
+        # compute neighbors
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_cutoffs = [1.45, 1.175, 1.175, 1.05]
+        traj.compute_nearest_neighbors(method='sann')
+        # check neighbors
+        ngh = traj[0].particle[17].nearest_neighbors
+        self.assertEqual(set(ngh), set([145, 124, 126, 96, 3, 67, 
+                         108, 37, 34, 71, 79, 48, 19, 22]),
+                         'wrong neighbors with method "sann"')
 
     def test_voronoi_signatures(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
