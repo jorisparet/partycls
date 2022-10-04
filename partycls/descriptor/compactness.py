@@ -1,5 +1,5 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
+from .descriptor import AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 class CompactnessDescriptor(AngularStructuralDescriptor):
@@ -21,6 +21,10 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
+
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
     
     Attributes
     ----------
@@ -54,8 +58,8 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
     name = 'compactness'
     symbol = 'compact'
     
-    def __init__(self, trajectory):
-        AngularStructuralDescriptor.__init__(self, trajectory)
+    def __init__(self, trajectory, verbose=0):
+        AngularStructuralDescriptor.__init__(self, trajectory, verbose=verbose)
         self.grid = numpy.zeros(1, dtype=numpy.float64)
         
     def compute(self):
@@ -71,7 +75,7 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
         radii = self.trajectory.dump('radius')
         box = self.trajectory.dump('cell.side')
         # computation
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 tetra_i = self.tetrahedra(i, 

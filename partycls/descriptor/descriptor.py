@@ -34,6 +34,10 @@ class StructuralDescriptor:
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
+
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
     
     Attributes
     ----------
@@ -76,13 +80,15 @@ class StructuralDescriptor:
     [("particle.species == 'B'", 1)]
     """
 
-    def __init__(self, trajectory):
+    def __init__(self, trajectory, verbose=0):
         # Trajectory
         # TODO: we can't change format or backend when passing a string
         if isinstance(trajectory, str):
             self.trajectory = Trajectory(trajectory)
         else:
             self.trajectory = trajectory
+        # verbose for computation
+        self.verbose = verbose
         # Default: consider all particles for the correlation
         self.groups = ([], [])
         self._group_init(0)
@@ -306,6 +312,16 @@ class StructuralDescriptor:
         """
         return numpy.mean(self.features, axis=0)
 
+    def _trange(self, bound):
+        if self.verbose == 1:
+            try:
+                from tqdm import trange
+                return trange(bound, desc=self.symbol)
+            except ImportError:
+                print('install tqdm to show the progress bar')
+                return range(bound)
+        return range(bound)
+
     def compute(self):
         pass
 
@@ -343,8 +359,8 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         Trajectory on which the structural descriptor will be computed.
     """
 
-    def __init__(self, trajectory):
-        StructuralDescriptor.__init__(self, trajectory)
+    def __init__(self, trajectory, verbose=0):
+        StructuralDescriptor.__init__(self, trajectory, verbose=verbose)
 
     def _manage_nearest_neighbors(self):
         """

@@ -1,5 +1,4 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .ba import BondAngleDescriptor
 from .realspace_wrap import compute
 
@@ -29,13 +28,17 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     dtheta : float
         Bin width in degrees.
         
-    cutoff_enlargement : float
+    cutoff_enlargement : float, default: 1.3
         Consider neighbors j `cutoff_enlargement * rc_ij` away from the central
         particle i.
         
-    exponent : int
+    exponent : int, default: 8
         Exponent `n` in the power law for the exponential decay in w(r).
         
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
+
     Attributes
     ----------
     
@@ -68,8 +71,8 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     name = 'smoothed-bond-angle'
     symbol = 'sba'
 
-    def __init__(self, trajectory, dtheta=3.0, cutoff_enlargement=1.3, exponent=8):
-        BondAngleDescriptor.__init__(self, trajectory, dtheta=3.0)
+    def __init__(self, trajectory, dtheta=3.0, cutoff_enlargement=1.3, exponent=8, verbose=0):
+        BondAngleDescriptor.__init__(self, trajectory, dtheta=3.0, verbose=verbose)
         self.cutoff_enlargement = cutoff_enlargement
         self.exponent = exponent        
 
@@ -93,7 +96,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         self._compute_extended_neighbors(extended_cutoffs)
         # computation
         standard_cutoffs = standard_cutoffs.reshape(n_species, n_species).T
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = compute.smoothed_angular_histogram(idx_0[n][i],

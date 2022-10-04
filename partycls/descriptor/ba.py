@@ -1,5 +1,5 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
+from .descriptor import AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 
@@ -18,6 +18,10 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     dtheta : float
         Bin width in degrees.
     
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
+
     Attributes
     ----------
     
@@ -50,8 +54,8 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     name = 'bond-angle'
     symbol = 'ba'
 
-    def __init__(self, trajectory, dtheta=3.0):
-        AngularStructuralDescriptor.__init__(self, trajectory)
+    def __init__(self, trajectory, dtheta=3.0, verbose=0):
+        AngularStructuralDescriptor.__init__(self, trajectory, verbose=verbose)
         self._dtheta = dtheta
         self.grid = numpy.arange(dtheta / 2.0, 180.0, dtheta, dtype=numpy.float64)
 
@@ -77,7 +81,7 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         idx_0 = self.dump('_index', group=0)
         box = self.trajectory.dump('cell.side')
         # computation
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = compute.angular_histogram(idx_0[n][i],

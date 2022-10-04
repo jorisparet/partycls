@@ -75,7 +75,8 @@ Requirements
 * [optional] [Matplotlib](https://matplotlib.org/) (visualization)
 * [optional] [OVITO](https://ovito.org/) (visualization)
 * [optional] [Py3DMol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
-* [optional] [pyvoro](https://github.com/joe-jordan/pyvoro) (Voronoi neighbors)
+* [optional] [pyvoro](https://github.com/joe-jordan/pyvoro) (Voronoi neighbors and tessellation)
+* [optional] [tqdm](https://tqdm.github.io/) (progress bars)
 
 Documentation
 -------------

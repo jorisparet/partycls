@@ -1,5 +1,4 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .bo import BondOrientationalDescriptor
 from .realspace_wrap import compute
 
@@ -40,6 +39,10 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         
     exponent: int, default : 8
         Exponent `n` in the power law for the exponential decay in w(r).
+
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
         
     Attributes
     ----------
@@ -73,8 +76,8 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     name = 'smoothed bond-orientational'
     symbol = 'sbo'
     
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, cutoff_enlargement=1.3, exponent=8):
-        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, cutoff_enlargement=1.3, exponent=8, verbose=0):
+        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders, verbose=verbose)
         self.cutoff_enlargement = cutoff_enlargement
         self.exponent = exponent       
 
@@ -97,7 +100,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         self._compute_extended_neighbors(extended_cutoffs)
         # computation
         standard_cutoffs = standard_cutoffs.reshape(n_species, n_species).T
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)

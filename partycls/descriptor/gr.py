@@ -25,6 +25,10 @@ class RadialDescriptor(StructuralDescriptor):
     bounds : tuple, default: None
         Lower and upper bounds to describe the radial correlations. If set, 
         this has the priority over `n_shells`.
+
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
     
     Attributes
     ----------
@@ -58,8 +62,8 @@ class RadialDescriptor(StructuralDescriptor):
     name = 'radial'
     symbol = 'gr'
 
-    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None):
-        StructuralDescriptor.__init__(self, trajectory)
+    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None, verbose=0):
+        StructuralDescriptor.__init__(self, trajectory, verbose=verbose)
         # set the grid automatically using coordination shells (`n_shells`)
         #  or user-defined limits (`bounds`) if provided
         self._set_bounds(dr, n_shells, bounds)
@@ -120,7 +124,7 @@ class RadialDescriptor(StructuralDescriptor):
         idx_0 = self.dump('_index', group=0)
         idx_1 = self.dump('_index', group=1)
         # computation
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_0_n = pos_0[n].T
             pos_1_n = pos_1[n].T
             box = self.trajectory[n].cell.side

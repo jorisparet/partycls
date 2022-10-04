@@ -1,5 +1,5 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
+from .descriptor import AngularStructuralDescriptor
 from .realspace_wrap import compute
 
 
@@ -25,6 +25,10 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     orders: list, default: None
         Specific values of orders to compute, e.g. orders=[4,6]. This has
         the priority over `lmin` and `lmax`.
+
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
     
     Attributes
     ----------
@@ -58,8 +62,8 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     name = 'bond-orientational'
     symbol = 'bo'
 
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None):
-        AngularStructuralDescriptor.__init__(self, trajectory)
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, verbose=0):
+        AngularStructuralDescriptor.__init__(self, trajectory, verbose=verbose)
         if self.trajectory[0].n_dimensions == 2:
             raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
         self._bounds(lmin, lmax, orders)
@@ -84,7 +88,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         pos_all = self.trajectory.dump('position')
         box = self.trajectory.dump('cell.side')
         # computation
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
@@ -156,9 +160,9 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
     name = 'lechner-dellago'
     symbol = 'ld'
 
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None):
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, verbose=0):
         BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin,
-                                             lmax=lmax, orders=orders)
+                                             lmax=lmax, orders=orders, verbose=verbose)
 
     def compute(self):
         # set up
@@ -173,7 +177,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         pos_all = self.trajectory.dump('position')
         box = self.trajectory.dump('cell.side')
         # computation
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)

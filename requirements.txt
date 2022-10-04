@@ -7,3 +7,4 @@ matplotlib # optional
 py3Dmol # optional
 ovito # optional
 pyvoro # optional
+tqdm # optional

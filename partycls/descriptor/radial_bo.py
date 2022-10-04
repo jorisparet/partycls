@@ -1,5 +1,4 @@
 import numpy
-from .descriptor import StructuralDescriptor, AngularStructuralDescriptor
 from .bo import BondOrientationalDescriptor
 from .realspace_wrap import compute
 
@@ -57,6 +56,10 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         Skin width (in units of `delta`) to consider neighbors further than the
         upper bound r_max of the grid of distances. Neighbors will then be 
         identified up to r_max + skin_width * delta.
+
+    verbose : int, default: 0
+        Show progress information about the computation of the descriptor
+        when verbose is 1, and remain silent when verbose is 0 (default).
         
     Attributes
     ----------
@@ -93,8 +96,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     symbol = 'rbo'
     
     
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5, exponent=2):
-        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders)
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5, exponent=2, verbose=0):
+        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders, verbose=verbose)
         # dummy values, to be set in the following lines
         self._distance_grid = [-1]
         self._orders = [-1]
@@ -179,7 +182,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         extended_cutoffs = numpy.array([R_cut for i in range(n_pairs)])
         self._compute_extended_neighbors(extended_cutoffs)
         # computation        
-        for n in range(n_frames):
+        for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
