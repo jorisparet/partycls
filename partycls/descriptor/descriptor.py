@@ -378,6 +378,14 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         if neighbors_None:
             self.trajectory.compute_nearest_neighbors()
 
+    def _manage_nearest_neighbors_cutoffs(self):
+        """
+        Check if nearest neighbors cutoffs were already computed. If
+        not, compute them from the trajectory.
+        """
+        if None in self.trajectory.nearest_neighbors_cutoffs:
+            self.trajectory.compute_nearest_neighbors_cutoffs()
+
     def _filter_neighbors(self):
         """
         Create a list of neighbors separate from the trajectory for particles
