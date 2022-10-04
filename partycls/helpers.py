@@ -72,6 +72,7 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
         from matplotlib.cm import cmaps_listed
     except ModuleNotFoundError:
         print('install matplotlib to display the particles')
+        return
     from .core.utils import tipify
     from numpy import array, sign, argsort
 
