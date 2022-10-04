@@ -67,9 +67,12 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
         Figure of the snapshot.
 
     """
-    import matplotlib.pyplot as plt
+    try:
+        import matplotlib.pyplot as plt
+        from matplotlib.cm import cmaps_listed
+    except ModuleNotFoundError:
+        print('install matplotlib to display the particles')
     from .core.utils import tipify
-    from matplotlib.cm import cmaps_listed
     from numpy import array, sign, argsort
 
     views = {'top': [1, 2, 3],
