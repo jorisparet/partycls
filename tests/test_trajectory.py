@@ -15,6 +15,12 @@ try:
 except ModuleNotFoundError:
     HAS_ATOOMS = False
 
+try:
+    import pyvoro
+    HAS_PYVORO = True
+except ModuleNotFoundError:
+    HAS_PYVORO = False
+
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -167,6 +173,7 @@ class Test(unittest.TestCase):
                          108, 37, 34, 71, 79, 48, 19, 22]),
                          'wrong neighbors with method "sann"')
 
+    @unittest.skipIf(not HAS_PYVORO, 'no pyvoro module')
     def test_voronoi_signatures(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'wahn_N1000.xyz'))
