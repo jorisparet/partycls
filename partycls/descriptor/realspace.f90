@@ -215,19 +215,17 @@ CONTAINS
   
   
   !!!!!!!!!! PBC !!!!!!!!!!
-  ! Can be optimized
+  ! can probably be optimized further
   SUBROUTINE pbc_(r, box)
     REAL(8), INTENT(inout) :: r(:,:)
     REAL(8), INTENT(in)    :: box(:)
-    INTEGER(8)             :: i, j
+    INTEGER(8)             :: i
     REAL(8)                :: hbox(SIZE(box))
-    hbox = box/2.0    
+    hbox = box / 2.0    
     DO i=1,SIZE(box)
-      DO j=1,SIZE(r,2)
-        IF (ABS(r(i,j)) > hbox(i)) THEN
-          r(i,j) = r(i,j) - SIGN(box(i), r(i,j)) 
-        END IF    
-      END DO    
+      WHERE (ABS(r(i,:)) > hbox(i))
+        r(i,:) = r(i,:) - SIGN(box(i), r(i,:))
+      END WHERE
     END DO
   END SUBROUTINE
   
@@ -259,10 +257,10 @@ CONTAINS
   FUNCTION plm(l, m, x) RESULT(plmx)
     INTEGER(8), INTENT(in) :: l ! degree
     INTEGER(8)             :: m ! order
-    REAL(8), INTENT(in)    :: x ! argument (must have |x| <= 1)
-    REAL(8)                :: plmx ! value of the associated Legendre function
+    REAL(8), INTENT(in)    :: x(:) ! argument (must have |x| <= 1)
+    REAL(8)                :: plmx(SIZE(x)) ! value of the associated Legendre function
     INTEGER(8)             :: i, ll
-    REAL(8)                :: fact, pll, pmm, pmmp1, somx2
+    REAL(8)                :: fact, pll(SIZE(x)), pmm(SIZE(x)), pmmp1(SIZE(x)), somx2(SIZE(x))
     LOGICAL                :: neg
     pll = 0.0
     neg = (m < 0)
@@ -296,17 +294,16 @@ CONTAINS
       plmx = (-1.0)**m * REAL(factorial(l-m))/REAL(factorial(l+m)) * plmx
     END IF
   END FUNCTION plm
-
-
+  
+  
   !!!!!!!!!! SPHERICAL HARMONICS !!!!!!!!!!
   FUNCTION ylm(l, m, theta, phi)
     INTEGER(8), INTENT(in) :: l, m
-    REAL(8), INTENT(in)    :: theta, phi
-    COMPLEX(8)             :: ylm
+    REAL(8), INTENT(in)    :: theta(:), phi(:)
+    COMPLEX(8)             :: ylm(SIZE(phi))
     REAL(8)                :: up, down
     up = (2*l+1)*factorial(l-m)
     down = 4.0*pi*factorial(l+m)
-    !ylm = SQRT(up/down) * plm(l, m, COS(theta)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*phi), 0.0))
     ylm = SQRT(up/down) * plm(l, m, COS(phi)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*theta), 0.0))
   END FUNCTION ylm
   
@@ -315,13 +312,13 @@ CONTAINS
   FUNCTION qlm(l, neigh_i, pos_i, pos_all, box)
     INTEGER(8), INTENT(in) :: l, neigh_i(:)
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), box(:)
-    COMPLEX(8)             :: qlm(2*l+1), harm
+    COMPLEX(8)             :: qlm(2*l+1), harm(SIZE(neigh_i))
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     INTEGER(8)             :: j, ni, m
     qlm(:) = (0.0, 0.0)
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
-      ni = neigh_i(j)+1 ! python index shift 
+      ni = neigh_i(j) + 1 ! python index shift 
       r_xyz(:,j) = pos_all(:,ni)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
@@ -331,10 +328,8 @@ CONTAINS
     ! r_ij (spherical)
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l
-      DO j=1,SIZE(neigh_i)
-        harm = ylm(l, m-l, r_sph(2,j), r_sph(3,j))
-        qlm(m+1) = qlm(m+1) + harm
-      END DO
+      harm = ylm(l, m-l, r_sph(2,:), r_sph(3,:))
+      qlm(m+1) = qlm(m+1) + SUM(harm)
     END DO
     qlm = qlm / SIZE(neigh_i)
   END FUNCTION qlm
@@ -430,7 +425,7 @@ CONTAINS
     INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pow
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
-    COMPLEX(8)             :: qlm(2*l+1), harm
+    COMPLEX(8)             :: qlm(2*l+1), harm(SIZE(neigh_i))
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     REAL(8)                :: d_ij(SIZE(neigh_i)), rc_ij, w_i(SIZE(neigh_i))
     INTEGER(8)             :: j, idx_j, m
@@ -454,12 +449,10 @@ CONTAINS
     ! r_ij (spherical)
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l
-      DO j=1,SIZE(neigh_i)
-        harm = ylm(l, m-l, r_sph(2,j), r_sph(3,j))
-        qlm(m+1) = qlm(m+1) + w_i(j) * harm
-      END DO
+      harm = ylm(l, m-l, r_sph(2,:), r_sph(3,:))
+      qlm(m+1) = qlm(m+1) + DOT_PRODUCT(w_i, harm)
     END DO
-    qlm = qlm / SUM(w_i) !SIZE(neigh_i) !/ SUM(w_i)
+    qlm = qlm / SUM(w_i)
   END FUNCTION smoothed_qlm
 
 
@@ -480,14 +473,14 @@ CONTAINS
     INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
     REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_all(:,:), box(:)
     ! variables
-    COMPLEX(8)             :: qlmrd(2*l+1), harm
+    COMPLEX(8)             :: qlmrd(2*l+1), harm(SIZE(neigh_i))
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     REAL(8)                :: d_ij(SIZE(neigh_i)), Z(SIZE(neigh_i))
     INTEGER(8)             :: j, ni, m
     qlmrd(:) = (0.0, 0.0)
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
-      ni = neigh_i(j)+1 ! python index shift 
+      ni = neigh_i(j) + 1 ! python index shift 
       r_xyz(:,j) = pos_all(:,ni)
     END DO
     r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
@@ -500,12 +493,10 @@ CONTAINS
     ! r_ij (spherical)
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l
-      DO j=1,SIZE(neigh_i)
-        harm = ylm(l, m-l, r_sph(2,j), r_sph(3,j))
-        qlmrd(m+1) = qlmrd(m+1) + Z(j) * harm
-      END DO
+      harm = ylm(l, m-l, r_sph(2,:), r_sph(3,:))
+      qlmrd(m+1) = qlmrd(m+1) + DOT_PRODUCT(Z, harm)
     END DO
-    qlmrd = qlmrd / SUM(Z) !SIZE(neigh_i) !/ SUM(w_i)
+    qlmrd = qlmrd / SUM(Z)
   END FUNCTION radial_qlm    
 
   
