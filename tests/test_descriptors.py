@@ -57,6 +57,38 @@ class Test(unittest.TestCase):
                 self.assertEqual(traj[0].particle[j].species, 'B',
                                  'particle was not filtered properly')
 
+    def test_filtered_subsidiary_neighbors(self):
+        traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        traj.compute_nearest_neighbors()
+        # no filters
+        D = AngularStructuralDescriptor(traj)
+        D.add_filter("species == 'A'", group=0)
+        D.add_filter("species == 'B'", group=1)
+        D._filter_neighbors()
+        D._filter_subsidiary_neighbors()
+        # neighbors and filtered neighbors
+        i = 12
+        ni = traj[0].particle[i].nearest_neighbors
+        ni_filtered = D._neighbors[0][i]
+        # neighbors of neighbors (with and without filters)
+        n_ni = []
+        for j in ni:
+            nj = traj[0].particle[j].nearest_neighbors
+            n_ni.append(nj)
+        n_ni_filtered = D._subsidiary_neighbors[0][i]
+        # test filtered neighbors of i
+        self.assertEqual(set(ni) & set(ni_filtered), {142, 145, 148},
+                         'wrong filtered neighbors')
+        # neighbors of neighbors (j=145,148,142)
+        self.assertEqual(set(traj[0].particle[ni_filtered[0]].nearest_neighbors) & set(n_ni_filtered[0]),
+                         {142}, 'wrong neighbors of neighbors')
+        self.assertEqual(set(traj[0].particle[ni_filtered[1]].nearest_neighbors) & set(n_ni_filtered[1]),
+                         set(), 'wrong neighbors of neighbors')
+        self.assertEqual(set(traj[0].particle[ni_filtered[2]].nearest_neighbors) & set(n_ni_filtered[2]),
+                         {145}, 'wrong neighbors of neighbors')
+
     def test_extended_neighbors(self):
         # trajectory
         traj = Trajectory(os.path.join(self.data_dir, 'SiO2_N2000.xyz'))
