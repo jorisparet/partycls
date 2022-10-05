@@ -72,7 +72,7 @@ CONTAINS
           dij_sq = DOT_PRODUCT(r_ij, r_ij)
           IF (dij_sq < cutoffs_sq(spe_i, spe_j)) THEN
             nn_0(i) = nn_0(i) + 1
-            neigh_0(i, nn_0(i)) = j - 1 ! python index shift
+            neigh_0(i, nn_0(i)) = idx_j
           END IF
         END IF
       END DO
