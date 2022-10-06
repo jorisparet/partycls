@@ -54,8 +54,10 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     name = 'bond-angle'
     symbol = 'ba'
 
-    def __init__(self, trajectory, dtheta=3.0, verbose=0):
-        AngularStructuralDescriptor.__init__(self, trajectory, verbose=verbose)
+    def __init__(self, trajectory, dtheta=3.0, accept_nans=True, verbose=0):
+        AngularStructuralDescriptor.__init__(self, trajectory,
+                                             verbose=verbose,
+                                             accept_nans=accept_nans)
         self._dtheta = dtheta
         self.grid = numpy.arange(dtheta / 2.0, 180.0, dtheta, dtype=numpy.float64)
 
@@ -91,6 +93,7 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
                                                      self.dtheta)
                 self.features[row] = hist_n_i
                 row += 1
+        self._handle_nans()
         return self.features
 
     def normalize(self, distribution, method="sin"):

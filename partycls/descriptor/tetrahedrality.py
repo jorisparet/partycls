@@ -56,8 +56,10 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     name = 'tetrahedral'
     symbol = 'tetra'
     
-    def __init__(self, trajectory, verbose=0):
-        AngularStructuralDescriptor.__init__(self, trajectory, verbose=verbose)
+    def __init__(self, trajectory, accept_nans=True, verbose=0):
+        AngularStructuralDescriptor.__init__(self, trajectory,
+                                             accept_nans=accept_nans,
+                                             verbose=verbose)
         self.grid = numpy.zeros(1, dtype=numpy.float64)
         
     def compute(self):
@@ -80,4 +82,5 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
                                                  self._neighbors[n][i], box[n])
                 self.features[row] = tetra_i
                 row += 1
+        self._handle_nans()
         return self.features

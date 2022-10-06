@@ -71,8 +71,12 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     name = 'smoothed-bond-angle'
     symbol = 'sba'
 
-    def __init__(self, trajectory, dtheta=3.0, cutoff_enlargement=1.3, exponent=8, verbose=0):
-        BondAngleDescriptor.__init__(self, trajectory, dtheta=3.0, verbose=verbose)
+    def __init__(self, trajectory, dtheta=3.0, cutoff_enlargement=1.3, exponent=8,
+                 accept_nans=True, verbose=0):
+        BondAngleDescriptor.__init__(self, trajectory,
+                                     dtheta=dtheta,
+                                     accept_nans=accept_nans,
+                                     verbose=verbose)
         self.cutoff_enlargement = cutoff_enlargement
         self.exponent = exponent        
 
@@ -112,4 +116,5 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
                                                             self.dtheta)
             self.features[start: start+npart, :] = feat_n
             start += npart
+        self._handle_nans()
         return self.features

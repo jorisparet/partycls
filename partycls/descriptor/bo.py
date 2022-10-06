@@ -62,8 +62,11 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
     name = 'bond-orientational'
     symbol = 'bo'
 
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, verbose=0):
-        AngularStructuralDescriptor.__init__(self, trajectory, verbose=verbose)
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, 
+                 accept_nans=True, verbose=0):
+        AngularStructuralDescriptor.__init__(self, trajectory,
+                                             accept_nans=accept_nans,
+                                             verbose=verbose)
         if self.trajectory[0].n_dimensions == 2:
             raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
         self._bounds(lmin, lmax, orders)
@@ -96,6 +99,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
                     hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_all_n, box[n])
                 self.features[row] = hist_n_i
                 row += 1
+        self._handle_nans()
         return self.features
 
     def _bounds(self, lmin, lmax, orders):
@@ -160,9 +164,11 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
     name = 'lechner-dellago'
     symbol = 'ld'
 
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, verbose=0):
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, 
+                 accept_nans=True, verbose=0):
         BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin,
-                                             lmax=lmax, orders=orders, verbose=verbose)
+                                             lmax=lmax, orders=orders, 
+                                             accept_nans=accept_nans, verbose=verbose)
 
     def compute(self):
         # set up
@@ -192,6 +198,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
                     #                               pos_0[n][i], pos_1[n].T, box)
                 self.features[row] = hist_n_i
                 row += 1
+        self._handle_nans()
         return self.features
 
     def _qbar_lm(self, l, neigh_i, neigh_neigh_i, pos_i, pos_all, box):

@@ -80,13 +80,15 @@ class StructuralDescriptor:
     [("particle.species == 'B'", 1)]
     """
 
-    def __init__(self, trajectory, verbose=0):
+    def __init__(self, trajectory, accept_nans=True, verbose=0):
         # Trajectory
         # TODO: we can't change format or backend when passing a string
         if isinstance(trajectory, str):
             self.trajectory = Trajectory(trajectory)
         else:
             self.trajectory = trajectory
+        # dismiss rows of self.features who contain nans
+        self._accept_nans = accept_nans
         # verbose for computation
         self.verbose = verbose
         # Default: consider all particles for the correlation
@@ -102,6 +104,26 @@ class StructuralDescriptor:
         #  correctly assigned when is method compute() is called
         self.grid = None
         self.features = None
+
+    @property
+    def accept_nans(self):
+        """
+        Boolean property.
+        
+        If False, discard any row from the array of features that contains a
+        NaN element. Warning: this will delete the selected rows from the
+        array of featyres. Use the method dismiss_nans instead to return a 
+        filtered copy of the array of features.
+        
+        If True, keep NaN elements in the array of features.
+        """
+        return self._accept_nans
+
+    @accept_nans.setter
+    def accept_nans(self, accept):
+        self._accept_nans = accept
+        if not accept and self.features is not None:
+            self._handle_nans()
 
     def __str__(self):
         rep = 'Descriptor(name="{}", dimension={}, filters={})'
@@ -310,6 +332,12 @@ class StructuralDescriptor:
         """
         Average feature vector of the descriptor.
         """
+        if self._accept_nans and self.verbose:
+            isfinite = numpy.isfinite(self.features)
+            collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
+            num_nans = self.size - numpy.sum(collapsed_rows)
+            if num_nans > 0:
+                print("Warning: {} NaN sample(s) in the array of features. This will compromise the computation of the average.".format(num_nans))
         return numpy.mean(self.features, axis=0)
 
     def _trange(self, bound):
@@ -332,6 +360,18 @@ class StructuralDescriptor:
         """
         return dist
 
+    def discard_nans(self):
+        """
+        Return the array of features where each row that contains
+        NaN is filtered out.
+        """
+        isfinite = numpy.isfinite(self.features)
+        collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
+        num_nans = self.size - numpy.sum(collapsed_rows)
+        if num_nans > 0 and self.verbose:
+            print('Warning: discarding {} NaN samples from the analysis.'.format(num_nans))
+        return self.features[collapsed_rows]
+
     def _group_check(self):
         # check that groups are not empty
         for gn in range(2):
@@ -342,6 +382,9 @@ class StructuralDescriptor:
         # initialize the data matrix
         self.features = numpy.empty((self.size, self.n_features), dtype=dtype)
 
+    def _handle_nans(self):
+        if not self._accept_nans:
+            self.features = self.discard_nans()
 
 class AngularStructuralDescriptor(StructuralDescriptor):
     """
@@ -359,8 +402,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         Trajectory on which the structural descriptor will be computed.
     """
 
-    def __init__(self, trajectory, verbose=0):
-        StructuralDescriptor.__init__(self, trajectory, verbose=verbose)
+    def __init__(self, trajectory, accept_nans=True, verbose=0):
+        StructuralDescriptor.__init__(self, trajectory,
+                                      accept_nans=accept_nans,
+                                      verbose=verbose)
 
     def _manage_nearest_neighbors(self):
         """

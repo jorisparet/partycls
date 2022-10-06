@@ -62,8 +62,11 @@ class RadialDescriptor(StructuralDescriptor):
     name = 'radial'
     symbol = 'gr'
 
-    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None, verbose=0):
-        StructuralDescriptor.__init__(self, trajectory, verbose=verbose)
+    def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None,
+                 accept_nans=True, verbose=0):
+        StructuralDescriptor.__init__(self, trajectory,
+                                      accept_nans=accept_nans,
+                                      verbose=verbose)
         # set the grid automatically using coordination shells (`n_shells`)
         #  or user-defined limits (`bounds`) if provided
         self._set_bounds(dr, n_shells, bounds)
@@ -134,6 +137,7 @@ class RadialDescriptor(StructuralDescriptor):
             for hist_n_i in hist_n:
                 self.features[row] = hist_n_i
                 row += 1
+        self._handle_nans()
         return self.features
 
     def normalize(self, distribution, method="r2"):

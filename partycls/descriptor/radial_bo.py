@@ -96,8 +96,15 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     symbol = 'rbo'
     
     
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, bounds=(1,2.5), dr=0.1, distance_grid=None, delta=0.1, skin=2.5, exponent=2, verbose=0):
-        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders, verbose=verbose)
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None,
+                 bounds=(1,2.5), dr=0.1, distance_grid=None,
+                 delta=0.1, skin=2.5, exponent=2,
+                 accept_nans=True, verbose=0):
+        BondOrientationalDescriptor.__init__(self, trajectory,
+                                             lmin=lmin, lmax=lmax,
+                                             orders=orders,
+                                             accept_nans=accept_nans,
+                                             verbose=verbose)
         # dummy values, to be set in the following lines
         self._distance_grid = [-1]
         self._orders = [-1]
@@ -200,6 +207,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                     self.features[start: start+npart, lr_idx] = feat_lr_n
                     lr_idx += 1
             start += npart
+        self._handle_nans()
         return self.features
         
     def _set_bounds_distances(self, dr, bounds, distance_grid):

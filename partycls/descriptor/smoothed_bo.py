@@ -76,8 +76,14 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     name = 'smoothed bond-orientational'
     symbol = 'sbo'
     
-    def __init__(self, trajectory, lmin=1, lmax=8, orders=None, cutoff_enlargement=1.3, exponent=8, verbose=0):
-        BondOrientationalDescriptor.__init__(self, trajectory, lmin=lmin, lmax=lmax, orders=orders, verbose=verbose)
+    def __init__(self, trajectory, lmin=1, lmax=8, orders=None,
+                cutoff_enlargement=1.3, exponent=8,
+                accept_nans=True, verbose=0):
+        BondOrientationalDescriptor.__init__(self, trajectory,
+                                             lmin=lmin, lmax=lmax,
+                                             orders=orders,
+                                             accept_nans=accept_nans,
+                                             verbose=verbose)
         self.cutoff_enlargement = cutoff_enlargement
         self.exponent = exponent       
 
@@ -115,5 +121,6 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
                                                  box[n], standard_cutoffs,
                                                  self.exponent)
                 self.features[start: start+npart, ln] = feat_n
+            self._handle_nans()
             start += npart
         return self.features
