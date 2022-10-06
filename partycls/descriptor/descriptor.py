@@ -35,9 +35,13 @@ class StructuralDescriptor:
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
 
-    verbose : int, default: 0
-        Show progress information about the computation of the descriptor
-        when verbose is 1, and remain silent when verbose is 0 (default).
+    accept_nans: bool, default: True
+        If False, discard any row from the array of features that contains a Nan
+        element. If True, keep NaN elements in the array of features.
+    
+    verbose : bool, default: False
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is True, and remain silent when verbose is False.
     
     Attributes
     ----------
@@ -80,7 +84,7 @@ class StructuralDescriptor:
     [("particle.species == 'B'", 1)]
     """
 
-    def __init__(self, trajectory, accept_nans=True, verbose=0):
+    def __init__(self, trajectory, accept_nans=True, verbose=False):
         # Trajectory
         # TODO: we can't change format or backend when passing a string
         if isinstance(trajectory, str):
@@ -402,7 +406,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         Trajectory on which the structural descriptor will be computed.
     """
 
-    def __init__(self, trajectory, accept_nans=True, verbose=0):
+    def __init__(self, trajectory, accept_nans=True, verbose=False):
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)

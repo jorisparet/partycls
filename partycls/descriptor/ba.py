@@ -18,9 +18,13 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     dtheta : float
         Bin width in degrees.
     
-    verbose : int, default: 0
-        Show progress information about the computation of the descriptor
-        when verbose is 1, and remain silent when verbose is 0 (default).
+    accept_nans: bool, default: True
+        If False, discard any row from the array of features that contains a Nan
+        element. If True, keep NaN elements in the array of features.
+
+    verbose : bool, default: False
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is True, and remain silent when verbose is False.
 
     Attributes
     ----------
@@ -54,7 +58,7 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     name = 'bond-angle'
     symbol = 'ba'
 
-    def __init__(self, trajectory, dtheta=3.0, accept_nans=True, verbose=0):
+    def __init__(self, trajectory, dtheta=3.0, accept_nans=True, verbose=False):
         AngularStructuralDescriptor.__init__(self, trajectory,
                                              verbose=verbose,
                                              accept_nans=accept_nans)

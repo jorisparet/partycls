@@ -35,9 +35,13 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     exponent : int, default: 8
         Exponent `n` in the power law for the exponential decay in w(r).
         
-    verbose : int, default: 0
-        Show progress information about the computation of the descriptor
-        when verbose is 1, and remain silent when verbose is 0 (default).
+    accept_nans: bool, default: True
+        If False, discard any row from the array of features that contains a Nan
+        element. If True, keep NaN elements in the array of features.
+
+    verbose : bool, default: False
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is True, and remain silent when verbose is False.
 
     Attributes
     ----------
@@ -72,7 +76,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     symbol = 'sba'
 
     def __init__(self, trajectory, dtheta=3.0, cutoff_enlargement=1.3, exponent=8,
-                 accept_nans=True, verbose=0):
+                 accept_nans=True, verbose=False):
         BondAngleDescriptor.__init__(self, trajectory,
                                      dtheta=dtheta,
                                      accept_nans=accept_nans,

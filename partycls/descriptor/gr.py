@@ -26,9 +26,13 @@ class RadialDescriptor(StructuralDescriptor):
         Lower and upper bounds to describe the radial correlations. If set, 
         this has the priority over `n_shells`.
 
-    verbose : int, default: 0
-        Show progress information about the computation of the descriptor
-        when verbose is 1, and remain silent when verbose is 0 (default).
+    accept_nans: bool, default: True
+        If False, discard any row from the array of features that contains a Nan
+        element. If True, keep NaN elements in the array of features.
+
+    verbose : bool, default: False
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is True, and remain silent when verbose is False.
     
     Attributes
     ----------
@@ -63,7 +67,7 @@ class RadialDescriptor(StructuralDescriptor):
     symbol = 'gr'
 
     def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None,
-                 accept_nans=True, verbose=0):
+                 accept_nans=True, verbose=False):
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)

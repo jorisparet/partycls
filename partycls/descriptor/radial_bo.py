@@ -57,9 +57,13 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         upper bound r_max of the grid of distances. Neighbors will then be 
         identified up to r_max + skin_width * delta.
 
-    verbose : int, default: 0
-        Show progress information about the computation of the descriptor
-        when verbose is 1, and remain silent when verbose is 0 (default).
+    accept_nans: bool, default: True
+        If False, discard any row from the array of features that contains a Nan
+        element. If True, keep NaN elements in the array of features.
+
+    verbose : bool, default: False
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is True, and remain silent when verbose is False.
         
     Attributes
     ----------
@@ -99,7 +103,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None,
                  bounds=(1,2.5), dr=0.1, distance_grid=None,
                  delta=0.1, skin=2.5, exponent=2,
-                 accept_nans=True, verbose=0):
+                 accept_nans=True, verbose=False):
         BondOrientationalDescriptor.__init__(self, trajectory,
                                              lmin=lmin, lmax=lmax,
                                              orders=orders,

@@ -22,9 +22,13 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
 
-    verbose : int, default: 0
-        Show progress information about the computation of the descriptor
-        when verbose is 1, and remain silent when verbose is 0 (default).
+    accept_nans: bool, default: True
+        If False, discard any row from the array of features that contains a Nan
+        element. If True, keep NaN elements in the array of features.
+
+    verbose : bool, default: False
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is True, and remain silent when verbose is False.
     
     Attributes
     ----------
@@ -58,7 +62,7 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
     name = 'compactness'
     symbol = 'compact'
     
-    def __init__(self, trajectory, accept_nans=True, verbose=0):
+    def __init__(self, trajectory, accept_nans=True, verbose=False):
         AngularStructuralDescriptor.__init__(self,
                                              trajectory,
                                              accept_nans=accept_nans,
