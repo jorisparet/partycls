@@ -86,7 +86,6 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         self._set_up(dtype=numpy.float64)
         self._manage_nearest_neighbors_cutoffs()
         n_frames = len(self.trajectory)
-        row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')

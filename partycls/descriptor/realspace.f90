@@ -518,19 +518,19 @@ CONTAINS
     q_lm = q_lm / SUM(w_i)
   END FUNCTION smoothed_qlm
 
-  SUBROUTINE smoothed_qlm_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
+  SUBROUTINE smoothed_qlm_all(l, neigh, neigh_number, pos_0, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
     ! TODO: fortran-wise it would be better to have neigh as (nmax, ndim) array
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
-    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), cutoffs(:,:), box(:)
+    REAL(8), INTENT(in)    :: pos_0(:,:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
     COMPLEX(8), INTENT(inout) :: q_lm(2*l+1, SIZE(neigh,2))
-    COMPLEX(8)              :: harm(SIZE(neigh,2))
-    REAL(8)                :: r_xyz(SIZE(pos,1), SIZE(neigh,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
+    COMPLEX(8)                :: harm(SIZE(neigh,2))
+    REAL(8)                   :: r_xyz(SIZE(pos_0,1), SIZE(neigh,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
     ! All these arrays are cut down to size(neigh,2) (nmax)
-    REAL(8)                :: d_ij(SIZE(neigh,2)), rc_ij, w_i(SIZE(neigh,2))
-    INTEGER(8)             :: i, j, k, idx_j, m, nn_i
-    DO i = 1,SIZE(pos,2)
+    REAL(8)    :: d_ij(SIZE(neigh,2)), rc_ij, w_i(SIZE(neigh,2))
+    INTEGER(8) :: i, j, k, idx_j, m, nn_i
+    DO i = 1,SIZE(pos_0,2)
        q_lm(:,i) = (0.0, 0.0)
        nn_i = neigh_number(i)
        ! r_ij (cartesian)
@@ -540,7 +540,7 @@ CONTAINS
           r_xyz(:,j) = pos_all(:,idx_j)          
        END DO
        DO k = 1,SIZE(r_xyz,1)
-          r_xyz(k,1:nn_i) = r_xyz(k,1:nn_i) - pos(k,i)
+          r_xyz(k,1:nn_i) = r_xyz(k,1:nn_i) - pos_0(k,i)
        END DO
        CALL pbc_(r_xyz(:,1:nn_i), box)
        ! weights
@@ -572,30 +572,30 @@ CONTAINS
   END FUNCTION smoothed_ql
 
 
-  SUBROUTINE smoothed_ql_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, box, cutoffs, pow, q_l)
+  SUBROUTINE smoothed_ql_all(l, neigh, neigh_number, pos_0, pos_all, spe, spe_all, box, cutoffs, pow, q_l)
     ! neigh: (neigh_max, npart)
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
-    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), cutoffs(:,:), box(:)
-    COMPLEX(8)             :: q_lm(2*l+1,SIZE(pos,2))
-    REAL(8), INTENT(out)   :: q_l(SIZE(pos,2))
+    REAL(8), INTENT(in)    :: pos_0(:,:), pos_all(:,:), cutoffs(:,:), box(:)
+    COMPLEX(8)             :: q_lm(2*l+1,SIZE(pos_0,2))
+    REAL(8), INTENT(out)   :: q_l(SIZE(pos_0,2))
     INTEGER                :: i
-    CALL smoothed_qlm_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
-    DO i = 1,SIZE(pos,2)
+    CALL smoothed_qlm_all(l, neigh, neigh_number, pos_0, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
+    DO i = 1,SIZE(pos_0,2)
        q_l(i) = rotational_invariant(l, q_lm(:,i))
     END DO
   END SUBROUTINE smoothed_ql_all
 
-  !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(qlmrd)
+  !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS (INDIVIDUAL) !!!!!!!!!!
+  FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(q_lmrd)
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
     REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_all(:,:), box(:)
     ! variables
-    COMPLEX(8)             :: qlmrd(2*l+1), harm(SIZE(neigh_i))
+    COMPLEX(8)             :: q_lmrd(2*l+1), harm(SIZE(neigh_i))
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     REAL(8)                :: d_ij(SIZE(neigh_i)), Z(SIZE(neigh_i))
     INTEGER(8)             :: j, ni, m
-    qlmrd(:) = (0.0, 0.0)
+    q_lmrd(:) = (0.0, 0.0)
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
       ni = neigh_i(j) + 1 ! python index shift 
@@ -612,13 +612,51 @@ CONTAINS
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l
       harm = ylm(l, m-l, r_sph(2,:), r_sph(3,:))
-      qlmrd(m+1) = qlmrd(m+1) + DOT_PRODUCT(Z, harm)
+      q_lmrd(m+1) = q_lmrd(m+1) + DOT_PRODUCT(Z, harm)
     END DO
-    qlmrd = qlmrd / SUM(Z)
-  END FUNCTION radial_qlm    
+    q_lmrd = q_lmrd / SUM(Z)
+  END FUNCTION radial_qlm
 
-  
-  !!!!!!!!!! ROTATIONAL INVARIANT OF DISTANCE-DEPENDENT BOP !!!!!!!!!!
+
+  !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS (ALL) !!!!!!!!!!
+  SUBROUTINE radial_qlm_all(l, r, delta, exponent, neigh, neigh_number, pos_0, &
+                            pos_all, box, q_lmrd)
+    ! parameters
+    INTEGER(8), INTENT(in)    :: l, neigh(:,:), neigh_number(:), exponent
+    REAL(8), INTENT(in)       :: r, delta, pos_0(:,:), pos_all(:,:), box(:)
+    COMPLEX(8), INTENT(inout) :: q_lmrd(2*l+1,SIZE(neigh,2))
+    ! variables
+    COMPLEX(8)             :: harm(SIZE(neigh,2))
+    REAL(8)                :: r_xyz(3, SIZE(neigh)), r_sph(3, SIZE(neigh))
+    REAL(8)                :: d_ij(SIZE(neigh,2)), Z(SIZE(neigh,2))
+    INTEGER(8)             :: i, j, nn_i, ni, dim, m
+    DO i=1,SIZE(pos_0,2)
+      q_lmrd(:,i) = (0.0, 0.0)
+      nn_i = neigh_number(i)
+      ! r_ij (cartesian)
+      DO j=1,nn_i
+        ni = neigh(i,j) + 1 ! python index shift
+        r_xyz(:,j) = pos_all(:,ni)
+      END DO
+      DO dim=1,SIZE(r_xyz,1)
+        r_xyz(dim,1:nn_i) = r_xyz(dim,1:nn_i) - pos_0(dim,i)
+      END DO
+      CALL pbc_(r_xyz(:,1:nn_i), box)
+      ! weights
+      d_ij(1:nn_i) = SQRT(SUM(r_xyz(:, 1:nn_i)**2, 1))
+      Z = EXP(- 0.5d0 * ((d_ij - r) / delta)**exponent)
+      ! r_ij (spherical)
+      r_sph(:,1:nn_i) = cartesian_to_spherical(r_xyz(:,1:nn_i))
+      DO m=0,2*l
+        harm = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
+        q_lmrd(m+1,i) = q_lmrd(m+1,i) + DOT_PRODUCT(Z(1:nn_i), harm(1:nn_i))
+      END DO
+      q_lmrd(:,i) = q_lmrd(:,i) / SUM(Z(1:nn_i))
+    END DO
+  END SUBROUTINE radial_qlm_all
+
+
+  !!!!!!!!!! ROTATIONAL INVARIANT OF DISTANCE-DEPENDENT BOP (INDIVIDUAL) !!!!!!!!!!
   FUNCTION radial_ql(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(q_lrd)
     INTEGER(8), INTENT(in) :: l, neigh_i(:), exponent
     REAL(8), INTENT(in)    :: r, delta, pos_i(:), pos_all(:,:), box(:)
@@ -628,7 +666,22 @@ CONTAINS
     q_lrd = rotational_invariant(l, q_lmrd)  
   END FUNCTION radial_ql
 
+
+  !!!!!!!!!! ROTATIONAL INVARIANT OF DISTANCE-DEPENDENT BOP (ALL) !!!!!!!!!!
+  SUBROUTINE radial_ql_all(l, r, delta, exponent, neigh, neigh_number, pos_0, &
+                         pos_all, box, q_lrd)
+    INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), exponent
+    REAL(8), INTENT(in)    :: r, delta, pos_0(:,:), pos_all(:,:), box(:)
+    REAL(8), INTENT(out)   :: q_lrd(SIZE(pos_0,2))
+    COMPLEX(8)             :: q_lmrd(2*l+1,SIZE(pos_0,2))
+    INTEGER                :: i
+    CALL radial_qlm_all(l, r, delta, exponent, neigh, neigh_number, pos_0, pos_all, box, q_lmrd)
+    DO i=1,SIZE(pos_0,2)
+      q_lrd(i) = rotational_invariant(l, q_lmrd(:,i))
+    END DO
+  END SUBROUTINE radial_ql_all
   
+
   !!!!!!!!!! COMPACTNESS !!!!!!!!!!
   SUBROUTINE compactness(pos, tetrahedra, radii, box, thetas)
     ! parameters

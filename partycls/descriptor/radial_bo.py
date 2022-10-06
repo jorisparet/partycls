@@ -170,7 +170,6 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         self._set_up(dtype=numpy.float64)
         self._manage_nearest_neighbors()
         n_frames = len(self.trajectory)
-        row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')
@@ -182,23 +181,25 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         extended_cutoffs = numpy.array([R_cut for i in range(n_pairs)])
         self._compute_extended_neighbors(extended_cutoffs)
         # computation        
+        start = 0
         for n in self._trange(n_frames):
+            pos_0_n = pos_0[n].T
             pos_all_n = pos_all[n].T
-            for i in range(len(self.groups[0][n])):
-                hist_n_i = numpy.empty_like(self.features[0], dtype=numpy.float64)
-                feature_idx = 0
-                for l in self._orders:
-                    for r in self._distance_grid:
-                        hist_n_i[feature_idx] = compute.radial_ql(l, r, 
-                                                                  self.delta,
-                                                                  self.exponent,
-                                                                  self._extended_neighbors[n][i], 
-                                                                  pos_0[n][i], 
-                                                                  pos_all_n,
-                                                                  box[n])
-                        feature_idx += 1
-                self.features[row] = hist_n_i
-                row += 1
+            npart = len(self.groups[0][n])
+            lr_idx = 0
+            for l in self._orders:
+                for r in self._distance_grid:
+                    feat_lr_n = compute.radial_ql_all(l, r, 
+                                                   self.delta,
+                                                   self.exponent,
+                                                   self._extended_neighbors[n],
+                                                   self._extended_neighbors_number[n],
+                                                   pos_0_n,
+                                                   pos_all_n,
+                                                   box[n])
+                    self.features[start: start+npart, lr_idx] = feat_lr_n
+                    lr_idx += 1
+            start += npart
         return self.features
         
     def _set_bounds_distances(self, dr, bounds, distance_grid):
