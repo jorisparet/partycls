@@ -342,16 +342,6 @@ class StructuralDescriptor:
                 print("Warning: {} NaN sample(s) in the array of features. This will compromise the computation of the average.".format(num_nans))
         return numpy.mean(self.features, axis=0)
 
-    def _trange(self, bound):
-        if self.verbose == 1:
-            try:
-                from tqdm import trange
-                return trange(bound, desc=self.symbol)
-            except ImportError:
-                print('install tqdm to show the progress bar')
-                return range(bound)
-        return range(bound)
-
     def compute(self):
         pass
 
@@ -394,6 +384,16 @@ class StructuralDescriptor:
             print('Warning: found {} NaN samples in the array of features.'.format(num_nans))
         if not self._accept_nans:
             self.features = self.discard_nans()
+
+    def _trange(self, bound):
+        if self.verbose == 1:
+            try:
+                from tqdm import trange
+                return trange(bound, desc='Computing {} descriptor'.format(self.symbol))
+            except ImportError:
+                print('Warning: install tqdm to show the progress bar.')
+                return range(bound)
+        return range(bound)
 
 class AngularStructuralDescriptor(StructuralDescriptor):
     """

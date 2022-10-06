@@ -39,7 +39,21 @@ class DscribeDescriptor(StructuralDescriptor):
     _chemistry = False
 
     def __init__(self, trajectory, backend, *args, **kwargs):
-        StructuralDescriptor.__init__(self, trajectory)
+        # NaNs
+        accept_nans_key = 'accept_nans'
+        accept_nans = True
+        if accept_nans_key in kwargs.keys():
+            accept_nans = kwargs[accept_nans_key]
+            kwargs.pop(accept_nans_key)
+        # verbose
+        verbose_key = 'verbose'
+        verbose = False
+        if verbose_key in kwargs.keys():
+            verbose = kwargs[verbose_key]
+            kwargs.pop(verbose_key)
+        StructuralDescriptor.__init__(self, trajectory,
+                                      accept_nans=accept_nans,
+                                      verbose=verbose)
         self.name = backend.__name__
         self.symbol = backend.__name__.lower()
 
@@ -64,11 +78,10 @@ class DscribeDescriptor(StructuralDescriptor):
 
     def compute(self):
         # set up
-        StructuralDescriptor._set_up(self, dtype=numpy.float64)
-        self.features = numpy.empty((self.n_samples, self.n_features))
+        self._set_up(dtype=numpy.float64)
         row = 0
         # computation
-        for i, system in enumerate(self.trajectory):
+        for i, system in enumerate(self._tqdm(self.trajectory)):
             positions = self.dump('position', group=1)[i]
             if self._chemistry:
                 species = self.dump('species', group=1)[i]
@@ -81,10 +94,22 @@ class DscribeDescriptor(StructuralDescriptor):
             features = self.backend.create(system, positions=other_positions)
             self.features[row: row + features.shape[0], :] = features
             row += features.shape[0]
+        self._handle_nans()
         return self.features
 
     def normalize(self, dist):
         return dist
+
+    def _tqdm(self, iterable):
+        if self.verbose == 1:
+            try:
+                from tqdm import tqdm
+                return tqdm(iterable,
+                            desc='Computing {} descriptor'.format(self.symbol))
+            except ImportError:
+                print('Warning: install tqdm to show the progress bar.')
+                return iterable
+        return iterable     
 
 
 class DscribeChemicalDescriptor(DscribeDescriptor):
