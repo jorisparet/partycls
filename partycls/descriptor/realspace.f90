@@ -482,7 +482,7 @@ CONTAINS
 !  END FUNCTION qbarl
   
 
-  !!!!!!!!!! SMOOTHED COMPLEX VECTORS !!!!!!!!!!
+  !!!!!!!!!! SMOOTHED COMPLEX VECTORS (INDIVIDUAL) !!!!!!!!!!
   FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, cutoffs, pow, box) RESULT(q_lm)
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pow
@@ -518,6 +518,8 @@ CONTAINS
     q_lm = q_lm / SUM(w_i)
   END FUNCTION smoothed_qlm
 
+
+  !!!!!!!!!! SMOOTHED COMPLEX VECTORS (ALL) !!!!!!!!!!
   SUBROUTINE smoothed_qlm_all(l, neigh, neigh_number, pos_0, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
     ! TODO: fortran-wise it would be better to have neigh as (nmax, ndim) array
     ! parameters
@@ -561,7 +563,7 @@ CONTAINS
   END SUBROUTINE smoothed_qlm_all
   
 
-  !!!!!!!!!! SMOOTHED STEINHARDT !!!!!!!!!!
+  !!!!!!!!!! SMOOTHED STEINHARDT (INDIVIDUAL) !!!!!!!!!!
   FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_all, spe_i, spe_all, box, cutoffs, pow) RESULT(q_l)
     INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pow
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
@@ -572,6 +574,7 @@ CONTAINS
   END FUNCTION smoothed_ql
 
 
+  !!!!!!!!!! SMOOTHED STEINHARDT (ALL) !!!!!!!!!!
   SUBROUTINE smoothed_ql_all(l, neigh, neigh_number, pos_0, pos_all, spe, spe_all, box, cutoffs, pow, q_l)
     ! neigh: (neigh_max, npart)
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
@@ -584,6 +587,7 @@ CONTAINS
        q_l(i) = rotational_invariant(l, q_lm(:,i))
     END DO
   END SUBROUTINE smoothed_ql_all
+
 
   !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS (INDIVIDUAL) !!!!!!!!!!
   FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(q_lmrd)
