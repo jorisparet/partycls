@@ -555,7 +555,7 @@ CONTAINS
        ! r_ij (spherical)
        r_sph(:,1:nn_i) = cartesian_to_spherical(r_xyz(:,1:nn_i))
        DO m = 0,2*l
-          harm = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
+          harm(1:nn_i) = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
           q_lm(m+1,i) = q_lm(m+1,i) + DOT_PRODUCT(w_i(1:nn_i), harm(1:nn_i))
        END DO
        q_lm(:,i) = q_lm(:,i) / SUM(w_i(1:nn_i))
@@ -652,7 +652,7 @@ CONTAINS
       ! r_ij (spherical)
       r_sph(:,1:nn_i) = cartesian_to_spherical(r_xyz(:,1:nn_i))
       DO m=0,2*l
-        harm = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
+        harm(1:nn_i) = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
         q_lmrd(m+1,i) = q_lmrd(m+1,i) + DOT_PRODUCT(Z(1:nn_i), harm(1:nn_i))
       END DO
       q_lmrd(:,i) = q_lmrd(:,i) / SUM(Z(1:nn_i))
