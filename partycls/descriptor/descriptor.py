@@ -318,7 +318,7 @@ class StructuralDescriptor:
         return N_group / N_tot
 
     @property
-    def size(self):
+    def n_samples(self):
         """
         Total number of particles in the descriptor (i.e. in group=0).
         """
@@ -380,12 +380,12 @@ class StructuralDescriptor:
 
     def _set_up(self, dtype=numpy.int64):
         # initialize the data matrix
-        self.features = numpy.empty((self.size, self.n_features), dtype=dtype)
+        self.features = numpy.empty((self.n_samples, self.n_features), dtype=dtype)
 
     def _find_nans(self):
         isfinite = numpy.isfinite(self.features)
         collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
-        num_nans = self.size - numpy.sum(collapsed_rows)
+        num_nans = self.n_samples - numpy.sum(collapsed_rows)
         return collapsed_rows, num_nans        
 
     def _handle_nans(self):

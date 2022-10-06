@@ -212,7 +212,7 @@ class RadialDescriptor(StructuralDescriptor):
             idx_0 = self.dump('_index', 0)
             idx_1 = self.dump('_index', 1)
             box = self.trajectory[0].cell.side
-            all_hist = numpy.empty((self.size, r.size), dtype=numpy.int64)
+            all_hist = numpy.empty((self.n_samples, r.size), dtype=numpy.int64)
             n_frames = len(self.groups[0])
             row = 0
             for n in range(n_frames):

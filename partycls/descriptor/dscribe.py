@@ -65,7 +65,7 @@ class DscribeDescriptor(StructuralDescriptor):
     def compute(self):
         # set up
         StructuralDescriptor._set_up(self, dtype=numpy.float64)
-        self.features = numpy.empty((self.size, self.n_features))
+        self.features = numpy.empty((self.n_samples, self.n_features))
         row = 0
         # computation
         for i, system in enumerate(self.trajectory):

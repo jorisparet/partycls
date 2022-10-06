@@ -234,7 +234,7 @@ class CommunityInference(Clustering):
         import random
 
         # shortcuts
-        N = descriptor.size
+        N = descriptor.n_samples
         K = self.n_clusters
         Km1 = K - 1  # loop invariant
 
