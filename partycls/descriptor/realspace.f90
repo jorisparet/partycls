@@ -302,6 +302,7 @@ CONTAINS
     REAL(8), INTENT(in)    :: theta(:), phi(:)
     COMPLEX(8)             :: ylm(SIZE(phi))
     REAL(8)                :: up, down
+    ! TODO: tabulate the factorials?
     up = (2*l+1)*factorial(l-m)
     down = 4.0*pi*factorial(l+m)
     ylm = SQRT(up/down) * plm(l, m, COS(phi)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*theta), 0.0))
@@ -461,11 +462,11 @@ CONTAINS
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
     REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
-    COMPLEX(8), INTENT(inout) :: qlm(2*l+1, SIZE(pos,2))
-    COMPLEX(8)              :: harm(SIZE(pos,2))
-    REAL(8)                :: r_xyz(SIZE(pos,1), SIZE(pos,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
-    ! TODO: all these arrays can be cut down to size(neigh,2) (nmax)
-    REAL(8)                :: d_ij(SIZE(pos,2)), rc_ij, w_i(SIZE(pos,2))
+    COMPLEX(8), INTENT(inout) :: qlm(2*l+1, SIZE(neigh,2))
+    COMPLEX(8)              :: harm(SIZE(neigh,2))
+    REAL(8)                :: r_xyz(SIZE(pos,1), SIZE(neigh,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
+    ! All these arrays are cut down to size(neigh,2) (nmax)
+    REAL(8)                :: d_ij(SIZE(neigh,2)), rc_ij, w_i(SIZE(neigh,2))
     INTEGER(8)             :: i, j, k, idx_j, m, nmax
     DO i = 1,SIZE(pos,2)
        qlm(:,i) = (0.0, 0.0)
