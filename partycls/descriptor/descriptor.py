@@ -337,9 +337,7 @@ class StructuralDescriptor:
         Average feature vector of the descriptor.
         """
         if self._accept_nans and self.verbose:
-            isfinite = numpy.isfinite(self.features)
-            collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
-            num_nans = self.size - numpy.sum(collapsed_rows)
+            _, num_nans = self._find_nans()
             if num_nans > 0:
                 print("Warning: {} NaN sample(s) in the array of features. This will compromise the computation of the average.".format(num_nans))
         return numpy.mean(self.features, axis=0)
@@ -369,11 +367,9 @@ class StructuralDescriptor:
         Return the array of features where each row that contains
         NaN is filtered out.
         """
-        isfinite = numpy.isfinite(self.features)
-        collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
-        num_nans = self.size - numpy.sum(collapsed_rows)
+        collapsed_rows, num_nans = self._find_nans()
         if num_nans > 0 and self.verbose:
-            print('Warning: discarding {} NaN samples from the analysis.'.format(num_nans))
+            print('Warning: discarding {} NaN samples from the array of features.'.format(num_nans))
         return self.features[collapsed_rows]
 
     def _group_check(self):
@@ -386,7 +382,16 @@ class StructuralDescriptor:
         # initialize the data matrix
         self.features = numpy.empty((self.size, self.n_features), dtype=dtype)
 
+    def _find_nans(self):
+        isfinite = numpy.isfinite(self.features)
+        collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
+        num_nans = self.size - numpy.sum(collapsed_rows)
+        return collapsed_rows, num_nans        
+
     def _handle_nans(self):
+        _, num_nans = self._find_nans()
+        if num_nans > 0 and self.verbose:
+            print('Warning: found {} NaN samples in the array of features.'.format(num_nans))
         if not self._accept_nans:
             self.features = self.discard_nans()
 
