@@ -108,13 +108,13 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
             pos_all_n = pos_all[n].T
             npart = len(self.groups[0][n])
             for ln, l in enumerate(self.grid):
-                feats = compute.smoothed_ql_all(l,
-                                                self._extended_neighbors[n],
-                                                self._extended_neighbors_number[n],
-                                                pos_0_n, pos_all_n,
-                                                spe_0_id[n], spe_all_id[n],
-                                                box[n], standard_cutoffs,
-                                                self.exponent)
-                self.features[start: start+npart, ln] = feats
+                feat_n = compute.smoothed_ql_all(l,
+                                                 self._extended_neighbors[n],
+                                                 self._extended_neighbors_number[n],
+                                                 pos_0_n, pos_all_n,
+                                                 spe_0_id[n], spe_all_id[n],
+                                                 box[n], standard_cutoffs,
+                                                 self.exponent)
+                self.features[start: start+npart, ln] = feat_n
             start += npart
         return self.features

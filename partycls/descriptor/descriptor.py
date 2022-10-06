@@ -440,6 +440,7 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         """
         n_frames = len(self.trajectory)
         # self._extended_neighbors = [[] for _ in range(n_frames)]
+        # TODO: directly initialize lists with arrays at the right size
         self._extended_neighbors = []
         self._extended_neighbors_number = []
         #  indices

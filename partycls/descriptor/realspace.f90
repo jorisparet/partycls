@@ -162,7 +162,69 @@ CONTAINS
     END DO
   END SUBROUTINE smoothed_angular_histogram
 
+
+  SUBROUTINE smoothed_angular_histogram_all(idx_0, pos_0, pos_all, spe_0, spe_all, & 
+                                           neigh, neigh_number, cutoffs, pow, box, &
+                                           nbins, dtheta, hist)
+    ! Parameters
+    INTEGER(8), INTENT(in)  :: idx_0(:), spe_0(:), spe_all(:), neigh(:,:), neigh_number(:)
+    INTEGER(8), INTENT(in)  :: pow, nbins
+    REAL(8), INTENT(in)     :: pos_0(:,:), pos_all(:,:), cutoffs(:,:), box(:), dtheta
+    REAL(8), INTENT(out)    :: hist(SIZE(idx_0), nbins)
+    ! Variables
+    INTEGER(8) :: i, j, k, idx_i, idx_j, idx_k, nn_i, bin
+    REAL(8)    :: r_ij(SIZE(box)), r_ik(SIZE(box)), d_ij, d_ik, rc_ij, rc_ik, hbox(SIZE(box)), w_i
+    REAL(8)    :: dotprod, prod, costheta, theta
+    ! Computation
+    hbox = box / 2.0
+    hist = 0.0
+    DO i=1,SIZE(idx_0)
+      idx_i = idx_0(i) + 1 ! python index shift
+      nn_i = neigh_number(i)
+      ! first neighbor: j
+      DO j=1,nn_i
+        idx_j = neigh(i,j) + 1 ! python index shift
+        IF (idx_j /= idx_i) THEN ! pass if j=i
+          r_ij(:) = pos_0(:,i) - pos_all(:,idx_j)
+          CALL pbc(r_ij, box, hbox)
+          d_ij = SQRT(SUM(r_ij**2))
+          ! Second neighbor: k
+          DO k=1,nn_i
+            idx_k = neigh(i,k) + 1 ! python index shift
+            IF (idx_k /= idx_i .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
+              r_ik(:) = pos_0(:,i) - pos_all(:,idx_k)
+              CALL pbc(r_ik, box, hbox)
+              d_ik = SQRT(SUM(r_ik**2))
+              ! angle (k,i,j)
+              dotprod = SUM(r_ij*r_ik)
+              prod = d_ij*d_ik
+              costheta = dotprod/prod
+              ! enforce cos(theta) >= -1
+              IF (costheta <= 0.0) THEN
+                costheta = DMAX1(-1.0_8,costheta)
+              END IF
+              ! enforce cos(theta) <= 1
+              IF (costheta > 0.0) THEN
+                costheta = DMIN1(1.0_8,costheta)
+              END IF
+              theta = ACOS(costheta)*180.0/pi
+              ! binning
+              bin = FLOOR( theta/dtheta ) + 1
+              IF (bin <= nbins) THEN
+                ! weights
+                rc_ij = cutoffs(spe_0(i), spe_all(idx_j))
+                rc_ik = cutoffs(spe_0(i), spe_all(idx_k))
+                w_i = EXP( -( (d_ij/rc_ij)**pow + (d_ik/rc_ik)**pow ) )
+                hist(i,bin) = hist(i,bin) + w_i
+              END IF
+            END IF
+          END DO
+        END IF
+      END DO
+    END DO
+  END SUBROUTINE smoothed_angular_histogram_all
   
+
   SUBROUTINE tetrahedrality(idx_i, pos_i, pos_all, neigh_i, box, tetra)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, neigh_i(:)
@@ -421,16 +483,16 @@ CONTAINS
   
 
   !!!!!!!!!! SMOOTHED COMPLEX VECTORS !!!!!!!!!!
-  FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, cutoffs, pow, box) RESULT(qlm)
+  FUNCTION smoothed_qlm(l, neigh_i, pos_i, pos_all, spe_i, spe_all, cutoffs, pow, box) RESULT(q_lm)
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh_i(:), spe_i, spe_all(:), pow
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
-    COMPLEX(8)             :: qlm(2*l+1), harm(SIZE(neigh_i))
+    COMPLEX(8)             :: q_lm(2*l+1), harm(SIZE(neigh_i))
     REAL(8)                :: r_xyz(3, SIZE(neigh_i)), r_sph(3, SIZE(neigh_i))
     REAL(8)                :: d_ij(SIZE(neigh_i)), rc_ij, w_i(SIZE(neigh_i))
     INTEGER(8)             :: j, idx_j, m
-    qlm(:) = (0.0, 0.0)
+    q_lm(:) = (0.0, 0.0)
     ! r_ij (cartesian)
     DO j=1,SIZE(neigh_i)
       idx_j = neigh_i(j) + 1 ! python index shift 
@@ -451,54 +513,50 @@ CONTAINS
     r_sph = cartesian_to_spherical(r_xyz)
     DO m=0,2*l
       harm = ylm(l, m-l, r_sph(2,:), r_sph(3,:))
-      qlm(m+1) = qlm(m+1) + DOT_PRODUCT(w_i, harm)
+      q_lm(m+1) = q_lm(m+1) + DOT_PRODUCT(w_i, harm)
     END DO
-    qlm = qlm / SUM(w_i)
+    q_lm = q_lm / SUM(w_i)
   END FUNCTION smoothed_qlm
 
-  SUBROUTINE smoothed_qlm_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, cutoffs, pow, box, qlm)
+  SUBROUTINE smoothed_qlm_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
     ! TODO: fortran-wise it would be better to have neigh as (nmax, ndim) array
     ! parameters
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
     REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
-    COMPLEX(8), INTENT(inout) :: qlm(2*l+1, SIZE(neigh,2))
+    COMPLEX(8), INTENT(inout) :: q_lm(2*l+1, SIZE(neigh,2))
     COMPLEX(8)              :: harm(SIZE(neigh,2))
     REAL(8)                :: r_xyz(SIZE(pos,1), SIZE(neigh,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
     ! All these arrays are cut down to size(neigh,2) (nmax)
     REAL(8)                :: d_ij(SIZE(neigh,2)), rc_ij, w_i(SIZE(neigh,2))
-    INTEGER(8)             :: i, j, k, idx_j, m, nmax
+    INTEGER(8)             :: i, j, k, idx_j, m, nn_i
     DO i = 1,SIZE(pos,2)
-       qlm(:,i) = (0.0, 0.0)
-       nmax = neigh_number(i)
+       q_lm(:,i) = (0.0, 0.0)
+       nn_i = neigh_number(i)
        ! r_ij (cartesian)
-       DO j=1,nmax
+       DO j=1,nn_i
           ! TODO: here it would be better (j,i)
           idx_j = neigh(i,j) + 1 ! python index shift 
           r_xyz(:,j) = pos_all(:,idx_j)          
        END DO
        DO k = 1,SIZE(r_xyz,1)
-          r_xyz(k,1:nmax) = r_xyz(k,1:nmax) - pos(k,i)
+          r_xyz(k,1:nn_i) = r_xyz(k,1:nn_i) - pos(k,i)
        END DO
-       !r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
-       !r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
-       !r_xyz(3,:) = r_xyz(3,:) - pos_i(3)
-       CALL pbc_(r_xyz(:,1:nmax), box)
+       CALL pbc_(r_xyz(:,1:nn_i), box)
        ! weights
-       d_ij(1:nmax) = SQRT(SUM(r_xyz(:, 1:nmax)**2, 1))
-       !print*, i, d_ij(1:nmax)
-       DO j = 1,nmax
+       d_ij(1:nn_i) = SQRT(SUM(r_xyz(:, 1:nn_i)**2, 1))
+       DO j = 1,nn_i
           idx_j = neigh(i,j) + 1 ! python index shift
           rc_ij = cutoffs(spe(i), spe_all(idx_j))
           w_i(j) = EXP(-(d_ij(j) / rc_ij)**pow)
        END DO
        ! r_ij (spherical)
-       r_sph(:,1:nmax) = cartesian_to_spherical(r_xyz(:,1:nmax))
+       r_sph(:,1:nn_i) = cartesian_to_spherical(r_xyz(:,1:nn_i))
        DO m = 0,2*l
-          harm = ylm(l, m-l, r_sph(2,1:nmax), r_sph(3,1:nmax))
-          qlm(m+1,i) = qlm(m+1,i) + DOT_PRODUCT(w_i(1:nmax), harm(1:nmax))
+          harm = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
+          q_lm(m+1,i) = q_lm(m+1,i) + DOT_PRODUCT(w_i(1:nn_i), harm(1:nn_i))
        END DO
-       qlm(:,i) = qlm(:,i) / SUM(w_i(1:nmax))
+       q_lm(:,i) = q_lm(:,i) / SUM(w_i(1:nn_i))
     END DO
   END SUBROUTINE smoothed_qlm_all
   

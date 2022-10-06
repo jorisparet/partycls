@@ -96,17 +96,20 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         self._compute_extended_neighbors(extended_cutoffs)
         # computation
         standard_cutoffs = standard_cutoffs.reshape(n_species, n_species).T
+        start = 0
         for n in self._trange(n_frames):
+            pos_0_n = pos_0[n].T
             pos_all_n = pos_all[n].T
-            for i in range(len(self.groups[0][n])):
-                hist_n_i = compute.smoothed_angular_histogram(idx_0[n][i],
-                                                              pos_0[n][i], pos_all_n,
-                                                              spe_0_id[n][i], spe_all_id[n],
-                                                              self._extended_neighbors[n][i],
-                                                              standard_cutoffs,
-                                                              self.exponent, box[n],
-                                                              self.n_features,
-                                                              self.dtheta)
-                self.features[row] = hist_n_i
-                row += 1
+            npart = len(self.groups[0][n])
+            feat_n = compute.smoothed_angular_histogram_all(idx_0[n],
+                                                            pos_0_n, pos_all_n,
+                                                            spe_0_id[n], spe_all_id[n],
+                                                            self._extended_neighbors[n],
+                                                            self._extended_neighbors_number[n],
+                                                            standard_cutoffs,
+                                                            self.exponent, box[n],
+                                                            self.n_features,
+                                                            self.dtheta)
+            self.features[start: start+npart, :] = feat_n
+            start += npart
         return self.features
