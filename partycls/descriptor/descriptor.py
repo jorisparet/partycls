@@ -439,7 +439,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         the nearest neighbors are clearly defined on the basis of various methods.
         """
         n_frames = len(self.trajectory)
-        self._extended_neighbors = [[] for _ in range(n_frames)]
+        # self._extended_neighbors = [[] for _ in range(n_frames)]
+        self._extended_neighbors = []
+        self._extended_neighbors_number = []
         #  indices
         idx_0 = self.dump('_index', group=0)
         idx_1 = self.dump('_index', group=1)
@@ -454,9 +456,11 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         box = self.trajectory.dump('cell.side')
         #  cutoffs squared
         cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
+        # TODO: why T?
         cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
         for n in range(n_frames):
             n_0 = len(idx_0[n])
+            # TODO: now hard coded 100?
             neighbors = numpy.zeros((n_0, 100), dtype=numpy.int64, order='F')
             num_neighbors = numpy.zeros(n_0, dtype=numpy.int64)
             pos_0_n = pos_0[n].T
@@ -466,8 +470,12 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                                                          spe_0_id[n], spe_1_id[n],
                                                          box[n], cutoffs_sq,
                                                          num_neighbors, neighbors)
-            for i, neigh_i in enumerate(neighbors):
-                self._extended_neighbors[n].append(neigh_i[0:num_neighbors[i]])
+            # TODO: add some assertion test here (unless there are checks in f90)
+            self._extended_neighbors.append(neighbors)
+            self._extended_neighbors_number.append(num_neighbors)
+            # TODO: provide function accessor to neighbors in list form as below, though slow
+            #for i, neigh_i in enumerate(neighbors):
+            #    self._extended_neighbors[n].append(neigh_i[0:num_neighbors[i]])
 
 
 class DummyDescriptor(StructuralDescriptor):

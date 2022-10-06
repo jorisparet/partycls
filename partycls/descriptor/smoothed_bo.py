@@ -99,17 +99,22 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         extended_cutoffs = self.cutoff_enlargement * standard_cutoffs
         self._compute_extended_neighbors(extended_cutoffs)
         # computation
+        # TODO: it should not be necessary to transpose this
         standard_cutoffs = standard_cutoffs.reshape(n_species, n_species).T
+        start = 0
         for n in self._trange(n_frames):
+            # TODO: perhaps no transpose is better
+            pos_0_n = pos_0[n].T
             pos_all_n = pos_all[n].T
-            for i in range(len(self.groups[0][n])):
-                hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
-                for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.smoothed_ql(l, self._extended_neighbors[n][i], 
-                                                       pos_0[n][i], pos_all_n,
-                                                       spe_0_id[n][i], spe_all_id[n],
-                                                       box[n], standard_cutoffs,
-                                                       self.exponent)
-                self.features[row] = hist_n_i
-                row += 1
+            npart = len(self.groups[0][n])
+            for ln, l in enumerate(self.grid):
+                feats = compute.smoothed_ql_all(l,
+                                                self._extended_neighbors[n],
+                                                self._extended_neighbors_number[n],
+                                                pos_0_n, pos_all_n,
+                                                spe_0_id[n], spe_all_id[n],
+                                                box[n], standard_cutoffs,
+                                                self.exponent)
+                self.features[start: start+npart, ln] = feats
+            start += npart
         return self.features

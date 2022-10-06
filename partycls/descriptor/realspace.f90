@@ -455,6 +455,52 @@ CONTAINS
     qlm = qlm / SUM(w_i)
   END FUNCTION smoothed_qlm
 
+  SUBROUTINE smoothed_qlm_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, cutoffs, pow, box, qlm)
+    ! TODO: fortran-wise it would be better to have neigh as (nmax, ndim) array
+    ! parameters
+    INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
+    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), cutoffs(:,:), box(:)
+    ! variables
+    COMPLEX(8), INTENT(inout) :: qlm(2*l+1, SIZE(pos,2))
+    COMPLEX(8)              :: harm(SIZE(pos,2))
+    REAL(8)                :: r_xyz(SIZE(pos,1), SIZE(pos,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
+    ! TODO: all these arrays can be cut down to size(neigh,2) (nmax)
+    REAL(8)                :: d_ij(SIZE(pos,2)), rc_ij, w_i(SIZE(pos,2))
+    INTEGER(8)             :: i, j, k, idx_j, m, nmax
+    DO i = 1,SIZE(pos,2)
+       qlm(:,i) = (0.0, 0.0)
+       nmax = neigh_number(i)
+       ! r_ij (cartesian)
+       DO j=1,nmax
+          ! TODO: here it would be better (j,i)
+          idx_j = neigh(i,j) + 1 ! python index shift 
+          r_xyz(:,j) = pos_all(:,idx_j)          
+       END DO
+       DO k = 1,SIZE(r_xyz,1)
+          r_xyz(k,1:nmax) = r_xyz(k,1:nmax) - pos(k,i)
+       END DO
+       !r_xyz(1,:) = r_xyz(1,:) - pos_i(1)
+       !r_xyz(2,:) = r_xyz(2,:) - pos_i(2)
+       !r_xyz(3,:) = r_xyz(3,:) - pos_i(3)
+       CALL pbc_(r_xyz(:,1:nmax), box)
+       ! weights
+       d_ij(1:nmax) = SQRT(SUM(r_xyz(:, 1:nmax)**2, 1))
+       !print*, i, d_ij(1:nmax)
+       DO j = 1,nmax
+          idx_j = neigh(i,j) + 1 ! python index shift
+          rc_ij = cutoffs(spe(i), spe_all(idx_j))
+          w_i(j) = EXP(-(d_ij(j) / rc_ij)**pow)
+       END DO
+       ! r_ij (spherical)
+       r_sph(:,1:nmax) = cartesian_to_spherical(r_xyz(:,1:nmax))
+       DO m = 0,2*l
+          harm = ylm(l, m-l, r_sph(2,1:nmax), r_sph(3,1:nmax))
+          qlm(m+1,i) = qlm(m+1,i) + DOT_PRODUCT(w_i(1:nmax), harm(1:nmax))
+       END DO
+       qlm(:,i) = qlm(:,i) / SUM(w_i(1:nmax))
+    END DO
+  END SUBROUTINE smoothed_qlm_all
+  
 
   !!!!!!!!!! SMOOTHED STEINHARDT !!!!!!!!!!
   FUNCTION smoothed_ql(l, neigh_i, pos_i, pos_all, spe_i, spe_all, box, cutoffs, pow) RESULT(q_l)
@@ -466,6 +512,19 @@ CONTAINS
     q_l = rotational_invariant(l, q_lm)  
   END FUNCTION smoothed_ql
 
+
+  SUBROUTINE smoothed_ql_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, box, cutoffs, pow, q_l)
+    ! neigh: (neigh_max, npart)
+    INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
+    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), cutoffs(:,:), box(:)
+    COMPLEX(8)             :: q_lm(2*l+1,SIZE(pos,2))
+    REAL(8), INTENT(out)   :: q_l(SIZE(pos,2))
+    INTEGER                :: i
+    CALL smoothed_qlm_all(l, neigh, neigh_number, pos, pos_all, spe, spe_all, cutoffs, pow, box, q_lm)
+    DO i = 1,SIZE(pos,2)
+       q_l(i) = rotational_invariant(l, q_lm(:,i))
+    END DO
+  END SUBROUTINE smoothed_ql_all
 
   !!!!!!!!!! DISTANCE-DEPENDENT COMPLEX VECTORS !!!!!!!!!!
   FUNCTION radial_qlm(l, r, delta, exponent, neigh_i, pos_i, pos_all, box) RESULT(qlmrd)
