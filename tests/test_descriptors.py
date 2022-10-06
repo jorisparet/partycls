@@ -100,23 +100,23 @@ class Test(unittest.TestCase):
         D = AngularStructuralDescriptor(traj)
         D._compute_extended_neighbors(cutoffs)
         indices = D.dump('_index', group=0)
-        for i in indices[0]:
+        for i_, i in enumerate(indices[0]):
             ni = set(traj[0].particle[i].nearest_neighbors)
-            ni_ex = ni_ex = set(D._extended_neighbors[0][i])
+            ni_ex = ni_ex = set(D._extended_neighbors[0][i_][0:D._extended_neighbors_number[0][i_]])
             # neighbors must be the same
             self.assertEqual(ni, ni_ex, 'neighbors are different')
         # full descriptor (extended cutoffs)
         extended_cutoffs = 1.3 * numpy.array(cutoffs)
         D._compute_extended_neighbors(extended_cutoffs)
         ni = set(traj[0].particle[0].nearest_neighbors)
-        ni_ex = set(D._extended_neighbors[0][0])
+        ni_ex = set(D._extended_neighbors[0][0][0:D._extended_neighbors_number[0][0]])
         self.assertEqual(ni ^ ni_ex, {336, 341}, 'wrong extended neighbors')
         # partial descriptor 1-1 (standard cutoffs)
         D.add_filter("species == '1'", group=0)
         D.add_filter("species == '1'", group=1)
         D._compute_extended_neighbors(cutoffs)
         ni_full = set(traj[0].particle[0].nearest_neighbors)
-        ni_11_ex = set(D._extended_neighbors[0][0])
+        ni_11_ex = set(D._extended_neighbors[0][0][0:D._extended_neighbors_number[0][0]])
         ni_11_filtered = ni_full ^ ni_11_ex
         self.assertEqual(ni_11_filtered, {670, 743, 957, 1803},
                          'filtered neighbors are different')
@@ -125,7 +125,7 @@ class Test(unittest.TestCase):
         D.add_filter("species == '2'", group=1)
         D._compute_extended_neighbors(cutoffs)
         ni_full = set(traj[0].particle[0].nearest_neighbors)
-        ni_12_ex = set(D._extended_neighbors[0][0])
+        ni_12_ex = set(D._extended_neighbors[0][0][0:D._extended_neighbors_number[0][0]])
         ni_12_filtered = ni_full ^ ni_12_ex
         self.assertEqual(ni_12_filtered, {209, 345, 513, 625},
                          'filtered neighbors are different')
