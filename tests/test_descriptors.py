@@ -44,9 +44,11 @@ class Test(unittest.TestCase):
         # compare original neighbors and filtered neighbors
         original_neighbors = traj[0].dump('neighbors', subset=filter_g0)
         filtered_neighbors = D._neighbors[0]
+        neigh_numbers = D._neighbors_number[0]
         for i in range(len(D.groups[0][0])):
+            nn_i = neigh_numbers[i]
             original_set = set(original_neighbors[i])
-            filtered_set = set(filtered_neighbors[i])
+            filtered_set = set(filtered_neighbors[i][0:nn_i])
             # neighbors that were filtered out in `filtered_neighbors`
             filtered_out = filtered_set ^ original_set
             # are the two sets identical if we include filtered-out neighbors again?
@@ -71,7 +73,8 @@ class Test(unittest.TestCase):
         # neighbors and filtered neighbors
         i = 12
         ni = traj[0].particle[i].nearest_neighbors
-        ni_filtered = D._neighbors[0][i]
+        nn_i_filtered = D._neighbors_number[0][i]
+        ni_filtered = D._neighbors[0][i][0:nn_i_filtered]
         # neighbors of neighbors (with and without filters)
         n_ni = []
         for j in ni:
@@ -156,7 +159,6 @@ class Test(unittest.TestCase):
         len_new = len(D.grid)
         self.assertGreater(len_new, len_old, 'incorrect grid size')
 
-
     def test_angular(self):
         # Average distribution
         D = BondAngleDescriptor(self.traj, dtheta=3.0)
@@ -231,7 +233,6 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(float32(D.average[7]), float32(0.28741154),
                          places=8, msg='wrong average value for qs_7 (not converged)')
         
-    
     def test_smoothed_ba(self):
         # compute the descriptor on particles A for better statistics
         D = SmoothedBondAngleDescriptor(self.traj)
