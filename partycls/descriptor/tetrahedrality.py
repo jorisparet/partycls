@@ -71,20 +71,23 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
         self._manage_nearest_neighbors()
         self._filter_neighbors()
         n_frames = len(self.trajectory)
-        row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')
         idx_0 = self.dump('_index', group=0)
         box = self.trajectory.dump('cell.side')
         # computation
+        start = 0
         for n in self._trange(n_frames):
+            pos_0_n = pos_0[n].T
             pos_all_n = pos_all[n].T
-            for i in range(len(self.groups[0][n])):
-                tetra_i = compute.tetrahedrality(idx_0[n][i],
-                                                 pos_0[n][i], pos_all_n,
-                                                 self._neighbors[n][i], box[n])
-                self.features[row] = tetra_i
-                row += 1
+            npart = len(self.groups[0][n])
+            feat_n = compute.tetrahedrality_all(idx_0[n],
+                                                pos_0_n, pos_all_n,
+                                                self._neighbors[n],
+                                                self._neighbors_number[n],
+                                                box[n])
+            self.features[start: start+npart, 0] = feat_n
+            start += npart
         self._handle_nans()
         return self.features
