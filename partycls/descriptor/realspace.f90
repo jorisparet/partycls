@@ -455,14 +455,14 @@ CONTAINS
   END FUNCTION qlm
 
   !!!!!!!!!! COMPLEX VECTORS (ALL) !!!!!!!!!!
-  SUBROUTINE qlm_all(l, neigh, neigh_number, pos, pos_all, box, qlm)
+  SUBROUTINE qlm_all(l, neigh, neigh_number, pos, pos_all, box, q_lm)
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:)
     REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), box(:)
-    COMPLEX(8)             :: qlm(2*l+1, SIZE(neigh,2)), harm(SIZE(neigh,2))
+    COMPLEX(8)             :: q_lm(2*l+1, SIZE(neigh,2)), harm(SIZE(neigh,2))
     REAL(8)                :: r_xyz(3, SIZE(neigh,2)), r_sph(3, SIZE(neigh,2))
     INTEGER(8)             :: i, j, m, nmax, k, idx_j
     DO i = 1,SIZE(pos,2)
-       qlm(:,i) = (0.0, 0.0)
+       q_lm(:,i) = (0.0, 0.0)
        nmax = neigh_number(i)
        DO j=1,nmax
           ! TODO: here it would be better (j,i)
@@ -477,9 +477,9 @@ CONTAINS
        r_sph(:,1:nmax) = cartesian_to_spherical(r_xyz(:,1:nmax))
        DO m=0,2*l
           harm = ylm(l, m-l, r_sph(2,1:nmax), r_sph(3,1:nmax))
-          qlm(m+1,i) = qlm(m+1,i) + SUM(harm(1:nmax))
+          q_lm(m+1,i) = q_lm(m+1,i) + SUM(harm(1:nmax))
        END DO
-       qlm(:,i) = qlm(:,i) / nmax
+       q_lm(:,i) = q_lm(:,i) / nmax
     END DO
   END SUBROUTINE qlm_all
 
