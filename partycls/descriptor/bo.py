@@ -89,20 +89,24 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         self._manage_nearest_neighbors()
         self._filter_neighbors()
         n_frames = len(self.trajectory)
-        row = 0
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
         pos_all = self.trajectory.dump('position')
         box = self.trajectory.dump('cell.side')
         # computation
+        start = 0
         for n in self._trange(n_frames):
+            pos_0_n = pos_0[n].T
             pos_all_n = pos_all[n].T
-            for i in range(len(self.groups[0][n])):
-                hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
-                for ln, l in enumerate(self.grid):
-                    hist_n_i[ln] = compute.ql(l, self._neighbors[n][i], pos_0[n][i], pos_all_n, box[n])
-                self.features[row] = hist_n_i
-                row += 1
+            npart = len(self.groups[0][n])
+            for ln, l in enumerate(self.grid):
+                feat_n = compute.ql_all(l,
+                                       self._neighbors[n],
+                                       self._neighbors_number[n],
+                                       pos_0_n, pos_all_n,
+                                       box[n])
+                self.features[start: start+npart, ln] = feat_n
+            start += npart
         self._handle_nans()
         return self.features
 

@@ -467,6 +467,19 @@ class AngularStructuralDescriptor(StructuralDescriptor):
                     selected_neigh_pi = list(neigh_pi & idx_1_n)
                     self._neighbors[n].append(selected_neigh_pi)
 
+        # Create a list of arrays neighbors list
+        self._neighbors_number = []
+        for n in range(len(self._neighbors)):
+            npart = len(self.groups[0][n])
+            _neighbors = numpy.ndarray((npart, 100), dtype=numpy.int64)
+            _neighbors_number = numpy.ndarray(npart, dtype=numpy.int64)
+            for i in range(npart):
+                nmax = len(self._neighbors[n][i])
+                _neighbors[i, 0:nmax] = self._neighbors[n][i][0:nmax]
+                _neighbors_number[i] = nmax
+            self._neighbors[n] = _neighbors
+            self._neighbors_number.append(_neighbors_number)
+
     def _filter_subsidiary_neighbors(self):
         """
         Create a subsidiary list of neighbors for the neighbors of

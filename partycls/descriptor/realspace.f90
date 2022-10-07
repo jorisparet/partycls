@@ -371,7 +371,7 @@ CONTAINS
   END FUNCTION ylm
   
 
-  !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
+  !!!!!!!!!! COMPLEX VECTORS (INDIVIDUAL) !!!!!!!!!!
   FUNCTION qlm(l, neigh_i, pos_i, pos_all, box)
     INTEGER(8), INTENT(in) :: l, neigh_i(:)
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), box(:)
@@ -397,7 +397,37 @@ CONTAINS
     qlm = qlm / SIZE(neigh_i)
   END FUNCTION qlm
 
-  
+  !!!!!!!!!! COMPLEX VECTORS (ALL) !!!!!!!!!!
+  SUBROUTINE qlm_all(l, neigh, neigh_number, pos, pos_all, box, qlm)
+    INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:)
+    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), box(:)
+    COMPLEX(8)             :: qlm(2*l+1, SIZE(neigh,2)), harm(SIZE(neigh,2))
+    REAL(8)                :: r_xyz(3, SIZE(neigh,2)), r_sph(3, SIZE(neigh,2))
+    INTEGER(8)             :: i, j, m, nmax, k, idx_j
+    DO i = 1,SIZE(pos,2)
+       qlm(:,i) = (0.0, 0.0)
+       nmax = neigh_number(i)
+       DO j=1,nmax
+          ! TODO: here it would be better (j,i)
+          idx_j = neigh(i,j) + 1 ! python index shift 
+          r_xyz(:,j) = pos_all(:,idx_j)          
+       END DO
+       DO k = 1,SIZE(r_xyz,1)
+          r_xyz(k,1:nmax) = r_xyz(k,1:nmax) - pos(k,i)
+       END DO
+       CALL pbc_(r_xyz(:,1:nmax), box)
+       ! r_ij (spherical)
+       r_sph(:,1:nmax) = cartesian_to_spherical(r_xyz(:,1:nmax))
+       DO m=0,2*l
+          harm = ylm(l, m-l, r_sph(2,1:nmax), r_sph(3,1:nmax))
+          qlm(m+1,i) = qlm(m+1,i) + SUM(harm(1:nmax))
+       END DO
+       qlm(:,i) = qlm(:,i) / nmax
+    END DO
+  END SUBROUTINE qlm_all
+
+
+
   !!!!!!!!!! ROTATIONAL INVARIANT OF ORDER l !!!!!!!!!!
   ! difference at the ~8th digit compared to Python 
   FUNCTION rotational_invariant(l, q_lm) RESULT(q_l)
@@ -409,7 +439,7 @@ CONTAINS
   END FUNCTION rotational_invariant
     
 
-  !!!!!!!!!! STEINHARDT !!!!!!!!!!
+  !!!!!!!!!! STEINHARDT (INDIVIDUAL) !!!!!!!!!!
   FUNCTION ql(l, neigh_i, pos_i, pos_all, box) RESULT(q_l)
     INTEGER(8), INTENT(in) :: l, neigh_i(:)
     REAL(8), INTENT(in)    :: pos_i(:), pos_all(:,:), box(:)    
@@ -419,6 +449,21 @@ CONTAINS
     q_l = rotational_invariant(l, q_lm)  
   END FUNCTION ql
   
+
+  !!!!!!!!!! STEINHARDT (ALL) !!!!!!!!!!
+  SUBROUTINE ql_all(l, neigh, neigh_number, pos, pos_all, box, q_l)
+    INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:)
+    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), box(:)    
+    COMPLEX(8)             :: q_lm(2*l+1,SIZE(pos,2))
+    REAL(8), INTENT(out)   :: q_l(SIZE(pos,2))
+    INTEGER(8)             :: i
+    CALL qlm_all(l, neigh, neigh_number, pos, pos_all, box, q_lm)
+    DO i = 1,SIZE(pos,2)
+       q_l(i) = rotational_invariant(l, q_lm(:,i))
+    END DO
+  END SUBROUTINE ql_all
+
+
 !  !!!!!!!!!! COMPLEX VECTORS !!!!!!!!!!
 !  ! For the generalization in Fortran of Lechner-Dellago 
 !  FUNCTION qlm(l, neigh_i, pos_i, pos_j, box)
