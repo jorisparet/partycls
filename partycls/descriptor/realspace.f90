@@ -53,7 +53,7 @@ CONTAINS
     END DO
   END SUBROUTINE
 
-  
+  !!!!!!!!!! ANGULAR HISTOGRAM (INDIVIDUAL) !!!!!!!!!!
   SUBROUTINE angular_histogram(idx_i, pos_i, pos_all, neigh_i, box, nbins, dtheta, hist)
     ! Parameters
     INTEGER(8), INTENT(in)  :: idx_i, neigh_i(:), nbins
@@ -102,7 +102,64 @@ CONTAINS
         END DO
       END IF
     END DO
-  END SUBROUTINE
+  END SUBROUTINE angular_histogram
+
+
+  !!!!!!!!!! ANGULAR HISTOGRAM (ALL) !!!!!!!!!!
+  SUBROUTINE angular_histogram_all(idx_0, pos_0, pos_all, neigh, neigh_number, &
+                                   box, nbins, dtheta, hist)
+    ! Parameters
+    INTEGER(8), INTENT(in)  :: idx_0(:), neigh(:,:), neigh_number(:), nbins
+    REAL(8), INTENT(in)     :: pos_0(:,:), pos_all(:,:), box(:), dtheta
+    INTEGER(8), INTENT(out) :: hist(SIZE(idx_0), nbins)
+    ! Variables
+    INTEGER(8) :: i, j, k, idx_i, idx_j, idx_k, nn_i, bin
+    REAL(8)    :: r_ij(SIZE(box)), r_ik(SIZE(box)), d_ij, d_ik, hbox(SIZE(box))
+    REAL(8)    :: dotprod, prod, costheta, theta
+    ! Computation
+    hbox = box / 2.0
+    hist = 0
+    DO i=1,SIZE(idx_0)
+      idx_i = idx_0(i) + 1 ! python index shift
+      nn_i = neigh_number(i)
+      ! first neighbor: j
+      DO j=1,nn_i
+        idx_j = neigh(i,j) + 1 ! python index shift
+        IF (idx_j /= idx_i) THEN ! pass if j=i
+          r_ij(:) = pos_0(:,i) - pos_all(:,idx_j)
+          CALL pbc(r_ij, box, hbox)
+          d_ij = SQRT(SUM(r_ij**2))
+          ! second neighbor: k
+          DO k=1,nn_i
+            idx_k = neigh(i,k) + 1 ! python index shift
+            IF (idx_k /= idx_i .AND. idx_k /= idx_j) THEN ! pass if k=i or k=j
+              r_ik(:) = pos_0(:,i) - pos_all(:,idx_k)
+              CALL pbc(r_ik, box, hbox)
+              d_ik = SQRT(SUM(r_ik**2))
+              ! angle (k,i,j)
+              dotprod = SUM(r_ij*r_ik)
+              prod = d_ij*d_ik
+              costheta = dotprod/prod
+              ! enforce cos(theta) >= -1
+              IF (costheta <= 0.0) THEN
+                costheta = DMAX1(-1.0_8,costheta)
+              END IF
+              ! enforce cos(theta) <= 1
+              IF (costheta > 0.0) THEN
+                costheta = DMIN1(1.0_8,costheta)
+              END IF
+              theta = ACOS(costheta)*180.0/pi
+              ! binning
+              bin = FLOOR( theta/dtheta ) + 1
+              IF (bin <= nbins) THEN
+                hist(i,bin) = hist(i,bin) + 1
+              END IF
+            END IF
+          END DO
+        END IF
+      END DO
+    END DO
+  END SUBROUTINE angular_histogram_all
 
   
   SUBROUTINE smoothed_angular_histogram(idx_i, pos_i, pos_all, spe_i, spe_all, neigh_i, &
