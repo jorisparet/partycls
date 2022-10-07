@@ -409,12 +409,24 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     
     trajectory : str or an instance of `Trajectory`.
         Trajectory on which the structural descriptor will be computed.
+
+    Attributes
+    ----------
+
+    neighbors_boost : float, default: 1.5
+        Scaling factor to estimate the number of neighbors relative to a
+        an ideal gas with the same density. This is used internally to set
+        the dimensions of lists of neighbors. A too small number creates a
+        risk of overfilling the lists of neighbors, and a too large number
+        increases memory usage.
     """
 
     def __init__(self, trajectory, accept_nans=True, verbose=False):
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)
+        # scaling factor for neighbors array size
+        self.neighbors_boost = 1.5
 
     def _manage_nearest_neighbors(self):
         """
@@ -471,6 +483,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         self._neighbors_number = []
         for n in range(len(self._neighbors)):
             npart = len(self.groups[0][n])
+            # TODO: 100 should not be hardcoded but we don't necessarily have
+            # a reference cutoff here to evaluate an appropriate number
+            # (e.g. with Voronoi neighbors or neighbors read from file)
             _neighbors = numpy.ndarray((npart, 100), dtype=numpy.int64)
             _neighbors_number = numpy.ndarray(npart, dtype=numpy.int64)
             for i in range(npart):
@@ -526,10 +541,14 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
         # TODO: why T?
         cutoffs_sq = cutoffs_sq.reshape(n_species, n_species).T
+        # array size for neighbors
+        rho = max([sys.density for sys in self.trajectory])
+        rmax = max(cutoffs)
+        nmax_ideal = 4.0 * numpy.pi * rho * rmax**2
+        nn_max = int(self.neighbors_boost * nmax_ideal)
         for n in range(n_frames):
             n_0 = len(idx_0[n])
-            # TODO: now hard coded 100?
-            neighbors = numpy.zeros((n_0, 100), dtype=numpy.int64, order='F')
+            neighbors = numpy.zeros((n_0, nn_max), dtype=numpy.int64, order='F')
             num_neighbors = numpy.zeros(n_0, dtype=numpy.int64)
             pos_0_n = pos_0[n].T
             pos_1_n = pos_1[n].T
