@@ -85,8 +85,9 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
         for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
+                nn_i = self._neighbors_number[n][i]
                 tetra_i = self.tetrahedra(i, 
-                                          self._neighbors[n][i],
+                                          list(self._neighbors[n][i][0:nn_i]),
                                           self._subsidiary_neighbors[n][i])
                 theta_i = compute.compactness(pos_all_n, tetra_i.T, radii[n], box[n])
                 self.features[row] = theta_i

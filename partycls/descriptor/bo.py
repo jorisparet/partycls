@@ -203,9 +203,10 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
                 hist_n_i = numpy.empty_like(self.grid, dtype=numpy.float64)
+                nn_i = self._neighbors_number[n][i]
                 for ln, l in enumerate(self.grid):
                     hist_n_i[ln] = self._qbar_l(l,
-                                                self._neighbors[n][i],
+                                                self._neighbors[n][i][0:nn_i],
                                                 self._subsidiary_neighbors[n][i],
                                                 pos_0[n][i], pos_all_n, box[n])
                     # TODO: improve Fortran calculation for Lechner-Dellago

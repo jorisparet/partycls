@@ -491,9 +491,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         self._subsidiary_neighbors = [[] for n in range(n_frames)]
         for n, system in enumerate(self.trajectory):
             idx_1_n = set(idx_1[n])
-            for neigh_pi in self._neighbors[n]:
+            for neigh_pi, nn_pi in zip(self._neighbors[n], self._neighbors_number[n]):
                 selected_neigh_neigh_pi = []
-                for j in neigh_pi:
+                for j in neigh_pi[0:nn_pi]:
                     neigh_pj = set(system.particle[j].nearest_neighbors)
                     selected_neigh_pj = list(neigh_pj & idx_1_n)
                     selected_neigh_neigh_pi.append(selected_neigh_pj)
