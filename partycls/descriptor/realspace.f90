@@ -511,31 +511,31 @@ CONTAINS
   END FUNCTION qlm
 
   !!!!!!!!!! COMPLEX VECTORS (ALL) !!!!!!!!!!
-  SUBROUTINE qlm_all(l, neigh, neigh_number, pos, pos_all, box, q_lm)
+  SUBROUTINE qlm_all(l, neigh, neigh_number, pos_0, pos_all, box, q_lm)
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:)
-    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), box(:)
-    COMPLEX(8)             :: q_lm(2*l+1, SIZE(neigh,2)), harm(SIZE(neigh,2))
+    REAL(8), INTENT(in)    :: pos_0(:,:), pos_all(:,:), box(:)
+    COMPLEX(8)             :: q_lm(2*l+1, SIZE(neigh,1)), harm(SIZE(neigh,2))
     REAL(8)                :: r_xyz(3, SIZE(neigh,2)), r_sph(3, SIZE(neigh,2))
-    INTEGER(8)             :: i, j, m, nmax, k, idx_j
-    DO i = 1,SIZE(pos,2)
+    INTEGER(8)             :: i, j, m, nn_i, k, idx_j
+    DO i = 1,SIZE(pos_0,2)
        q_lm(:,i) = (0.0, 0.0)
-       nmax = neigh_number(i)
-       DO j=1,nmax
+       nn_i = neigh_number(i)
+       DO j=1,nn_i
           ! TODO: here it would be better (j,i)
           idx_j = neigh(i,j) + 1 ! python index shift 
           r_xyz(:,j) = pos_all(:,idx_j)          
        END DO
        DO k = 1,SIZE(r_xyz,1)
-          r_xyz(k,1:nmax) = r_xyz(k,1:nmax) - pos(k,i)
+          r_xyz(k,1:nn_i) = r_xyz(k,1:nn_i) - pos_0(k,i)
        END DO
-       CALL pbc_(r_xyz(:,1:nmax), box)
+       CALL pbc_(r_xyz(:,1:nn_i), box)
        ! r_ij (spherical)
-       r_sph(:,1:nmax) = cartesian_to_spherical(r_xyz(:,1:nmax))
+       r_sph(:,1:nn_i) = cartesian_to_spherical(r_xyz(:,1:nn_i))
        DO m=0,2*l
-          harm = ylm(l, m-l, r_sph(2,1:nmax), r_sph(3,1:nmax))
-          q_lm(m+1,i) = q_lm(m+1,i) + SUM(harm(1:nmax))
+          harm(1:nn_i) = ylm(l, m-l, r_sph(2,1:nn_i), r_sph(3,1:nn_i))
+          q_lm(m+1,i) = q_lm(m+1,i) + SUM(harm(1:nn_i))
        END DO
-       q_lm(:,i) = q_lm(:,i) / nmax
+       q_lm(:,i) = q_lm(:,i) / nn_i
     END DO
   END SUBROUTINE qlm_all
 
@@ -563,14 +563,14 @@ CONTAINS
   
 
   !!!!!!!!!! STEINHARDT (ALL) !!!!!!!!!!
-  SUBROUTINE ql_all(l, neigh, neigh_number, pos, pos_all, box, q_l)
+  SUBROUTINE ql_all(l, neigh, neigh_number, pos_0, pos_all, box, q_l)
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:)
-    REAL(8), INTENT(in)    :: pos(:,:), pos_all(:,:), box(:)    
-    COMPLEX(8)             :: q_lm(2*l+1,SIZE(pos,2))
-    REAL(8), INTENT(out)   :: q_l(SIZE(pos,2))
+    REAL(8), INTENT(in)    :: pos_0(:,:), pos_all(:,:), box(:)    
+    COMPLEX(8)             :: q_lm(2*l+1,SIZE(pos_0,2))
+    REAL(8), INTENT(out)   :: q_l(SIZE(pos_0,2))
     INTEGER(8)             :: i
-    CALL qlm_all(l, neigh, neigh_number, pos, pos_all, box, q_lm)
-    DO i = 1,SIZE(pos,2)
+    CALL qlm_all(l, neigh, neigh_number, pos_0, pos_all, box, q_lm)
+    DO i = 1,SIZE(pos_0,2)
        q_l(i) = rotational_invariant(l, q_lm(:,i))
     END DO
   END SUBROUTINE ql_all
@@ -683,7 +683,7 @@ CONTAINS
     INTEGER(8), INTENT(in) :: l, neigh(:,:), neigh_number(:), spe(:), spe_all(:), pow
     REAL(8), INTENT(in)    :: pos_0(:,:), pos_all(:,:), cutoffs(:,:), box(:)
     ! variables
-    COMPLEX(8), INTENT(inout) :: q_lm(2*l+1, SIZE(neigh,2))
+    COMPLEX(8), INTENT(inout) :: q_lm(2*l+1, SIZE(neigh,1))
     COMPLEX(8)                :: harm(SIZE(neigh,2))
     REAL(8)                   :: r_xyz(SIZE(pos_0,1), SIZE(neigh,2)), r_sph(SIZE(r_xyz,1), SIZE(r_xyz,2))
     ! All these arrays are cut down to size(neigh,2) (nmax)
@@ -785,10 +785,10 @@ CONTAINS
     ! parameters
     INTEGER(8), INTENT(in)    :: l, neigh(:,:), neigh_number(:), exponent
     REAL(8), INTENT(in)       :: r, delta, pos_0(:,:), pos_all(:,:), box(:)
-    COMPLEX(8), INTENT(inout) :: q_lmrd(2*l+1,SIZE(neigh,2))
+    COMPLEX(8), INTENT(inout) :: q_lmrd(2*l+1,SIZE(neigh,1))
     ! variables
     COMPLEX(8)             :: harm(SIZE(neigh,2))
-    REAL(8)                :: r_xyz(3, SIZE(neigh)), r_sph(3, SIZE(neigh))
+    REAL(8)                :: r_xyz(3, SIZE(neigh,2)), r_sph(3, SIZE(neigh,2))
     REAL(8)                :: d_ij(SIZE(neigh,2)), Z(SIZE(neigh,2))
     INTEGER(8)             :: i, j, nn_i, ni, dim, m
     DO i=1,SIZE(pos_0,2)
