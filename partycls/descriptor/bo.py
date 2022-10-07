@@ -101,10 +101,10 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
             npart = len(self.groups[0][n])
             for ln, l in enumerate(self.grid):
                 feat_n = compute.ql_all(l,
-                                       self._neighbors[n],
-                                       self._neighbors_number[n],
-                                       pos_0_n, pos_all_n,
-                                       box[n])
+                                        self._neighbors[n],
+                                        self._neighbors_number[n],
+                                        pos_0_n, pos_all_n,
+                                        box[n])
                 self.features[start: start+npart, ln] = feat_n
             start += npart
         self._handle_nans()
