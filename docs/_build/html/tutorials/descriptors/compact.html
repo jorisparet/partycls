@@ -16,6 +16,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -58,6 +60,9 @@
 <li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Compactness descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -123,17 +128,31 @@
 </style>
 <div class="section" id="compactness-descriptor">
 <h1>Compactness descriptor<a class="headerlink" href="#compactness-descriptor" title="Permalink to this headline"></a></h1>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>Reference <span id="id1">[<a class="reference internal" href="#id6">1</a>]</span>.</p>
+<div class="math notranslate nohighlight">
+\[\omega_{\langle ijkm \rangle} = \frac{ \sum_{\langle ab \rangle} | r_{ab} - \sigma_{ab} |}{\sum_{\langle ab \rangle} \sigma_{ab}}\]</div>
+<div class="math notranslate nohighlight">
+\[\Omega(i) = \frac{1}{N_\mathrm{tetra}(i)} \sum_{\langle ijkm \rangle} \omega_{\langle ijkm \rangle}\]</div>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Uses particles’ radii. Must be set beforehand.</p>
+<p>This descriptor uses particles’ radii. They must thus be set beforehand or read from the input trajectory file.</p>
 </div>
-<p>Reference <span id="id1">[<a class="reference internal" href="#id6">1</a>]</span>.</p>
+<p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.compactness.CompactnessDescriptor.__init__">
 <span class="sig-prename descclassname"><span class="pre">CompactnessDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.compactness.CompactnessDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id2"><dl class="citation">

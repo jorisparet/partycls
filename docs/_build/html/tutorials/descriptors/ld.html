@@ -16,6 +16,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -56,6 +58,9 @@
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Lechner-Dellago descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -123,17 +128,33 @@
 </style>
 <div class="section" id="lechner-dellago-descriptor">
 <h1>Lechner-Dellago descriptor<a class="headerlink" href="#lechner-dellago-descriptor" title="Permalink to this headline"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See first <span class="xref std std-doc">5_bo</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>See <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a> first.</p>
 </div>
-<p>Reference <span id="id1">[<a class="reference internal" href="#id4">1</a>]</span>.</p>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>The complex coefficients <span class="math notranslate nohighlight">\(q_{lm}(i)\)</span> of particle <span class="math notranslate nohighlight">\(i\)</span> can be averaged over nearest neighbors, as suggested by Lechner and Dellago <span id="id1">[<a class="reference internal" href="#id4">1</a>]</span>,</p>
+<div class="math notranslate nohighlight">
+\[\bar{q}_{lm}(i) \equiv \langle q_{l m}(i) \rangle ,\]</div>
+<p>and then made invariant,</p>
+<div class="math notranslate nohighlight">
+\[\bar{Q}_{l}(i) \equiv \left( \frac{4\pi}{2l + 1}\sum_{m=-l}^l |\bar{q}_{lm(i)}|^2 \right)^{1/2} ,\]</div>
+<p>to provide an improved descriptor for crystal structure detection.</p>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
+<p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.bo.LechnerDellagoDescriptor.__init__">
 <span class="sig-prename descclassname"><span class="pre">LechnerDellagoDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.bo.LechnerDellagoDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id2"><dl class="citation">

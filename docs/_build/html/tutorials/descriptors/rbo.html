@@ -16,6 +16,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -57,6 +59,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Radial bond-orientational descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -123,17 +128,41 @@
 </style>
 <div class="section" id="radial-bond-orientational-descriptor">
 <h1>Radial bond-orientational descriptor<a class="headerlink" href="#radial-bond-orientational-descriptor" title="Permalink to this headline"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See first <span class="xref std std-doc">5_bo</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>See <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a> first.</p>
 </div>
-<p>Reference <span id="id1">[<a class="reference internal" href="#id5">1</a>]</span>.</p>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>The radial bond-order descriptor captures the radial dependence of bond order in the most straightforward way <span id="id1">[<a class="reference internal" href="#id5">1</a>]</span>. It uses a radial basis of Gaussian functions of width <span class="math notranslate nohighlight">\(\delta\)</span> centered on a grid of points <span class="math notranslate nohighlight">\(\{d_n\}_{n=1 \dots n_\mathrm{max}}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[G_n(r) = \exp{\left(-\frac{(d_n - r)^2}{2\delta^2}\right)} .\]</div>
+<p>The complex radial bond-order coefficients are defined as</p>
+<div class="math notranslate nohighlight">
+\[q_{l m n}^{R}(i) = \frac{1}{Z(i)} \sum_{j=1}^{N}
+G_n(r_{ij}) Y_{l m}(\hat{\mathbf{r}}_{ij}) ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z(i) = \sum_{j=1}^N G_n(r_{ij})\)</span> is a normalization constant and the superscript <span class="math notranslate nohighlight">\(R\)</span> indicates the radial dependence of the descriptor.
+In the following, we actually use</p>
+<div class="math notranslate nohighlight">
+\[G_n(r_{ij}) = \exp{\left(-\frac{(d_n - r_{ij})^\gamma}{2\delta^2}\right)} H(R_\mathrm{max} - r_{ij}) ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is an integer, <span class="math notranslate nohighlight">\(H\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Heaviside_step_function">Heaviside step function</a>, which allows to neglect the contributions of particles further than a distance <span class="math notranslate nohighlight">\(R_\mathrm{max} = d_{n_\mathrm{max}} + \sigma \times \delta\)</span> from the central particle, where <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}}\)</span> is the largest distance in the grid of points <span class="math notranslate nohighlight">\(\{ d_n \}\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> is a skin distance.
+Then, only the diagonal coefficients of the power spectrum, namely</p>
+<div class="math notranslate nohighlight">
+\[Q_{ln}^R(i) = \left( \frac{4\pi}{2l + 1} \sum_{m=-l}^l |q_{l m n}^R(i)|^2 \right)^{1/2} ,\]</div>
+<p>are retained to form the descriptor of particle <span class="math notranslate nohighlight">\(i\)</span> as <span class="math notranslate nohighlight">\((\dots, Q_{ln}^R(i), \dots)\)</span>, which is flattened as a vector composed of <span class="math notranslate nohighlight">\(l_\textrm{max}\times n_\textrm{max}\)</span> structural features.</p>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__">
 <span class="sig-prename descclassname"><span class="pre">RadialBondOrientationalDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">2.5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id2"><dl class="citation">

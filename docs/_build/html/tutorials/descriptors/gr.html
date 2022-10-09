@@ -16,6 +16,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -49,7 +51,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Radial descriptor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Radial descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="tetra.html">Tetrahedral descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ba.html">Bond-angle descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sba.html">Smoothed bond-angle descriptor</a></li>
@@ -120,6 +127,14 @@
 </style>
 <div class="section" id="radial-descriptor">
 <h1>Radial descriptor<a class="headerlink" href="#radial-descriptor" title="Permalink to this headline"></a></h1>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{r}_i\)</span> be the position of particle <span class="math notranslate nohighlight">\(i\)</span> and define <span class="math notranslate nohighlight">\(r_{ij} = |\mathbf{r}_j - \mathbf{r}_i|\)</span> as the distance between particle <span class="math notranslate nohighlight">\(i\)</span> and its neighbors <span class="math notranslate nohighlight">\(j\)</span>. We define
+<span class="math notranslate nohighlight">\(n_i(r_m)\)</span> as the number of neighbors <span class="math notranslate nohighlight">\(j\)</span> of particle <span class="math notranslate nohighlight">\(i\)</span> for which <span class="math notranslate nohighlight">\(r_{ij}\)</span> is between <span class="math notranslate nohighlight">\(r_m = m \times \Delta r\)</span> and <span class="math notranslate nohighlight">\(r_{m+1} = (m+1) \times \Delta r\)</span>. Here, <span class="math notranslate nohighlight">\(\Delta r\)</span> has the interpration of a bin width in a histogram.</p>
+<p>We then consider <span class="math notranslate nohighlight">\(n_i(r_m)\)</span> for a set of distances separated by <span class="math notranslate nohighlight">\(\Delta r\)</span>, <span class="math notranslate nohighlight">\(d_n = \{ r_\mathrm{min}, r_\mathrm{min} + r_1, r_\mathrm{min} + r_2, \dots, r_\mathrm{max} \}\)</span>.</p>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.gr.RadialDescriptor.__init__">
@@ -127,6 +142,10 @@
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 </div>
 
 

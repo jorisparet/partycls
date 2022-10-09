@@ -16,6 +16,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -52,7 +54,12 @@
 <li class="toctree-l3"><a class="reference internal" href="gr.html">Radial descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tetra.html">Tetrahedral descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ba.html">Bond-angle descriptor</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Smoothed bond-angle descriptor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Smoothed bond-angle descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
@@ -120,10 +127,19 @@
 </style>
 <div class="section" id="smoothed-bond-angle-descriptor">
 <h1>Smoothed bond-angle descriptor<a class="headerlink" href="#smoothed-bond-angle-descriptor" title="Permalink to this headline"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See first <span class="xref std std-doc">3_ba</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>See <a class="reference internal" href="ba.html"><span class="doc">Bond-angle descriptor</span></a> first.</p>
 </div>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<div class="math notranslate nohighlight">
+\[q_\theta^S(i) = \sum_{j=1}^N \sum_{k=1}^N f(r_{ij}, r_{ik}) \delta(\theta - \theta_{jik})\]</div>
+<div class="math notranslate nohighlight">
+\[f(r_{ij}, r_{ik}) = \exp \left[ - \left[ ( r_{ij} / r_{\alpha\beta}^c )^\gamma + ( r_{ik} / r_{\alpha\beta}^c )^\gamma \right] \right] H( R_{\alpha\beta}^c - r_{ij} ) H(R_{\alpha\beta}^c - r_{ik})\]</div>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor.__init__">
@@ -131,6 +147,10 @@
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 </div>
 
 

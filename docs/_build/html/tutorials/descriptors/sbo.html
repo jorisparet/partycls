@@ -16,6 +16,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -55,7 +57,9 @@
 <li class="toctree-l3"><a class="reference internal" href="sba.html">Smoothed bond-angle descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Smoothed bond-orientational descriptor</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
@@ -123,10 +127,24 @@
 </style>
 <div class="section" id="smoothed-bond-orientational-descriptor">
 <h1>Smoothed bond-orientational descriptor<a class="headerlink" href="#smoothed-bond-orientational-descriptor" title="Permalink to this headline"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See first <span class="xref std std-doc">5_bo</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>See <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a> first.</p>
 </div>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>This is a smooth version of the <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a>, in which the coefficients <span class="math notranslate nohighlight">\(q_{lm}(i)\)</span> are multiplied by a weighting function <span class="math notranslate nohighlight">\(f(r)\)</span> that depends on the radial distance <span class="math notranslate nohighlight">\(r\)</span> between the central particle <span class="math notranslate nohighlight">\(i\)</span> and its neighbors,</p>
+<div class="math notranslate nohighlight">
+\[q_{lm}^{S}(i) = \frac{1}{Z(i)} \sum_{j=1}^{N} f({r}_{ij}) Y_{lm}(\hat{\mathbf{r}}_{ij}) ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z(i)=\sum_{j=1}^{N} f({r}_{ij})\)</span> is a normalization constant and the superscript <span class="math notranslate nohighlight">\(S\)</span> indicates the smooth nature of the descriptor. We use</p>
+<div class="math notranslate nohighlight">
+\[f(r_{ij}) = \exp \left[- (r_{ij} / r_{\alpha\beta}^c)^\gamma \right] H(R_{\alpha\beta}^c - r_{ij}) ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{\alpha\beta}^c\)</span> is the first minimum of the corresponding partial radial distribution function for the pair <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span> is an integer.
+Also, <span class="math notranslate nohighlight">\(H\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Heaviside_step_function">Heaviside step function</a>, which ensures, for efficiency reasons, that the descriptor only has contributions from particles within a distance <span class="math notranslate nohighlight">\(R_{\alpha\beta}^c = \xi \times r_{\alpha\beta}^c\)</span> from the central one, where <span class="math notranslate nohighlight">\(\xi &gt; 1\)</span> is a scaling factor.</p>
+<p>The rotational invariants are defined similarly to the <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a>.</p>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor.__init__">
@@ -134,9 +152,10 @@
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
-<span class="target" id="id1"></span></div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 </div>
 
 

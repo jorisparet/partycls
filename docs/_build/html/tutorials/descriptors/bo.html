@@ -56,6 +56,9 @@
 <li class="toctree-l3"><a class="reference internal" href="ba.html">Bond-angle descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sba.html">Smoothed bond-angle descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Bond-orientational descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -125,12 +128,33 @@
 </style>
 <div class="section" id="bond-orientational-descriptor">
 <h1>Bond-orientational descriptor<a class="headerlink" href="#bond-orientational-descriptor" title="Permalink to this headline"></a></h1>
-<p>Bond-order parameters <span id="id1">[<a class="reference internal" href="#id3">1</a>]</span> are standard measures of structure in the first coordination shell.</p>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>Bond-order parameters <span id="id1">[<a class="reference internal" href="#id3">1</a>]</span> are standard measures of structure in the first coordination shell. Let <span class="math notranslate nohighlight">\(\mathbf{r}_i\)</span> be the position of particle <span class="math notranslate nohighlight">\(i\)</span> and define <span class="math notranslate nohighlight">\(\mathbf{r}_{ij} = \mathbf{r}_j - \mathbf{r}_i\)</span> and <span class="math notranslate nohighlight">\(r_{ij} = |\mathbf{r}_{ij}|\)</span>. Then consider the weighted microscopic density around particle <span class="math notranslate nohighlight">\(i\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[q_{lm}(i) = \frac{1}{N_b(i)} \sum_{j=1}^{N_b(i)} Y_{l m}(\hat{\mathbf{r}}_{ij})\]</div>
-<p>Rotational invariants:</p>
+\[\rho(\mathbf{r}; i) = \sum_{j=1}^{N_b(i)} w_j \delta(\mathbf{r} - \mathbf{r}_{ij})\]</div>
+<p>where :math`w_j` is a particle-dependent weight and the sum involves a set of <span class="math notranslate nohighlight">\(N_b(i)\)</span> particles, which defines the coordination shell of interest for particle <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>We project the microscopic density on a unit-radius sphere, that is, <span class="math notranslate nohighlight">\(\hat{\rho}(\hat{\mathbf{r}}; i) = \sum_{j=1}^{N_b(i)} w_j \delta(\mathbf{r} - \hat{\mathbf{r}}_{ij})\)</span>,
+where <span class="math notranslate nohighlight">\(\hat{\mathbf{r}} = \mathbf{r} / |\mathbf{r}|\)</span> and similarly <span class="math notranslate nohighlight">\(\hat{\mathbf{r}}_{ij} = \mathbf{r}_{ij}/|\mathbf{r}_{ij}|\)</span>. Expanding in spherical harmonics yields</p>
 <div class="math notranslate nohighlight">
-\[Q_{l}(i) = \left( \frac{4\pi}{2l + 1}\sum_{m=-l}^l |q_{lm}(i)|^2 \right)^{1/2}\]</div>
+\[\hat{\rho}(\hat{\mathbf{r}}; i) = \sum_{l=0}^\infty \sum_{m=-l}^l c_{l m}(i) Y_{l m}(\hat{\mathbf{r}}) ,\]</div>
+<p>with coefficients</p>
+<div class="math notranslate nohighlight">
+\[c_{l m}(i) =  \int d\mathbf{r} \rho(\mathbf{r}; i) Y_{l m}(\hat{\mathbf{r}}) .\]</div>
+<p>In the conventional bond-order analysis, one sets the weights to unity and considers the normalized complex coefficients,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+q_{lm}(i) &amp; = \frac{1}{N_b(i)} \int d\mathbf{r} \rho(\mathbf{r}; i) Y_{l m}(\hat{\mathbf{r}})
+\nonumber \\ &amp; = \frac{1}{N_b(i)} \sum_{j=1}^{N_b(i)} Y_{l m}(\hat{\mathbf{r}}_{ij}) .
+\end{align}\end{split}\]</div>
+<p>The rotational invariants,</p>
+<div class="math notranslate nohighlight">
+\[Q_{l}(i) = \left( \frac{4\pi}{2l + 1}\sum_{m=-l}^l |q_{lm}(i)|^2 \right)^{1/2} ,\]</div>
+<p>provide a detailed structural description of the local environment around particle <span class="math notranslate nohighlight">\(i\)</span>.
+By truncating the expansion to order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>, we obtain the simplest bond-order descriptor of an arbitrary particle <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</div>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.bo.BondOrientationalDescriptor.__init__">
@@ -138,6 +162,10 @@
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+</div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id2"><dl class="citation">
