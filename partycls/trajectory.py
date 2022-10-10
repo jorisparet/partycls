@@ -23,7 +23,6 @@ class Trajectory:
     
     Parameters
     ----------
-    
     filename : str
         Path to the trajectory file to read.
         
@@ -57,7 +56,6 @@ class Trajectory:
     
     Attributes
     ----------
-    
     filename : str
         Name of the original trajectory file.
         
@@ -77,12 +75,12 @@ class Trajectory:
 
     Examples
     --------
-    
     >>> from partycls.trajectory import Trajectory
     >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
 
-    def __init__(self, filename, fmt=None, backend=None, top=None, additional_fields=None, first=0, last=None, step=1):
+    def __init__(self, filename, fmt=None, backend=None, top=None,
+                 additional_fields=None, first=0, last=None, step=1):
         self.filename = filename
         if backend is None and fmt is None:
             self.fmt = 'xyz'
@@ -104,7 +102,7 @@ class Trajectory:
     def nearest_neighbors_method(self):
         """
         Method used to identify the nearest neighbors of all the particles in
-        the trajectory. Should be one of ['auto', 'fixed', 'sann', 'voronoi'].
+        the trajectory. Should be one of ``['auto', 'fixed', 'sann', 'voronoi']``.
         """
         return self._nearest_neighbors_method.value
 
@@ -127,7 +125,7 @@ class Trajectory:
 
     def remove(self, frame):
         """
-        Remove the system at position `frame` from the trajectory.
+        Remove the system at position ``frame`` from the trajectory.
 
         Parameters
         ----------
@@ -136,51 +134,49 @@ class Trajectory:
 
         Returns
         -------
-        None.
+        None
         """
         self._systems.pop(frame)
 
     def get_property(self, what, subset=None):
         """
         Return a list of numpy arrays with the system property specified by 
-        `what`. The list size is the number of systems in the trajectory.
+        ``what``. The list size is the number of systems in the trajectory.
 
         Parameters
         ----------
         what : str
-            Requested system property.
-            
-            `what` must be of the form 
-            "particle.<attribute>" or "cell.<attribute>". 
-            
+            Requested system property. ``what`` must be of the form 
+            ``"particle.<attribute>"`` or ``"cell.<attribute>"``.
             The following particle aliases are accepted:
-            - 'position': 'particle.position'
-            - 'pos': 'particle.position'
-            - 'position[0]': 'particle.position[0]', 
-            - 'pos[0]': 'particle.position[0]'
-            - 'x': 'particle.position[0]'
-            - 'position[1]': 'particle.position[1]',
-            - 'pos[1]': 'particle.position[1]'
-            - 'y': 'particle.position[1]'
-            - 'position[2]': 'particle.position[2]'
-            - 'pos[2]': 'particle.position[2]'
-            - 'z': 'particle.position[2]'
-            - 'species': 'particle.species'
-            - 'spe': 'particle.species'
-            - 'label': 'particle.label'
-            - 'mass': 'particle.mass'
-            - 'radius': 'particle.radius'
-            - 'nearest_neighbors': 'particle.nearest_neighbors'
-            - 'neighbors': 'particle.nearest_neighbors'
-            - 'neighbours': 'particle.nearest_neighbors'
-            - 'voronoi_signature': 'particle.voronoi_signature'
-            - 'signature': 'particle.voronoi_signature'
 
-        subset : str, optional
+            - ``'position'`` : ``'particle.position'``
+            - ``'pos'`` : ``'particle.position'``
+            - ``'position[0]'`` : ``'particle.position[0]'``
+            - ``'pos[0]'`` : ``'particle.position[0]'``
+            - ``'x'`` : ``'particle.position[0]'``
+            - ``'position[1]'`` : ``'particle.position[1]'``
+            - ``'pos[1]'`` : ``'particle.position[1]'``
+            - ``'y'`` : ``'particle.position[1]'``
+            - ``'position[2]'`` : ``'particle.position[2]'``
+            - ``'pos[2]'`` : ``'particle.position[2]'``
+            - ``'z'`` : ``'particle.position[2]'``
+            - ``'species'`` : ``'particle.species'``
+            - ``'spe'`` : ``'particle.species'``
+            - ``'label'`` : ``'particle.label'``
+            - ``'mass'`` : ``'particle.mass'``
+            - ``'radius'`` : ``'particle.radius'``
+            - ``'nearest_neighbors'`` : ``'particle.nearest_neighbors'``
+            - ``'neighbors'`` : ``particle.nearest_neighbors'``
+            - ``'neighbours'`` : ``'particle.nearest_neighbors'``
+            - ``'voronoi_signature'`` : ``'particle.voronoi_signature'``
+            - ``'signature'`` : ``'particle.voronoi_signature'``
+
+        subset : str, optional, default: ``None``
             Subset of particles for which the property must be dumped. Must be 
-            of the form "particle.<attribute>" unless "<attribute>" is an 
-            alias. The default is None (all particles will be included).
-            This is ignored if `what` is cell property.
+            of the form ``"particle.<attribute>"`` unless ``"<attribute>"`` is an 
+            alias. The default is ``None`` (all particles will be included).
+            This is ignored if ```what``` is cell property.
 
         Returns
         -------
@@ -203,14 +199,14 @@ class Trajectory:
 
     def dump(self, what, subset=None):
         """
-        Alias for the method get_property().
+        Alias for the method ``get_property``.
         """
         return self.get_property(what, subset=subset)
 
     def set_property(self, what, value, subset=None):
         """
-        Set a property `what` to `value` for all the particles in the 
-        trajectory or for a given subset of particles specified by `subset`.
+        Set a property ``what`` to ``value`` for all the particles in the 
+        trajectory or for a given subset of particles specified by ``subset``.
 
         Parameters
         ----------
@@ -219,21 +215,21 @@ class Trajectory:
             property by default, unless it starts with "cell", e.g. 
             "cell.side".
             
-        value : int, float, list, or numpy.ndarray
-            Value(s) of the property to set. An instance of `int` or `float`
+        value : int, float, list, numpy.ndarray
+            Value(s) of the property to set. An instance of ``int`` or ``float``
             will set the same value for all concerned particles. An instance
-            of `list` or `numpy.ndarray` will assign a specific value to each
-            particle. In this case, the shape of `value` should respect the
+            of ``list`` or ``numpy.ndarray`` will assign a specific value to each
+            particle. In this case, the shape of ``value`` should respect the
             number of frames in the trajectory and the number of concerned
             particles.
             
-        subset : str, optional
-            Particles to which the property must be set. The default is None.
-            This is ignored if `what` is cell property.
+        subset : str, default: None
+            Particles to which the property must be set. The default is ``None``.
+            This is ignored if ``what`` is a cell property.
 
         Returns
         -------
-        None.
+        None
 
         Examples
         --------
@@ -254,40 +250,37 @@ class Trajectory:
     def compute_nearest_neighbors(self, method=None, cutoffs=None, dr=0.1):
         """
         Compute the nearest neighbors for all the particles in the trajectory using
-        the provided method. Neighbors are stored in the `nearest_neighbors` particle 
-        property.
-        
-        Available methods are:
-        - 'auto': read neighbors from the trajectory file, if explicitly requested
-            with the `additional_fields` argument in the constructor.
-        - 'fixed': use fixed cutoffs for each pair of species in the trajectory.
-        - 'sann': solid-angle based nearest neighbor algorithm
-            (see https://doi.org/10.1063/1.4729313).
-        - 'voronoi': radical Voronoi tessellation method (uses particles' radii).
+        the provided method. Neighbors are stored in the ``nearest_neighbors`` particle 
+        property. Available methods are:
+
+        - ``'auto'`` : read neighbors from the trajectory file, if explicitly requested with the ``additional_fields`` argument in the constructor.
+        - ``'fixed'`` : use fixed cutoffs for each pair of species in the trajectory.
+        - ``'sann'`` : solid-angle based nearest neighbor algorithm (see https://doi.org/10.1063/1.4729313).
+        - ``'voronoi'`` : radical Voronoi tessellation method (uses particles' radii) (see https://doi.org/10.1016/0022-3093(82)90093-X)
 
         Parameters
         ----------
         method : str, default: None
             Method to identify the nearest neighbors. Must be one of 
-            ['auto', 'fixed', 'sann', 'voronoi']. None defaults to 'auto'. If 
-            method is 'auto', neighbors are read directly from the trajectory file,
-            if specified with the `additional_fields` argument in the constructor.
-            If no neighbors are found, falls back to method='fixed' instead.
+            ``'auto'``, ``'fixed'``, ``'sann'``, or ``'voronoi'``. ``None`` defaults to ``'auto'``. If 
+            method is ``'auto'``, neighbors are read directly from the trajectory file,
+            if specified with the ``additional_fields`` argument in the constructor.
+            If no neighbors are found, falls back to ``method='fixed'`` instead.
 
         cutoffs : list, default: None
             List containing the cutoffs distances for each pair of species
-            in the trajectory (for method 'fixed' and 'sann'). If None, cutoffs
-            will be computed automatically. For method 'sann', cutoffs are
+            in the trajectory (for method ``'fixed'`` and ``'sann'``). If ``None``, cutoffs
+            will be computed automatically. For method ``'sann'``, cutoffs are
             required as a first guess to identify the nearest neighbors.
 
         dr : float, default: 0.1
-            Radial grid spacing for computing the cutoffs on the basis of
-            the first minimum of each partial radial distribution function
+            Radial grid spacing :math:`\Delta r` for computing the cutoffs on the basis
+            of the first minimum of each partial radial distribution function
             in the trajectory, if cutoffs are not provided.
 
         Returns
         -------
-        None.
+        None
 
         Examples
         --------
@@ -338,22 +331,23 @@ class Trajectory:
         """
         Set the nearest-neighbor cutoff for the pair of species (s1, s2). The
         cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
-        parameter is True (default).        
+        parameter is True (default). Writes in the ``nearest_neighbors_cutoffs`` 
+        list attribute.
 
         Parameters
         ----------
         s_a : str
-            Symbol of the first species.
+            Symbol of the first species :math:`\\alpha`.
         s_b : str
-            Symbol of the second species.
+            Symbol of the second species :math:`\\beta`.
         rcut : float
-            Value of the cutoff for the pair (s_a,s_b).
-        mirror : bool, optional
-            Set the cutoff for the mirror pair (s_a,s_b). The default is True.
+            Value of the cutoff for the pair :math:`(\\alpha,\\beta) r` = ``(s_a, s_b)``.
+        mirror : bool, default: None
+            Set the cutoff for the mirror pair ``(s_a, s_b)``. The default is ``True``.
 
         Returns
         -------
-        None.
+        None
         """
         pairs = self._systems[0].pairs_of_species
         idx_ab = pairs.index((s_a, s_b))
@@ -365,18 +359,20 @@ class Trajectory:
     def compute_nearest_neighbors_cutoffs(self, dr=0.1):
         """
         Compute the nearest neighbors cutoffs on the basis of the first
-        minimum of the partial radial distribution function between each
-        pair of species in the trajectory.
+        minimum of the partial radial distribution function 
+        :math:`g_{\\alpha\\beta}(r)` between each pair of species 
+        :math:`(\\alpha,\\beta)` in the trajectory. Sets the 
+        ``nearest_neighbors_cutoffs`` list attribute.
 
         Parameters
         ----------
         dr : float, default: 0.1
-            Bin width for the radial grid used to compute the partial
-            radial distribution functions.
+            Bin width :math:`\Delta r` for the radial grid used to compute the partial
+            radial distribution functions :math:`g_{\\alpha\\beta}(r)`.
 
         Returns
         -------
-        None.
+        None
         """
         from .descriptor import RadialDescriptor
         pairs = self._systems[0].pairs_of_species
@@ -408,14 +404,14 @@ class Trajectory:
         Compute the Voronoi signatures of all the particles in the trajectory
         using the radical Voronoi tessellation method.
         
-        Particle radii must be set using the `set_property` method if the 
+        Particle radii must be set using the ``set_property`` method if the 
         original trajectory file does not contain such information.
 
-        Creates a `voronoi_signature` property for the particles.
+        Creates a ``voronoi_signature`` property for the particles.
         
         Returns
         -------
-        None.
+        None
         """
         for system in self._systems:
             system.compute_voronoi_signatures()
@@ -429,28 +425,27 @@ class Trajectory:
 
         Parameters
         ----------
-        frames : list of int, optional
-            Indices of the frames to show. The default is None (shows all frames).
+        frames : list, default: None
+            Indices of the frames to show. The default is ``None`` (shows all frames).
 
-        backend : str, optional
-            Name of the backend to use for visualization. 
-            The default is 'matplotlib'.
+        backend : str, default: "matplotlib"
+            Name of the backend to use for visualization.
 
-        color : str, optional
+        color : str, default: "species"
             Name of the particle property to use as basis for coloring the 
             particles. This property must be defined for all the particles in 
-            the system. The default is 'species'.
+            the system.
 
         **kwargs : additional keyworded arguments (backend-dependent).
 
         Raises
         ------
         ValueError
-            In case of unknown `backend`.
+            In case of unknown ``backend``.
 
         Returns
         -------
-        list of Figure or View (backend-dependent)
+        Backend-dependent
         
         Examples
         --------
@@ -479,7 +474,7 @@ class Trajectory:
 
         Returns
         -------
-        None.
+        None
         """
         for system in self._systems:
             system.fold()
@@ -764,31 +759,30 @@ class Trajectory:
         output_path : str
             Name of the output trajectory file.
 
-        fmt : str, optional
-            Format of the output trajectory file. The default is 'xyz'.
+        fmt : str, default: "xyz"
+            Format of the output trajectory file.
 
-        backend : str, optional
+        backend : str, default: None
             Name of a third-party package to use when writing the output
-            trajectory. The default is None.
+            trajectory.
 
-        additional_fields : list of str, optional, default: None
-            Additional fields (i.e. particle properties) to write in the output
+        additional_fields : list, default: None
+            Additional fields (*i.e.* particle properties) to write in the output
             trajectory. Not all trajectory formats allow for additional fields. 
             The default is to not write any additional particle property.
 
-        precision : int, optional
-            Number of decimals when writing the output trajectory. 
-            The default is 6.
+        precision : int, default: 6
+            Number of decimals when writing the output trajectory.
 
         Raises
         ------
         ValueError
-            - If `backend=None` and `fmt` is not recognized natively.
-            - If `backend` is unknown.
+            - If ``backend=None`` and ``fmt`` is not recognized natively.
+            - If ``backend`` is unknown.
 
         Returns
         -------
-        None.
+        None
         """
         if additional_fields is None:
             additional_fields = []

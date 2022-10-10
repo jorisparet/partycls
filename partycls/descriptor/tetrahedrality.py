@@ -13,24 +13,9 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     This descriptor is scalar. Therefore, the `grid` attribute is not relevant.
     
     See the parent class for more details.
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
-    
-    accept_nans: bool, default: True
-        If False, discard any row from the array of features that contains a Nan
-        element. If True, keep NaN elements in the array of features.
-
-    verbose : bool, default: False
-        Show progress information and warnings about the computation of the 
-        descriptor when verbose is True, and remain silent when verbose is False.
 
     Attributes
     ----------
-    
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
@@ -41,26 +26,34 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
         
-    grid : array
+    grid : numpy.ndarray
         Grid over which the structural features will be computed.
         
-    features : ndarray
+    features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
-        initialized when the method `compute` is called (default value is None).
-    
-    Examples:
-    ---------
-    
-    >>> D = TetrahedralDescriptor('trajectory.xyz')
-    >>> D.add_filter("species == 'A'", group=0)
-    >>> D.compute()
+        initialized when the method `compute` is called (default value is None). 
     """
     
     name = 'tetrahedral'
     symbol = 'tetra'
     
     def __init__(self, trajectory, accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            Trajectory on which the structural descriptor will be computed.
+
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose 
+            is ``False``.
+        """
         AngularStructuralDescriptor.__init__(self, trajectory,
                                              accept_nans=accept_nans,
                                              verbose=verbose)

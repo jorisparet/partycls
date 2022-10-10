@@ -8,59 +8,26 @@ class RadialDescriptor(StructuralDescriptor):
     Structural descriptor based on radial correlations between particles.
     
     See the parent class for more details.
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
-        
-    dr : float
-        Bin width.
-        
-    n_shells : int, default: 3
-        Number of coordination shells (based on the RDF of group=0). This sets
-        the upper bound for the distance up to which correlations are computed.
-        
-    bounds : tuple, default: None
-        Lower and upper bounds to describe the radial correlations. If set, 
-        this has the priority over `n_shells`.
 
-    accept_nans: bool, default: True
-        If False, discard any row from the array of features that contains a Nan
-        element. If True, keep NaN elements in the array of features.
-
-    verbose : bool, default: False
-        Show progress information and warnings about the computation of the 
-        descriptor when verbose is True, and remain silent when verbose is False.
-    
     Attributes
     ----------
-    
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
         
-    grid : array
+    grid : numpy.ndarray
         Grid over which the structural features will be computed.
         
-    features : ndarray
+    features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-    
-    Examples:
-    ---------
-    
-    >>> D = RadialDescriptor('trajectory.xyz', bounds=(0.0,3.0))
-    >>> D.add_filter("species == 'A'", group=0)
-    >>> D.compute()
     """
 
     name = 'radial'
@@ -68,6 +35,33 @@ class RadialDescriptor(StructuralDescriptor):
 
     def __init__(self, trajectory, dr=0.1, n_shells=3, bounds=None,
                  accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            Trajectory on which the structural descriptor will be computed.
+            
+        dr : float
+            Bin width :math:`\Delta r`.
+            
+        n_shells : int, default: 3
+            Number of coordination shells (based on the :math:`g(r)` of group=0). 
+            This sets the upper bound :math:`r_\mathrm{max}` for the distance grid 
+            :math:`\{d_n\}` up to which correlations are computed.
+            
+        bounds : tuple, default: None
+            Lower and upper bounds :math:`(r_\mathrm{min},r_\mathrm{max})` to describe
+            the radial correlations. If set, this has the priority over ``n_shells``.
+
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose 
+            is ``False``.
+        """
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)
@@ -91,7 +85,8 @@ class RadialDescriptor(StructuralDescriptor):
     @property
     def bounds(self):
         """
-        Lower and upper bounds to describe the radial correlations.
+        Lower and upper bounds :math:`(r_\mathrm{min},r_\mathrm{max})` to describe
+        the radial correlations.
         """
         return self._bounds
 
@@ -102,7 +97,7 @@ class RadialDescriptor(StructuralDescriptor):
     @property
     def dr(self):
         """
-        Grid spacing.
+        Grid spacing :math:`\Delta r`.
         """
         return self._dr
 
@@ -113,13 +108,12 @@ class RadialDescriptor(StructuralDescriptor):
     def compute(self):
         """
         Compute the radial correlations for the particles in group=0 in the 
-        range of distances given by `bounds`.
+        range of distances given by ``bounds``.
 
         Returns
         -------
         features : numpy.ndarray
             Radial correlations.
-
         """
         # set up
         self._set_up(dtype=numpy.int64)
@@ -150,27 +144,23 @@ class RadialDescriptor(StructuralDescriptor):
 
         Parameters
         ----------
-        
-        distribution : array
+        distribution : numpy.ndarray
             Distribution to normalize.
             
-        method : str, optional
+        method : str, default: "r2"
             Normalization method:
-            - method='r2': returns r^2 * g(r) (default);
-            - method='gr' : returns the standard g(r) ;
+            - method='r2': returns math:`r^2 \\times g(r)` (default);
+            - method='gr' : returns the standard :math:`g(r)` ;
 
         Raises
         ------
-        
         ValueError
             If `method` is invalid.
 
         Returns
         -------
-        
-        array
+        numpy.ndarray
             Normalized distribution.
-            
         """
         if method == "r2":
             # TODO: this normalization is a bit inconsistent

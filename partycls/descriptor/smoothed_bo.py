@@ -16,65 +16,26 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     w(r_ij) = exp[ -(r_ij/rc_ij)^n) ]
     
     See the parent class for more details.
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
-        
-    lmin : int, default: 1
-        Minimum degree. This set the lower bound of the grid.
-        
-    lmax : int, default: 8
-        Minimum degree. This set the upper bound of the grid.
-        
-    orders : list, default: None
-        Specific values of orders to compute, e.g. orders=[4,6]. This has
-        the priority over `lmin` and `lmax`.
-        
-    cutoff_enlargement : float, default: 1.3
-        Consider neighbors j `cutoff_enlargement * rc_ij` away from the central
-        particle i.
-        
-    exponent: int, default : 8
-        Exponent `n` in the power law for the exponential decay in w(r).
 
-    accept_nans: bool, default: True
-        If False, discard any row from the array of features that contains a Nan
-        element. If True, keep NaN elements in the array of features.
-
-    verbose : bool, default: False
-        Show progress information and warnings about the computation of the 
-        descriptor when verbose is True, and remain silent when verbose is False.
-        
     Attributes
     ----------
-    
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
         
-    grid : array
+    grid : numpy.ndarray
         Grid over which the structural features will be computed.
         
-    features : ndarray
+    features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-
-    Examples:
-    ---------
-    
-    >>> D = SmoothedBondOrientationalDescriptor('trajectory.xyz', cutoff_enlargement=1.3, exponent=8)
-    >>> D.add_filter("species == 'A'", group=0)
-    >>> D.compute()   
     """
 
     name = 'smoothed bond-orientational'
@@ -83,6 +44,43 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None,
                 cutoff_enlargement=1.3, exponent=8,
                 accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            Trajectory on which the structural descriptor will be computed.
+            
+        lmin : int, default: 1
+            Minimum order :math:`l_\mathrm{min}`. This sets the lower bound of 
+            the grid :math:`\{ l_n \}`.
+            
+        lmax : int, default: 8
+            Maximum order :math:`l_\mathrm{max}`. This sets the upper bound of 
+            the grid :math:`\{ l_n \}`.
+            
+        orders: list, default: None
+            Sequence :math:`\{l_n\}` of specific orders to compute, *e.g.* 
+            ``orders=[4,6]``. This has the priority over ``lmin`` and ``lmax``.
+            
+        cutoff_enlargement : float, default: 1.3
+            Scaling factor :math:`\\xi` for the nearest neighbors cutoffs 
+            :math:`r_{\\alpha\\beta}^c` to consider neighbors :math:`j` a distance
+            :math:`R_{\\alpha\\beta}^c = \\xi \\times r_{\\alpha\\beta}^c` away from the
+            central particle :math:`i`.
+            
+        exponent : int, default: 8
+            Exponent :math:`\gamma` in the smoothing function
+            :math:`f(r_{ij})`.
+
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose 
+            is ``False``.
+        """
         BondOrientationalDescriptor.__init__(self, trajectory,
                                              lmin=lmin, lmax=lmax,
                                              orders=orders,

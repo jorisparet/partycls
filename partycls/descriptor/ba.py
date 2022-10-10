@@ -8,27 +8,9 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     Structural descriptor based on bond angles between particles.
     
     See the parent class for more details.
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
-        
-    dtheta : float
-        Bin width in degrees.
-    
-    accept_nans: bool, default: True
-        If False, discard any row from the array of features that contains a Nan
-        element. If True, keep NaN elements in the array of features.
-
-    verbose : bool, default: False
-        Show progress information and warnings about the computation of the 
-        descriptor when verbose is True, and remain silent when verbose is False.
 
     Attributes
     ----------
-    
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
@@ -39,26 +21,37 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
         
-    grid : array
+    grid : numpy.ndarray
         Grid over which the structural features will be computed.
         
-    features : ndarray
+    features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-    
-    Examples:
-    ---------
-    
-    >>> D = BondAngleDescriptor('trajectory.xyz', dtheta=2.0)
-    >>> D.add_filter("species == 'A'", group=0)
-    >>> D.compute()    
     """
 
     name = 'bond-angle'
     symbol = 'ba'
 
     def __init__(self, trajectory, dtheta=3.0, accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            Trajectory on which the structural descriptor will be computed.
+            
+        dtheta : float
+            Bin width :math:`\Delta \\theta` in degrees.
+        
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose 
+            is ``False``.
+        """
         AngularStructuralDescriptor.__init__(self, trajectory,
                                              verbose=verbose,
                                              accept_nans=accept_nans)
@@ -109,11 +102,10 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
 
         Parameters
         ----------
-        
-        distribution : array
+        distribution : numpy.ndarray
             Distribution to normalize.
             
-        method : str, optional
+        method : str, default: "sin"
             Normalization method:
             - method='sin': by construction, the probability density of
             has a sinusoidal enveloppe in 3D for uniformly distributed points 
@@ -123,16 +115,13 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
 
         Raises
         ------
-        
         ValueError
             If `method` is invalid.
 
         Returns
         -------
-        
-        array
+        numpy.ndarray
             Normalized distribution.
-
         """
         if method == "sin":
             return distribution / numpy.sum(distribution) / self.dtheta

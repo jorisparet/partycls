@@ -20,80 +20,29 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     Any provided cutoff or nearest-neighbor method will thus be ignored.
     
     See the parent class for more details.
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
-        
-    lmin : int, default: 1
-        Minimum degree. This set the lower bound of the grid.
-        
-    lmax : int, default: 8
-        Minimum degree. This set the upper bound of the grid.
-        
-    orders : list, default: None
-        Specific values of orders to compute, e.g. orders=[4,6]. This has
-        the priority over `lmin` and `lmax`.
-        
-    bounds : tuple of floats, default: (1, 2.5)
-        Lower and upper bounds (r_min, r_max) to define the grid of distances.
-        
-    dr : float, default: 0.1
-        Grid spacing to define the grid of distances [r_min, r_min+dr, ..., r_max].
-        
-    distance_grid : list or array, default: None
-        Manually defined grid of distances. If different from `None`, it 
-        overrides the linearly-spaced grid defined by `bounds` and `dr`.
-        
-    delta : float, default: 0.1
-        Shell width to probe the local density at a distance r from the central
-        particle using an exponential decay of the form:
-        w(r_ij, r, \delta) = exp[-0.5 * (r_ij-r)^2 / (2 \delta^2) ]
-        
-    skin : float, default: 2.5
-        Skin width (in units of `delta`) to consider neighbors further than the
-        upper bound r_max of the grid of distances. Neighbors will then be 
-        identified up to r_max + skin_width * delta.
 
-    accept_nans: bool, default: True
-        If False, discard any row from the array of features that contains a Nan
-        element. If True, keep NaN elements in the array of features.
-
-    verbose : bool, default: False
-        Show progress information and warnings about the computation of the 
-        descriptor when verbose is True, and remain silent when verbose is False.
-        
     Attributes
     ----------
-    
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
         
-    grid : array
-        Grid of bond orientational orders `l` and distances `r` over which 
-        the descriptor will be computed. It takes the form a of a list of
-        tuples (l,r).
+    grid : list
+        Grid of bond orientational orders :math:`\{l_m\}` and distances 
+        :math:`\{d_n\}` over which the descriptor will be computed. 
+        It takes the form a of a list of tuples 
+        ``[(l0,d0), (l0,d1), ..., (ln,dn), ...]``.
         
-    features : ndarray
+    features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
         initialized when the method `compute` is called (default value is None).
-
-    Examples:
-    ---------
-    
-    >>> D = RadialBondOrientationalDescriptor('trajectory.xyz', distance_grid=[1.0, 1.1, 1.2], delta=0.2)
-    >>> D.add_filter("species == 'A'", group=0)
-    >>> D.compute()
     """
     
     name = 'radial bond-orientational'
@@ -104,6 +53,58 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
                  bounds=(1,2.5), dr=0.1, distance_grid=None,
                  delta=0.1, skin=2.5, exponent=2,
                  accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            Trajectory on which the structural descriptor will be computed.
+            
+        lmin : int, default: 1
+            Minimum order :math:`l_\mathrm{min}`. This sets the lower bound of 
+            the grid :math:`\{ l_m \}`.
+            
+        lmax : int, default: 8
+            Maximum order :math:`l_\mathrm{max}`. This sets the upper bound of 
+            the grid :math:`\{ l_m \}`.
+            
+        orders: list, default: None
+            Sequence :math:`\{l_m\}` of specific orders to compute, *e.g.* 
+            ``orders=[4,6]``. This has the priority over ``lmin`` and ``lmax``.
+            
+        bounds : tuple, default: (1, 2.5)
+            Lower and upper bounds :math:`(d_{n_\mathrm{min}}, d_{n_\mathrm{max}})`
+            to define the grid of distances :math:`\{ d_n \}`.
+            
+        dr : float, default: 0.1
+            Grid spacing :math:`\Delta r` to define the grid of distances 
+            :math:`\{ d_n \}` in the range 
+            :math:`(d_{n_\mathrm{min}}, d_{n_\mathrm{max}})` by steps of size 
+            :math:`\Delta r`.
+            
+        distance_grid : list, default: None
+            Manually defined grid of distances :math:`\{ d_n \}`. If different 
+            from ``None``, it  overrides the linearly-spaced grid defined by 
+            ``bounds`` and ``dr``.
+            
+        delta : float, default: 0.1
+            Shell width :math:`\delta` to probe the local density at a distances 
+            :math:`\{d_n\}` from the central particle.
+            
+        skin : float, default: 2.5
+            Skin width :math:`\sigma` (in units of ``delta``) to consider neighbors
+            further than the upper bound :math:`d_{n_\mathrm{max}}` of the grid of 
+            distances. Neighbors will then be  identified up to
+            :math:`d_{n_\mathrm{max}} + \sigma \\times \delta`
+
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose 
+            is ``False``.
+        """
         BondOrientationalDescriptor.__init__(self, trajectory,
                                              lmin=lmin, lmax=lmax,
                                              orders=orders,
