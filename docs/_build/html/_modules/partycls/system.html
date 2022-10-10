@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>partycls.system &mdash; partycls 1.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.1.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Support and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing partycls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">partycls</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>partycls.system</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for partycls.system</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The physical system at hand.</span>
+
+<span class="sd">The system of interest in a classical atomistic simulations is</span>
+<span class="sd">composed of interacting point particles, usually enclosed in a</span>
+<span class="sd">simulation cell.</span>
+
+<span class="sd">This class is inspired by the `atooms` framework authored by Daniele Coslovich</span>
+<span class="sd">See https://framagit.org/atooms/atooms </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">.particle</span> <span class="kn">import</span> <span class="n">aliases</span>
+<span class="kn">from</span> <span class="nn">.core.utils</span> <span class="kn">import</span> <span class="n">standardize_condition</span><span class="p">,</span> <span class="n">NearestNeighborsMethod</span>
+<span class="kn">from</span> <span class="nn">.neighbors_wrap</span> <span class="kn">import</span> <span class="n">nearest_neighbors</span> <span class="k">as</span> <span class="n">nearest_neighbors_f90</span>
+
+
+<div class="viewcode-block" id="System"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System">[docs]</a><span class="k">class</span> <span class="nc">System</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A system is composed of a collection of particles that lie within an</span>
+<span class="sd">    orthorhombic cell.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    particle : list of `Particle`, optional, default: None</span>
+<span class="sd">        A list of instances of `Particle`.</span>
+<span class="sd">    </span>
+<span class="sd">    cell : Cell, optional, default: None</span>
+<span class="sd">        The cell (simulation box).</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">        </span>
+<span class="sd">    particle : list of `Particle`</span>
+<span class="sd">        All the particles in the system.</span>
+<span class="sd">        </span>
+<span class="sd">    cell : Cell</span>
+<span class="sd">        The cell where all the particles lie.</span>
+
+<span class="sd">    nearest_neighbors_cutoffs : list of float</span>
+<span class="sd">        List of nearest neighbors cutoffs for each pair of species</span>
+<span class="sd">        in the system.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; p = [Particle(position=[0.0, 0.0, 0.0], species=&#39;A&#39;),</span>
+<span class="sd">             Particle(position=[1.0, 1.0, 1.0], species=&#39;B&#39;)]</span>
+<span class="sd">    &gt;&gt;&gt; c = Cell([5.0, 5.0, 5.0])</span>
+<span class="sd">    &gt;&gt;&gt; sys = System(particle=p, cell=c)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">particle</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">particle</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">particle</span> <span class="o">=</span> <span class="n">particle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="n">cell</span>
+        <span class="c1"># nearest neighbors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span> <span class="o">=</span> <span class="n">NearestNeighborsMethod</span><span class="o">.</span><span class="n">Auto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairs_of_species</span><span class="p">]</span>
+
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">nearest_neighbors_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method used to identify the nearest neighbors of all the particles</span>
+<span class="sd">        in the system. Should be one of [&#39;fixed&#39;, &#39;sann&#39;, &#39;voronoi&#39;].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@nearest_neighbors_method</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">nearest_neighbors_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span> <span class="o">=</span> <span class="n">NearestNeighborsMethod</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Number of spatial dimensions, guessed from the length of</span>
+<span class="sd">        `particle[0].position`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Number density of the system.</span>
+
+<span class="sd">        It will raise a ValueException if `cell` is None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;cannot compute density without a cell&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">volume</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">distinct_species</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sorted numpy array of all the distinct species in the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">))))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pairs_of_species</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List of all the possible pairs of species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">s2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">:</span>
+                <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pairs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pairs_of_species_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List of all the possible pairs of species ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">)):</span>
+                <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pairs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chemical_fractions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Numpy array with the chemical fractions of each species in the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">species</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+        <span class="n">fractions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">species_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">):</span>
+            <span class="n">fractions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">species</span> <span class="o">==</span> <span class="n">species_i</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fractions</span>
+
+<div class="viewcode-block" id="System.get_property"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.get_property">[docs]</a>    <span class="k">def</span> <span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a numpy array with the system property specified by `what`.</span>
+<span class="sd">        If `what` is a particle property, return the property for all particles</span>
+<span class="sd">        in the system, or for a given subset of particles specified by `subset`.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        what : str</span>
+<span class="sd">            Requested system property.</span>
+<span class="sd">        </span>
+<span class="sd">            `what` must be of the form </span>
+<span class="sd">            &quot;particle.&lt;attribute&gt;&quot; or &quot;cell.&lt;attribute&gt;&quot;. </span>
+<span class="sd">            </span>
+<span class="sd">            The following particle aliases are accepted:</span>
+<span class="sd">            - &#39;position&#39;: &#39;particle.position&#39;</span>
+<span class="sd">            - &#39;pos&#39;: &#39;particle.position&#39;</span>
+<span class="sd">            - &#39;position[0]&#39;: &#39;particle.position[0]&#39;, </span>
+<span class="sd">            - &#39;pos[0]&#39;: &#39;particle.position[0]&#39;</span>
+<span class="sd">            - &#39;x&#39;: &#39;particle.position[0]&#39;</span>
+<span class="sd">            - &#39;position[1]&#39;: &#39;particle.position[1]&#39;,</span>
+<span class="sd">            - &#39;pos[1]&#39;: &#39;particle.position[1]&#39;</span>
+<span class="sd">            - &#39;y&#39;: &#39;particle.position[1]&#39;</span>
+<span class="sd">            - &#39;position[2]&#39;: &#39;particle.position[2]&#39;</span>
+<span class="sd">            - &#39;pos[2]&#39;: &#39;particle.position[2]&#39;</span>
+<span class="sd">            - &#39;z&#39;: &#39;particle.position[2]&#39;</span>
+<span class="sd">            - &#39;species&#39;: &#39;particle.species&#39;</span>
+<span class="sd">            - &#39;spe&#39;: &#39;particle.species&#39;</span>
+<span class="sd">            - &#39;label&#39;: &#39;particle.label&#39;</span>
+<span class="sd">            - &#39;mass&#39;: &#39;particle.mass&#39;</span>
+<span class="sd">            - &#39;radius&#39;: &#39;particle.radius&#39;</span>
+<span class="sd">            - &#39;nearest_neighbors&#39;: &#39;particle.nearest_neighbors&#39;</span>
+<span class="sd">            - &#39;neighbors&#39;: &#39;particle.nearest_neighbors&#39;</span>
+<span class="sd">            - &#39;neighbours&#39;: &#39;particle.nearest_neighbors&#39;</span>
+<span class="sd">            - &#39;voronoi_signature&#39;: &#39;particle.voronoi_signature&#39;</span>
+<span class="sd">            - &#39;signature&#39;: &#39;particle.voronoi_signature&#39;</span>
+<span class="sd">            </span>
+<span class="sd">        subset : str, optional</span>
+<span class="sd">            Subset of particles for which the property must be dumped. Must be </span>
+<span class="sd">            of the form &quot;particle.&lt;attribute&gt;&quot; unless &quot;&lt;attribute&gt;&quot; is an </span>
+<span class="sd">            alias. The default is None (all particles will be included).</span>
+<span class="sd">            This is ignored if `what` is cell property.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        to_dump : numpy.ndarray</span>
+<span class="sd">            Array of the requested system property.</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; sys = traj[0]</span>
+<span class="sd">        &gt;&gt;&gt; pos_0 = sys.get_property(&#39;position&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; spe_0 = sys.get_property(&#39;species&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; sides = sys.get_property(&#39;cell.side&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">what</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+            <span class="n">what</span> <span class="o">=</span> <span class="n">aliases</span><span class="p">[</span><span class="n">what</span><span class="p">]</span>
+
+        <span class="c1"># Set the property to a given subset?</span>
+        <span class="k">if</span> <span class="n">subset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">standardize_condition</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>
+
+        <span class="c1"># Make array of the attribute</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="n">what</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">what</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;particle&#39;</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;particle.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">)))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">what</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">):</span>
+            <span class="n">what</span> <span class="o">=</span> <span class="n">what</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">regexp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w+)\[(\w+)\]&#39;</span><span class="p">,</span> <span class="n">what</span><span class="p">)</span>
+            <span class="c1"># cell iterable property</span>
+            <span class="k">if</span> <span class="n">regexp</span><span class="p">:</span>
+                <span class="n">what</span> <span class="o">=</span> <span class="n">regexp</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regexp</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">what</span><span class="p">)[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown attribute </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="System.dump"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for the method get_property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="n">subset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="System.set_property"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.set_property">[docs]</a>    <span class="k">def</span> <span class="nf">set_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a system property `what` to `value`. If `what` is a particle </span>
+<span class="sd">        property, set the property for all the particles in the system or for a </span>
+<span class="sd">        given subset of particles specified by `subset`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        what : str</span>
+<span class="sd">            Name of the property to set. This is considered to be a particle</span>
+<span class="sd">            property by default, unless it starts with &quot;cell&quot;, e.g. </span>
+<span class="sd">            &quot;cell.side&quot;.</span>
+<span class="sd">            </span>
+<span class="sd">        value : int, float, list, or numpy.ndarray</span>
+<span class="sd">            Value(s) of the property to set. An instance of `int` or `float`</span>
+<span class="sd">            will set the same value for all concerned particles. An instance</span>
+<span class="sd">            of `list` or `numpy.ndarray` will assign a specific value to each</span>
+<span class="sd">            particle. In this case, the size of `value` should respect the</span>
+<span class="sd">            number of concerned particles.</span>
+<span class="sd">            </span>
+<span class="sd">        subset : str, optional</span>
+<span class="sd">            Particles to which the property must be set. The default is None.</span>
+<span class="sd">            This is ignored if `what` is cell property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; sys.set_property(&#39;mass&#39;, 1.0)</span>
+<span class="sd">        &gt;&gt;&gt; sys.set_property(&#39;radius&#39;, 0.5, &quot;species == &#39;A&#39;&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; labels = [0, 1, 0] # 3 particles in the subset</span>
+<span class="sd">        &gt;&gt;&gt; sys.set_property(&#39;label&#39;, labels, &quot;species == &#39;B&#39;&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sys.set_property(&#39;cell.side[0]&#39;, 2.0)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Set the property to a given subset?</span>
+        <span class="k">if</span> <span class="n">subset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">standardize_condition</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span>
+
+        <span class="c1"># Set the same scalar value to each selected particle/cell</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">what</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">):</span>
+                <span class="n">what</span> <span class="o">=</span> <span class="n">what</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">regexp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(\w+)\[(\w+)\]&#39;</span><span class="p">,</span> <span class="n">what</span><span class="p">)</span>
+                <span class="c1"># cell iterable property</span>
+                <span class="k">if</span> <span class="n">regexp</span><span class="p">:</span>
+                    <span class="n">what</span> <span class="o">=</span> <span class="n">regexp</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">regexp</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                    <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">what</span><span class="p">)[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">what</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;particle&#39;</span><span class="p">):</span>
+                    <span class="n">what</span> <span class="o">=</span> <span class="n">what</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">particle</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Set a specific value to each particle/cell with a list/array</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">what</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">):</span>
+                <span class="n">what</span> <span class="o">=</span> <span class="n">what</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">what</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;particle&#39;</span><span class="p">):</span>
+                    <span class="n">what</span> <span class="o">=</span> <span class="n">what</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">particle</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+                        <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="System.compute_nearest_neighbors"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.compute_nearest_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">compute_nearest_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cutoffs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the nearest neighbors for all the particles in the system using the</span>
+<span class="sd">        provided method. Neighbors are stored in the `nearest_neighbors` particle </span>
+<span class="sd">        property.</span>
+
+<span class="sd">        Available methods are:</span>
+<span class="sd">        - &#39;fixed&#39;: use fixed cutoffs for each pair of species in the trajectory.</span>
+<span class="sd">        - &#39;sann&#39;: solid-angle based nearest neighbor algorithm</span>
+<span class="sd">            (see https://doi.org/10.1063/1.4729313).</span>
+<span class="sd">        - &#39;voronoi&#39;: radical Voronoi tessellation method (uses particles&#39; radii).        </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        method : str, default: None</span>
+<span class="sd">            Method to identify the nearest neighbors. Must be one of </span>
+<span class="sd">            [&#39;fixed&#39;, &#39;sann&#39;, &#39;voronoi].</span>
+
+<span class="sd">        cutoffs : list</span>
+<span class="sd">            List containing the cutoffs distances for each pair of species</span>
+<span class="sd">            in the system (for method &#39;fixed&#39; and &#39;sann&#39;). For method &#39;sann&#39;, </span>
+<span class="sd">            cutoffs are required as a first guess to identify the nearest neighbors.</span>
+<span class="sd">            Leave None for method &#39;voronoi&#39;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; sys.compute_nearest_neighbors(&#39;fixed&#39;, [1.5, 1.4, 1.4, 1.3])</span>
+<span class="sd">        &gt;&gt;&gt; sys.compute_nearest_neighbors(&#39;sann&#39;, [1.5, 1.4, 1.4, 1.3])</span>
+<span class="sd">        &gt;&gt;&gt; sys.compute_nearest_neighbors(&#39;voronoi&#39;, None)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Set up</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">NearestNeighborsMethod</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+        <span class="n">species_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;species_id&#39;</span><span class="p">)</span>
+        <span class="n">n_species</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle._index&#39;</span><span class="p">)</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;cell.side&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="n">cutoffs</span>
+        
+        <span class="c1"># Computation</span>
+        <span class="c1">#  Fixed-cutoffs (&#39;fixed&#39;)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="n">NearestNeighborsMethod</span><span class="o">.</span><span class="n">Fixed</span><span class="p">:</span>
+            <span class="n">num_part</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">)</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">cutoffs_sq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">cutoffs_sq</span> <span class="o">=</span> <span class="n">cutoffs_sq</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_species</span><span class="p">,</span> <span class="n">n_species</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">neighbors</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_part</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+            <span class="n">num_neighbors</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_part</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">nearest_neighbors_f90</span><span class="o">.</span><span class="n">fixed_cutoffs_all</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">species_id</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span>
+                                                    <span class="n">cutoffs_sq</span><span class="p">,</span> <span class="n">num_neighbors</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">neigh_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbors</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">neigh_i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_neighbors</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="k">return</span>
+        
+        <span class="c1">#  Solid-Angle Nearest Neighbors (&#39;sann&#39;)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="n">NearestNeighborsMethod</span><span class="o">.</span><span class="n">SANN</span><span class="p">:</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">rmax</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                <span class="n">neigh_i</span> <span class="o">=</span> <span class="n">nearest_neighbors_f90</span><span class="o">.</span><span class="n">sann</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span>
+                                                     <span class="n">p</span><span class="o">.</span><span class="n">_index</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span>
+                                                     <span class="n">rmax</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
+                <span class="n">neigh_i</span> <span class="o">=</span> <span class="n">neigh_i</span><span class="p">[</span><span class="n">neigh_i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">neigh_i</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1">#  Voronoi neighbors (&#39;voronoi&#39;)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="n">NearestNeighborsMethod</span><span class="o">.</span><span class="n">Voronoi</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">pyvoro</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dimensions</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;The computation of Voronoi neighbors is currently not possible in dimension 2.&quot;</span><span class="p">)</span>
+
+                <span class="c1"># parameters</span>
+                <span class="n">limits</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">]</span>
+                <span class="n">radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+                <span class="n">periodic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">periodic</span>
+                <span class="c1"># For efficiency, voro++ divides the box into a</span>
+                <span class="c1">#  grid of cubic blocks. In order to achieve maximum</span>
+                <span class="c1">#  performance, a block should contain 3-8 particles.</span>
+                <span class="c1">#  To do so, one can compute the side of a cube that</span>
+                <span class="c1">#  would contain 5.5 particles based on the number</span>
+                <span class="c1">#  density to set the block size (i.e. dispersion).</span>
+                <span class="n">dispersion</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.5</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span>
+                <span class="c1"># computation</span>
+                <span class="n">voronoi</span> <span class="o">=</span> <span class="n">pyvoro</span><span class="o">.</span><span class="n">compute_voronoi</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span>
+                                                 <span class="n">limits</span><span class="p">,</span> 
+                                                 <span class="n">dispersion</span><span class="p">,</span>
+                                                 <span class="n">radii</span><span class="o">=</span><span class="n">radii</span><span class="p">,</span>
+                                                 <span class="n">periodic</span><span class="o">=</span><span class="n">periodic</span><span class="p">)</span>
+                <span class="c1"># attribution</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">):</span>
+                    <span class="n">neigh_i</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">voronoi</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;faces&#39;</span><span class="p">]:</span>
+                        <span class="n">neigh_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;adjacent_cell&#39;</span><span class="p">])</span>
+                    <span class="n">pi</span><span class="o">.</span><span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">neigh_i</span>
+
+            <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="s1">&#39;No `pyvoro` module found.&#39;</span><span class="p">)</span>
+            <span class="k">return</span></div>
+
+<div class="viewcode-block" id="System.compute_voronoi_signatures"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.compute_voronoi_signatures">[docs]</a>    <span class="k">def</span> <span class="nf">compute_voronoi_signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the Voronoi signatures of all the particles in the system</span>
+<span class="sd">        using the radical Voronoi tessellation method.</span>
+<span class="sd">        </span>
+<span class="sd">        Particle radii must be set using the `set_property` method if the </span>
+<span class="sd">        original trajectory file does not contain such information.</span>
+
+<span class="sd">        Creates a `voronoi_signature` property for the particles.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pyvoro</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dimensions</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;The computation of Voronoi signatures is currently not possible in dimension 2.&quot;</span><span class="p">)</span>
+
+            <span class="c1"># parameters</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+            <span class="n">limits</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">L</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">]</span>
+            <span class="n">radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+            <span class="n">periodic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">periodic</span>
+            <span class="n">dispersion</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.5</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span>
+            <span class="c1"># computation</span>
+            <span class="n">voronoi</span> <span class="o">=</span> <span class="n">pyvoro</span><span class="o">.</span><span class="n">compute_voronoi</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span>
+                                             <span class="n">limits</span><span class="p">,</span> 
+                                             <span class="n">dispersion</span><span class="p">,</span>
+                                             <span class="n">radii</span><span class="o">=</span><span class="n">radii</span><span class="p">,</span>
+                                             <span class="n">periodic</span><span class="o">=</span><span class="n">periodic</span><span class="p">)</span>
+            <span class="c1"># attribution</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">):</span>
+                <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">voronoi</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;faces&#39;</span><span class="p">]:</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">]))</span>
+                    <span class="n">signature</span> <span class="o">=</span> <span class="p">[</span><span class="n">faces</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+                    <span class="n">signature</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">signature</span><span class="p">))</span>
+                    <span class="n">pi</span><span class="o">.</span><span class="n">voronoi_signature</span> <span class="o">=</span> <span class="n">signature</span>
+
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="s1">&#39;No `pyvoro` module found.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="System.show"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show a snapshot of the system and color particles</span>
+<span class="sd">        according to an arbitrary property, such as species, cluster label, </span>
+<span class="sd">        etc. Current visualization backends are &#39;matplotlib&#39;, &#39;ovito&#39; and </span>
+<span class="sd">        &#39;3dmol&#39;.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        backend : str, optional</span>
+<span class="sd">            Name of the backend to use for visualization. </span>
+<span class="sd">            The default is &#39;matplotlib&#39;.</span>
+
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Name of the particle property to use as basis for coloring the </span>
+<span class="sd">            particles. This property must be defined for all the particles in the system.</span>
+<span class="sd">            The default is &#39;species&#39;.</span>
+
+<span class="sd">        **kwargs : additional keyworded arguments (backend-dependent).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            In case of unknown `backend`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Figure or View (backend-dependent).</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; sys.show(frame=0, color=&#39;label&#39;, backend=&#39;3dmol&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; sys.show(frame=1, color=&#39;energy&#39;, backend=&#39;matplotlib&#39;, cmap=&#39;viridis&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.helpers</span> <span class="kn">import</span> <span class="n">show_matplotlib</span><span class="p">,</span> <span class="n">show_ovito</span><span class="p">,</span> <span class="n">show_3dmol</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">:</span>
+            <span class="n">_show</span> <span class="o">=</span> <span class="n">show_matplotlib</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;ovito&#39;</span><span class="p">:</span>
+            <span class="n">_show</span> <span class="o">=</span> <span class="n">show_ovito</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;3dmol&#39;</span><span class="p">:</span>
+            <span class="n">_show</span> <span class="o">=</span> <span class="n">show_3dmol</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;unknown backend for visualization&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="System.fold"><a class="viewcode-back" href="../../source/partycls.html#partycls.system.System.fold">[docs]</a>    <span class="k">def</span> <span class="nf">fold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fold the particle positions into the central cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rep</span> <span class="o">=</span> <span class="s1">&#39;System(number_of_particles=</span><span class="si">{}</span><span class="s1">, species=</span><span class="si">{}</span><span class="s1">, chemical_fractions=</span><span class="si">{}</span><span class="s1">, cell=</span><span class="si">{}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="n">rep</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle</span><span class="p">),</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">chemical_fractions</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Joris Paret.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -40,6 +40,8 @@ extensions = [
 	'sphinx.ext.autodoc',
 	'sphinx.ext.coverage',
 	'sphinx.ext.napoleon',
+	'sphinx.ext.viewcode',
+	'sphinx.ext.intersphinx',
 	'sphinx_rtd_theme',
 	'sphinxcontrib.bibtex',
 	'nbsphinx',
@@ -50,6 +52,12 @@ bibtex_bibfiles = [
 	'joss.bib',
 	'references.bib'
 ]
+
+latex_elements = {
+    'inputenc': '',
+    'utf8extra': ''
+}
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -89,3 +97,13 @@ html_logo = "./_static/img/logo.svg"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# -- Options for intersphinx extension ---------------------------------------
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {
+	'python': ('https://docs.python.org/3', None),
+	'numpy': ('https://numpy.org/doc/stable/', None),
+	'matplotlib' : ('https://matplotlib.org/stable/', None),
+	'scikit-learn': ('https://scikit-learn.org/stable/', None)
+}

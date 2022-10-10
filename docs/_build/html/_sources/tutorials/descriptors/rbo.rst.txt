@@ -28,17 +28,34 @@ where :math:`\gamma` is an integer, :math:`H` is the `Heaviside step function <h
 Then, only the diagonal coefficients of the power spectrum, namely 
 
 .. math::
-	Q_{ln}^R(i) = \left( \frac{4\pi}{2l + 1} \sum_{m=-l}^l |q_{l m n}^R(i)|^2 \right)^{1/2} ,
+	Q_{l,n}^R(i) = \sqrt{ \frac{4\pi}{2l + 1} \sum_{m=-l}^l |q_{l m n}^R(i)|^2 } ,
 
-are retained to form the descriptor of particle :math:`i` as :math:`(\dots, Q_{ln}^R(i), \dots)`, which is flattened as a vector composed of :math:`l_\textrm{max}\times n_\textrm{max}` structural features.
+are retained to form the descriptor of particle :math:`i`.
 
-Constructor
------------
+We then consider :math:`Q^R_{l,n}(i)` for a sequence of orders :math:`\{ l_m \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}` and for a grid of distances :math:`\{ d_n \}`. The resulting feature vector for particle :math:`i` is given by
+
+.. math::
+	X^\mathrm{RBO}(i) = (\: \dots \;\; Q^R_{l,n}(i) \;\; Q^R_{l, n+1}(i) \;\; \dots \;\; Q^R_{l_\mathrm{max}, n_\mathrm{max}}(i) \:) .
+
+Setup
+-----
+
+Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+
+.. code-block:: python
+
+	from partycls import Trajectory
+	from partycls.descriptor import RadialBondOrientationalDescriptor
+
+	traj = Trajectory("trajectory.xyz")
+	D = RadialBondOrientationalDescriptor(traj)
+
+The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__
 
-Examples
---------
+Demonstration
+-------------
 
 References
 ----------

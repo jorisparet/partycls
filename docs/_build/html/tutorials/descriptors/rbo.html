@@ -60,8 +60,8 @@
 <li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Radial bond-orientational descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -148,26 +148,70 @@ In the following, we actually use</p>
 <p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is an integer, <span class="math notranslate nohighlight">\(H\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Heaviside_step_function">Heaviside step function</a>, which allows to neglect the contributions of particles further than a distance <span class="math notranslate nohighlight">\(R_\mathrm{max} = d_{n_\mathrm{max}} + \sigma \times \delta\)</span> from the central particle, where <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}}\)</span> is the largest distance in the grid of points <span class="math notranslate nohighlight">\(\{ d_n \}\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> is a skin distance.
 Then, only the diagonal coefficients of the power spectrum, namely</p>
 <div class="math notranslate nohighlight">
-\[Q_{ln}^R(i) = \left( \frac{4\pi}{2l + 1} \sum_{m=-l}^l |q_{l m n}^R(i)|^2 \right)^{1/2} ,\]</div>
-<p>are retained to form the descriptor of particle <span class="math notranslate nohighlight">\(i\)</span> as <span class="math notranslate nohighlight">\((\dots, Q_{ln}^R(i), \dots)\)</span>, which is flattened as a vector composed of <span class="math notranslate nohighlight">\(l_\textrm{max}\times n_\textrm{max}\)</span> structural features.</p>
+\[Q_{l,n}^R(i) = \sqrt{ \frac{4\pi}{2l + 1} \sum_{m=-l}^l |q_{l m n}^R(i)|^2 } ,\]</div>
+<p>are retained to form the descriptor of particle <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>We then consider <span class="math notranslate nohighlight">\(Q^R_{l,n}(i)\)</span> for a sequence of orders <span class="math notranslate nohighlight">\(\{ l_m \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}\)</span> and for a grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[X^\mathrm{RBO}(i) = (\: \dots \;\; Q^R_{l,n}(i) \;\; Q^R_{l, n+1}(i) \;\; \dots \;\; Q^R_{l_\mathrm{max}, n_\mathrm{max}}(i) \:) .\]</div>
 </div>
-<div class="section" id="constructor">
-<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
+<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">RadialBondOrientationalDescriptor</span>
+
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">RadialBondOrientationalDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">RadialBondOrientationalDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">2.5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<span class="sig-prename descclassname"><span class="pre">RadialBondOrientationalDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">2.5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/radial_bo.html#RadialBondOrientationalDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trajectory</strong> (<a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_m \}\)</span>.</p></li>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_m \}\)</span>.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_m\}\)</span> of specific orders to compute, <em>e.g.</em>
+<code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>1</em><em>, </em><em>2.5</em><em>)</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span>
+to define the grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>.</p></li>
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> to define the grid of distances
+<span class="math notranslate nohighlight">\(\{ d_n \}\)</span> in the range
+<span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span> by steps of size
+<span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
+<li><p><strong>distance_grid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Manually defined grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. If different
+from <code class="docutils literal notranslate"><span class="pre">None</span></code>, it  overrides the linearly-spaced grid defined by
+<code class="docutils literal notranslate"><span class="pre">bounds</span></code> and <code class="docutils literal notranslate"><span class="pre">dr</span></code>.</p></li>
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Shell width <span class="math notranslate nohighlight">\(\delta\)</span> to probe the local density at a distances
+<span class="math notranslate nohighlight">\(\{d_n\}\)</span> from the central particle.</p></li>
+<li><p><strong>skin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 2.5</em>) – Skin width <span class="math notranslate nohighlight">\(\sigma\)</span> (in units of <code class="docutils literal notranslate"><span class="pre">delta</span></code>) to consider neighbors
+further than the upper bound <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}}\)</span> of the grid of
+distances. Neighbors will then be  identified up to
+<span class="math notranslate nohighlight">\(d_{n_\mathrm{max}} + \sigma \times \delta\)</span></p></li>
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
+is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<div class="section" id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id2"><dl class="citation">
 <dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Emanuele Boattini, Frank Smallenburg, and Laura Filion. Averaging local structure to predict the dynamic propensity in supercooled liquids. <em>Phys. Rev. Letters</em>, 127(8):088007, 2021. URL: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevLett.127.088007">https://link.aps.org/doi/10.1103/PhysRevLett.127.088007</a> (visited on 2022-02-09), <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.127.088007">doi:10.1103/PhysRevLett.127.088007</a>.</p>
+<dd><p>Emanuele Boattini, Frank Smallenburg, and Laura Filion. Averaging local structure to predict the dynamic propensity in supercooled liquids. <em>Phys. Rev. Letters</em>, 127(8):088007, 2021. URL: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevLett.127.088007">https://link.aps.org/doi/10.1103/PhysRevLett.127.088007</a>, <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.127.088007">doi:10.1103/PhysRevLett.127.088007</a>.</p>
 </dd>
 </dl>
 </p>

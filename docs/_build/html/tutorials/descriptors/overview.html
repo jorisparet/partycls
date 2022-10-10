@@ -136,38 +136,30 @@
 <p>Nearest neighbors can be computed using the following method:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.trajectory.Trajectory.compute_nearest_neighbors">
-<span class="sig-prename descclassname"><span class="pre">Trajectory.</span></span><span class="sig-name descname"><span class="pre">compute_nearest_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoffs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.trajectory.Trajectory.compute_nearest_neighbors" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Trajectory.</span></span><span class="sig-name descname"><span class="pre">compute_nearest_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoffs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/trajectory.html#Trajectory.compute_nearest_neighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.trajectory.Trajectory.compute_nearest_neighbors" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the nearest neighbors for all the particles in the trajectory using
-the provided method. Neighbors are stored in the <cite>nearest_neighbors</cite> particle
-property.</p>
-<p>Available methods are:
-- ‘auto’: read neighbors from the trajectory file, if explicitly requested</p>
-<blockquote>
-<div><p>with the <cite>additional_fields</cite> argument in the constructor.</p>
-</div></blockquote>
+the provided method. Neighbors are stored in the <code class="docutils literal notranslate"><span class="pre">nearest_neighbors</span></code> particle
+property. Available methods are:</p>
 <ul class="simple">
-<li><p>‘fixed’: use fixed cutoffs for each pair of species in the trajectory.</p></li>
-<li><dl class="simple">
-<dt>‘sann’: solid-angle based nearest neighbor algorithm</dt><dd><p>(see <a class="reference external" href="https://doi.org/10.1063/1.4729313">https://doi.org/10.1063/1.4729313</a>).</p>
-</dd>
-</dl>
-</li>
-<li><p>‘voronoi’: radical Voronoi tessellation method (uses particles’ radii).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'auto'</span></code> : read neighbors from the trajectory file, if explicitly requested with the <code class="docutils literal notranslate"><span class="pre">additional_fields</span></code> argument in the constructor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'fixed'</span></code> : use fixed cutoffs for each pair of species in the trajectory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'sann'</span></code> : solid-angle based nearest neighbor algorithm (see <a class="reference external" href="https://doi.org/10.1063/1.4729313">https://doi.org/10.1063/1.4729313</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'voronoi'</span></code> : radical Voronoi tessellation method (uses particles’ radii) (see <a class="reference external" href="https://doi.org/10.1016/0022-3093(82)90093-X">https://doi.org/10.1016/0022-3093(82)90093-X</a>)</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> (<em>str</em><em>, </em><em>default: None</em>) – Method to identify the nearest neighbors. Must be one of
-[‘auto’, ‘fixed’, ‘sann’, ‘voronoi’]. None defaults to ‘auto’. If
-method is ‘auto’, neighbors are read directly from the trajectory file,
-if specified with the <cite>additional_fields</cite> argument in the constructor.
-If no neighbors are found, falls back to method=’fixed’ instead.</p></li>
-<li><p><strong>cutoffs</strong> (<em>list</em><em>, </em><em>default: None</em>) – List containing the cutoffs distances for each pair of species
-in the trajectory (for method ‘fixed’ and ‘sann’). If None, cutoffs
-will be computed automatically. For method ‘sann’, cutoffs are
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Method to identify the nearest neighbors. Must be one of
+<code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fixed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'voronoi'</span></code>. <code class="docutils literal notranslate"><span class="pre">None</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>. If
+method is <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, neighbors are read directly from the trajectory file,
+if specified with the <code class="docutils literal notranslate"><span class="pre">additional_fields</span></code> argument in the constructor.
+If no neighbors are found, falls back to <code class="docutils literal notranslate"><span class="pre">method='fixed'</span></code> instead.</p></li>
+<li><p><strong>cutoffs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – List containing the cutoffs distances for each pair of species
+in the trajectory (for method <code class="docutils literal notranslate"><span class="pre">'fixed'</span></code> and <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>). If <code class="docutils literal notranslate"><span class="pre">None</span></code>, cutoffs
+will be computed automatically. For method <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>, cutoffs are
 required as a first guess to identify the nearest neighbors.</p></li>
-<li><p><strong>dr</strong> (<em>float</em><em>, </em><em>default: 0.1</em>) – Radial grid spacing for computing the cutoffs on the basis of
-the first minimum of each partial radial distribution function
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Radial grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> for computing the cutoffs on the basis
+of the first minimum of each partial radial distribution function
 in the trajectory, if cutoffs are not provided.</p></li>
 </ul>
 </dd>
@@ -175,7 +167,7 @@ in the trajectory, if cutoffs are not provided.</p></li>
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -189,20 +181,22 @@ in the trajectory, if cutoffs are not provided.</p></li>
 <p>Nearest neighbors cutoffs can be automatically computed for each pair of species in the trajectory on the basis of the first minimum of the partial radial distribution functions <span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span>, where <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are species indices. This is done using the following method:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs">
-<span class="sig-prename descclassname"><span class="pre">Trajectory.</span></span><span class="sig-name descname"><span class="pre">compute_nearest_neighbors_cutoffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Trajectory.</span></span><span class="sig-name descname"><span class="pre">compute_nearest_neighbors_cutoffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/trajectory.html#Trajectory.compute_nearest_neighbors_cutoffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the nearest neighbors cutoffs on the basis of the first
-minimum of the partial radial distribution function between each
-pair of species in the trajectory.</p>
+minimum of the partial radial distribution function
+<span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span> between each pair of species
+<span class="math notranslate nohighlight">\((\alpha,\beta)\)</span> in the trajectory. Sets the
+<code class="docutils literal notranslate"><span class="pre">nearest_neighbors_cutoffs</span></code> list attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dr</strong> (<em>float</em><em>, </em><em>default: 0.1</em>) – Bin width for the radial grid used to compute the partial
-radial distribution functions.</p>
+<dd class="field-odd"><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span> for the radial grid used to compute the partial
+radial distribution functions <span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)">None</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -270,8 +264,8 @@ radial distribution functions.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Trajectory.compute_nearest_neighbors(method='sann')</span></code></p></li>
 </ul>
 <p>The <em>solid-angle based nearest neighbors</em> algorithm (SANN) <span id="id1">[<a class="reference internal" href="#id17">1</a>]</span> is a parameter-free algorithm for the identification of nearest neighbors. It attributes to each possible neighbor of a particle a solid angle and determines the cutoff radius by the requirement that the sum of the solid angles is <span class="math notranslate nohighlight">\(4 \pi\)</span>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
 <p>This method requires cutoffs (or computes them automatically if not provided) to use as a first guess to identify the possible nearest neighbors. However, cutoffs do not play a role in the algorithm itself. A good choice for these cutoffs is the first minima of the partial radial distribution functions <span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span>.</p>
 </div>
 <p>Example:</p>
@@ -290,7 +284,7 @@ radial distribution functions.</p>
 <p>Voronoi tessellation can be used in molecular simulations to identify nearest neighbors by construction of Voronoi polyhedra <span id="id2">[<a class="reference internal" href="#id18">2</a>]</span>, which consists in drawing orthogonal planes at the mid-points between the central particle and each of its neighbors (<em>i.e.</em> its <a class="reference external" href="https://en.wikipedia.org/wiki/Wigner%E2%80%93Seitz_cell">Wigner-Seitz cell</a>). In particular, the <em>radical</em> variant of Voronoi tessellation <span id="id3">[<a class="reference internal" href="#id19">3</a>]</span>, which accounts for the relative sizes of the particles to determine of the positions of the intersecting planes, provides better results for multi-components systems.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This method uses the effective particles radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> instance using the <code class="docutils literal notranslate"><span class="pre">Trajectory.set_property</span></code> method.</p>
+<p>This method uses the effective particles’ radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> instance using the <code class="docutils literal notranslate"><span class="pre">Trajectory.set_property</span></code> method. Otherwise, default values will be used.</p>
 </div>
 <p>Examples:</p>
 <ol class="arabic simple">
@@ -314,8 +308,8 @@ radial distribution functions.</p>
 <div class="section" id="neighbors-structural-descriptors">
 <h2>Neighbors &amp; structural descriptors<a class="headerlink" href="#neighbors-structural-descriptors" title="Permalink to this headline"></a></h2>
 <p>The table below shows the requirements of each structural descriptors in terms of neighbors and cutoffs. Note that these requirements are automatically satisfied when computing the descriptors if not explicitly set by the user.</p>
-<table class="colwidths-given docutils align-default" id="id20">
-<caption><span class="caption-text">Required types of neighbors &amp; cutoffs</span><a class="headerlink" href="#id20" title="Permalink to this table"></a></caption>
+<table class="colwidths-given docutils align-default" id="id21">
+<caption><span class="caption-text">Required types of neighbors &amp; cutoffs</span><a class="headerlink" href="#id21" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 20%" />
 <col style="width: 20%" />
@@ -407,13 +401,13 @@ radial distribution functions.</p>
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id12"><dl class="citation">
 <dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Jacobus A. van Meel, Laura Filion, Chantal Valeriani, and Daan Frenkel. A parameter-free, solid-angle based, nearest-neighbor algorithm. <em>J. Chem. Phys.</em>, 136(23):234107, 2012. URL: <a class="reference external" href="http://arxiv.org/abs/1202.5281">http://arxiv.org/abs/1202.5281</a> (visited on 2018-12-20), <a class="reference external" href="https://arxiv.org/abs/1202.5281">arXiv:1202.5281</a>, <a class="reference external" href="https://doi.org/10.1063/1.4729313">doi:10.1063/1.4729313</a>.</p>
+<dd><p>Jacobus A. van Meel, Laura Filion, Chantal Valeriani, and Daan Frenkel. A parameter-free, solid-angle based, nearest-neighbor algorithm. <em>J. Chem. Phys.</em>, 136(23):234107, 2012. URL: <a class="reference external" href="http://arxiv.org/abs/1202.5281">http://arxiv.org/abs/1202.5281</a>, <a class="reference external" href="https://arxiv.org/abs/1202.5281">arXiv:1202.5281</a>, <a class="reference external" href="https://doi.org/10.1063/1.4729313">doi:10.1063/1.4729313</a>.</p>
 </dd>
 <dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>J. D. Bernal. A geometrical approach to the structure of liquids. <em>Nature</em>, 183(4655):141–147, 1959. URL: <a class="reference external" href="https://www.nature.com/articles/183141a0">https://www.nature.com/articles/183141a0</a> (visited on 2021-07-09), <a class="reference external" href="https://doi.org/10.1038/183141a0">doi:10.1038/183141a0</a>.</p>
+<dd><p>J. D. Bernal. A geometrical approach to the structure of liquids. <em>Nature</em>, 183(4655):141–147, 1959. URL: <a class="reference external" href="https://www.nature.com/articles/183141a0">https://www.nature.com/articles/183141a0</a>, <a class="reference external" href="https://doi.org/10.1038/183141a0">doi:10.1038/183141a0</a>.</p>
 </dd>
 <dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
-<dd><p>B. J. Gellatly and J. L. Finney. Characterisation of models of multicomponent amorphous metals: the radical alternative to the voronoi polyhedron. <em>J. Non-Cryst. Solids</em>, 50(3):313–329, 1982. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/002230938290093X">https://www.sciencedirect.com/science/article/pii/002230938290093X</a> (visited on 2021-07-13), <a class="reference external" href="https://doi.org/10.1016/0022-3093(82)90093-X">doi:10.1016/0022-3093(82)90093-X</a>.</p>
+<dd><p>B. J. Gellatly and J. L. Finney. Characterisation of models of multicomponent amorphous metals: the radical alternative to the voronoi polyhedron. <em>J. Non-Cryst. Solids</em>, 50(3):313–329, 1982. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/002230938290093X">https://www.sciencedirect.com/science/article/pii/002230938290093X</a>, <a class="reference external" href="https://doi.org/10.1016/0022-3093(82)90093-X">doi:10.1016/0022-3093(82)90093-X</a>.</p>
 </dd>
 </dl>
 </p>

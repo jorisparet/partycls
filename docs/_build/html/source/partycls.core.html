@@ -103,8 +103,8 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="partycls-core-package">
-<h1>partycls.core package<a class="headerlink" href="#partycls-core-package" title="Permalink to this headline"></a></h1>
+<div class="section" id="module-partycls.core">
+<span id="partycls-core-package"></span><h1>partycls.core package<a class="headerlink" href="#module-partycls.core" title="Permalink to this headline"></a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </div>
@@ -112,8 +112,8 @@
 <span id="partycls-core-utils-module"></span><h2>partycls.core.utils module<a class="headerlink" href="#module-partycls.core.utils" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">NearestNeighborsMethod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">NearestNeighborsMethod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#NearestNeighborsMethod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
 <p>An enumeration.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod.Auto">
@@ -139,44 +139,41 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="partycls.core.utils.standardize_condition">
-<span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.core.utils.standardize_condition" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#standardize_condition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.standardize_condition" title="Permalink to this definition"></a></dt>
 <dd><p>Check that the condition is correctly formated (i.e &lt;attr&gt; _operator_ &lt;val&gt;).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>condition</strong> (<em>str</em>) – condition.</p>
+<dd class="field-odd"><p><strong>condition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – condition.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If condition is not valid or if the &lt;attr&gt; is not recognized).</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If condition is not valid or if the &lt;attr&gt; is not recognized).</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><strong>condition</strong> – A standardized condition.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="partycls.core.utils.tipify">
-<span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">tipify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.core.utils.tipify" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">tipify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#tipify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.tipify" title="Permalink to this definition"></a></dt>
 <dd><p>Convert a string <cite>s</cite> into the best matching type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – String to convert</p>
+<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – String to convert</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Best-matching type for the input string <cite>s</cite>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int, float, or str</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-partycls.core">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-partycls.core" title="Permalink to this headline"></a></h2>
 </div>
 </div>
 

@@ -59,8 +59,8 @@
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Lechner-Dellago descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -139,27 +139,55 @@
 \[\bar{q}_{lm}(i) \equiv \langle q_{l m}(i) \rangle ,\]</div>
 <p>and then made invariant,</p>
 <div class="math notranslate nohighlight">
-\[\bar{Q}_{l}(i) \equiv \left( \frac{4\pi}{2l + 1}\sum_{m=-l}^l |\bar{q}_{lm(i)}|^2 \right)^{1/2} ,\]</div>
+\[\bar{Q}_{l}(i) = \sqrt{ \frac{4\pi}{2l + 1}\sum_{m=-l}^l |\bar{q}_{lm(i)}|^2 } ,\]</div>
 <p>to provide an improved descriptor for crystal structure detection.</p>
+<p>We then consider <span class="math notranslate nohighlight">\(\bar{Q}_l(i)\)</span> for a sequence of orders <span class="math notranslate nohighlight">\(\{ l_n \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}\)</span>. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[X^\mathrm{LD}(i) = (\: \bar{Q}_{l_\mathrm{min}}(i) \;\; \dots \;\; \bar{Q}_{l_\mathrm{max}}(i) \:) .\]</div>
 </div>
-<div class="section" id="constructor">
-<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
+<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">LechnerDellagoDescriptor</span>
+
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">LechnerDellagoDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.bo.LechnerDellagoDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">LechnerDellagoDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.bo.LechnerDellagoDescriptor.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<span class="sig-prename descclassname"><span class="pre">LechnerDellagoDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orders</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/bo.html#LechnerDellagoDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.bo.LechnerDellagoDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trajectory</strong> (<a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
+<code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
+is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<div class="section" id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
 <p id="id2"><dl class="citation">
 <dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Wolfgang Lechner and Christoph Dellago. Accurate determination of crystal structures based on averaged local bond order parameters. <em>J. Chem. Phys.</em>, 129(11):114707, 2008. URL: <a class="reference external" href="http://arxiv.org/abs/0806.3345">http://arxiv.org/abs/0806.3345</a> (visited on 2020-06-26), <a class="reference external" href="https://arxiv.org/abs/0806.3345">arXiv:0806.3345</a>, <a class="reference external" href="https://doi.org/10.1063/1.2977970">doi:10.1063/1.2977970</a>.</p>
+<dd><p>Wolfgang Lechner and Christoph Dellago. Accurate determination of crystal structures based on averaged local bond order parameters. <em>J. Chem. Phys.</em>, 129(11):114707, 2008. URL: <a class="reference external" href="http://arxiv.org/abs/0806.3345">http://arxiv.org/abs/0806.3345</a>, <a class="reference external" href="https://arxiv.org/abs/0806.3345">arXiv:0806.3345</a>, <a class="reference external" href="https://doi.org/10.1063/1.2977970">doi:10.1063/1.2977970</a>.</p>
 </dd>
 </dl>
 </p>

@@ -29,9 +29,9 @@ Structural descriptors
 
 partycls implements various structural descriptors:
 
-- :doc:`tutorials/descriptors/gr`
+- :doc:`tutorials/descriptors/gr` :cite:`paret_2020`
 - :doc:`tutorials/descriptors/tetra`
-- :doc:`tutorials/descriptors/ba`
+- :doc:`tutorials/descriptors/ba` :cite:`paret_2020`
 - :doc:`tutorials/descriptors/sba`
 - :doc:`tutorials/descriptors/bo` :cite:`steinhardt_1983`
 - :doc:`tutorials/descriptors/sbo`

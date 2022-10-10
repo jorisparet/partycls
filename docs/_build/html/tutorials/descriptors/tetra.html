@@ -54,8 +54,8 @@
 <li class="toctree-l3"><a class="reference internal" href="gr.html">Radial descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Tetrahedral descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ba.html">Bond-angle descriptor</a></li>
@@ -129,21 +129,92 @@
 <h1>Tetrahedral descriptor<a class="headerlink" href="#tetrahedral-descriptor" title="Permalink to this headline"></a></h1>
 <div class="section" id="definition">
 <h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<p>The degree of tetrahedrality of a particle <span class="math notranslate nohighlight">\(i\)</span> is the average deviation of the bond angles <span class="math notranslate nohighlight">\(\{ \theta_{jik} \}\)</span> between <span class="math notranslate nohighlight">\(i\)</span> and all the possible pairs of its nearest neighbors <span class="math notranslate nohighlight">\((j,k)\)</span> from the ideal angle in a tetrahedron, <span class="math notranslate nohighlight">\(\theta_\mathrm{tetra} = 109.5^\circ\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[T(i) = \frac{1}{N_\mathrm{ba}} \sum_{i \in N_b(i)} \sum_{j \in N_b(i)} | \cos(\theta_{jik}) - \cos(109.5) |\]</div>
+\[\begin{split}T(i) = \frac{1}{N_\mathrm{ba}(i)} \sum_{j=1}^{N_b(i)} \sum_{\substack{k=1 \\ k \neq j}}^{N_b(i)} | \cos(\theta_{jik}) - \cos(\theta_\mathrm{tetra}) | ,\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_\mathrm{ba}(i)\)</span> is the total number of bond angles (<em>i.e.</em> the number of pairs) around particle <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(N_b(i)\)</span> is the number of its nearest neighbors. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[X^\mathrm{T}(i) = (\: T(i) \:) .\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike most descriptors, this descriptor is scalar. Its feature vector <span class="math notranslate nohighlight">\(X^\mathrm{T}(i)\)</span> is thus composed of a single feature.</p>
 </div>
-<div class="section" id="constructor">
-<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
+<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">TetrahedralDescriptor</span>
+
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">TetrahedralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">TetrahedralDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<span class="sig-prename descclassname"><span class="pre">TetrahedralDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/tetrahedrality.html#TetrahedralDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trajectory</strong> (<a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
+is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<div class="section" id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
+<p>We consider an input trajectory file <code class="docutils literal notranslate"><span class="pre">&quot;trajectory.xyz&quot;</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+
+<span class="c1"># open the trajectory</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+
+<span class="c1"># compute the neighbors using Voronoi tessellation</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;voronoi&#39;</span><span class="p">)</span>
+<span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;nearest_neighbors&quot;</span><span class="p">)</span>
+
+<span class="c1"># print the first three neighbors lists for the first trajectory frame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;neighbors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">nearest_neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>neighbors:
+ [list([767, 113, 323, 276, 322, 332, 980, 425, 801, 16, 171, 258, 901, 241])
+  list([448, 481, 496, 574, 706, 536, 337, 241, 951, 16, 14, 258, 502, 447, 860])
+  list([799, 123, 608, 913, 500, 826, 230, 636, 796, 772, 810, 639, 270, 578, 874, 397, 354])]
+</pre></div>
+</div>
+<p>We now instantiate and compute a <code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor</span></code> on this trajectory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">TetrahedralDescriptor</span>
+
+<span class="c1"># instantiation</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">TetrahedralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">dtheta</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+
+<span class="c1"># restrict the analysis to type-B particles</span>
+<span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># compute the descriptor&#39;s data matrix</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c1"># print the first three feature vectors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>feature vectors:
+ [[0.48286880]
+  [0.48912898]
+  [0.47882811]]
+</pre></div>
+</div>
 </div>
 </div>
 

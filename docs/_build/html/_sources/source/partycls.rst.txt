@@ -1,6 +1,11 @@
 partycls package
 ================
 
+.. automodule:: partycls
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -89,14 +94,6 @@ partycls.workflow module
 ------------------------
 
 .. automodule:: partycls.workflow
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: partycls
    :members:
    :undoc-members:
    :show-inheritance:

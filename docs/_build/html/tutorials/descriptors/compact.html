@@ -61,8 +61,8 @@
 <li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Compactness descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -130,34 +130,68 @@
 <h1>Compactness descriptor<a class="headerlink" href="#compactness-descriptor" title="Permalink to this headline"></a></h1>
 <div class="section" id="definition">
 <h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
-<p>Reference <span id="id1">[<a class="reference internal" href="#id6">1</a>]</span>.</p>
+<p>The compactness descriptor quantifies the local packing efficiency of a particle <span class="math notranslate nohighlight">\(i\)</span> by comparing it to a reference ideal packing configuration of its nearest neighbors <span id="id1">[<a class="reference internal" href="#id7">1</a>]</span>.</p>
+<p>We consider a central particle <span class="math notranslate nohighlight">\(i\)</span> surrounded by <span class="math notranslate nohighlight">\(N_b(i)\)</span> nearest neighbors, usually identified by means of a radical Voronoi tessellation <span id="id2">[<a class="reference internal" href="#id10">2</a>]</span>. We then consider triplets <span class="math notranslate nohighlight">\((j,k,m)\)</span> of neighboring particles, for which all particles are simultaneously nearest neighbors of each other and of particle <span class="math notranslate nohighlight">\(i\)</span>. Such a triplet is identified with the central particle <span class="math notranslate nohighlight">\(i\)</span> to be a tetrahedron.</p>
+<p>Particles in the tetrahedron <span class="math notranslate nohighlight">\(\langle ijkm \rangle\)</span> have radii <span class="math notranslate nohighlight">\((r_i, r_j, r_k, r_m)\)</span> respectively, and the triplet <span class="math notranslate nohighlight">\((j,k,m)\)</span> are at distances <span class="math notranslate nohighlight">\((r_{ij},r_{ik},r_{ik})\)</span> from the central particle <span class="math notranslate nohighlight">\(i\)</span>, which are the lengths of each edge of the tetrahedron <span class="math notranslate nohighlight">\(\langle ijkm \rangle\)</span>.</p>
+<p>The <em>reference</em> tetrahedron for these four particles is the configuration in which they are all perfectly in touch, <em>i.e.</em> the edge lengths <span class="math notranslate nohighlight">\((\sigma_{ij},\sigma_{ik},\sigma_{im})\)</span> of this reference tetrahedron are the sums of the corresponding particle radii, <span class="math notranslate nohighlight">\(\sigma_{ij} = r_i + r_j\)</span>, etc.</p>
+<p>The irregularity of the tetrahedron <span class="math notranslate nohighlight">\(\langle ijkm \rangle\)</span> in the original configuration is measured as</p>
 <div class="math notranslate nohighlight">
-\[\omega_{\langle ijkm \rangle} = \frac{ \sum_{\langle ab \rangle} | r_{ab} - \sigma_{ab} |}{\sum_{\langle ab \rangle} \sigma_{ab}}\]</div>
+\[\omega_{\langle ijkm \rangle} = \frac{ \sum_{\langle ab \rangle} | r_{ab} - \sigma_{ab} |}{\sum_{\langle ab \rangle} \sigma_{ab}} ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\langle a b \rangle\)</span> runs over the six edges of the tetrahedron <span class="math notranslate nohighlight">\(\langle ijkm \rangle\)</span>. Finally, the compactness of particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
 <div class="math notranslate nohighlight">
-\[\Omega(i) = \frac{1}{N_\mathrm{tetra}(i)} \sum_{\langle ijkm \rangle} \omega_{\langle ijkm \rangle}\]</div>
+\[\Omega(i) = \frac{1}{N_\mathrm{tetra}(i)} \sum_{\langle ijkm \rangle} \omega_{\langle ijkm \rangle} ,\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_\mathrm{tetra}(i)\)</span> is the total number of tetrahedra surrounding particle <span class="math notranslate nohighlight">\(i\)</span> and the summation is performed over all these tetrahedra. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[X^\mathrm{C}(i) = (\: \Omega(i) \:) .\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike most descriptors, this descriptor is scalar. Its feature vector <span class="math notranslate nohighlight">\(X^\mathrm{C}(i)\)</span> is thus composed of a single feature.</p>
 </div>
-<div class="section" id="constructor">
-<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This descriptor uses particles’ radii. They must thus be set beforehand or read from the input trajectory file.</p>
+<p>This descriptor uses particles’ radii. They must either be read from the input trajectory file using the <code class="docutils literal notranslate"><span class="pre">additional_fields</span></code> parameter or set using the method <code class="docutils literal notranslate"><span class="pre">trajectory.set_property</span></code>. Otherwise, default values will be used.</p>
+</div>
+<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">CompactnessDescriptor</span>
+
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">CompactnessDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+</pre></div>
 </div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="partycls.descriptor.compactness.CompactnessDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">CompactnessDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#partycls.descriptor.compactness.CompactnessDescriptor.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<span class="sig-prename descclassname"><span class="pre">CompactnessDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/compactness.html#CompactnessDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.compactness.CompactnessDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trajectory</strong> (<a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
+is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<div class="section" id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
-<p id="id2"><dl class="citation">
-<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<p id="id3"><dl class="citation">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Hua Tong and Hajime Tanaka. Revealing Hidden Structural Order Controlling Both Fast and Slow Glassy Dynamics in Supercooled Liquids. <em>Phys. Rev. X</em>, 8:011041, 2018. <a class="reference external" href="https://doi.org/10.1103/PhysRevX.8.011041">doi:10.1103/PhysRevX.8.011041</a>.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>B. J. Gellatly and J. L. Finney. Characterisation of models of multicomponent amorphous metals: the radical alternative to the voronoi polyhedron. <em>J. Non-Cryst. Solids</em>, 50(3):313–329, 1982. URL: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/002230938290093X">https://www.sciencedirect.com/science/article/pii/002230938290093X</a>, <a class="reference external" href="https://doi.org/10.1016/0022-3093(82)90093-X">doi:10.1016/0022-3093(82)90093-X</a>.</p>
 </dd>
 </dl>
 </p>

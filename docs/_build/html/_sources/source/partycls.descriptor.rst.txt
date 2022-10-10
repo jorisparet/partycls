@@ -1,6 +1,11 @@
 partycls.descriptor package
 ===========================
 
+.. automodule:: partycls.descriptor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -88,14 +93,6 @@ partycls.descriptor.tetrahedrality module
 -----------------------------------------
 
 .. automodule:: partycls.descriptor.tetrahedrality
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: partycls.descriptor
    :members:
    :undoc-members:
    :show-inheritance:

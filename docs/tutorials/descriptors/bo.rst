@@ -9,7 +9,7 @@ Bond-order parameters :cite:`steinhardt_1983` are standard measures of structure
 .. math::
 	\rho(\mathbf{r}; i) = \sum_{j=1}^{N_b(i)} w_j \delta(\mathbf{r} - \mathbf{r}_{ij})
 
-where :math`w_j` is a particle-dependent weight and the sum involves a set of :math:`N_b(i)` particles, which defines the coordination shell of interest for particle :math:`i`.
+where :math:`w_j` is a particle-dependent weight and the sum involves a set of :math:`N_b(i)` particles, which defines the coordination shell of interest for particle :math:`i`.
 
 We project the microscopic density on a unit-radius sphere, that is, :math:`\hat{\rho}(\hat{\mathbf{r}}; i) = \sum_{j=1}^{N_b(i)} w_j \delta(\mathbf{r} - \hat{\mathbf{r}}_{ij})`,
 where :math:`\hat{\mathbf{r}} = \mathbf{r} / |\mathbf{r}|` and similarly :math:`\hat{\mathbf{r}}_{ij} = \mathbf{r}_{ij}/|\mathbf{r}_{ij}|`. Expanding in spherical harmonics yields
@@ -22,7 +22,7 @@ with coefficients
 .. math::
 	c_{l m}(i) =  \int d\mathbf{r} \rho(\mathbf{r}; i) Y_{l m}(\hat{\mathbf{r}}) .
 
-In the conventional bond-order analysis, one sets the weights to unity and considers the normalized complex coefficients,
+In the conventional bond-order analysis, one sets the weights :math:`w_j` to unity and considers the normalized complex coefficients,
 
 .. math::
 	\begin{align}
@@ -33,20 +33,35 @@ In the conventional bond-order analysis, one sets the weights to unity and consi
 The rotational invariants,
 
 .. math::
-	Q_{l}(i) = \left( \frac{4\pi}{2l + 1}\sum_{m=-l}^l |q_{lm}(i)|^2 \right)^{1/2} ,
+	Q_{l}(i) = \sqrt{ \frac{4\pi}{2l + 1}\sum_{m=-l}^l |q_{lm}(i)|^2 },
 
 provide a detailed structural description of the local environment around particle :math:`i`.
-By truncating the expansion to order :math:`l_\mathrm{max}`, we obtain the simplest bond-order descriptor of an arbitrary particle :math:`i`.
 
-Constructor
------------
+
+We then consider :math:`Q_l(i)` for a sequence of orders :math:`\{ l_n \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}`. The resulting feature vector for particle :math:`i` is given by
+
+.. math::
+	X^\mathrm{BO}(i) = (\: Q_{l_\mathrm{min}}(i) \;\; \dots \;\; Q_{l_\mathrm{max}}(i) \:) .
+
+Setup
+-----
+
+Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+
+.. code-block:: python
+
+	from partycls import Trajectory
+	from partycls.descriptor import BondOrientationalDescriptor
+
+	traj = Trajectory("trajectory.xyz")
+	D = BondOrientationalDescriptor(traj)
 
 The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptor.bo.BondOrientationalDescriptor.__init__
 
-Examples
---------
+Demonstration
+-------------
 
 References
 ----------

@@ -98,7 +98,7 @@ Set using one of:
 
 The *solid-angle based nearest neighbors* algorithm (SANN) :cite:`van_meel_2012` is a parameter-free algorithm for the identification of nearest neighbors. It attributes to each possible neighbor of a particle a solid angle and determines the cutoff radius by the requirement that the sum of the solid angles is :math:`4 \pi`.
 
-.. note ::
+.. important ::
 	This method requires cutoffs (or computes them automatically if not provided) to use as a first guess to identify the possible nearest neighbors. However, cutoffs do not play a role in the algorithm itself. A good choice for these cutoffs is the first minima of the partial radial distribution functions :math:`g_{\alpha\beta}(r)`.
 
 Example:
@@ -119,7 +119,7 @@ Set using one of:
 Voronoi tessellation can be used in molecular simulations to identify nearest neighbors by construction of Voronoi polyhedra :cite:`bernal_1959`, which consists in drawing orthogonal planes at the mid-points between the central particle and each of its neighbors (*i.e.* its `Wigner-Seitz cell <https://en.wikipedia.org/wiki/Wigner%E2%80%93Seitz_cell>`_). In particular, the *radical* variant of Voronoi tessellation :cite:`gellatly_1982`, which accounts for the relative sizes of the particles to determine of the positions of the intersecting planes, provides better results for multi-components systems.
 
 .. warning::
-	This method uses the effective particles radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the ``Trajectory`` instance using the ``Trajectory.set_property`` method.
+	This method uses the effective particles' radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the ``Trajectory`` instance using the ``Trajectory.set_property`` method. Otherwise, default values will be used.
 
 Examples:
 
