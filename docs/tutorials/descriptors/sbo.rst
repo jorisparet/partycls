@@ -48,5 +48,78 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor.__init__
 
+Requirements
+------------
+
+The computation of this descriptor relies on:
+
+- **Nearest neighbors cutoffs**. These can either be set in the ``Trajectory`` prior to the computation of the descriptor, or computed from inside the descriptor using a default method.
+
 Demonstration
 -------------
+
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``. We can either compute or set the nearest neighbors cutoffs :math:`\{ r_{\alpha\beta}^c \}` for the smoothing directly in ``Trajectory``:
+
+.. code-block:: python
+
+	from partycls import Trajectory
+
+	# open the trajectory
+	traj = Trajectory("trajectory.xyz")
+
+	# compute the nearest neighbors cutoffs
+	traj.compute_nearest_neighbors_cutoffs(dr=0.1)
+	print("computed cuttofs\n", traj.nearest_neighbors_cutoffs)
+
+	# set the nearest neighbors cuttofs
+	traj.nearest_neighbors_cutoffs = [1.45, 1.35, 1.35, 1.25]
+	print("manually set cuttofs\n", traj.nearest_neighbors_cutoffs)
+
+.. code-block:: litteral
+	:caption: **Output:**
+
+	computed cutoffs:
+	 [1.4500000000000004, 1.3500000000000003, 1.3500000000000003, 1.2500000000000002]
+	manually set cutoffs:
+	 [1.45, 1.35, 1.35, 1.25]
+
+.. note::
+	If not computed in ``Trajectory`` or manually set, the cutoffs :math:`\{ r_{\alpha\beta}^c \}` will be computed from inside the descriptor.
+
+We now instantiate a ``SmoothedBondOrientationalDescriptor`` on this trajectory and restrict the analysis to type-B particles only. We set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`, :math:`\xi=1.3` and :math:`\gamma=8`:
+
+.. code-block:: python
+
+	from partycls.descriptor import SmoothedBondOrientationalDescriptor
+
+	# instantiation
+	D = SmoothedBondOrientationalDescriptor(traj,
+						orders=[2,4,6,8],
+						cutoff_enlargement=1.3,
+						exponent=8)
+
+	# print the grid of orders
+	print("grid:\n", D.grid)
+
+	# restrict the analysis to type-B particles
+	D.add_filter("species == 'B'", group=0)
+
+	# compute the descriptor's data matrix
+	X = D.compute()
+
+	# print the first three feature vectors
+	print("feature vectors:\n", X[0:3])
+
+.. code-block:: litteral
+	:caption: **Output:**
+
+	grid:
+	 [2 4 6 8]
+	feature vectors:
+	 [[0.03156284 0.11095233 0.4112718  0.23829355]
+	  [0.0698711  0.08107918 0.47678647 0.26671868]
+	  [0.06221017 0.09806095 0.39152213 0.16630718]]
+
+
+- ``grid`` shows the grid of orders :math:`\{ l_n \}`.
+- ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{SBO}(1)`, :math:`X^\mathrm{SBO}(2)` and :math:`X^\mathrm{SBO}(3)` corresponding to the grid.

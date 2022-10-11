@@ -48,52 +48,45 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor.__init__
 
+Requirements
+------------
+
+The computation of this descriptor relies on:
+
+- **Nearest neighbors cutoffs**. These can either be set in the ``Trajectory`` prior to the computation of the descriptor, or computed from inside the descriptor using a default method.
+
 Demonstration
 -------------
 
-We consider an input trajectory file ``"trajectory.xyz"`` in XYZ format that contains two particle types ``"A"`` and ``"B"``:
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``. We can either compute or set the nearest neighbors cutoffs :math:`\{ r_{\alpha\beta}^c \}` for the smoothing directly in ``Trajectory``:
 
 .. code-block:: python
 
 	from partycls import Trajectory
 
+	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-We compute the nearest neighbors cutoffs :math:`\{ r_{\alpha\beta}^c \}` for the smoothing:
-
-.. code-block:: python
-
+	# compute the nearest neighbors cutoffs
 	traj.compute_nearest_neighbors_cutoffs(dr=0.1)
-	print("computed cutoffs:\n", traj.nearest_neighbors_cutoffs)
+	print("computed cuttofs\n", traj.nearest_neighbors_cutoffs)
 
-Output:
+	# set the nearest neighbors cuttofs
+	traj.nearest_neighbors_cutoffs = [1.45, 1.35, 1.35, 1.25]
+	print("manually set cuttofs\n", traj.nearest_neighbors_cutoffs)
 
 .. code-block:: litteral
+	:caption: **Output:**
 
 	computed cutoffs:
-	 [1.45, 1.35, 1.35, 1.25]
-	manually set cutoffs:
-	 [1.45, 1.35, 1.35, 1.25]
-
-
-Alternatively, we can set the cutoffs manually if they are known:
-
-.. code-block:: python
-
-	traj.nearest_neighbors_cutoffs = [1.45, 1.35, 1.35, 1.25]
-	print("manually set cutoffs:\n", traj.nearest_neighbors_cutoffs)
-
-Output:
-
-.. code-block:: litteral
-
+	 [1.4500000000000004, 1.3500000000000003, 1.3500000000000003, 1.2500000000000002]
 	manually set cutoffs:
 	 [1.45, 1.35, 1.35, 1.25]
 
 .. note::
-	If not computed in the ``Trajectory`` or manually set, the cutoffs will be computed from inside the descriptor.
+	If not computed in ``Trajectory`` or manually set, the cutoffs :math:`\{ r_{\alpha\beta}^c \}` will be computed from inside the descriptor.
 
-We now instantiate and compute a ``SmoothedBondAngleDescriptor`` on this trajectory:
+We now instantiate a ``SmoothedBondAngleDescriptor`` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta \theta = 18^\circ`, :math:`\xi=1.3` and :math:`\gamma=8`:
 
 .. code-block:: python
 
@@ -116,10 +109,9 @@ We now instantiate and compute a ``SmoothedBondAngleDescriptor`` on this traject
 
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
-	
-Output:
 
 .. code-block:: litteral
+	:caption: **Output:**
 
 	grid:
 	 [  9.  27.  45.  63.  81.  99. 117. 135. 153. 171.]
@@ -130,3 +122,6 @@ Output:
 	  20.88630866 12.92153832  2.269351    7.38748952]
 	  [ 0.          0.08214317 11.23967682 32.2093987   4.0642088  24.10157113
 	  19.94955473  7.72183504 12.2267004   3.29940419]]
+
+- ``grid`` shows the grid of angles :math:`\{ \theta_n \}` in degrees, where :math:`\Delta \theta = 18^\circ`.
+- ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{SBA}(1)`, :math:`X^\mathrm{SBA}(2)` and :math:`X^\mathrm{SBA}(3)` corresponding to the grid.

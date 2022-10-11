@@ -183,17 +183,17 @@ The table below shows the requirements of each structural descriptors in terms o
 	  - √
 	  - ✕
 	  - ✕
+	* - :doc:`rbo`
+	  - ✕
+	  - ✕
+	  - √
+	  - ✕
 	* - :doc:`sba`
 	  - ✕
 	  - ✕
 	  - √
 	  - √
 	* - :doc:`sbo`
-	  - ✕
-	  - ✕
-	  - √
-	  - √
-	* - :doc:`rbo`
 	  - ✕
 	  - ✕
 	  - √

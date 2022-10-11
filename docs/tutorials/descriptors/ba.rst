@@ -28,18 +28,42 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptor.ba.BondAngleDescriptor.__init__
 
+Requirements
+------------
+
+The computation of this descriptor relies on:
+
+- **Lists of nearest neighbors**. These can either be read from the input trajectory file, computed in the ``Trajectory``, or computed from inside the descriptor using a default method.
+
 Demonstration
 -------------
 
-We consider an input trajectory file ``"trajectory.xyz"`` in XYZ format that contains two particle types ``"A"`` and ``"B"``:
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``. We compute the lists of nearest neighbors using the fixed-cutoffs method:
 
 .. code-block:: python
 
 	from partycls import Trajectory
 
+	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-We now instantiate and compute a ``BondAngleDescriptor`` on this trajectory:
+	# compute the neighbors using pre-computed cuttofs
+	traj.nearest_neighbors_cuttofs = [1.45, 1.35, 1.35, 1.25]
+	traj.compute_nearest_neighbors(method='fixed')
+	nearest_neighbors = traj.get_property("nearest_neighbors")
+	
+	# print the first three neighbors lists for the first trajectory frame
+	print("neighbors:\n",nearest_neighbors[0][0:3])
+
+.. code-block:: litteral
+	:caption: **Output:**
+
+	neighbors:
+	 [list([16, 113, 171, 241, 258, 276, 322, 323, 332, 425, 767, 801, 901, 980])
+	  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
+	  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
+
+We now instantiate a ``BondAngleDescriptor`` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta \theta = 18^\circ`:
 
 .. code-block:: python
 
@@ -59,10 +83,9 @@ We now instantiate and compute a ``BondAngleDescriptor`` on this trajectory:
 
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
-	
-Output:
 
 .. code-block:: litteral
+	:caption: **Output:**
 
 	grid:
 	 [  9.  27.  45.  63.  81.  99. 117. 135. 153. 171.]
@@ -70,6 +93,9 @@ Output:
 	 [[ 0  0  4 44 12 18 28 14  6  6]
 	  [ 0  0  6 44 12 16 26 16  2 10]
 	  [ 0  0 16 42  6 34 26 10 18  4]]
+
+- ``grid`` shows the grid of angles :math:`\{ \theta_n \}` in degrees, where :math:`\Delta \theta = 18^\circ`.
+- ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{BA}(1)`, :math:`X^\mathrm{BA}(2)` and :math:`X^\mathrm{BA}(3)` corresponding to the grid.
 
 References
 ----------

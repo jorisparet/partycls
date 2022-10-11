@@ -34,10 +34,17 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__
 
+Requirements
+------------
+
+The computation of this descriptor relies on:
+
+- **Lists of nearest neighbors**. These can either be read from the input trajectory file, computed in the ``Trajectory``, or computed from inside the descriptor using a default method.
+
 Demonstration
 -------------
 
-We consider an input trajectory file ``"trajectory.xyz"`` in XYZ format that contains two particle types ``"A"`` and ``"B"``:
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``. We compute the lists of nearest neighbors using the fixed-cutoffs method:
 
 .. code-block:: python
 
@@ -46,30 +53,30 @@ We consider an input trajectory file ``"trajectory.xyz"`` in XYZ format that con
 	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-	# compute the neighbors using Voronoi tessellation
-	traj.compute_nearest_neighbors(method='voronoi')
+	# compute the neighbors using pre-computed cuttofs
+	traj.nearest_neighbors_cuttofs = [1.45, 1.35, 1.35, 1.25]
+	traj.compute_nearest_neighbors(method='fixed')
 	nearest_neighbors = traj.get_property("nearest_neighbors")
 	
 	# print the first three neighbors lists for the first trajectory frame
 	print("neighbors:\n",nearest_neighbors[0][0:3])
 
-Output:
-
 .. code-block:: litteral
+	:caption: **Output:**
 
 	neighbors:
-	 [list([767, 113, 323, 276, 322, 332, 980, 425, 801, 16, 171, 258, 901, 241])
-	  list([448, 481, 496, 574, 706, 536, 337, 241, 951, 16, 14, 258, 502, 447, 860])
-	  list([799, 123, 608, 913, 500, 826, 230, 636, 796, 772, 810, 639, 270, 578, 874, 397, 354])]
+	 [list([16, 113, 171, 241, 258, 276, 322, 323, 332, 425, 767, 801, 901, 980])
+	  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
+	  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
 
-We now instantiate and compute a ``TetrahedralDescriptor`` on this trajectory:
+We now instantiate a ``TetrahedralDescriptor`` on this trajectory and restrict the analysis to type-B particles only:
 
 .. code-block:: python
 
 	from partycls.descriptor import TetrahedralDescriptor
 
 	# instantiation
-	D = TetrahedralDescriptor(traj, dtheta=3.0)
+	D = TetrahedralDescriptor(traj)
 
 	# restrict the analysis to type-B particles
 	D.add_filter("species == 'B'", group=0)
@@ -79,12 +86,13 @@ We now instantiate and compute a ``TetrahedralDescriptor`` on this trajectory:
 
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
-	
-Output:
 
 .. code-block:: litteral
+	:caption: **Output:**
 
 	feature vectors:
 	 [[0.48286880]
 	  [0.48912898]
 	  [0.47882811]]
+
+-  ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{T}(1)`, :math:`X^\mathrm{R}(2)` and :math:`X^\mathrm{R}(3)`.
