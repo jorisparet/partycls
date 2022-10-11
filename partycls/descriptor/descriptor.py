@@ -57,6 +57,11 @@ class StructuralDescriptor:
         the tuple is a list of ``Particle`` in ``trajectory``, *e.g.* ``groups[0][0]``
         is the list of all the particles in the first frame of ``trajectory`` that 
         belong to group=0.
+
+    verbose : bool
+        Show progress information and warnings about the computation of the 
+        descriptor when verbose is ``True``, and remain silent when verbose is 
+        ``False``.
     """
 
     def __init__(self, trajectory, accept_nans=True, verbose=False):
