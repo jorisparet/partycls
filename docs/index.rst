@@ -58,6 +58,7 @@ References
 
 .. toctree::
 	:hidden:
+	:maxdepth: 2
 
 	install
 	tutorials

@@ -20,7 +20,7 @@ where :math:`N_\mathrm{ba}(i)` is the total number of bond angles (*i.e.* the nu
 Setup
 -----
 
-Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Trajectory>` can be done as follows:
 
 .. code-block:: python
 
@@ -39,7 +39,7 @@ Requirements
 
 The computation of this descriptor relies on:
 
-- **Lists of nearest neighbors**. These can either be read from the input trajectory file, computed in the ``Trajectory``, or computed from inside the descriptor using a default method.
+- **Lists of nearest neighbors**. These can either be read from the input trajectory file, computed in the :py:class:`Trajectory <partycls.trajectory.Trajectory>`, or computed from inside the descriptor using a default method.
 
 Demonstration
 -------------
@@ -61,7 +61,7 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	# print the first three neighbors lists for the first trajectory frame
 	print("neighbors:\n",nearest_neighbors[0][0:3])
 
-.. code-block:: litteral
+.. code-block:: none
 	:caption: **Output:**
 
 	neighbors:
@@ -69,7 +69,7 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
 	  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
 
-We now instantiate a ``TetrahedralDescriptor`` on this trajectory and restrict the analysis to type-B particles only:
+We now instantiate a :py:class:`TetrahedralDescriptor <partycls.descriptor.tetrahedrality.TetrahedralDescriptor>` on this trajectory and restrict the analysis to type-B particles only:
 
 .. code-block:: python
 
@@ -87,7 +87,7 @@ We now instantiate a ``TetrahedralDescriptor`` on this trajectory and restrict t
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
 
-.. code-block:: litteral
+.. code-block:: none
 	:caption: **Output:**
 
 	feature vectors:

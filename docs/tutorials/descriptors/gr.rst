@@ -16,7 +16,7 @@ We then consider :math:`n_i(r_m)` for a set of distances :math:`\{ d_n \}` separ
 Setup
 -----
 
-Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Trajectory>` can be done as follows:
 
 .. code-block:: python
 
@@ -42,7 +42,7 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-We now instantiate a ``RadialDescriptor`` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta r = 0.1` and :math:`(r_\mathrm{min},r_\mathrm{max}) = (1, 1.5)` to set the grid of distances :math:`\{d_n\}`:
+We now instantiate a :py:class:`RadialDescriptor <partycls.descriptor.gr.RadialDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta r = 0.1` and :math:`(r_\mathrm{min},r_\mathrm{max}) = (1, 1.5)` to set the grid of distances :math:`\{d_n\}`:
 
 .. code-block:: python
 
@@ -65,7 +65,7 @@ We now instantiate a ``RadialDescriptor`` on this trajectory and restrict the an
 	
 Output:
 
-.. code-block:: litteral
+.. code-block:: none
 
 	grid:
 	 [1.05 1.15 1.25 1.35 1.45]

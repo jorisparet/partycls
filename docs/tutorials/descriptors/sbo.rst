@@ -34,7 +34,7 @@ We then consider :math:`Q_l^S(i)` for a sequence of orders :math:`\{ l_n \} = \{
 Setup
 -----
 
-Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Trajectory>` can be done as follows:
 
 .. code-block:: python
 
@@ -53,12 +53,12 @@ Requirements
 
 The computation of this descriptor relies on:
 
-- **Nearest neighbors cutoffs**. These can either be set in the ``Trajectory`` prior to the computation of the descriptor, or computed from inside the descriptor using a default method.
+- **Nearest neighbors cutoffs**. These can either be set in the :py:class:`Trajectory <partycls.trajectory.Trajectory>` prior to the computation of the descriptor, or computed from inside the descriptor using a default method.
 
 Demonstration
 -------------
 
-We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``. We can either compute or set the nearest neighbors cutoffs :math:`\{ r_{\alpha\beta}^c \}` for the smoothing directly in ``Trajectory``:
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``. We can either compute or set the nearest neighbors cutoffs :math:`\{ r_{\alpha\beta}^c \}` for the smoothing directly in :py:class:`Trajectory <partycls.trajectory.Trajectory>`:
 
 .. code-block:: python
 
@@ -75,7 +75,7 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	traj.nearest_neighbors_cutoffs = [1.45, 1.35, 1.35, 1.25]
 	print("manually set cuttofs\n", traj.nearest_neighbors_cutoffs)
 
-.. code-block:: litteral
+.. code-block:: none
 	:caption: **Output:**
 
 	computed cutoffs:
@@ -84,9 +84,9 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	 [1.45, 1.35, 1.35, 1.25]
 
 .. note::
-	If not computed in ``Trajectory`` or manually set, the cutoffs :math:`\{ r_{\alpha\beta}^c \}` will be computed from inside the descriptor.
+	If not computed in :py:class:`Trajectory <partycls.trajectory.Trajectory>` or manually set, the cutoffs :math:`\{ r_{\alpha\beta}^c \}` will be computed from inside the descriptor.
 
-We now instantiate a ``SmoothedBondOrientationalDescriptor`` on this trajectory and restrict the analysis to type-B particles only. We set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`, :math:`\xi=1.3` and :math:`\gamma=8`:
+We now instantiate a :py:class:`SmoothedBondOrientationalDescriptor <partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`, :math:`\xi=1.3` and :math:`\gamma=8`:
 
 .. code-block:: python
 
@@ -110,7 +110,7 @@ We now instantiate a ``SmoothedBondOrientationalDescriptor`` on this trajectory 
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
 
-.. code-block:: litteral
+.. code-block:: none
 	:caption: **Output:**
 
 	grid:

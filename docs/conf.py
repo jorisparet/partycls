@@ -48,11 +48,16 @@ extensions = [
 	'sphinx.ext.mathjax'
 ]
 
+# include __init__ methods
+autoclass_content = 'both'
+
+# bibtex files
 bibtex_bibfiles = [
 	'joss.bib',
 	'references.bib'
 ]
 
+# latex directives
 latex_elements = {
     'inputenc': '',
     'utf8extra': ''

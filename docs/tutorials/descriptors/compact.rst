@@ -34,9 +34,9 @@ Setup
 -----
 
 .. warning::
-	This descriptor uses particles' radii. They must either be read from the input trajectory file using the ``additional_fields`` parameter or set using the method ``trajectory.set_property``. Otherwise, default values will be used.
+	This descriptor uses particles' radii. They must either be read from the input trajectory file using the ``additional_fields`` parameter or set using the method :py:class:`Trajectory.set_property <partycls.trajectory.Trajectory.set_property>`. Otherwise, default values will be used.
 
-Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Trajectory>` can be done as follows:
 
 .. code-block:: python
 
@@ -55,7 +55,7 @@ Requirements
 
 The computation of this descriptor relies on:
 
-- **Lists of nearest neighbors**. These can either be read from the input trajectory file, computed in the ``Trajectory``, or computed from inside the descriptor using a default method.
+- **Lists of nearest neighbors**. These can either be read from the input trajectory file, computed in the :py:class:`Trajectory <partycls.trajectory.Trajectory>`, or computed from inside the descriptor using a default method.
 
 Demonstration
 -------------
@@ -80,7 +80,7 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	# print the first three neighbors lists for the first trajectory frame
 	print("neighbors:\n",nearest_neighbors[0][0:3])
 
-.. code-block:: litteral
+.. code-block:: none
 	:caption: **Output:**
 
 	neighbors:
@@ -88,7 +88,7 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	  list([448, 951, 706, 337, 481, 536, 14, 16, 258, 241, 496, 574, 502, 447, 860])
 	  list([639, 397, 799, 578, 230, 913, 636, 796, 640, 772, 500, 270, 354, 123, 874, 608, 826, 810])]
 
-We now instantiate a ``CompactnessDescriptor`` on this trajectory and restrict the analysis to type-B particles only:
+We now instantiate a :py:class:`CompactnessDescriptor <partycls.descriptor.compactness.CompactnessDescriptor>` on this trajectory and restrict the analysis to type-B particles only:
 
 .. code-block:: python
 
@@ -106,7 +106,7 @@ We now instantiate a ``CompactnessDescriptor`` on this trajectory and restrict t
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
 
-.. code-block:: litteral
+.. code-block:: literal
 	:caption: **Output:**
 
 	feature vectors:
