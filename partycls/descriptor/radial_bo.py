@@ -42,7 +42,14 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
-        initialized when the method `compute` is called (default value is None).
+        initialized when the method ``compute`` is called (default value is ``None``).
+
+    groups : tuple
+        Composition of the groups: ``groups[0]`` and ``groups[1]`` contain lists of all
+        the ``Particle`` instances in groups 0 and 1 respectively. Each element of 
+        the tuple is a list of ``Particle`` in ``trajectory``, *e.g.* ``groups[0][0]``
+        is the list of all the particles in the first frame of ``trajectory`` that 
+        belong to group=0.
     """
     
     name = 'radial bond-orientational'
@@ -124,7 +131,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def orders(self):
         """
-        Grid of bond orders `l` used to compute the descriptor. 
+        Grid of orders :math:`\{ l_m \}`.
         """
         return self._orders
 
@@ -135,7 +142,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def bounds(self):
         """
-        Lower and upper bounds of the distance grid.
+        Lower and upper bounds of the distance grid :math:`\{ d_n \}`.
         """
         return self._bounds
 
@@ -146,7 +153,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def dr(self):
         """
-        Grid spacing for the distance grid.
+        Grid spacing :math:`\Delta r` to define the distance grid :math:`\{ d_n \}`.
         """
         return self._dr
 
@@ -157,7 +164,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def distance_grid(self):
         """
-        Grid of distances used to compute the descriptor.
+        Grid of distances :math:`\{ d_n \}`.
         """
         return self._distance_grid
     
@@ -168,8 +175,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @property
     def mixed_grid(self):
         """
-        Mixed grid of bond orientational orders `l` and
-        distances `r` in the form of a list of tuples (l,r).
+        Mixed grids of bond orientational orders :math:`\{ l_m \}` and
+        distances :math:`\{ d_n \}` in the form of a list of tuples ``(l,r)``.
         """
         mixed_grid = []
         for l in self.grid:
@@ -178,6 +185,17 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         return mixed_grid
 
     def compute(self):
+        """
+        Compute the radial bond-orientational correlations for the particles in group=0
+        for the grid of orders :math:`\{ l_m \}` and grid of distances 
+        :math:`\{ d_n \}`. Returns the data matrix and also
+        overwrites the ``features`` attribute.
+
+        Returns
+        -------
+        features : numpy.ndarray
+            Data matrix with radial bond-orientational correlations.
+        """
         # set up
         self._set_up(dtype=numpy.float64)
         self._manage_nearest_neighbors()

@@ -1,8 +1,8 @@
 """
 Point particles in a cartesian reference frame.
 
-This class is inspired by the `atooms` framework authored by Daniele Coslovich
-See https://framagit.org/atooms/atooms 
+This class is inspired by the framework `atooms <https://framagit.org/atooms/atooms>`_
+authored by `Daniele Coslovich <https://www2.units.it/daniele.coslovich/>`_.
 """
 
 import numpy
@@ -38,30 +38,9 @@ class Particle:
     A particle is defined by its position, its type, and additional attributes
     like a radius, a cluster label, a list of neighbors, etc.
     
-    Parameters
-    ----------
-    
-    position : list of float or float array, optional, default: None
-        The position of the particle. 
-        If not given, it will be set to [0.0, 0.0, 0.0].
-        
-    species : str, optional, default: "A"
-        Particle type / species.
-    
-    label : int, optional, default: -1
-        Cluster label of the particle. 
-        Default is -1 (i.e. not belonging to any cluster).
-        
-    radius : float, optional, defaut: 0.5
-        Particle radius.
-        
-    nearest_neighbors : list of int, default: None
-        Indices of the particle's nearest neighbors in the System.
-    
     Attributes
     ----------
-    
-    position : float array
+    position : numpy.ndarray
         The position of the particle.
         
     species : str
@@ -73,17 +52,36 @@ class Particle:
     radius : float
         Particle radius.
         
-    nearest_neighbors : list of int
-        Zero-based indices of the particle's nearest neighbors in the System.
-    
-    Examples
-    --------
-    
-    >>> p = Particle([0.0, 0.0, 0.0], species='A')
-    >>> p = Particle([0.0, 0.0], species='B')
+    nearest_neighbors : list
+        Zero-based indices of the particle's nearest neighbors in the ``System``.
     """
 
     def __init__(self, position=None, species='A', label=-1, radius=0.5, nearest_neighbors=None):
+        """
+        Parameters
+        ----------
+        position : list, default: None
+            The position of the particle. 
+            If not given, it will be set to [0.0, 0.0, 0.0].
+            
+        species : str, default: "A"
+            Particle type / species.
+        
+        label : int, default: -1
+            Cluster label of the particle. 
+            Default is ``-1`` (*i.e.* not belonging to any cluster).
+            
+        radius : float, defaut: 0.5
+            Particle radius.
+            
+        nearest_neighbors : list, default: None
+            Indices of the particle's nearest neighbors in the ``System``.
+
+        Examples
+        --------
+        >>> p = Particle([0.0, 0.0, 0.0], species='A', radius=0.4)
+        >>> p = Particle([1.5, -0.3, 3.2], species='B', nearest_neighbors=[12,34,68])
+        """
         if position is None:
             self.position = numpy.zeros(3)
         else:
@@ -96,17 +94,6 @@ class Particle:
         # Neighbors
         self.nearest_neighbors = nearest_neighbors
 
-    def __str__(self):
-        rep = 'Particle('
-        for attr, value in self.__dict__.items():
-            if not attr.startswith('_'):
-                rep += '{}={}, '.format(attr, value)
-        rep = rep[:-2] + ')'
-        return rep
-
-    def __repr__(self):
-        return self.__str__()
-
     def fold(self, cell):
         """
         Fold the particle position into the central cell.
@@ -118,8 +105,19 @@ class Particle:
 
         Returns
         -------
-        None.
+        None
         """
         def _periodic_vector_unfolded(vec, box):
             return vec - numpy.rint(vec / box) * box
         self.position[:] = _periodic_vector_unfolded(self.position, cell.side)
+
+    def __str__(self):
+        rep = 'Particle('
+        for attr, value in self.__dict__.items():
+            if not attr.startswith('_'):
+                rep += '{}={}, '.format(attr, value)
+        rep = rep[:-2] + ')'
+        return rep
+
+    def __repr__(self):
+        return self.__str__()

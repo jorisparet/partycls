@@ -27,7 +27,14 @@ class RadialDescriptor(StructuralDescriptor):
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
-        initialized when the method `compute` is called (default value is None).
+        initialized when the method ``compute`` is called (default value is ``None``).
+
+    groups : tuple
+        Composition of the groups: ``groups[0]`` and ``groups[1]`` contain lists of all
+        the ``Particle`` instances in groups 0 and 1 respectively. Each element of 
+        the tuple is a list of ``Particle`` in ``trajectory``, *e.g.* ``groups[0][0]``
+        is the list of all the particles in the first frame of ``trajectory`` that 
+        belong to group=0.
     """
 
     name = 'radial'
@@ -74,7 +81,8 @@ class RadialDescriptor(StructuralDescriptor):
     @property
     def n_shells(self):
         """
-        Upper bound for correlation expressed in number of coordinations shells.
+        Upper bound in the grid of distances :math:`\{d_n\}` expressed in number of 
+        coordinations shells.
         """
         return self._n_shells
 
@@ -97,7 +105,7 @@ class RadialDescriptor(StructuralDescriptor):
     @property
     def dr(self):
         """
-        Grid spacing :math:`\Delta r`.
+        Grid spacing :math:`\Delta r` for the grid of distances :math:`\{ d_n \}`.
         """
         return self._dr
 
@@ -107,13 +115,14 @@ class RadialDescriptor(StructuralDescriptor):
 
     def compute(self):
         """
-        Compute the radial correlations for the particles in group=0 in the 
-        range of distances given by ``bounds``.
+        Compute the radial correlations for the particles in group=0
+        for the grid of distances :math:`\{ d_n \}`. Returns the data matrix and also
+        overwrites the ``features`` attribute.
 
         Returns
         -------
         features : numpy.ndarray
-            Radial correlations.
+            Data matrix with radial correlations.
         """
         # set up
         self._set_up(dtype=numpy.int64)
@@ -149,13 +158,14 @@ class RadialDescriptor(StructuralDescriptor):
             
         method : str, default: "r2"
             Normalization method:
-            - method='r2': returns math:`r^2 \\times g(r)` (default);
-            - method='gr' : returns the standard :math:`g(r)` ;
+
+            - ``method='r2'``: returns math:`r^2 \\times g(r)` (default);
+            - ``method='gr'`` : returns the standard :math:`g(r)` ;
 
         Raises
         ------
         ValueError
-            If `method` is invalid.
+            If ``method`` is invalid.
 
         Returns
         -------

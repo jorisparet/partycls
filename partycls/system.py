@@ -5,8 +5,8 @@ The system of interest in a classical atomistic simulations is
 composed of interacting point particles, usually enclosed in a
 simulation cell.
 
-This class is inspired by the `atooms` framework authored by Daniele Coslovich
-See https://framagit.org/atooms/atooms 
+This class is inspired by the framework `atooms <https://framagit.org/atooms/atooms>`_
+authored by `Daniele Coslovich <https://www2.units.it/daniele.coslovich/>`_.
 """
 
 import re
@@ -21,38 +21,36 @@ class System:
     A system is composed of a collection of particles that lie within an
     orthorhombic cell.
     
-    Parameters
-    ----------
-    
-    particle : list of `Particle`, optional, default: None
-        A list of instances of `Particle`.
-    
-    cell : Cell, optional, default: None
-        The cell (simulation box).
-    
     Attributes
-    ----------
-        
-    particle : list of `Particle`
+    ---------- 
+    particle : list
         All the particles in the system.
         
     cell : Cell
         The cell where all the particles lie.
 
-    nearest_neighbors_cutoffs : list of float
+    nearest_neighbors_cutoffs : list
         List of nearest neighbors cutoffs for each pair of species
         in the system.
-    
-    Examples
-    --------
-    
-    >>> p = [Particle(position=[0.0, 0.0, 0.0], species='A'),
-             Particle(position=[1.0, 1.0, 1.0], species='B')]
-    >>> c = Cell([5.0, 5.0, 5.0])
-    >>> sys = System(particle=p, cell=c)
     """
 
     def __init__(self, particle=None, cell=None):
+        """
+        Parameters
+        ----------
+        particle : list, default: None
+            A list of instances of ``Particle``.
+        
+        cell : Cell, default: None
+            The cell (simulation box).
+
+        Examples
+        --------
+        >>> p = [Particle(position=[0.0, 0.0, 0.0], species='A'),
+                Particle(position=[1.0, 1.0, 1.0], species='B')]
+        >>> c = Cell([5.0, 5.0, 5.0])
+        >>> sys = System(particle=p, cell=c)
+        """
         if particle is None:
             particle = []
         self.particle = particle
@@ -65,7 +63,7 @@ class System:
     def nearest_neighbors_method(self):
         """
         Method used to identify the nearest neighbors of all the particles
-        in the system. Should be one of ['fixed', 'sann', 'voronoi'].
+        in the system. Should be one of ``"fixed"``, ``"sann"`` or ``"voronoi"``.
         """
         return self._nearest_neighbors_method.value
 
@@ -77,7 +75,7 @@ class System:
     def n_dimensions(self):
         """
         Number of spatial dimensions, guessed from the length of
-        `particle[0].position`.
+        ``self.particle[0].position``.
         """
         if len(self.particle) > 0:
             return len(self.particle[0].position)
@@ -89,7 +87,7 @@ class System:
         """
         Number density of the system.
 
-        It will raise a ValueException if `cell` is None.
+        It will raise a ValueException if ``self.cell`` is ``None``.
         """
         if self.cell is None:
             return ValueError('cannot compute density without a cell')
@@ -98,7 +96,7 @@ class System:
     @property
     def distinct_species(self):
         """
-        Sorted numpy array of all the distinct species in the system.
+        Sorted ``numpy.ndarray`` of all the distinct species in the system.
         """
         return numpy.array(sorted(set(self.get_property('species'))))
 
@@ -127,7 +125,7 @@ class System:
     @property
     def chemical_fractions(self):
         """
-        Numpy array with the chemical fractions of each species in the system.
+        ``numpy.ndarray`` with the chemical fractions of each species in the system.
         """
         species = self.get_property('species')
         fractions = numpy.empty(len(self.distinct_species))
@@ -137,46 +135,44 @@ class System:
 
     def get_property(self, what, subset=None):
         """
-        Return a numpy array with the system property specified by `what`.
-        If `what` is a particle property, return the property for all particles
-        in the system, or for a given subset of particles specified by `subset`.
+        Return a ``numpy.ndarray`` with the system property specified by ``what``.
+        If ``what`` is a particle property, return the property for all particles
+        in the system, or for a given subset of particles specified by ``subset``.
         
         Parameters
         ----------
         what : str
-            Requested system property.
-        
-            `what` must be of the form 
-            "particle.<attribute>" or "cell.<attribute>". 
-            
+            Requested system property. ``what`` must be of the form 
+            ``"particle.<attribute>"`` or ``"cell.<attribute>"``.
             The following particle aliases are accepted:
-            - 'position': 'particle.position'
-            - 'pos': 'particle.position'
-            - 'position[0]': 'particle.position[0]', 
-            - 'pos[0]': 'particle.position[0]'
-            - 'x': 'particle.position[0]'
-            - 'position[1]': 'particle.position[1]',
-            - 'pos[1]': 'particle.position[1]'
-            - 'y': 'particle.position[1]'
-            - 'position[2]': 'particle.position[2]'
-            - 'pos[2]': 'particle.position[2]'
-            - 'z': 'particle.position[2]'
-            - 'species': 'particle.species'
-            - 'spe': 'particle.species'
-            - 'label': 'particle.label'
-            - 'mass': 'particle.mass'
-            - 'radius': 'particle.radius'
-            - 'nearest_neighbors': 'particle.nearest_neighbors'
-            - 'neighbors': 'particle.nearest_neighbors'
-            - 'neighbours': 'particle.nearest_neighbors'
-            - 'voronoi_signature': 'particle.voronoi_signature'
-            - 'signature': 'particle.voronoi_signature'
+
+            - ``'position'`` : ``'particle.position'``
+            - ``'pos'`` : ``'particle.position'``
+            - ``'position[0]'`` : ``'particle.position[0]'``
+            - ``'pos[0]'`` : ``'particle.position[0]'``
+            - ``'x'`` : ``'particle.position[0]'``
+            - ``'position[1]'`` : ``'particle.position[1]'``
+            - ``'pos[1]'`` : ``'particle.position[1]'``
+            - ``'y'`` : ``'particle.position[1]'``
+            - ``'position[2]'`` : ``'particle.position[2]'``
+            - ``'pos[2]'`` : ``'particle.position[2]'``
+            - ``'z'`` : ``'particle.position[2]'``
+            - ``'species'`` : ``'particle.species'``
+            - ``'spe'`` : ``'particle.species'``
+            - ``'label'`` : ``'particle.label'``
+            - ``'mass'`` : ``'particle.mass'``
+            - ``'radius'`` : ``'particle.radius'``
+            - ``'nearest_neighbors'`` : ``'particle.nearest_neighbors'``
+            - ``'neighbors'`` : ``particle.nearest_neighbors'``
+            - ``'neighbours'`` : ``'particle.nearest_neighbors'``
+            - ``'voronoi_signature'`` : ``'particle.voronoi_signature'``
+            - ``'signature'`` : ``'particle.voronoi_signature'``
             
-        subset : str, optional
+        subset : str, default: None
             Subset of particles for which the property must be dumped. Must be 
-            of the form "particle.<attribute>" unless "<attribute>" is an 
-            alias. The default is None (all particles will be included).
-            This is ignored if `what` is cell property.
+            of the form ``"particle.<attribute>"`` unless ``"<attribute>"`` is an 
+            alias. The default is ``None`` (all particles will be included).
+            This is ignored if ``what`` is cell property.
             
         Returns
         -------
@@ -224,15 +220,15 @@ class System:
 
     def dump(self, what, subset=None):
         """
-        Alias for the method get_property.
+        Alias for the method ``get_property``.
         """
         return self.get_property(what, subset=subset)
 
     def set_property(self, what, value, subset=None):
         """
-        Set a system property `what` to `value`. If `what` is a particle 
+        Set a system property ``what`` to ``value``. If ``what`` is a particle 
         property, set the property for all the particles in the system or for a 
-        given subset of particles specified by `subset`.
+        given subset of particles specified by ``subset``.
 
         Parameters
         ----------
@@ -242,19 +238,19 @@ class System:
             "cell.side".
             
         value : int, float, list, or numpy.ndarray
-            Value(s) of the property to set. An instance of `int` or `float`
+            Value(s) of the property to set. An instance of ``int`` or ``float``
             will set the same value for all concerned particles. An instance
-            of `list` or `numpy.ndarray` will assign a specific value to each
-            particle. In this case, the size of `value` should respect the
+            of ``list`` or ``numpy.ndarray`` will assign a specific value to each
+            particle. In this case, the size of ``value`` should respect the
             number of concerned particles.
             
-        subset : str, optional
-            Particles to which the property must be set. The default is None.
-            This is ignored if `what` is cell property.
+        subset : str, default: None
+            Particles for which the property must be set. The default is ``None``.
+            This is ignored if ``what`` is cell property.
 
         Returns
         -------
-        None.
+        None
 
         Examples
         --------
@@ -307,30 +303,29 @@ class System:
     def compute_nearest_neighbors(self, method, cutoffs):
         """
         Compute the nearest neighbors for all the particles in the system using the
-        provided method. Neighbors are stored in the `nearest_neighbors` particle 
-        property.
+        provided method. Neighbors are stored in the ``nearest_neighbors`` particle 
+        property. Available methods are:
 
-        Available methods are:
-        - 'fixed': use fixed cutoffs for each pair of species in the trajectory.
-        - 'sann': solid-angle based nearest neighbor algorithm
-            (see https://doi.org/10.1063/1.4729313).
-        - 'voronoi': radical Voronoi tessellation method (uses particles' radii).        
+        - ``'auto'`` : read neighbors from the trajectory file, if explicitly requested with the ``additional_fields`` argument in the constructor.
+        - ``'fixed'`` : use fixed cutoffs for each pair of species in the trajectory.
+        - ``'sann'`` : solid-angle based nearest neighbor algorithm (see https://doi.org/10.1063/1.4729313).
+        - ``'voronoi'`` : radical Voronoi tessellation method (uses particles' radii) (see https://doi.org/10.1016/0022-3093(82)90093-X)      
 
         Parameters
         ----------
         method : str, default: None
             Method to identify the nearest neighbors. Must be one of 
-            ['fixed', 'sann', 'voronoi].
+            ``'fixed'``, ``'sann'``, or ``'voronoi'``.
 
         cutoffs : list
             List containing the cutoffs distances for each pair of species
-            in the system (for method 'fixed' and 'sann'). For method 'sann', 
-            cutoffs are required as a first guess to identify the nearest neighbors.
-            Leave None for method 'voronoi'.
+            in the system (for method ``'fixed'`` and ``'sann'``). For method 
+            ``'sann'``, cutoffs are required as a first guess to identify the nearest 
+            neighbors. Leave ``None`` for method ``'voronoi'``.
 
         Returns
         -------
-        None.
+        None
 
         Examples
         --------
@@ -418,16 +413,17 @@ class System:
     def compute_voronoi_signatures(self):
         """
         Compute the Voronoi signatures of all the particles in the system
-        using the radical Voronoi tessellation method.
+        using the radical Voronoi tessellation method (see 
+        https://doi.org/10.1016/0022-3093(82)90093-X).
         
-        Particle radii must be set using the `set_property` method if the 
+        Particle radii must be set using the ``set_property`` method if the 
         original trajectory file does not contain such information.
 
-        Creates a `voronoi_signature` property for the particles.
+        Creates a ``voronoi_signature`` property for the particles.
         
         Returns
         -------
-        None.
+        None
         """
         try:
             import pyvoro
@@ -464,30 +460,29 @@ class System:
         """
         Show a snapshot of the system and color particles
         according to an arbitrary property, such as species, cluster label, 
-        etc. Current visualization backends are 'matplotlib', 'ovito' and 
-        '3dmol'.
+        etc. Current visualization backends are ``"matplotlib"``, ``"ovito"`` and 
+        ``"3dmol"``.
 
         Parameters
         ----------
-        backend : str, optional
-            Name of the backend to use for visualization. 
-            The default is 'matplotlib'.
+        backend : str, default: "matplotlib"
+            Name of the backend to use for visualization.
 
-        color : str, optional
+        color : str, default: "species"
             Name of the particle property to use as basis for coloring the 
-            particles. This property must be defined for all the particles in the system.
-            The default is 'species'.
+            particles. This property must be defined for all the particles in the
+            system.
 
         **kwargs : additional keyworded arguments (backend-dependent).
 
         Raises
         ------
         ValueError
-            In case of unknown `backend`.
+            In case of unknown ``backend``.
 
         Returns
         -------
-        Figure or View (backend-dependent).
+        backend-dependent
         
         Examples
         --------
@@ -507,11 +502,11 @@ class System:
 
     def fold(self):
         """
-        Fold the particle positions into the central cell.
+        Fold the particles' positions into the central cell.
 
         Returns
         -------
-        None.
+        None
         """
         for p in self.particle:
             p.fold(self.cell)

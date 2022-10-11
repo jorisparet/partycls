@@ -35,7 +35,14 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
-        initialized when the method `compute` is called (default value is None).
+        initialized when the method ``compute`` is called (default value is ``None``).
+
+    groups : tuple
+        Composition of the groups: ``groups[0]`` and ``groups[1]`` contain lists of all
+        the ``Particle`` instances in groups 0 and 1 respectively. Each element of 
+        the tuple is a list of ``Particle`` in ``trajectory``, *e.g.* ``groups[0][0]``
+        is the list of all the particles in the first frame of ``trajectory`` that 
+        belong to group=0.
     """
 
     name = 'smoothed bond-orientational'
@@ -90,6 +97,16 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         self.exponent = exponent       
 
     def compute(self):
+        """
+        Compute the smoothed bond-orientational correlations for the particles in 
+        group=0 for the grid of orders :math:`\{ l_n \}`. Returns the data matrix 
+        and also overwrites the ``features`` attribute.
+
+        Returns
+        -------
+        features : numpy.ndarray
+            Data matrix with bond-orientational correlations.
+        """
         # set up
         self._set_up(dtype=numpy.float64)
         self._manage_nearest_neighbors_cutoffs()

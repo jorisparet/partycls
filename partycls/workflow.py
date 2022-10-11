@@ -19,83 +19,26 @@ import datetime
 
 class Workflow:
     """
-    A workflow is a clustering procedure that goes through the following steps:
+    A Workflow is a clustering procedure that goes through the following steps:
+
     - compute a structural descriptor on a given trajectory ;
-    - (optional) apply a feature scaling on the previously computed structural features ;
-    - (optional) apply a dimensionality reduction on the (raw/scaled) features ;
+    - (*optional*) apply a feature scaling on the previously computed structural features ;
+    - (*optional*) apply a dimensionality reduction on the (raw/scaled) features ;
     - run a clustering algorithm to partition particles into structurally different clusters ;
-    
-    Parameters
-    ----------
-    
-    trajectory : Trajectory, or str
-        An instance of `Trajectory` a path to trajectory file to read, or 
-        an instance of a class with compatible interface.
-        
-    descriptor : str, or an instance of StructuralDescriptor
-        Structural descriptor to be computed on the trajectory. See the
-        `descriptor_db` class attribute for compatible strings. Examples :
-        
-        'gr' : radial distribution of particles around a central particle.
-        
-        'ba' : angular distribution of pairs of nearest neighbors of a central particle.
-        
-        'bo' : Steinhardt bond-orientational order parameter (see https://doi.org/10.1103/PhysRevB.28.784)
-        
-        'ld' : Lechner-Dellago cond-orientational order parameter (see https://doi.org/10.1063/1.2977970)
-        
-    scaling : str, None, or an object with the proper interface, optional, default: None
-        Feature scaling method. See the `scaling_db` class attribute for
-        compatible strings. Examples:
-        
-        'zscore' : standardize features by removing the mean and scaling to unit variance
-            
-        'minmax' : scale and translate each feature individually such that it 
-        is in the given range on the training set, e.g. between zero and one
-        
-        'maxabs' : scale and translate each feature individually such that the 
-        maximal absolute value of each feature in the training set will be 1.
-            
-        'robust' : remove the median and scale the data according to the 
-        specified quantile range (default is between 25th quantile and 75th
-        quantile).
-            
-    dim_reduction : str, None, or an object with the proper interface, optional, default: None
-        Dimensionality reduction method. See the `dim_reduction_db` class attribute
-        for compatible strings. Examples:
-        
-        'pca' : Principal Component Analysis.
-        
-        'tsne' : t-distributed Stochastic Neighbor Embedding.
-        
-        'lle' : Locally Linear Embedding.
-        
-        'ae' : neural network Auto-Encoder.
-        
-    clustering : str, an instance of `Clustering`, or an object with the proper interface, optional, default: 'kmeans'
-        Clustering algorithm. See the `clustering_db` class attribute for 
-        compatible strings. Examples:
-        
-        'kmeans' : K-Means algorithm.
-        
-        'gmm' : Gaussian Mixture Model.
-        
-        'cinf' : Community Inference (see https://doi.org/10.1063/5.0004732).
     
     Attributes
     ----------
-    
     trajectory : Trajectory
-        The trajectory file as read by the Trajectory class.
+        The trajectory file as read by the ``Trajectory`` class.
         
     descriptor : StructuralDescriptor
         Structural descriptor associated to the trajectory.
         
-    scaling : ZScore, MinMax, MaxAbs, Robust
-        Feature scaling.
+    scaling : ZScore, MinMax, MaxAbs or Robust
+        Feature scaling method.
         
-    dim_reduction : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
-        Dimensionality reduction.
+    dim_reduction : PCA, TSNE, LocallyLinearEmbedding or AutoEncoder
+        Dimensionality reduction method.
         
     clustering : Clustering
         Clustering method.
@@ -106,32 +49,32 @@ class Workflow:
         
     features: numpy.ndarray
         Raw features as computed by the associated structural descriptor.
-        Initial value is None if features were not computed.
+        Initial value is ``None`` if features were not computed.
         
     scaled_features: numpy.ndarray
         Features after being rescaled by a feature scaling method.
-        Equal to None if no scaling is applied to the features.
+        Equal to ``None`` if no scaling is applied to the features.
         
     reduced_features: numpy.ndarray
         Features in the reduced space after applying a dimensionality reduction
-        technique. Equal to None if no reduction is applied to the features.
+        technique. Equal to ``None`` if no reduction is applied to the features.
         
     naming_convention : str
         Base name for output files. 
-        Default is '{filename}.{code}.{descriptor}.{clustering}', where each
+        Default is ``"{filename}.{code}.{descriptor}.{clustering}"``, where each
         tag will be replaced by its value in the current instance of 
-        `Workflow` (e.g. "traj.xyz.partycls.gr.kmeans").
+        ``Workflow`` (*e.g.* ``"traj.xyz.partycls.gr.kmeans"``).
         
         Base name can be changed using any combination of the available tags:
-        {filename}, {code}, {descriptor}, {scaling}, {dim_reduction}, {clustering}.
-        Example: "{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}".
-        
-    Examples
-    --------
+
+        - ``{filename}``
+        - ``{code}``
+        - ``{descriptor}``
+        - ``{scaling}``
+        - ``{dim_reduction}``
+        - ``{clustering}``
     
-    >>> from partycls import Workflow
-    >>> wf = Workflow('trajectory.xyz', descriptor='ba', scaling='zscore')
-    >>> wf.run()
+        Example: ``"{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}"``.
     """
 
     # Databases
@@ -177,7 +120,54 @@ class Workflow:
                         'ae': AutoEncoder}
 
     def __init__(self, trajectory, descriptor='gr', scaling=None, dim_reduction=None, clustering='kmeans'):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            An instance of ``Trajectory`` or a path to trajectory file to read, or 
+            an instance of a class with compatible interface.
+            
+        descriptor : StructuralDescriptor, default: "gr"
+            An instance of ``StructuralDescriptor``, the short name of a descriptor 
+            (str), or an instance of a class with compatible interface. See the
+            ``descriptor_db`` class attribute for compatible strings. Examples:
+            
+            - ``"gr"`` : radial distribution of particles around a central particle.
+            - ``"ba"`` : angular distribution of pairs of nearest neighbors of a central particle.
+            - ``"bo"`` : Steinhardt bond-orientational order parameter.
+            - ``"ld"`` : Lechner-Dellago cond-orientational order parameter.
+            
+        scaling : method, default: None
+            Feature scaling method. See the ``scaling_db`` class attribute for
+            compatible strings. Examples:
+            
+            - ``"zscore"`` : standardize features by removing the mean and scaling to unit variance
+            - ``"minmax"`` : scale and translate each feature individually such that it is in the given range on the training set, *e.g.* between zero and one
+            - ``"maxabs"`` : scale and translate each feature individually such that the maximal absolute value of each feature in the training set will be 1.
+            - ``"robust"`` : remove the median and scale the data according to the specified quantile range (default is between 25th quantile and 75th quantile)
+                
+        dim_reduction : method, default: None
+            Dimensionality reduction method. See the ``dim_reduction_db`` class attribute
+            for compatible strings. Examples:
+            
+            - ``"pca"`` : Principal Component Analysis
+            - ``"tsne"`` : t-distributed Stochastic Neighbor Embedding
+            - ``"lle"`` : Locally Linear Embedding
+            - ``"ae"`` : neural network Auto-Encoder
+            
+        clustering : Clustering, default: 'kmeans'
+            Clustering algorithm. See the ``clustering_db`` class attribute for 
+            compatible strings. Examples:
+            
+            - ``"kmeans"`` : K-Means algorithm
+            - ``"gmm"`` : Gaussian Mixture Model
+            - ``"cinf"`` : Community Inference (see https://doi.org/10.1063/5.0004732).
 
+        Example
+        -------
+        >>> wf = Workflow('trajectory.xyz', descriptor='ba', scaling='zscore')
+        >>> wf.run()
+        """
         # Trajectory
         if isinstance(trajectory, str):
             self.trajectory = Trajectory(trajectory)
@@ -248,16 +238,45 @@ class Workflow:
         self._end = None
         self._time = None
 
+    @property
+    def labels(self):
+        """
+        Clustering labels.
+        """
+        return self.clustering.labels
+
+    @property
+    def fractions(self):
+        """
+        Fraction of particles in each cluster.
+        """
+        return self.clustering.fractions
+
+    @property
+    def populations(self):
+        """
+        Number of particles in each cluster.
+        """
+        return self.clustering.populations
+
+    @property
+    def centroids(self):
+        """
+        Centroid of each cluster.
+        """
+        return self.clustering.centroids
+
     # TODO: like scipy functions, we may return a dict() with the optimization results
     def run(self):
         """
         Compute the clustering and write the output files according to the
-        defined workflow :
-        - compute the descriptor ;
-        - (optional) apply feature scaling ;
-        - (optional) apply dimensionality reduction ;
-        - compute the clustering ;
-        - (optional) write the output files ;        
+        defined Workflow :
+
+        - compute the descriptor
+        - (*optional*) apply feature scaling
+        - (*optional*) apply dimensionality reduction
+        - compute the clustering
+        - (*optional*) write the output files     
 
         Raises
         ------
@@ -267,8 +286,7 @@ class Workflow:
 
         Returns
         -------
-        None.
-
+        None
         """
         # Start the timer
         self._start = time.time()
@@ -319,36 +337,27 @@ class Workflow:
                 writer = self.output_metadata[filetype]['writer']
                 writer(**self.output_metadata[filetype])
 
-    @property
-    def labels(self):
-        return self.clustering.labels
-
-    @property
-    def fractions(self):
-        return self.clustering.fractions
-
-    @property
-    def populations(self):
-        return self.clustering.populations
-
-    @property
-    def centroids(self):
-        return self.clustering.centroids
-
     def set_output_metadata(self, what, **kwargs):
         """
         Change the output properties.
 
         Parameters
         ----------
-        what : {'trajectory', 'log', 'centroids', 'labels', or 'dataset'}
-            Type of output file to change..
-        **kwargs : keywords arguments (specific to each type of file)
-            DESCRIPTION.
+        what : str
+            Type of output file to change. Must be one of:
+            
+            - ``"trajectory"``
+            - ``"log"``
+            - ``"centroids"``
+            - ``"labels"``
+            - ``"dataset"``
+
+        **kwargs : 
+            Keywords arguments (specific to each type of file)
 
         Returns
         -------
-        None.
+        None
         
         Examples
         --------
@@ -356,7 +365,6 @@ class Workflow:
         >>> wf.set_output_metadata('log', enable=False) # do not write the log file
         >>> wf.set_output_metadata('trajectory', filename='awesome_trajectory.xyz') # change the default output name
         >>> wf.run('dataset', enable=True, precision=8) # write the dataset and change the writing precision to 8 digits
-        
         """
         for key, val in kwargs.items():
             self.output_metadata[what][key] = val
@@ -367,8 +375,7 @@ class Workflow:
 
         Returns
         -------
-        None.
-        
+        None
         """
         for key in self.output_metadata.keys():
             self.output_metadata[key]['enable'] = False
@@ -380,24 +387,28 @@ class Workflow:
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str, default: None
             Filename of the output trajectory. Uses a default naming convention
             if not specified. The default is None.
-        fmt : str, optional
-            Output trajectory format. The default is 'xyz'.
-        backend : str, optional
+
+        fmt : str, default: "xyz"
+            Output trajectory format.
+
+        backend : str, default: None
             Name of the backend to use to write the trajectory. Must be either
-            'atooms' or 'mdtraj'. The default is None.
-        additional_fields : list, optional
-            Additional fields (i.e. particle properties) to write in the
-            output trajectory. Note that all the `Particle` objects should
-            have the specified properties as attributes. The default is [].
-        precision : int, optional
-            Number of decimals when writing the output trajectory. The default is 6.
+            ``None``, ``"atooms"`` or ``"mdtraj"``.
+
+        additional_fields : list, default: None
+            Additional fields (*i.e.* particle properties) to write in the
+            output trajectory. Note that all the ``Particle`` objects should
+            have the specified properties as attributes.
+
+        precision : int, default: 6
+            Number of decimals when writing the output trajectory.
 
         Returns
         -------
-        None.
+        None
 
         Examples
         --------
@@ -405,7 +416,6 @@ class Workflow:
         >>> wf.write_trajectory(fmt='rumd')
         >>> wf.write_trajectory(additional_field=['particle.mass']) # `Particle` must have the attribute `mass`.
         >>> wf.write_trajectory(filename='my_custom_name', precision=8)
-        
         """
         if additional_fields is None:
             additional_fields = []
@@ -425,18 +435,16 @@ class Workflow:
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str, default: None
             Filename of the log file. Uses a default naming convention
-            if not specified. The default is None.
-        precision : int, optional
-            Number of decimals when writing the log file. The default is 6.
-        **kwargs : TYPE
-            DESCRIPTION.
+            if not specified.
+
+        precision : int, default: 6
+            Number of decimals when writing the log file.
 
         Returns
         -------
-        None.
-        
+        None
         """
         if filename is None:
             filename = self._output_file('log')
@@ -468,17 +476,16 @@ class Workflow:
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str, default: None
             Filename of the centroids file. Uses a default naming convention
-            if not specified. The default is None.
-        precision : int, optional
-            Number of decimals when writing the centroids file. The default is 6.
+            if not specified.
 
+        precision : int, default: 6
+            Number of decimals when writing the centroids file.
 
         Returns
         -------
-        None.
-        
+        None
         """
         if filename is None:
             filename = self._output_file('centroids')
@@ -501,14 +508,13 @@ class Workflow:
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str, default: None
             Filename of the labels file. Uses a default naming convention
-            if not specified. The default is None.
+            if not specified.
 
         Returns
         -------
-        None.
-        
+        None
         """
         if filename is None:
             filename = self._output_file('labels')
@@ -520,21 +526,21 @@ class Workflow:
 
     def write_dataset(self, filename=None, precision=6, **kwargs):
         """
-        Write the full raw dataset from the descriptor as an array (i.e. all 
+        Write the full raw dataset from the descriptor as an array (*i.e.* all 
         the individual raw features of each particle).
 
         Parameters
         ----------
-        filename : str, optional
+        filename : str, default: None
             Filename of the dataset file. Uses a default naming convention
-            if not specified. The default is None.
-        precision : int, optional
-            Number of decimals when writing the dataset file. The default is 6.
+            if not specified.
+
+        precision : int, default: 6
+            Number of decimals when writing the dataset file.
 
         Returns
         -------
-        None.
-
+        None
         """
         if filename is None:
             filename = self._output_file('dataset')

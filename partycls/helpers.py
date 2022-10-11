@@ -30,42 +30,47 @@ def hex_to_rgb(h):
 def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
                     outfile=None, linewidth=0.5, alpha=1.0, show=False):
     """
-    Make a snapshot of the `system` using matplotlib.
+    Make a snapshot of the ``system`` using matplotlib.
     The figure is returned for further customization or visualization 
     in jupyter notebooks.    
 
     Parameters
     ----------
     system : System
-        An instance of `System`.
+        The system to visualize.
+
     color : str
-        Particle property to use for color coding, e.g. 'species', 'label'.
-    view : str, optional
-        View type, i.e. face of the box to show. Only works for a 3D system.
-        The default is 'top'.
-    palette : list, optional
+        Particle property to use for color coding, *e.g.* ``"species"``, ``"label"``.
+
+    view : str, default: "top"
+        View type, *i.e.* face of the box to show. Only works for a 3D system.
+
+    palette : list, default: None
         List of colors when coloring particles according to a discrete property,
-        such as 'species' or 'label'. A default palette will be used if not 
-        specified. The default is None.
-    cmap : str, optional
+        such as ``"species"`` or ``"label"``. A default palette will be used if 
+        not specified.
+
+    cmap : str, default: "viridis"
         Name of a matplotlib colormap to use when coloring particles according
-        to a continuous property such as 'velocity' or 'energy'. List of 
-        available colormap can be found in `matplotlib.cm.cmaps_listed`.
-        The default is 'viridis'.
-    outfile : str, optional
-        Output filename to save the snapshot. The default is None (not saved).
-    linewidth : int or float, optional
-        The default is 0.5.
-    alpha : int or float, optional
-        Transparency parameter. The default is 1.0.
-    show : bool, optional
-        Show the snapshot when calling the function. The default is False.
+        to a continuous property such as ``"velocity"`` or ``"energy"``. List of 
+        available colormaps can be found in ``matplotlib.cm.cmaps_listed``.
+
+    outfile : str, default: None
+        Output filename to save the snapshot. Default is to not save.
+
+    linewidth : float, default: 0.5
+        Line width.
+
+    alpha : float, default: 1.0
+        Transparency parameter.
+
+    show : bool, default: False
+        Show the snapshot when calling the function.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
         Figure of the snapshot.
-
     """
     try:
         import matplotlib.pyplot as plt
@@ -149,41 +154,45 @@ def show_matplotlib(system, color, view='top', palette=None, cmap='viridis',
 def show_ovito(system, color, view='top', palette=None, cmap='viridis',
                outfile=None, size=(640, 480), zoom=True):
     """
-    Make a snapshot of the `system` using Ovito.
+    Make a snapshot of the ``system`` using Ovito.
     The image is returned for further customization or visualization 
     in jupyter notebooks.        
 
     Parameters
     ----------
     system : System
-        An instance of `System`.
+        The system to visualize.
+
     color : str
-        Particle property to use for color coding, e.g. 'species', 'label'.
-    view : str, optional
-        View type, i.e. face of the box to show. Only works for a 3D system.
-        The default is 'top'.
-    palette : list, optional
+        Particle property to use for color coding, e.g. ``"species"``, ``"label"``.
+
+    view : str, default: "top"
+        View type, *i.e.* face of the box to show. Only works for a 3D system.
+
+    palette : list, default: "viridis"
         List of colors when coloring particles according to a discrete property,
-        such as 'species' or 'label'. Colors must be expressed in RGB format through
-	tuples (e.g. palette=[(0,0,1), (1,0,0)]). A default palette will be used if 
-	not specified. The default is None.
+        such as ``"species"`` or ``"label"``. Colors must be expressed in RGB format through
+        tuples (*e.g.* ``palette=[(0,0,1), (1,0,0)]``). A default palette will be used
+        if not specified.
+   
     cmap : str, optional
         Name of a matplotlib colormap to use when coloring particles according
-        to a continuous property such as 'velocity' or 'energy'. List of 
-        available colormap can be found in `matplotlib.cm.cmaps_listed`.
-        The default is 'viridis'.
-    outfile : str, optional
-        Output filename to save the snapshot. The default is None (not saved).
-    size : tuple, optional
-        Size of the image to render. The default is (640, 480).
-    zoom : bool, optional
-        Zoom on the simulation box. The default is True.
+        to a continuous property such as ``"velocity"`` or "``energy"``. List of 
+        available colormap can be found in ``matplotlib.cm.cmaps_listed``.
+
+    outfile : str, default: None
+        Output filename to save the snapshot. The default is to not save.
+
+    size : tuple, default: (640, 480)
+        Size of the image to render.
+
+    zoom : bool, default: True
+        Zoom on the simulation box.
 
     Returns
     -------
     Image
         Rendered image.
-
     """
     try:
         from ovito.io import import_file
@@ -281,32 +290,33 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
 
 def show_3dmol(system, color, palette=None):
     """
-    Visualize the `system` using 3dmol http://3dmol.csb.pitt.edu/
+    Visualize the ``system`` using 3dmol.
     The py3Dmol view is returned for further customization or visualization 
     in jupyter notebooks.
 
     Parameters
     ----------
     system : System
-        An instance of `System`.
+        The system to visualize.
+
     color : str
-        Particle property to use for color coding, e.g. 'species', 'label'.
+        Particle property to use for color coding, *e.g.* ``"species"``, ``"label"``.
         This property must be a string or an integer.
-    palette : list, optional
+
+    palette : list, default: None
         List of colors when coloring particles according to a discrete property,
-        such as 'species' or 'label'. A default palette will be used if not 
-        specified. The default is None.
+        such as ``"species"`` or ``"label"``. A default palette will be used if not 
+        specified.
 
     Raises
     ------
     ValueError
-        If the `color` parameter refers to a float particle property.
+        If the ``color`` parameter refers to a ``float`` particle property.
 
     Returns
     -------
     view : py3Dmol.view
         py3Dmol view.
-
     """
     try:
         import py3Dmol
@@ -346,14 +356,15 @@ def show_3dmol(system, color, palette=None):
 
 def shannon_entropy(px, dx=1.0):
     """
-    Shannon entropy of distribution p(x).
+    Shannon entropy of distribution :math:`p(x)`.
 
     Parameters
     ----------
-    px : list or numpy.array
-        Distribution p(x).
-    dx : float, optional
-        Differential of x. The default is 1.0.
+    px : numpy.array
+        Distribution :math:`p(x)`.
+
+    dx : float, default: 1.0
+        Differential of x.
 
     Returns
     -------
@@ -370,33 +381,36 @@ def shannon_entropy(px, dx=1.0):
 
 def merge_clusters(weights, n_clusters_min=2, epsilon_=1e-15):
     """
-    Merge clusters into `n_clusters_min` new clusters based on the
+    Merge clusters into ``n_clusters_min`` new clusters based on the
     probabilities that particles initially belong to each of the original
     clusters with a certain probability and using an entropy criterion.
     
-    See https://doi.org/10.1198/jcgs.2010.08111 (Baudry et al.)
+    See https://doi.org/10.1198/jcgs.2010.08111 (Baudry et al.).
 
     Parameters
     ----------
-    weights : list or numpy.ndarray
+    weights : list
         Probabilities that each particle belongs to each cluster.
-        If there are N particles, then the length of the list (or first
-        dimension of the array) must be N. If there are K original clusters,
-        each element of `weights` (or the first dimension of the array) must
-        be K. `weights[i][j]` (list) or `weights[i,k]` (array) is the 
-        probability that particle `i` belongs to cluster `k` before merging.
-        For each particle, sum(weights[i]) = 1.
-    n_clusters_min : int, optional
-        Final number of clusters after merging. The default is 2.
+        If there are :math`N` particles, then the length of the list (or first
+        dimension of the array) must be :math:`N`. If there are math:`K` original
+        clusters, each element of ``weights`` (or the first dimension of the array)
+        must be :math:`K`. ``weights[i][j]`` (list) or ``weights[i,k]`` (array) is the 
+        probability that particle ``i`` belongs to cluster ``k`` before merging.
+        For each particle, ``sum(weights[i])`` is equal to 1.
+
+    n_clusters_min : int, default: 2
+        Final number of clusters after merging.
+
     epsilon_ : float
         Small number (close to zero). This is needed as a replacement for zero
-        when computing a logarithm to avoid errors. The default is 1e-15.
+        when computing a logarithm to avoid errors.
 
     Returns
     -------
     new_weights : numpy.ndarray
         New weights after merging. Same shape and interpretation as the
-        `weights` input parameter.
+        ``weights`` input parameter.
+
     new_labels : list
         New discrete labels based on the weights after merging.
     """
@@ -450,21 +464,23 @@ def sort_clusters(labels, centroids, func=shannon_entropy):
     ----------
     labels : list
         Original labels.
+
     centroids : numpy.ndarray
         Cluster centroids.
-    func : function, optional
+
+    func : function, default: ``shannon_entropy``
         Function used to associate a numerical value to each cluster, to be
         used as sorting criterion. This function must accept a list or a 
         one dimensional array as parameter (this parameter being the 
-        coordinates of a given centroid). The default is shannon_entropy.
+        coordinates of a given centroid).
 
     Returns
     -------
     new_labels : list
         New labels based on centroid entropies.
+
     new_centroids : numpy.ndarray
         Centroids arranged in order of descending entropies.
-
     """
     n_clusters = centroids.shape[0]
     new_centroids = numpy.zeros_like(centroids)
@@ -490,7 +506,7 @@ def sort_clusters(labels, centroids, func=shannon_entropy):
 
 def _compute_delta_ent(i, j, weights):
     """
-    Entropy change on merging two clusters (following Baudry) 
+    Entropy change on merging two clusters (following Baudry).
     """
     delta_ent = 0.0
     for w in weights:  # each w is a vector of weights (this is a loop over particles)
@@ -505,7 +521,7 @@ def _compute_delta_ent(i, j, weights):
 
 def _compute_ICL_ent(weights, epsilon_):
     """
-    ICL entropy from list of weights
+    ICL entropy from list of weights.
     """
     ICL_ent = 0.0
     for w in weights:

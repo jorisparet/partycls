@@ -9,82 +9,83 @@ class StructuralDescriptor:
     """
     Base class for structural descriptors.
     
-    The descriptor is calculated for the provided trajectory `trajectory`. This can be:
-    - an object implementing the `Trajectory` interface ;
-    - the path to a trajectory file in a format recognized by partyclsl ;
-    
-    A structural descriptor S(x) is a collection of N individual empirical correlation 
-    functions {s_i(x)} at the particle level, defined over a grid {x_j} of M features.
-    These are stored in the `features` array as a matrix usually refered to as the "data set":
-    
-    s_0(x_0) s_0(x_1) ... s_0(x_M)
-    s_1(x_0) s_1(x_1) ... s_1(x_M)
-    ...      ...          ...
-    s_N(x_0) s_N(x_1) ... s_N(x_M)
-    
-    The `features` array is None by default and is computed only when the `compute()` method is called.
-    
-    The correlations can be calculated between two arbitrary subsets of particles called "groups":
-    - group 0 is the main group, i.e. particles for which the correlations are being calculated ;
-    - group 1 is the secondary group, i.e. particles that are being considered when calculating the correlations ;
-    These groups are formed by adding filters on particles' properties (species, radius, position, etc.).
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
+    The descriptor is calculated for the provided trajectory. This can be:
 
-    accept_nans: bool, default: True
-        If False, discard any row from the array of features that contains a Nan
-        element. If True, keep NaN elements in the array of features.
+    - an object implementing the ``Trajectory`` interface
+    - the path to a trajectory file in a format recognized by partycls
     
-    verbose : bool, default: False
-        Show progress information and warnings about the computation of the 
-        descriptor when verbose is True, and remain silent when verbose is False.
+    A structural descriptor :math:`S` is a collection of :math:`N` individual 
+    empirical correlation functions :math:`\{ s_i(\\vec{x}) \}` at the particle level, 
+    defined over a grid :math:`\{ \\vec{x}_j \}` of :math:`M` features.
+    These are stored in the ``features`` array as a matrix usually refered to as
+    the "data set".
+    
+    The ``features`` array is ``None`` by default and is computed only when the 
+    ``compute`` method is called.
+    
+    The correlations can be calculated between two arbitrary subsets of particles 
+    called *groups*:
+
+    - group 0 is the main group, *i.e.* particles for which the correlations are being computed
+    - group 1 is the secondary group, *i.e.* particles that are being considered when computing the correlations
+    
+    These groups are formed by adding filters on particles' properties (species, radius, position, etc.).
     
     Attributes
     ----------
-    
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
         
-    grid : array
+    grid : numpy.ndarray
         Grid over which the structural features will be computed.
         
-    features : ndarray
+    features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
         accordance with the defined filters (if any). This attribute is 
-        initialized when the method `compute` is called (default value is None).
+        initialized when the method ``compute`` is called (default value is ``None``).
         
     groups : tuple
-        Composition of the groups: groups[0] and groups[1] contain lists of all
-        the `Particle` objects in groups 0 and 1 respectively. Each element of 
-        the tuple is a list of `Particle` in `trajectory`, e.g. groups[0][0] is 
-        the list of all the particles in the first frame of `trajectory` that 
+        Composition of the groups: ``groups[0]`` and ``groups[1]`` contain lists of all
+        the ``Particle`` instances in groups 0 and 1 respectively. Each element of 
+        the tuple is a list of ``Particle`` in ``trajectory``, *e.g.* ``groups[0][0]``
+        is the list of all the particles in the first frame of ``trajectory`` that 
         belong to group=0.
-    
-    Examples:
-    ---------
-    
-    >>> D = StructuralDescriptor('trajectory.xyz')
-    >>> D.add_filter("species == 'A'", group=0)
-    >>> D.add_filter("species == 'B'", group=1)
-    >>> D.active_filters
-    [("particle.species == 'A'", 0), ("particle.species == 'B'", 1)]
-    >>> D.clear_filters(0)
-    >>> D.active_filters
-    [("particle.species == 'B'", 1)]
     """
 
     def __init__(self, trajectory, accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory
+            Trajectory on which the structural descriptor will be computed.
+
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+        
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose is 
+            ``False``.
+
+        Examples
+        --------
+        >>> D = StructuralDescriptor('trajectory.xyz')
+        >>> D.add_filter("species == 'A'", group=0)
+        >>> D.add_filter("species == 'B'", group=1)
+        >>> D.active_filters
+        [("particle.species == 'A'", 0), ("particle.species == 'B'", 1)]
+        >>> D.clear_filters(0)
+        >>> D.active_filters
+        [("particle.species == 'B'", 1)]
+        """
         # Trajectory
         # TODO: we can't change format or backend when passing a string
         if isinstance(trajectory, str):
@@ -114,12 +115,12 @@ class StructuralDescriptor:
         """
         Boolean property.
         
-        If False, discard any row from the array of features that contains a
-        NaN element. Warning: this will delete the selected rows from the
-        array of featyres. Use the method dismiss_nans instead to return a 
+        If ``False``, discard any row from the array of features that contains a
+        `NaN` element. Warning: this will delete the selected rows from the
+        array of featyres! Use the method ``dismiss_nans`` instead to return a 
         filtered copy of the array of features.
         
-        If True, keep NaN elements in the array of features.
+        If ``True``, keep `NaN` elements in the array of features.
         """
         return self._accept_nans
 
@@ -129,56 +130,59 @@ class StructuralDescriptor:
         if not accept and self.features is not None:
             self._handle_nans()
 
-    def __str__(self):
-        rep = 'Descriptor(name="{}", dimension={}, filters={})'
-        return rep.format(self.name, self.dimension, self.active_filters)
-
-    def __repr__(self):
-        return self.__str__()
-
-    def _group_init(self, group):
+    @property
+    def n_samples(self):
         """
-        Initialize the group `group` with all the particles by default.
+        Total number of particles :math:`N` in the descriptor (*i.e.* in group=0).
         """
-        self.groups[group].clear()
-        for system in self.trajectory:
-            frame = []
-            for particle in system.particle:
-                frame.append(particle)
-            self.groups[group].append(frame.copy())
+        return sum([len(frame) for frame in self.groups[0]])
+
+    @property
+    def n_features(self):
+        """
+        Number of features :math:`M` of the descriptor.
+        """
+        return len(self.grid)
+
+    @property
+    def average(self):
+        """
+        Average feature vector :math:`\langle s \\rangle` of the descriptor.
+        """
+        if self._accept_nans and self.verbose:
+            _, num_nans = self._find_nans()
+            if num_nans > 0:
+                print("Warning: {} NaN sample(s) in the array of features. This will compromise the computation of the average.".format(num_nans))
+        return numpy.mean(self.features, axis=0)
 
     def add_filter(self, condition, group=0):
         """
-        Add a filter on the group (0 or 1) to select the subset of particles
+        Add a filter on group = ``group`` to select the subset of particles
         that respects the provided condition.
 
         Parameters
         ----------
         condition : str
             The condition should have the following format:
-    
-            <attribute> _operator_ <value>
+            ``"<attribute> _operator_ <value>"``, where:
             
-            where:
-            - <attribute> is a particle property (accepts aliases) ;
-            - _operator_ is a logical operator (<, <=, ==, >=, >) ;
-            - <value> is the corresponding value of <attribute> with the proper type ;
+            - ``<attribute>`` is a particle property (accepts aliases)
+            - ``_operator_`` is a logical operator (``"<"``, ``"<="``, ``"=="``, ``"!="``, ``">="``, ``">"``)
+            - ``<value>`` is the corresponding value of ``<attribute>`` with the proper type
         
-        group : int, optional
+        group : int, default: 0
             Index of the group to which the filter must be applied.
-            The default is 0.
 
         Returns
         -------
-        None.
+        None
         
-        Examples:
-        ---------
+        Examples
+        --------
         >>> S = StructuralDescriptor('trajectory.xyz')
         >>> S.add_filter("particle.radius < 0.5")
         >>> S.add_filter("species == 'A'", group=1)
         >>> S.add_filter("x < 0", group=0) # particles on the left side of the box
-      
         """
         condition = standardize_condition(condition)
         self.active_filters.append((condition, group))
@@ -196,18 +200,17 @@ class StructuralDescriptor:
 
     def clear_filters(self, group=0):
         """
-        Clear all active filters on `group`.
-        All particles are included again in `group`.        
+        Clear all active filters on group = ``group``.
+        All particles are included again in this group.        
 
         Parameters
         ----------
-        group : int, optional
-            Index of the group on which to clear the filters. The default is 0.
+        group : int, default: 0
+            Index of the group for which to clear the filters.
 
         Returns
         -------
-        None.
-
+        None
         """
         # Reset `group` with all the particles
         self._group_init(group)
@@ -223,8 +226,7 @@ class StructuralDescriptor:
 
         Returns
         -------
-        None.
-
+        None
         """
         self._group_init(0)
         self._group_init(1)
@@ -232,55 +234,77 @@ class StructuralDescriptor:
 
     def group_size(self, group):
         """
-        Return the number of particles in `group`.
+        Parameters
+        ----------
+        group: int
+            Index of the group (0 or 1) for which to return the size.
+
+        Returns
+        -------
+        fraction: float
+            Number of particles in group = ``group`` over the whole trajectory.
         """
         N = 0
         for frame in self.groups[group]:
             N += len(frame)
         return N
 
+    def group_fraction(self, group):
+        """
+        Parameters
+        ----------
+        group: int
+            Index of the group (0 or 1) for which to return the fraction.
+
+        Returns
+        -------
+        fraction: float
+            Fraction of particles inside group = ``group`` over the whole trajectory.
+        """
+        N_group = self.group_size(group)
+        N_tot = numpy.sum([len(sys.particle) for sys in self.trajectory])
+        return N_group / N_tot
+
     def get_group_property(self, what, group):
         """
         Return a list of numpy arrays with the properties of the particles in
-        group `group`. The list size is the number of systems in the 
+        group = ``group``. The list size is the number of frames (``System``) in the 
         trajectory.
 
         Parameters
         ----------
         what : str
-            Requested particle property. 
-            
-            `what` must be a particle property or an alias.
-            
-            The following particle aliases are accepted:
-            - 'position': 'particle.position'
-            - 'pos': 'particle.position'
-            - 'position[0]': 'particle.position[0]', 
-            - 'pos[0]': 'particle.position[0]'
-            - 'x': 'particle.position[0]'
-            - 'position[1]': 'particle.position[1]',
-            - 'pos[1]': 'particle.position[1]'
-            - 'y': 'particle.position[1]'
-            - 'position[2]': 'particle.position[2]'
-            - 'pos[2]': 'particle.position[2]'
-            - 'z': 'particle.position[2]'
-            - 'species': 'particle.species'
-            - 'spe': 'particle.species'
-            - 'label': 'particle.label'
-            - 'mass': 'particle.mass'
-            - 'radius': 'particle.radius'
-            - 'nearest_neighbors': 'particle.nearest_neighbors'
-            - 'neighbors': 'particle.nearest_neighbors'
-            - 'neighbours': 'particle.nearest_neighbors'
-            - 'voronoi_signature': 'particle.voronoi_signature'
-            - 'signature': 'particle.voronoi_signature'
+            Requested particle property. ``what`` must be a particle property or 
+            an alias. The following particle aliases are accepted:
+
+            - ``'position'`` : ``'particle.position'``
+            - ``'pos'`` : ``'particle.position'``
+            - ``'position[0]'`` : ``'particle.position[0]'``
+            - ``'pos[0]'`` : ``'particle.position[0]'``
+            - ``'x'`` : ``'particle.position[0]'``
+            - ``'position[1]'`` : ``'particle.position[1]'``
+            - ``'pos[1]'`` : ``'particle.position[1]'``
+            - ``'y'`` : ``'particle.position[1]'``
+            - ``'position[2]'`` : ``'particle.position[2]'``
+            - ``'pos[2]'`` : ``'particle.position[2]'``
+            - ``'z'`` : ``'particle.position[2]'``
+            - ``'species'`` : ``'particle.species'``
+            - ``'spe'`` : ``'particle.species'``
+            - ``'label'`` : ``'particle.label'``
+            - ``'mass'`` : ``'particle.mass'``
+            - ``'radius'`` : ``'particle.radius'``
+            - ``'nearest_neighbors'`` : ``'particle.nearest_neighbors'``
+            - ``'neighbors'`` : ``particle.nearest_neighbors'``
+            - ``'neighbours'`` : ``'particle.nearest_neighbors'``
+            - ``'voronoi_signature'`` : ``'particle.voronoi_signature'``
+            - ``'signature'`` : ``'particle.voronoi_signature'``
 
         Returns
         -------
         to_dump : list
-            List of the requested particle property with length equal to the 
-            number of frames in the trajectory. Each element of the list is a
-            numpy.ndarray of the requested particle property.
+            List of numpy arrays of the requested particle property with length equal 
+            to the number of frames in the trajectory. Each element of the list is a
+            ``numpy.ndarray`` of the requested particle property.
             
         Examples
         --------
@@ -289,7 +313,6 @@ class StructuralDescriptor:
         >>> D.get_group_property('position', group=0)
         >>> D.get_group_property('x', group=1)
         >>> D.get_group_property('energy', group=0)
-        
         """
         if what in aliases:
             what = aliases[what]
@@ -305,62 +328,61 @@ class StructuralDescriptor:
 
     def dump(self, what, group):
         """
-        Alias for the method get_group_property.
+        Alias for the method ``get_group_property``.
         """
         return self.get_group_property(what, group)
 
-    def group_fraction(self, group):
-        """
-        Return the fraction of particles inside `group` over the whole trajectory.
-        """
-        N_group = self.group_size(group)
-        N_tot = numpy.sum([len(sys.particle) for sys in self.trajectory])
-        return N_group / N_tot
-
-    @property
-    def n_samples(self):
-        """
-        Total number of particles in the descriptor (i.e. in group=0).
-        """
-        return sum([len(frame) for frame in self.groups[0]])
-
-    @property
-    def n_features(self):
-        """
-        Number of features of the descriptor.
-        """
-        return len(self.grid)
-
-    @property
-    def average(self):
-        """
-        Average feature vector of the descriptor.
-        """
-        if self._accept_nans and self.verbose:
-            _, num_nans = self._find_nans()
-            if num_nans > 0:
-                print("Warning: {} NaN sample(s) in the array of features. This will compromise the computation of the average.".format(num_nans))
-        return numpy.mean(self.features, axis=0)
-
     def compute(self):
+        """
+        Empty compute function to be defined in child classes. Does nothing.
+
+        Returns
+        -------
+        None
+        """
         pass
 
     def normalize(self, dist):
         """
         Generic normalization function for child classes. Returns the input
         distribution unchanged.
+
+        Parameters
+        ----------
+        dist: numpy.ndarray
+            Distribution to normalize.        
+
+        Returns
+        -------
+        dist: numpy.ndarray
+            Input distribution unchanged.
         """
         return dist
 
     def discard_nans(self):
         """
         Return the array of features where each row that contains
-        NaN is filtered out.
+        `NaN` is filtered out.
+
+        Returns
+        -------
+        None
         """
         collapsed_rows, num_nans = self._find_nans()
         if num_nans > 0 and self.verbose:
             print('Warning: discarding {} NaN samples from the array of features.'.format(num_nans))
         return self.features[collapsed_rows]
+
+    def _group_init(self, group):
+        """
+        Initialize the group ``group`` with all the particles by default.
+        """
+        self.groups[group].clear()
+        for system in self.trajectory:
+            frame = []
+            for particle in system.particle:
+                frame.append(particle)
+            self.groups[group].append(frame.copy())
 
     def _group_check(self):
         # check that groups are not empty
@@ -395,6 +417,13 @@ class StructuralDescriptor:
                 return range(bound)
         return range(bound)
 
+    def __str__(self):
+        rep = 'Descriptor(name="{}", dimension={}, filters={})'
+        return rep.format(self.name, self.dimension, self.active_filters)
+
+    def __repr__(self):
+        return self.__str__()
+
 class AngularStructuralDescriptor(StructuralDescriptor):
     """
     Base class for angular structural descriptors.
@@ -403,16 +432,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     
     Descriptors that exploit angular correlations and require 
     neighbors information will inherit from this class.
-    
-    Parameters
-    ----------
-    
-    trajectory : str or an instance of `Trajectory`.
-        Trajectory on which the structural descriptor will be computed.
 
     Attributes
     ----------
-
     neighbors_boost : float, default: 1.5
         Scaling factor to estimate the number of neighbors relative to a
         an ideal gas with the same density. This is used internally to set
@@ -422,6 +444,21 @@ class AngularStructuralDescriptor(StructuralDescriptor):
     """
 
     def __init__(self, trajectory, accept_nans=True, verbose=False):
+        """
+        Parameters
+        ----------
+        trajectory : Trajectory.
+            Trajectory on which the structural descriptor will be computed.
+
+        accept_nans: bool, default: True
+            If ``False``, discard any row from the array of features that contains a 
+            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
+        
+        verbose : bool, default: False
+            Show progress information and warnings about the computation of the 
+            descriptor when verbose is ``True``, and remain silent when verbose is 
+            ``False``.
+        """
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)
@@ -566,6 +603,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
 
 
 class DummyDescriptor(StructuralDescriptor):
+    """
+    Dummy descriptor for internal use.
+    """
 
     name = 'dummy'
     symbol = 'dm'

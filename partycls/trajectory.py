@@ -1,8 +1,8 @@
 """
 Physical trajectory.
 
-This class is inspired by the `atooms` framework authored by Daniele Coslovich
-See https://framagit.org/atooms/atooms 
+This class is inspired by the framework `atooms <https://framagit.org/atooms/atooms>`_
+authored by `Daniele Coslovich <https://www2.units.it/daniele.coslovich/>`_.
 """
 
 import numpy
@@ -16,44 +16,11 @@ from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 class Trajectory:
     """
     A trajectory is composed by one or several frames, each frame being an 
-    instance of `System`. Trajectory instances are iterable. By default, only
+    instance of ``System``. ``Trajectory`` instances are iterable. By default, only
     the positions and particle types are being read from the trajectory file.
     Additional particle properties in the file can be read using the 
-    `additional_fields` parameter.
-    
-    Parameters
-    ----------
-    filename : str
-        Path to the trajectory file to read.
+    ``additional_fields`` parameter.
         
-    fmt : str, optional, default: 'xyz'
-        Format of the trajectory. Needed when using "atooms" as a backend.
-        
-    backend : str, optional, default: None
-        Name of a third-party package to use as backend when reading the input
-        trajectory. Currently supports "atooms" and "mdtraj".
-        
-    top : str, mdtraj.Trajectory, or mdtraj.Topology, optional, defaut: None
-        Topology information. Needed when using "mdtraj" as backend on a 
-        trajectory file whose format requires topology information. See MDTraj
-        documentation for more information.
-         
-    additional_fields : list of str, optional, default: []
-        Additional fields (i.e. particle properties) to read from the 
-        trajectory. Not all trajectory formats allow for additional fields.
-        
-    first : int, optional, default: 0
-        Index of the first frame to consider in the trajectory. Starts at zero.
-        
-    last : int, optional, default: None
-        Index of the last frame to consider in the trajectory. Default is the 
-        last frame.
-        
-    step : int, optional, default: 1
-        Step between each frame to consider in the trajectory. For example,
-        if `step=2`, one every two frames is read.
-        
-    
     Attributes
     ----------
     filename : str
@@ -62,25 +29,58 @@ class Trajectory:
     fmt : str
         Format of the original trajectory file.
         
-    backend : str or None
+    backend : str
         Name of the third-party package used to read the input trajectory file.
         
-    additional_fields : list, default: None
+    additional_fields : list
         List of additional particle properties that were extracted from the
         original trajectory file.
     
-    nearest_neighbors_cutoffs : list of float
+    nearest_neighbors_cutoffs : list
         List of nearest neighbors cutoffs for each pair of species
         in the trajectory.
-
-    Examples
-    --------
-    >>> from partycls.trajectory import Trajectory
-    >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
     """
 
     def __init__(self, filename, fmt=None, backend=None, top=None,
                  additional_fields=None, first=0, last=None, step=1):
+        """
+        Parameters
+        ----------
+        filename : str
+            Path to the trajectory file to read.
+            
+        fmt : str, default: "xyz"
+            Format of the trajectory. Needed when using ``"atooms"`` as a backend.
+            
+        backend : str, default: None
+            Name of a third-party package to use as backend when reading the input
+            trajectory. Currently supports ``"atooms"`` and ``"mdtraj"``.
+            
+        top : str, mdtraj.Trajectory, or mdtraj.Topology, defaut: None
+            Topology information. Needed when using ``"mdtraj"`` as backend on a 
+            trajectory file whose format requires topology information. See MDTraj
+            documentation for more information.
+            
+        additional_fields : list, optional, default: None
+            Additional fields (*i.e.* particle properties) to read from the 
+            trajectory. Not all trajectory formats allow for additional fields.
+            
+        first : int, default: 0
+            Index of the first frame to consider in the trajectory. Starts at zero.
+            
+        last : int, default: None
+            Index of the last frame to consider in the trajectory. Default is the 
+            last frame.
+            
+        step : int, default: 1
+            Step between each frame to consider in the trajectory. For example,
+            if ``step=2``, one out of every two frames is read.
+
+        Examples
+        --------
+        >>> traj = Trajectory('trajectory.xyz', additional_fields=['mass'])
+        >>> traj = Trajectory('trajectory.dat', fmt='lammps', backend='atooms')
+        """
         self.filename = filename
         if backend is None and fmt is None:
             self.fmt = 'xyz'
@@ -102,26 +102,14 @@ class Trajectory:
     def nearest_neighbors_method(self):
         """
         Method used to identify the nearest neighbors of all the particles in
-        the trajectory. Should be one of ``['auto', 'fixed', 'sann', 'voronoi']``.
+        the trajectory. Should be one of ``"auto"``, ``"fixed"``, ``"sann"`` or 
+        ``"voronoi"``.
         """
         return self._nearest_neighbors_method.value
 
     @nearest_neighbors_method.setter
     def nearest_neighbors_method(self, value):
         self._nearest_neighbors_method = NearestNeighborsMethod(value.lower())
-
-    def __getitem__(self, item):
-        return self._systems[item]
-
-    def __len__(self):
-        return len(self._systems)
-
-    def __str__(self):
-        rep = 'Trajectory(filename="{}", number_of_frames={})'
-        return rep.format(self.filename, self.__len__())
-
-    def __repr__(self):
-        return self.__str__()
 
     def remove(self, frame):
         """
@@ -140,7 +128,7 @@ class Trajectory:
 
     def get_property(self, what, subset=None):
         """
-        Return a list of numpy arrays with the system property specified by 
+        Return a list of numpy.ndarrays with the system property specified by 
         ``what``. The list size is the number of systems in the trajectory.
 
         Parameters
@@ -212,8 +200,8 @@ class Trajectory:
         ----------
         what : str
             Name of the property to set. This is considered to be a particle
-            property by default, unless it starts with "cell", e.g. 
-            "cell.side".
+            property by default, unless it starts with ``"cell"``, *e.g.*
+            ``"cell.side"``.
             
         value : int, float, list, numpy.ndarray
             Value(s) of the property to set. An instance of ``int`` or ``float``
@@ -234,10 +222,10 @@ class Trajectory:
         Examples
         --------
         >>> traj.set_property('mass', 1.0)
-        >>> traj.set_property('radius', 0.5, "species == 'A'")
+        >>> traj.set_property('radius', 0.5, subset="species == 'A'")
         >>> labels = [[0, 1, 0], # 2 frames, 3 particles in the subset
                       [1, 1, 0]]
-        >>> traj.set_property('label', labels, "species == 'B'")
+        >>> traj.set_property('label', labels, subset="species == 'B'")
         """
         if not isinstance(value, (list, numpy.ndarray)):
             for system in self._systems:
@@ -329,9 +317,9 @@ class Trajectory:
 
     def set_nearest_neighbors_cutoff(self, s_a, s_b, rcut, mirror=True):
         """
-        Set the nearest-neighbor cutoff for the pair of species (s1, s2). The
-        cutoff of the mirror pair (s2, s1) is set automatically if the `mirror` 
-        parameter is True (default). Writes in the ``nearest_neighbors_cutoffs`` 
+        Set the nearest-neighbor cutoff for the pair of species ``(s1, s2)``. The
+        cutoff of the mirror pair ``(s2, s1)`` is set automatically if the ``mirror`` 
+        parameter is ``True`` (default). Writes in the ``nearest_neighbors_cutoffs`` 
         list attribute.
 
         Parameters
@@ -402,7 +390,8 @@ class Trajectory:
     def compute_voronoi_signatures(self):
         """
         Compute the Voronoi signatures of all the particles in the trajectory
-        using the radical Voronoi tessellation method.
+        using the radical Voronoi tessellation method (see 
+        https://doi.org/10.1016/0022-3093(82)90093-X).).
         
         Particle radii must be set using the ``set_property`` method if the 
         original trajectory file does not contain such information.
@@ -418,10 +407,10 @@ class Trajectory:
 
     def show(self, frames=None, backend='matplotlib', color='species', **kwargs):
         """
-        Show the frames on index `frames` of the trajectory and color particles
+        Show the frames on index ``frames`` of the trajectory and color particles
         according to an arbitrary property, such as species, cluster label, 
-        etc. Current visualization backends are 'matplotlib', 'ovito',
-        and '3dmol'.
+        etc. Current visualization backends are ``"matplotlib"``, ``"ovito"``,
+        and ``"3dmol"``.
 
         Parameters
         ----------
@@ -468,9 +457,70 @@ class Trajectory:
             snapshots.append(snapshot)
         return snapshots
 
+    def write(self, output_path, fmt='xyz', backend=None, additional_fields=None, precision=6):
+        """
+        Write the current trajectory to a file.
+
+        Parameters
+        ----------
+        output_path : str
+            Name of the output trajectory file.
+
+        fmt : str, default: "xyz"
+            Format of the output trajectory file.
+
+        backend : str, default: None
+            Name of a third-party package to use when writing the output
+            trajectory.
+
+        additional_fields : list, default: None
+            Additional fields (*i.e.* particle properties) to write in the output
+            trajectory. Not all trajectory formats allow for additional fields. 
+            The default is to not write any additional particle property.
+
+        precision : int, default: 6
+            Number of decimals when writing the output trajectory.
+
+        Raises
+        ------
+        ValueError
+            - If ``backend=None`` and ``fmt`` is not recognized natively.
+            - If ``backend`` is unknown.
+
+        Returns
+        -------
+        None
+        """
+        if additional_fields is None:
+            additional_fields = []
+        else:
+            additional_fields = additional_fields
+
+        # formats recognized by defaults
+        if backend is None:
+            if fmt == 'xyz':
+                self._write_xyz(output_path, additional_fields, precision)
+            elif fmt == 'rumd':
+                self._write_rumd(output_path, additional_fields, precision)
+            else:
+                raise ValueError(
+                    '"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
+
+        # atooms backend
+        elif backend == 'atooms':
+            self._write_atooms(output_path, fmt, additional_fields, precision)
+
+        # MDTraj backend
+        elif backend == 'mdtraj':
+            self._write_mdtraj(output_path, fmt, additional_fields, precision)
+
+        # wrong backend
+        else:
+            raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
+
     def fold(self):
         """
-        Fold the particle positions into the central cell.
+        Fold the particles' positions into the central cell.
 
         Returns
         -------
@@ -750,67 +800,6 @@ class Trajectory:
                 system.particle.append(particle)
             self._systems.append(system)
 
-    def write(self, output_path, fmt='xyz', backend=None, additional_fields=None, precision=6):
-        """
-        Write the current trajectory to a file.
-
-        Parameters
-        ----------
-        output_path : str
-            Name of the output trajectory file.
-
-        fmt : str, default: "xyz"
-            Format of the output trajectory file.
-
-        backend : str, default: None
-            Name of a third-party package to use when writing the output
-            trajectory.
-
-        additional_fields : list, default: None
-            Additional fields (*i.e.* particle properties) to write in the output
-            trajectory. Not all trajectory formats allow for additional fields. 
-            The default is to not write any additional particle property.
-
-        precision : int, default: 6
-            Number of decimals when writing the output trajectory.
-
-        Raises
-        ------
-        ValueError
-            - If ``backend=None`` and ``fmt`` is not recognized natively.
-            - If ``backend`` is unknown.
-
-        Returns
-        -------
-        None
-        """
-        if additional_fields is None:
-            additional_fields = []
-        else:
-            additional_fields = additional_fields
-
-        # formats recognized by defaults
-        if backend is None:
-            if fmt == 'xyz':
-                self._write_xyz(output_path, additional_fields, precision)
-            elif fmt == 'rumd':
-                self._write_rumd(output_path, additional_fields, precision)
-            else:
-                raise ValueError(
-                    '"{}" format is not recognized natively. You may try again with a backend.'.format(self.fmt))
-
-        # atooms backend
-        elif backend == 'atooms':
-            self._write_atooms(output_path, fmt, additional_fields, precision)
-
-        # MDTraj backend
-        elif backend == 'mdtraj':
-            self._write_mdtraj(output_path, fmt, additional_fields, precision)
-
-        # wrong backend
-        else:
-            raise ValueError('backend "{}" is not a recognized backend'.format(self.backend))
-
     def _write_xyz(self, output_path, additional_fields, precision):
         if not output_path.endswith('.xyz'):
             output_path += '.xyz'
@@ -938,3 +927,16 @@ class Trajectory:
             distinct_species = list(system.distinct_species)
             for particle in system.particle:
                 particle.species_id = distinct_species.index(particle.species) + 1
+
+    def __getitem__(self, item):
+        return self._systems[item]
+
+    def __len__(self):
+        return len(self._systems)
+
+    def __str__(self):
+        rep = 'Trajectory(filename="{}", number_of_frames={})'
+        return rep.format(self.filename, self.__len__())
+
+    def __repr__(self):
+        return self.__str__()

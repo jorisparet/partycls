@@ -1,8 +1,8 @@
 """
 Simulation cell.
 
-This class is inspired by the `atooms` framework authored by Daniele Coslovich
-See https://framagit.org/atooms/atooms 
+This class is inspired by the framework `atooms <https://framagit.org/atooms/atooms>`_
+authored by `Daniele Coslovich <https://www2.units.it/daniele.coslovich/>`_.
 """
 
 import numpy
@@ -12,31 +12,30 @@ class Cell:
     """
     Orthorhombic cell.
     
-    Parameters
-    ----------
-    
-    side : list of float or float array
-        List of lengths for the sides of the cell.
-    
     Attributes
     ----------
-    
-    side : float array
-        List of lengths for the sides of the cell. The default is None (will
-        set `True` in each direction).
+    side : numpy.ndarray
+        List of lengths for the sides of the cell.
         
-    periodic : bool array
+    periodic : numpy.ndarray
         Periodicity of the cell on each axis.
-    
-    Examples
-    --------
-    
-    >>> c = Cell([2.0, 2.0, 2.0])
-    >>> c.volume
-    8.0
     """
 
     def __init__(self, side, periodic=None):
+        """
+        Parameters
+        ----------
+        side : list
+            List of lengths for the sides of the cell.
+
+        periodic : list, default: None
+            Periodicity of the cell on each axis. Default is ``None`` (sets ``True``)
+            in each direction.
+
+        Example
+        -------
+        >>> c = Cell([2.0, 2.0, 2.0], periodic=[True, True, True ])
+        """
         self.side = numpy.asarray(side, dtype=numpy.float64)
 
         # Periodic boundary conditions apply separately on each axis
