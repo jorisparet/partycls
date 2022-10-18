@@ -1,6 +1,11 @@
 Tutorials
 =========
 
+.. toctree::
+	:hidden:
+	
+	 Home <self>
+
 Detailed examples
 -----------------
 
