@@ -6,18 +6,42 @@ from .realspace_wrap import compute
 class SmoothedBondAngleDescriptor(BondAngleDescriptor):
     """
     Smoothed bond-angle descriptor.
-    
-    Cutoffs `rc_ij` for the pair (i,j) of nearest neighbors are computed using 
-    the corresponding partial RDF, g_ij(r), but more neighbors are considered 
-    by looking further away from the central particle, using a 
-    `cutoff_enlargement` parameter. The binning of the angle between the 
-    central particle i and its neighbors (j,k) is then weighted by an 
-    exponential decay w(r_ij, r_ik) that depends on the distances from i, 
-    such that:
-        
-    w(r_ij, r_ik) = exp[ -( (r_ij/rc_ij)^n + (r_ik/rc_ik)^n ) ]
-    
-    See the parent class for more details.
+
+    This is a smooth version of the bond-angle descriptor in which the bond angles 
+    :math:`\\theta_{jik}` are multiplied by a weighting function 
+    :math:`f(r_{ij}, r_{ik})` that depends on the radial distances :math:`r_{ij}` 
+    and :math:`r_{ik}` between :math:`(i,j)` and :math:`(i,k)` respectively, where 
+    :math:`j` and :math:`k` can be any particle in the system (*i.e.* not 
+    necessarily a nearest neighbors of :math:`i`).
+
+    Essentially, we define the *smoothed* number of bond angles around particle 
+    :math:`i` as
+
+    .. math::
+        N_i^S(\\theta_n) = \\sum_{j=1}^N \\sum_{\\substack{k=1 \\ k \\neq j}}^N f(r_{ij}, r_{ik}) \delta(\\theta_n - \\theta_{jik}) ,
+
+    where the superscript :math:`S` indicates the smooth nature of the descriptor,
+    and :math:`f(r_{ij}, r_{ik})` is the following smoothing function:
+
+    .. math::
+        f(r_{ij}, r_{ik}) = \exp \left[ - \left[ ( r_{ij} / r_{\\alpha\\beta}^c )^\gamma + ( r_{ik} / r_{\\alpha\\beta'}^c )^\gamma \\right] \\right] H( R_\mathrm{max}^c - r_{ij} ) H( R_\mathrm{max}^c - r_{ik}) ,
+
+    where:
+
+    - :math:`r_{\\alpha\\beta}^c` and :math:`r_{\\alpha\\beta'}^c` are the first minima of the corresponding partial radial distribution functions for the pairs :math:`(i,j)` and :math:`(i,k)`.
+    - :math:`\gamma` is an integer.
+    - :math:`R_\mathrm{max}^c = \\xi \\times \max(\{ r_{\\alpha\\beta}^c \})` is the largest nearest neighbor cutoff rescaled by :math:`\\xi > 1`.
+    - :math:`H` is the `Heavide step function <https://en.wikipedia.org/wiki/Heaviside_step_function>`_, which ensures for efficiency reasons, that the descriptor only has contributions from particles within a distance :math:`R_\mathrm{max}^c`.
+
+    We then consider :math:`N_i^S(\\theta_n)` for a set of angles 
+    :math:`\{ \\theta_n \}` that go from :math:`\\theta_0 = 0^\circ` to 
+    :math:`\\theta_{n_\mathrm{max}}=180^\circ` by steps of :math:`\Delta \\theta`. 
+    The resulting feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{SBA}(i) = (\: N_i^S(\\theta_0) \;\; N_i^S(\\theta_1) \;\; \dots \;\; N_i^S(\\theta_{n_\mathrm{max}}) \:) .
+
+    See the tutorials for more details.
 
     Attributes
     ----------
@@ -32,7 +56,7 @@ class SmoothedBondAngleDescriptor(BondAngleDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of angles :math:`\{ \\theta_n \}`.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

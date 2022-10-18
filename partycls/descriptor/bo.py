@@ -5,10 +5,62 @@ from .realspace_wrap import compute
 
 class BondOrientationalDescriptor(AngularStructuralDescriptor):
     """
-    Structural descriptor based on bond order parameters as defined by
-    Steinhardt et al. (https://doi.org/10.1103%2FPhysRevB.28.784).
+    Bond-orientational descriptor.
+
+    Bond-order parameters :cite:`steinhardt_1983` are standard measures of 
+    structure in the first coordination shell. Let :math:`\mathbf{r}_i` be the 
+    position of particle :math:`i` and define 
+    :math:`\mathbf{r}_{ij} = \mathbf{r}_j - \mathbf{r}_i` and 
+    :math:`r_{ij} = |\mathbf{r}_{ij}|`. Then consider the weighted microscopic 
+    density around particle :math:`i`:
+
+    .. math::
+        \\rho(\mathbf{r}; i) = \\sum_{j=1}^{N_b(i)} w_j \delta(\mathbf{r} - \mathbf{r}_{ij})
+
+    where :math:`w_j` is a particle-dependent weight and the sum involves a set of
+    :math:`N_b(i)` particles, which defines the coordination shell of interest for 
+    particle :math:`i`.
+
+    We project the microscopic density on a unit-radius sphere, that is, 
+    :math:`\hat{\\rho}(\hat{\mathbf{r}}; i) = \\sum_{j=1}^{N_b(i)} w_j \delta(\mathbf{r} - \hat{\mathbf{r}}_{ij})`,
+    where :math:`\hat{\mathbf{r}} = \mathbf{r} / |\mathbf{r}|` and similarly 
+    :math:`\hat{\mathbf{r}}_{ij} = \mathbf{r}_{ij}/|\mathbf{r}_{ij}|`. Expanding 
+    in spherical harmonics yields
+
+    .. math::
+        \hat{\\rho}(\hat{\mathbf{r}}; i) = \\sum_{l=0}^\infty \sum_{m=-l}^l c_{l m}(i) Y_{l m}(\hat{\mathbf{r}}) ,
+
+    with coefficients
+
+    .. math::
+        c_{l m}(i) =  \int d\mathbf{r} \\rho(\mathbf{r}; i) Y_{l m}(\hat{\mathbf{r}}) .
+
+    In the conventional bond-order analysis, one sets the weights :math:`w_j` to 
+    unity and considers the normalized complex coefficients,
+
+    .. math::
+        \\begin{align}
+        q_{lm}(i) & = \\frac{1}{N_b(i)} \int d\mathbf{r} \\rho(\mathbf{r}; i) Y_{l m}(\hat{\mathbf{r}}) 
+        \\nonumber \\\ & = \\frac{1}{N_b(i)} \\sum_{j=1}^{N_b(i)} Y_{l m}(\hat{\mathbf{r}}_{ij}) .
+        \end{align}
+
+    The rotational invariants,
+
+    .. math::
+        Q_{l}(i) = \\sqrt{ \\frac{4\pi}{2l + 1}\\sum_{m=-l}^l |q_{lm}(i)|^2 },
+
+    provide a detailed structural description of the local environment around 
+    particle :math:`i`.
+
+
+    We then consider :math:`Q_l(i)` for a sequence of orders 
+    :math:`\{ l_n \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}`. The resulting 
+    feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{BO}(i) = (\: Q_{l_\mathrm{min}}(i) \;\; \dots \;\; Q_{l_\mathrm{max}}(i) \:) .
     
-    See the parent class for more details.
+    See the tutorials for more details.
 
     Attributes
     ----------
@@ -23,7 +75,7 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of orders :math:`\{ l_n \}`.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in
@@ -139,17 +191,37 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
 
 class LechnerDellagoDescriptor(BondOrientationalDescriptor):
     """
-    Structural descriptor based on locally averaged bond order parameters as
-    defined by Lechner & Dellago (https://doi.org/10.1063/1.2977970).
+    Lechner-Dellago descriptor.
+
+    The complex coefficients :math:`q_{lm}(i)` of particle :math:`i` can be 
+    averaged over its :math:`N_b(i)` nearest neighbors, as suggested by Lechner 
+    and Dellago :cite:`lechner_2008`,
+
+    .. math::
+        \\bar{q}_{lm}(i) = \\frac{1}{N_b(i)+1} \left[ q_{l m}(i) + \\sum_{j=1}^{N_b(i)} q_{l m}(j) \\right],
+
+    and then made invariant,
+
+    .. math::
+        \\bar{Q}_{l}(i) = \\sqrt{ \\frac{4\pi}{2l + 1}\\sum_{m=-l}^l |\\bar{q}_{lm(i)}|^2 } ,
+
+    to provide an improved descriptor for crystal structure detection.
+
+    We then consider :math:`\\bar{Q}_l(i)` for a sequence of orders 
+    :math:`\{ l_n \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}`. The resulting 
+    feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{LD}(i) = (\: \\bar{Q}_{l_\mathrm{min}}(i) \;\; \dots \;\; \\bar{Q}_{l_\mathrm{max}}(i) \:) .
     
-    See the parent class for more details.
+    See the tutorials for more details.
     
     Attributes
     ----------
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
@@ -157,7 +229,7 @@ class LechnerDellagoDescriptor(BondOrientationalDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of orders :math:`\{ l_n \}`.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

@@ -15,7 +15,7 @@ where :math:`N_\mathrm{ba}(i)` is the total number of bond angles (*i.e.* the nu
 	X^\mathrm{T}(i) = (\: T(i) \:) .
 
 .. note::
-	Unlike most descriptors, this descriptor is scalar. Its feature vector :math:`X^\mathrm{T}(i)` is thus composed of a single feature.
+	Unlike most descriptors, this descriptor is **scalar**. Its feature vector :math:`X^\mathrm{T}(i)` is thus composed of a single feature, and the inherited ``grid`` attribute is therefore not relevant.
 
 Setup
 -----

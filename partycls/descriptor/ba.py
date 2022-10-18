@@ -5,16 +5,32 @@ from .realspace_wrap import compute
 
 class BondAngleDescriptor(AngularStructuralDescriptor):
     """
-    Structural descriptor based on bond angles between particles.
+    Bond-angle descriptor.
+
+    The *empirical* distribution of bond angles :math:`N_i(\\theta_n)` around a 
+    central particle :math:`i` is obtained by counting, for all the possible pairs
+    of it nearest neighbors :math:`(j,k)`, the number of bond angles 
+    :math:`\\theta_{jik}` between :math:`\\theta_n = n \\times \Delta \\theta` and 
+    :math:`\\theta_{n+1} = (n+1) \\times \Delta \\theta`, where :math:`\Delta \\theta` 
+    has the interpration of a bin width in a histogram (see Ref. 
+    :cite:`paret_2020`).
+
+    We then consider :math:`N_i(\\theta_n)` for a set of angles 
+    :math:`\{ \\theta_n \}` that go from :math:`\\theta_0 = 0^\circ` to 
+    :math:`\\theta_{n_\mathrm{max}}=180^\circ` by steps of :math:`\Delta \\theta`. 
+    The resulting feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{BA}(i) = (\: N_i(\\theta_0) \;\; N_i(\\theta_1) \;\; \dots \;\; N_i(\\theta_{n_\mathrm{max}}) \:) .
     
-    See the parent class for more details.
+    See the tutorials for more details.
 
     Attributes
     ----------
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
@@ -22,7 +38,7 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of angles :math:`\{ \\theta_n \}`.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

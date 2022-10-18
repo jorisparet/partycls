@@ -6,28 +6,40 @@ class TetrahedralDescriptor(AngularStructuralDescriptor):
     """
     Tetrahedral descriptor.
     
-    Computes the average deviation of the bond angles between a central 
-    particle i and all the pairs of its nearest neighbors (j,k) from the ideal 
-    angle in a tetrahedron (109.5°).
+    The degree of tetrahedrality of a particle :math:`i` is the average deviation 
+    of the bond angles :math:`\{ \\theta_{jik} \}` between :math:`i` and all the 
+    possible pairs of its nearest neighbors :math:`(j,k)` from the ideal angle in
+    a tetrahedron, :math:`\\theta_\mathrm{tetra} = 109.5^\circ`:
+
+    .. math::
+        T(i) = \\frac{1}{N_\mathrm{ba}(i)} \\sum_{j=1}^{N_b(i)} \\sum_{\\substack{k=1 \\ k \\neq j}}^{N_b(i)} | \cos(\\theta_{jik}) - \cos(\\theta_\mathrm{tetra}) | ,
+
+    where :math:`N_\mathrm{ba}(i)` is the total number of bond angles (*i.e.* the
+    number of pairs) around particle :math:`i` and :math:`N_b(i)` is the number 
+    of its nearest neighbors. The resulting feature vector for particle 
+    :math:`i` is given by
+
+    .. math::
+        X^\mathrm{T}(i) = (\: T(i) \:) .
+
+    .. note::
+        Unlike most descriptors, this descriptor is **scalar**. Its feature vector
+        :math:`X^\mathrm{T}(i)` is thus composed of a single feature, and the 
+        inherited ``grid`` attribute is therefore not relevant.
     
-    This descriptor is scalar. Therefore, the `grid` attribute is not relevant.
-    
-    See the parent class for more details.
+    See the tutorials for more details.
 
     Attributes
     ----------
     trajectory : Trajectory
         Trajectory on which the structural descriptor will be computed.
         
-    active_filters : list of str
+    active_filters : list
         All the active filters on both groups prior to the computation of the
         descriptor.
         
     dimension : int
         Spatial dimension of the descriptor (2 or 3).
-        
-    grid : numpy.ndarray
-        Grid over which the structural features will be computed.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

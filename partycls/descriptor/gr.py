@@ -5,9 +5,27 @@ from .realspace_wrap import compute
 
 class RadialDescriptor(StructuralDescriptor):
     """
-    Structural descriptor based on radial correlations between particles.
+    Radial descriptor.
+
+    Let :math:`\mathbf{r}_i` be the position of particle :math:`i` and define 
+    :math:`r_{ij} = |\mathbf{r}_j - \mathbf{r}_i|` as the distance between 
+    particle :math:`i` and its neighbors :math:`j`.
+
+    We define :math:`n_i(r_m)` as the number of neighbors :math:`j` of particle 
+    :math:`i` for which :math:`r_{ij}` is between 
+    :math:`r_m = r_\mathrm{min} + m \\times \Delta r` and 
+    :math:`r_{m+1} = r_\mathrm{min} + (m+1) \\times \Delta r` :cite:`paret_2020`. 
+    Here, :math:`\Delta r` has the interpration of a bin width in a histogram.
+
+    We then consider :math:`n_i(r_m)` for a set of distances :math:`\{ d_n \}` 
+    separated by :math:`\Delta r`, 
+    :math:`\{ d_n \} = \{ r_0, r_1, \dots, r_{n_\mathrm{max}} \}`. The resulting 
+    feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{R}(i) = (\: n_i(r_0) \;\; n_i(r_1) \;\; \dots \;\; n_i(r_{n_\mathrm{max}}) \:) .
     
-    See the parent class for more details.
+    See tutorials for more details.
 
     Attributes
     ----------
@@ -22,7 +40,7 @@ class RadialDescriptor(StructuralDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of distances :math:`\{ d_n \}`.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

@@ -9,7 +9,7 @@ Definition
 
 This is a smooth version of the :doc:`ba` in which the bond angles :math:`\theta_{jik}` are multiplied by a weighting function :math:`f(r_{ij}, r_{ik})` that depends on the radial distances :math:`r_{ij}` and :math:`r_{ik}` between :math:`(i,j)` and :math:`(i,k)` respectively, where :math:`j` and :math:`k` can be any particle in the system (*i.e.* not necessarily a nearest neighbors of :math:`i`).
 
-Essentially, we define the (non-integer) number of bond angles around particle :math:`i` as
+Essentially, we define the *smoothed* number of bond angles around particle :math:`i` as
 
 .. math::
 	N_i^S(\theta_n) = \sum_{j=1}^N \sum_{\substack{k=1 \\ k \neq j}}^N f(r_{ij}, r_{ik}) \delta(\theta_n - \theta_{jik}) ,

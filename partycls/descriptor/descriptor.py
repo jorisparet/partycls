@@ -44,7 +44,7 @@ class StructuralDescriptor:
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of features over which the structural features will be computed.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

@@ -4,18 +4,47 @@ from .realspace_wrap import compute
 
 class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     """
-    Smoothed bond orientational descriptor.
+    Smoothed bond-orientational descriptor.
     
-    Cutoffs `rc_ij` for the pair (i,j) of nearest neighbors are computed using 
-    the corresponding partial RDF (or provided cutoffs), but more 
-    neighbors are considered by looking further away from the central particle,
-    using a `cutoff_enlargement` parameter. The value of q_lm between the 
-    central particle i and one of its neighbors j is then weighted by an 
-    exponential decay w(r_ij) that depends on the distance from i, such that:
-        
-    w(r_ij) = exp[ -(r_ij/rc_ij)^n) ]
+    This is a smooth version of the bond-orientational descriptor, in which the 
+    coefficients :math:`q_{lm}(i)` are multiplied by a weighting function 
+    :math:`f(r)` that depends on the radial distance :math:`r` between the central 
+    particle :math:`i` and other surrounding particles :math:`j`, where :math:`j` 
+    can be any particle in the system (*i.e.* not necessarily a nearest neighbors 
+    of :math:`i`).
+
+    The smoothed complex coefficients are given by
+
+    .. math::
+        q_{lm}^{S}(i) = \\frac{1}{Z(i)} \\sum_{j=1}^{N} f({r}_{ij}) Y_{lm}(\hat{\mathbf{r}}_{ij}) ,
+
+    where :math:`Z(i)=\\sum_{j=1}^{N} f({r}_{ij})` is a normalization constant and 
+    the superscript :math:`S` indicates the smooth nature of the descriptor. We 
+    use
+
+    .. math::
+        f(r_{ij}) = \exp \left[- (r_{ij} / r_{\\alpha\\beta}^c)^\gamma \\right] H(R_{\\alpha\\beta}^c - r_{ij}) ,
+
+    where :math:`r_{\\alpha\\beta}^c` is the first minimum of the corresponding 
+    partial radial distribution function for the pair :math:`(i,j)` and 
+    :math:`\gamma` is an integer. Also, :math:`H` is the 
+    `Heaviside step function <https://en.wikipedia.org/wiki/Heaviside_step_function>`_, 
+    which ensures, for efficiency reasons, that the descriptor only has 
+    contributions from particles within a distance 
+    :math:`R_{\\alpha\\beta}^c = \\xi \\times r_{\\alpha\\beta}^c` from the central
+    one, where :math:`\\xi > 1` is a scaling factor.
+
+    The rotational invariants are defined similarly to the bond-orientational 
+    descriptor.
+
+    We then consider :math:`Q_l^S(i)` for a sequence of orders 
+    :math:`\{ l_n \} = \{ l_\mathrm{min}, \dots, l_\mathrm{max} \}`. The resulting 
+    feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{SBO}(i) = (\: Q_{l_\mathrm{min}}^S(i) \;\; \dots \;\; Q_{l_\mathrm{max}}^S(i) \:) .
     
-    See the parent class for more details.
+    See the tutorials class for more details.
 
     Attributes
     ----------
@@ -30,7 +59,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
         Spatial dimension of the descriptor (2 or 3).
         
     grid : numpy.ndarray
-        Grid over which the structural features will be computed.
+        Grid of orders :math:`\{ l_n \}`.
         
     features : numpy.ndarray
         Array of all the structural features for the particles in group=0 in

@@ -28,7 +28,7 @@ where :math:`N_\mathrm{tetra}(i)` is the total number of tetrahedra surrounding 
 	X^\mathrm{C}(i) = (\: \Omega(i) \:) .
 
 .. note::
-	Unlike most descriptors, this descriptor is scalar. Its feature vector :math:`X^\mathrm{C}(i)` is thus composed of a single feature.
+	Unlike most descriptors, this descriptor is **scalar**. Its feature vector :math:`X^\mathrm{C}(i)` is thus composed of a single feature, and the inherited ``grid`` attribute is therefore not relevant.
 
 Setup
 -----
