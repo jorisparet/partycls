@@ -29,15 +29,15 @@ Structural descriptors
 
 partycls implements various structural descriptors:
 
-- :doc:`tutorials/descriptors/gr` :cite:`paret_2020`
+- :doc:`tutorials/descriptors/gr`
 - :doc:`tutorials/descriptors/tetra`
-- :doc:`tutorials/descriptors/ba` :cite:`paret_2020`
+- :doc:`tutorials/descriptors/ba`
 - :doc:`tutorials/descriptors/sba`
-- :doc:`tutorials/descriptors/bo` :cite:`steinhardt_1983`
+- :doc:`tutorials/descriptors/bo`
 - :doc:`tutorials/descriptors/sbo`
-- :doc:`tutorials/descriptors/ld` :cite:`lechner_2008`
-- :doc:`tutorials/descriptors/rbo` :cite:`boattini_2021`
-- :doc:`tutorials/descriptors/compact` :cite:`tong_2018`
+- :doc:`tutorials/descriptors/ld`
+- :doc:`tutorials/descriptors/rbo`
+- :doc:`tutorials/descriptors/compact`
 
 On top of these native descriptors, partycls supports additional structural descriptors via `DScribe <https://singroup.github.io/dscribe>`_.
 
@@ -53,9 +53,6 @@ Check the :doc:`tutorials <tutorials>` to see various examples and detailed inst
 
 For a more detailed documentation, you can check the :doc:`API <api>`.
 
-References
-----------
-
 .. toctree::
 	:hidden:
 	:maxdepth: 2
@@ -68,7 +65,3 @@ References
 	citing
 	changelog
 	about
-
-.. bibliography:: references.bib
-	:style: unsrt
-	:filter: docname in docnames
