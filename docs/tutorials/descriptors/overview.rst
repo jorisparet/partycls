@@ -29,7 +29,7 @@ Alternatively, both the nearest neighbors method and cutoffs can be set as insta
 	traj.nearest_neighbors_cutoffs = [1.5, 1.4, 1.4, 1.3]
 	traj.compute_nearest_neighbors()
 
-Once computed, the lists of nearest neighbors are stored as :py:class:`Particle <partycls.particle.Particle>` attributes. These can be accessed through the :py:meth:`Trajectory.get_property <partycls.trajectory.Trajectory.get_property>` method, or by iterating over the particles:
+Once computed, the lists of nearest neighbors are stored as :py:class:`Particle <partycls.particle.Particle>` attributes. These can be accessed through the :py:meth:`Trajectory.get_property() <partycls.trajectory.Trajectory.get_property>` method, or by iterating over the particles:
 
 .. code-block:: python
 
@@ -119,7 +119,7 @@ Set using one of:
 Voronoi tessellation can be used in molecular simulations to identify nearest neighbors by construction of Voronoi polyhedra :cite:`bernal_1959`, which consists in drawing orthogonal planes at the mid-points between the central particle and each of its neighbors (*i.e.* its `Wigner-Seitz cell <https://en.wikipedia.org/wiki/Wigner%E2%80%93Seitz_cell>`_). In particular, the *radical* variant of Voronoi tessellation :cite:`gellatly_1982`, which accounts for the relative sizes of the particles to determine of the positions of the intersecting planes, provides better results for multi-components systems.
 
 .. warning::
-	This method uses the effective particles' radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the :py:class:`Trajectory <partycls.trajectory.Trajectory>` instance using the :py:meth:`Trajectory.set_property <partycls.trajectory.Trajectory.set_property>` method. Otherwise, default values will be used.
+	This method uses the effective particles' radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the :py:class:`Trajectory <partycls.trajectory.Trajectory>` instance using the :py:meth:`Trajectory.set_property() <partycls.trajectory.Trajectory.set_property>` method. Otherwise, default values will be used.
 
 Examples:
 

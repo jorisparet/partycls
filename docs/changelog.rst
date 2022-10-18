@@ -9,17 +9,17 @@ Changelog
 			- :py:class:`SmoothedBondOrientationalDescriptor <partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor>` (:doc:`tutorial <tutorials/descriptors/sbo>`).
 			- :py:class:`RadialBondOrientationalDescriptor <partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor>` (:doc:`tutorial <tutorials/descriptors/rbo>`).
 			- :py:class:`CompactnessDescriptor <partycls.descriptor.compactness.CompactnessDescriptor>` (:doc:`tutorial <tutorials/descriptors/compact>`).
-		- Add radical Voronoi tessellation to identify nearest neighbors in :py:meth:`Trajectory.compute_nearest_neighbors <partycls.trajectory.Trajectory.compute_nearest_neighbors>` using ``method="voronoi"``.
-		- Add Voronoi tessellation to compute particles' Voronoi signatures in :py:meth:`Trajectory.compute_voronoi_signatures <partycls.trajectory.Trajectory.compute_voronoi_signatures>`.
+		- Add radical Voronoi tessellation to identify nearest neighbors in :py:meth:`Trajectory.compute_nearest_neighbors() <partycls.trajectory.Trajectory.compute_nearest_neighbors>` using ``method="voronoi"``.
+		- Add Voronoi tessellation to compute particles' Voronoi signatures in :py:meth:`Trajectory.compute_voronoi_signatures() <partycls.trajectory.Trajectory.compute_voronoi_signatures>`.
 		- List-type ``additional_fields`` (*e.g.* lists of neighbors) can now be read and written by :py:class:`Trajectory <partycls.trajectory.Trajectory>`.
 		- Nearest neighbors can be read from the input trajectory file using the ``additional_fields`` parameter.
 		- Add a :py:attr:`verbose <partycls.descriptor.descriptor.StructuralDescriptor.verbose>` attribute to descriptors to show warnings, messages and progress bars (using `tqdm <https://tqdm.github.io/>`_) for the computation of the descriptors.
-		- Add an :py:attr:`accept_nans <partycls.descriptor.descriptor.StructuralDescriptor.accept_nans>` property and a :py:meth:`discard_nans <partycls.descriptor.descriptor.StructuralDescriptor.discard_nans>` method to descriptors to filter out (or keep) *NaN* elements in the :py:attr:`features <partycls.descriptor.descriptor.StructuralDescriptor.features>` array when some feature vectors cannot be computed (*e.g.* due to a lack of neighbors).
-		- :py:meth:`Trajectory.write <partycls.trajectory.Trajectory.write>` now handles particle aliases.
+		- Add an :py:attr:`accept_nans <partycls.descriptor.descriptor.StructuralDescriptor.accept_nans>` property and a :py:meth:`discard_nans() <partycls.descriptor.descriptor.StructuralDescriptor.discard_nans>` method to descriptors to filter out (or keep) *NaN* elements in the :py:attr:`features <partycls.descriptor.descriptor.StructuralDescriptor.features>` array when some feature vectors cannot be computed (*e.g.* due to a lack of neighbors).
+		- :py:meth:`Trajectory.write() <partycls.trajectory.Trajectory.write>` now handles particle aliases.
 		- A few new particle aliases (*e.g.* for neighbors and Voronoi signatures).
 		- Improved docstrings and documentation.
 	- Non backward-compatible changes:
-		- Nearest neighbors and their cutoffs are now computed in :py:class:`Trajectory <partycls.trajectory.Trajectory>` and :py:class:`System <partycls.system.System>` with the :py:meth:`compute_nearest_neighbors <partycls.trajectory.Trajectory.compute_nearest_neighbors>` and :py:meth:`compute_nearest_neighbors_cutoffs <partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs>` methods.
+		- Nearest neighbors and their cutoffs are now computed in :py:class:`Trajectory <partycls.trajectory.Trajectory>` and :py:class:`System <partycls.system.System>` with the :py:meth:`compute_nearest_neighbors() <partycls.trajectory.Trajectory.compute_nearest_neighbors>` and :py:meth:`compute_nearest_neighbors_cutoffs() <partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs>` methods.
 		- No more unique index as ``Particle.index`` attribute in :py:class:`Particle <partycls.particle.Particle>`.
 		- Rename a few attributes and methods.
 	- Fixes:
