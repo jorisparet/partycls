@@ -112,3 +112,22 @@ intersphinx_mapping = {
 	'matplotlib' : ('https://matplotlib.org/stable/', None),
 	'scikit-learn': ('https://scikit-learn.org/stable/', None)
 }
+
+# nbsphinx options (for notebooks)
+# This is processed by Jinja2 and inserted before each notebook
+nbsphinx_prolog = r"""
+{% set docname = env.doc2path(env.docname, base='doc') %}
+
+.. only:: html
+
+    .. role:: raw-html(raw)
+        :format: html
+
+    .. nbinfo::
+
+        Interactive online version:
+        :raw-html:`<a href="https://mybinder.org/v2/gh/jorisparet/partycls/{{ env.config.release }}?filepath={{ docname }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>`
+
+   __ https://github.com/jorisparet/partycls/blob/
+        {{ env.config.release }}/{{ docname }}
+"""
