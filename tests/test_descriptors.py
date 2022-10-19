@@ -15,6 +15,12 @@ from partycls.descriptor import CompactnessDescriptor
 import numpy
 from numpy import float32
 
+try:
+    import pyvoro
+    HAS_PYVORO = True
+except ModuleNotFoundError:
+    HAS_PYVORO = False
+
 class Test(unittest.TestCase):
 
     def setUp(self):
@@ -298,6 +304,7 @@ class Test(unittest.TestCase):
         self.assertEqual(float32(D.average[0]), float32(0.48001548248253856),
                          'wrong average value for the tetrahedrality')
 
+    @unittest.skipIf(not HAS_PYVORO, 'no pyvoro module')
     def test_compactness(self):
         # use only one frame
         traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'))
