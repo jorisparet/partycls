@@ -93,6 +93,25 @@ class BondOrientationalDescriptor(StructuralDescriptor):
         Show progress information and warnings about the computation of the 
         descriptor when verbose is ``True``, and remain silent when verbose is 
         ``False``.
+
+    neighbors_boost : float, default: 1.5
+        Scaling factor to estimate the number of neighbors relative to a
+        an ideal gas with the same density. This is used internally to set
+        the dimensions of lists of neighbors. A too small number creates a
+        risk of overfilling the lists of neighbors, and a too large number
+        increases memory usage. This only works if the associated ``Trajectory``
+        has valid cutoffs in the ``Trajectory.nearest_neighbors_cutoffs`` list
+        attribute. This sets the value of the ``max_num_neighbors`` attribute
+        during the computation of the descriptor.
+
+    max_num_neighbors : int, default: 100
+        Maximum number of neighbors. This is used internally to set the dimensions
+        of lists of neighbors. This number is automatically adjusted to limit
+        memory usage if the associated ``Trajectory`` has valid cutoffs in the 
+        ``Trajectory.nearest_neighbors_cutoffs`` list attribute. The
+        default value ``100`` is used if no cutoffs can be used to estimate a
+        better value. The default value is sufficient in most cases, otherwise 
+        this number can manually be increased **before** computing the descriptor.
     """
 
     name = 'bond-orientational'
