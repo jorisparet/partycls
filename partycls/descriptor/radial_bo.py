@@ -219,7 +219,6 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         """
         # set up
         self._set_up(dtype=numpy.float64)
-        self._manage_nearest_neighbors()
         n_frames = len(self.trajectory)
         # all relevant arrays
         pos_0 = self.dump('position', group=0)
