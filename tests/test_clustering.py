@@ -4,7 +4,7 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor, RadialDescriptor
+from partycls.descriptors import BondAngleDescriptor, RadialDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans, CommunityInference
 
 class Test(unittest.TestCase):
@@ -76,7 +76,7 @@ class Test(unittest.TestCase):
 
     def test_backend(self):
         from partycls import Trajectory, ZScore, Workflow
-        from partycls.descriptor import BondAngleDescriptor
+        from partycls.descriptors import BondAngleDescriptor
         from partycls.clustering import Clustering
 
         class _DummyClustering:

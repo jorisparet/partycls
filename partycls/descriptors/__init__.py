@@ -11,4 +11,4 @@ from .smoothed_bo import SmoothedBondOrientationalDescriptor
 from .radial_bo import RadialBondOrientationalDescriptor
 from .tetrahedrality import TetrahedralDescriptor
 from .compactness import CompactnessDescriptor
-from .dscribe import *
+from .dscribe import DscribeDescriptor, DscribeChemicalDescriptor

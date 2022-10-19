@@ -6,8 +6,7 @@ optional) to perform a structural clustering on a trajectory.
 """
 
 from .trajectory import Trajectory
-from partycls.descriptor import BondAngleDescriptor, RadialDescriptor, \
-    BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptors import *
 from .clustering import KMeans, GaussianMixture, CommunityInference
 from .dim_reduction import PCA, TSNE, LocallyLinearEmbedding, AutoEncoder
 from .feature_scaling import ZScore, MinMax, MaxAbs, Robust

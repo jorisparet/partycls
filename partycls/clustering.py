@@ -5,7 +5,7 @@ Clustering algorithms.
 import numpy
 from sklearn.cluster import KMeans as _KMeans
 from sklearn.mixture import GaussianMixture as _GaussianMixture
-from partycls.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
+from partycls.descriptors import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
 
 __all__ = ['Clustering', 'KMeans', 'GaussianMixture', 'CommunityInference']
 

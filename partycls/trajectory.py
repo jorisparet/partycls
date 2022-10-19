@@ -373,7 +373,7 @@ class Trajectory:
         -------
         None
         """
-        from .descriptor import RadialDescriptor
+        from .descriptors import RadialDescriptor
         pairs = self._systems[0].pairs_of_species
         for pair in pairs:
             if self.nearest_neighbors_cutoffs[pairs.index(pair)] is None:

@@ -4,7 +4,7 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor
+from partycls.descriptors import BondAngleDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans
 
 from numpy import float32

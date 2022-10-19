@@ -4,7 +4,7 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor
+from partycls.descriptors import BondAngleDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans
 
 class Test(unittest.TestCase):
@@ -38,7 +38,7 @@ class Test(unittest.TestCase):
         # Adapted from 4th tutorial
         import random
         import numpy as np
-        from partycls.descriptor import BondAngleDescriptor
+        from partycls.descriptors import BondAngleDescriptor
         from partycls import PCA, GaussianMixture
         from partycls.helpers import merge_clusters, sort_clusters
 

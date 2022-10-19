@@ -4,13 +4,13 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptor.descriptor import AngularStructuralDescriptor
-from partycls.descriptor import RadialDescriptor, BondAngleDescriptor
-from partycls.descriptor import BondOrientationalDescriptor, LechnerDellagoDescriptor
-from partycls.descriptor import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
-from partycls.descriptor import RadialBondOrientationalDescriptor
-from partycls.descriptor import TetrahedralDescriptor
-from partycls.descriptor import CompactnessDescriptor
+from partycls.descriptors.descriptor import AngularStructuralDescriptor
+from partycls.descriptors import RadialDescriptor, BondAngleDescriptor
+from partycls.descriptors import BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptors import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
+from partycls.descriptors import RadialBondOrientationalDescriptor
+from partycls.descriptors import TetrahedralDescriptor
+from partycls.descriptors import CompactnessDescriptor
 
 import numpy
 from numpy import float32
