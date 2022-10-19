@@ -1,9 +1,9 @@
 import numpy
-from .descriptor import AngularStructuralDescriptor
+from .descriptor import StructuralDescriptor
 from .realspace_wrap import compute
 
 
-class BondOrientationalDescriptor(AngularStructuralDescriptor):
+class BondOrientationalDescriptor(StructuralDescriptor):
     """
     Bond-orientational descriptor.
 
@@ -127,9 +127,9 @@ class BondOrientationalDescriptor(AngularStructuralDescriptor):
             descriptor when verbose is ``True``, and remain silent when verbose 
             is ``False``.
         """
-        AngularStructuralDescriptor.__init__(self, trajectory,
-                                             accept_nans=accept_nans,
-                                             verbose=verbose)
+        StructuralDescriptor.__init__(self, trajectory,
+                                      accept_nans=accept_nans,
+                                      verbose=verbose)
         if self.trajectory[0].n_dimensions == 2:
             raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
         self._bounds(lmin, lmax, orders)

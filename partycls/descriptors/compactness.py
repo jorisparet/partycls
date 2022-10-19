@@ -1,8 +1,8 @@
 import numpy
-from .descriptor import AngularStructuralDescriptor
+from .descriptor import StructuralDescriptor
 from .realspace_wrap import compute
 
-class CompactnessDescriptor(AngularStructuralDescriptor):
+class CompactnessDescriptor(StructuralDescriptor):
     """
     Compactness descriptor.
     
@@ -105,10 +105,10 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
             descriptor when verbose is ``True``, and remain silent when verbose 
             is ``False``.
         """
-        AngularStructuralDescriptor.__init__(self,
-                                             trajectory,
-                                             accept_nans=accept_nans,
-                                             verbose=verbose)
+        StructuralDescriptor.__init__(self,
+                                      trajectory,
+                                      accept_nans=accept_nans,
+                                      verbose=verbose)
         self.grid = numpy.zeros(1, dtype=numpy.float64)
         
     def compute(self):

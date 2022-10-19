@@ -7,12 +7,9 @@ from partycls.neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 class StructuralDescriptor:
     """
-    Base class for structural descriptors.
+    Base class for any structural descriptor.
     
-    The descriptor is calculated for the provided trajectory. This can be:
-
-    - an object implementing the ``Trajectory`` interface
-    - the path to a trajectory file in a format recognized by partycls
+    The descriptor is computed for the provided ``Trajectory``.
     
     A structural descriptor :math:`S` is a collection of :math:`N` individual 
     empirical correlation functions :math:`\{ s_i(\\vec{x}) \}` at the particle level, 
@@ -62,6 +59,25 @@ class StructuralDescriptor:
         Show progress information and warnings about the computation of the 
         descriptor when verbose is ``True``, and remain silent when verbose is 
         ``False``.
+
+    neighbors_boost : float, default: 1.5
+        Scaling factor to estimate the number of neighbors relative to a
+        an ideal gas with the same density. This is used internally to set
+        the dimensions of lists of neighbors. A too small number creates a
+        risk of overfilling the lists of neighbors, and a too large number
+        increases memory usage. This only works if the associated ``Trajectory``
+        has valid cutoffs in the ``Trajectory.nearest_neighbors_cutoffs`` list
+        attribute. This sets the value of the ``max_num_neighbors`` attribute
+        during the computation of the descriptor.
+
+    max_num_neighbors : int, default: 100
+        Maximum number of neighbors. This is used internally to set the dimensions
+        of lists of neighbors. This number is automatically adjusted to limit
+        memory usage if the associated ``Trajectory`` has valid cutoffs in the 
+        ``Trajectory.nearest_neighbors_cutoffs`` list attribute. The
+        default value ``100`` is used if no cutoffs can be used to estimate a
+        better value. The default value is sufficient in most cases, otherwise 
+        this number can manually be increased **before** computing the descriptor.
     """
 
     def __init__(self, trajectory, accept_nans=True, verbose=False):
@@ -114,6 +130,9 @@ class StructuralDescriptor:
         #  correctly assigned when is method compute() is called
         self.grid = None
         self.features = None
+        # neighbors array size
+        self.neighbors_boost = 1.5
+        self.max_num_neighbors = 100
 
     @property
     def accept_nans(self):
@@ -390,98 +409,18 @@ class StructuralDescriptor:
             self.groups[group].append(frame.copy())
 
     def _group_check(self):
-        # check that groups are not empty
+        """
+        Check that groups are not empty
+        """
         for gn in range(2):
             if self.group_size(gn) == 0:
                 raise AssertionError("group {} is empty. Check the filters on your descriptor.".format(gn))        
 
     def _set_up(self, dtype=numpy.int64):
-        # initialize the data matrix
+        """
+        Initialize the array of features.
+        """
         self.features = numpy.empty((self.n_samples, self.n_features), dtype=dtype)
-
-    def _find_nans(self):
-        isfinite = numpy.isfinite(self.features)
-        collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
-        num_nans = self.n_samples - numpy.sum(collapsed_rows)
-        return collapsed_rows, num_nans        
-
-    def _handle_nans(self):
-        _, num_nans = self._find_nans()
-        if num_nans > 0 and self.verbose:
-            print('Warning: found {} NaN samples in the array of features.'.format(num_nans))
-        if not self._accept_nans:
-            self.features = self.discard_nans()
-
-    def _trange(self, bound):
-        if self.verbose == 1:
-            try:
-                from tqdm import trange
-                return trange(bound, desc='Computing {} descriptor'.format(self.symbol))
-            except ImportError:
-                print('Warning: install tqdm to show the progress bar.')
-                return range(bound)
-        return range(bound)
-
-    def __str__(self):
-        rep = 'Descriptor(name="{}", dimension={}, filters={})'
-        return rep.format(self.name, self.dimension, self.active_filters)
-
-    def __repr__(self):
-        return self.__str__()
-
-class AngularStructuralDescriptor(StructuralDescriptor):
-    """
-    Base class for angular structural descriptors.
-    
-    See the parent class for more details.
-    
-    Descriptors that exploit angular correlations and require 
-    neighbors information will inherit from this class.
-
-    Attributes
-    ----------
-    neighbors_boost : float, default: 1.5
-        Scaling factor to estimate the number of neighbors relative to a
-        an ideal gas with the same density. This is used internally to set
-        the dimensions of lists of neighbors. A too small number creates a
-        risk of overfilling the lists of neighbors, and a too large number
-        increases memory usage. This only works if the associated ``Trajectory``
-        has valid cutoffs in the ``Trajectory.nearest_neighbors_cutoffs`` list
-        attribute. This sets the value of the ``max_num_neighbors`` attribute
-        during the computation of the descriptor.
-
-    max_num_neighbors : int, default: 100
-        Maximum number of neighbors. This is used internally to set the dimensions
-        of lists of neighbors. This number is automatically adjusted to limit
-        memory usage if the associated ``Trajectory`` has valid cutoffs in the 
-        ``Trajectory.nearest_neighbors_cutoffs`` list attribute. The
-        default value ``100`` is used if no cutoffs can be used to estimate a
-        better value. The default value is sufficient in most cases, otherwise 
-        this number can manually be increased **before** computing the descriptor.
-    """
-
-    def __init__(self, trajectory, accept_nans=True, verbose=False):
-        """
-        Parameters
-        ----------
-        trajectory : Trajectory.
-            Trajectory on which the structural descriptor will be computed.
-
-        accept_nans: bool, default: True
-            If ``False``, discard any row from the array of features that contains a 
-            `NaN` element. If ``True``, keep `NaN` elements in the array of features.
-        
-        verbose : bool, default: False
-            Show progress information and warnings about the computation of the 
-            descriptor when verbose is ``True``, and remain silent when verbose is 
-            ``False``.
-        """
-        StructuralDescriptor.__init__(self, trajectory,
-                                      accept_nans=accept_nans,
-                                      verbose=verbose)
-        # neighbors array size
-        self.neighbors_boost = 1.5
-        self.max_num_neighbors = 100
 
     def _manage_nearest_neighbors(self):
         """
@@ -623,6 +562,44 @@ class AngularStructuralDescriptor(StructuralDescriptor):
             #for i, neigh_i in enumerate(neighbors):
             #    self._extended_neighbors[n].append(neigh_i[0:num_neighbors[i]])
 
+    def _find_nans(self):
+        """
+        Find NaN elements, return their row indices and their number.
+        """
+        isfinite = numpy.isfinite(self.features)
+        collapsed_rows = numpy.product(isfinite, axis=1, dtype=bool)
+        num_nans = self.n_samples - numpy.sum(collapsed_rows)
+        return collapsed_rows, num_nans        
+
+    def _handle_nans(self):
+        """
+        Handle NaN elements internally by overwritting ``self.features``.
+        """
+        _, num_nans = self._find_nans()
+        if num_nans > 0 and self.verbose:
+            print('Warning: found {} NaN sample(s) in the array of features.'.format(num_nans))
+        if not self._accept_nans:
+            self.features = self.discard_nans()
+
+    def _trange(self, bound):
+        """
+        tqdm range for the computation of the descriptor.
+        """
+        if self.verbose == 1:
+            try:
+                from tqdm import trange
+                return trange(bound, desc='Computing {} descriptor'.format(self.symbol))
+            except ImportError:
+                print('Warning: install tqdm to show the progress bar.')
+                return range(bound)
+        return range(bound)
+
+    def __str__(self):
+        rep = 'Descriptor(name="{}", dimension={}, filters={})'
+        return rep.format(self.name, self.dimension, self.active_filters)
+
+    def __repr__(self):
+        return self.__str__()
 
 class DummyDescriptor(StructuralDescriptor):
     """

@@ -1,9 +1,9 @@
 import numpy
-from .descriptor import AngularStructuralDescriptor
+from .descriptor import StructuralDescriptor
 from .realspace_wrap import compute
 
 
-class BondAngleDescriptor(AngularStructuralDescriptor):
+class BondAngleDescriptor(StructuralDescriptor):
     """
     Bond-angle descriptor.
 
@@ -80,9 +80,9 @@ class BondAngleDescriptor(AngularStructuralDescriptor):
             descriptor when verbose is ``True``, and remain silent when verbose 
             is ``False``.
         """
-        AngularStructuralDescriptor.__init__(self, trajectory,
-                                             verbose=verbose,
-                                             accept_nans=accept_nans)
+        StructuralDescriptor.__init__(self, trajectory,
+                                      verbose=verbose,
+                                      accept_nans=accept_nans)
         self._dtheta = dtheta
         self.grid = numpy.arange(dtheta / 2.0, 180.0, dtheta, dtype=numpy.float64)
 

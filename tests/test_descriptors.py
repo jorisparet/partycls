@@ -4,7 +4,7 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptors.descriptor import AngularStructuralDescriptor
+from partycls.descriptors.descriptor import StructuralDescriptor
 from partycls.descriptors import RadialDescriptor, BondAngleDescriptor
 from partycls.descriptors import BondOrientationalDescriptor, LocallyAveragedBondOrientationalDescriptor
 from partycls.descriptors import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
@@ -39,7 +39,7 @@ class Test(unittest.TestCase):
         traj.nearest_neighbors_method = 'fixed'
         traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
         traj.compute_nearest_neighbors()
-        D = AngularStructuralDescriptor(self.traj)
+        D = StructuralDescriptor(self.traj)
         # filters
         filter_g0 = "species == 'B'"
         filter_g1 = "species == 'A'"
@@ -71,7 +71,7 @@ class Test(unittest.TestCase):
         traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
         traj.compute_nearest_neighbors()
         # no filters
-        D = AngularStructuralDescriptor(traj)
+        D = StructuralDescriptor(traj)
         D.add_filter("species == 'A'", group=0)
         D.add_filter("species == 'B'", group=1)
         D._filter_neighbors()
@@ -106,7 +106,7 @@ class Test(unittest.TestCase):
         traj.nearest_neighbors_cutoffs = cutoffs
         traj.compute_nearest_neighbors()
         # full descriptor (standard cutoffs)
-        D = AngularStructuralDescriptor(traj)
+        D = StructuralDescriptor(traj)
         D._compute_extended_neighbors(cutoffs)
         indices = D.dump('_index', group=0)
         for i_, i in enumerate(indices[0]):
