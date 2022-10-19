@@ -269,13 +269,13 @@ class Test(unittest.TestCase):
         D = RadialBondOrientationalDescriptor(self.traj, bounds=(1.1, 1.5), dr=0.1)
         # bounds
         self.assertEqual(set(map(float32, D.distance_grid)),
-                         set(map(float32, [1.15, 1.25, 1.35, 1.45])),
+                         set(map(float32, [1.1, 1.2, 1.3, 1.4, 1.5])),
                          'incorrect bounds')
         D.dr = 0.2
         self.assertEqual(D.dr, 0.2, 'wrong value for dr')
         D.bounds = (1.1, 1.9)
         self.assertEqual(set(map(float32, D.distance_grid)),
-                         set(map(float32, [1.2, 1.4, 1.6, 1.8])),
+                         set(map(float32, [1.1, 1.3, 1.5, 1.7, 1.9])),
                          'incorrect bounds')
         # distance grid
         r_grid = [1.1, 1.2, 1.3]

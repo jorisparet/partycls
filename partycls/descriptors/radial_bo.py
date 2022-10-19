@@ -108,7 +108,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     symbol = 'rbo'
     
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None,
-                 bounds=(1,2.5), dr=0.1, distance_grid=None,
+                 bounds=(1, 1.5), dr=0.1, distance_grid=None,
                  delta=0.1, skin=2.5, exponent=2,
                  accept_nans=True, verbose=False):
         """
@@ -129,9 +129,10 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
             Sequence :math:`\{l_m\}` of specific orders to compute, *e.g.* 
             ``orders=[4,6]``. This has the priority over ``lmin`` and ``lmax``.
             
-        bounds : tuple, default: (1, 2.5)
+        bounds : tuple, default: (1, 1.5)
             Lower and upper bounds :math:`(d_{n_\mathrm{min}}, d_{n_\mathrm{max}})`
-            to define the grid of distances :math:`\{ d_n \}`.
+            to define the grid of distances :math:`\{ d_n \}`, where consecutive 
+            points in the the grid are separated by :math:`\Delta r`.
             
         dr : float, default: 0.1
             Grid spacing :math:`\Delta r` to define the grid of distances 
@@ -285,7 +286,7 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
             self._dr = dr
             if len(bounds) == 2 and bounds[0] >= 0 and bounds[1] >= 0 and bounds[0] < bounds[1] and bounds[1] <= L / 2:
                     rmin, rmax = bounds
-                    r = numpy.arange(rmin + (self._dr / 2), rmax, self._dr, dtype=numpy.float64)
+                    r = numpy.arange(rmin, rmax + (self._dr / 2), self._dr, dtype=numpy.float64)
                     # set grid and bounds
                     self._distance_grid = r
                     self._bounds = (r[0], r[-1])
