@@ -60,7 +60,7 @@ class StructuralDescriptor:
         descriptor when verbose is ``True``, and remain silent when verbose is 
         ``False``.
 
-    neighbors_boost : float, default: 1.5
+    neighbors_boost : float, default: 2.0
         Scaling factor to estimate the number of neighbors relative to a
         an ideal gas with the same density. This is used internally to set
         the dimensions of lists of neighbors. A too small number creates a
@@ -131,7 +131,7 @@ class StructuralDescriptor:
         self.grid = None
         self.features = None
         # neighbors array size
-        self.neighbors_boost = 1.5
+        self.neighbors_boost = 2.0
         self.max_num_neighbors = 100
 
     @property
