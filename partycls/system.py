@@ -16,7 +16,8 @@ from .core.utils import standardize_condition, _nearest_neighbors_methods_
 from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 # 'auto' is only allowed in Trajectory
-_nearest_neighbors_methods_.remove('auto')
+nn_methods_system = _nearest_neighbors_methods_.copy()
+nn_methods_system.remove('auto')
 
 
 class System:
@@ -59,7 +60,7 @@ class System:
         self.particle = particle
         self.cell = cell
         # nearest neighbors
-        self.nearest_neighbors_method = 'auto'
+        self._nearest_neighbors_method = None
         self.nearest_neighbors_cutoffs = [None for pair in self.pairs_of_species]
 
     @property 
@@ -73,7 +74,7 @@ class System:
     @nearest_neighbors_method.setter
     def nearest_neighbors_method(self, value):
         value = value.lower()
-        if value in _nearest_neighbors_methods_:
+        if value in nn_methods_system:
             self._nearest_neighbors_method = value
         else:
             raise ValueError('Invalid method for nearest neighbors. Should be one of {}.'.format(_nearest_neighbors_methods_))
