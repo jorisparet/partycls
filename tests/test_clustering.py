@@ -12,11 +12,11 @@ class Test(unittest.TestCase):
     def setUp(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         self.traj = Trajectory(os.path.join(data, 'dislocation.xyz'))
-        self.cutoffs = [1.25]
+        self.traj.nearest_neighbors_method = 'fixed'
+        self.traj.nearest_neighbors_cutoffs = [1.25]
 
     def test_angular_zscore_pca_kmeans(self):
         D = BondAngleDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
         X = D.compute()
         scaler = ZScore()
         X = scaler.scale(X)
@@ -32,7 +32,6 @@ class Test(unittest.TestCase):
 
         # Same via workflow
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore', clustering='kmeans')
-        wf.descriptor.cutoffs = self.cutoffs
         wf.clustering.n_init = 100
         wf.disable_output()
         wf.run()
@@ -87,7 +86,6 @@ class Test(unittest.TestCase):
         
         # Features
         D = BondAngleDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
         X = D.compute()
         scaler = ZScore()
         X = scaler.scale(X)
