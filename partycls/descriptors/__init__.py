@@ -5,7 +5,7 @@ Structural descriptors.
 from .descriptor import StructuralDescriptor, DummyDescriptor
 from .ba import BondAngleDescriptor
 from .smoothed_ba import SmoothedBondAngleDescriptor
-from .gr import RadialDescriptor
+from .radial import RadialDescriptor
 from .bo import BondOrientationalDescriptor, SteinhardtDescriptor
 from .averaged_bo import LocallyAveragedBondOrientationalDescriptor, LechnerDellagoDescriptor
 from .smoothed_bo import SmoothedBondOrientationalDescriptor
