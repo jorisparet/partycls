@@ -9,8 +9,7 @@ import numpy
 from .system import System
 from .particle import Particle, aliases
 from .cell import Cell
-from .core.utils import tipify, NearestNeighborsMethod, _nearest_neighbors_methods_
-from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
+from .core.utils import tipify, _nearest_neighbors_methods_
 
 
 class Trajectory:
@@ -35,10 +34,6 @@ class Trajectory:
     additional_fields : list
         List of additional particle properties that were extracted from the
         original trajectory file.
-    
-    nearest_neighbors_cutoffs : list
-        List of nearest neighbors cutoffs for each pair of species
-        in the trajectory.
     """
 
     def __init__(self, filename, fmt=None, backend=None, top=None,
@@ -95,7 +90,7 @@ class Trajectory:
         self._systems = []
         self._read(first, last, step)
         # nearest neighbors
-        self._nearest_neighbors_method = NearestNeighborsMethod.Auto
+        self.nearest_neighbors_method = 'auto'
         self.nearest_neighbors_cutoffs = [None for pair in self._systems[0].pairs_of_species]
 
     @property 
@@ -105,11 +100,36 @@ class Trajectory:
         the trajectory. Should be one of ``"auto"``, ``"fixed"``, ``"sann"`` or 
         ``"voronoi"``.
         """
-        return self._nearest_neighbors_method.value
+        return self._nearest_neighbors_method
 
     @nearest_neighbors_method.setter
     def nearest_neighbors_method(self, value):
-        self._nearest_neighbors_method = NearestNeighborsMethod(value.lower())
+        value = value.lower()
+        if value in _nearest_neighbors_methods_:
+            self._nearest_neighbors_method = value
+        else:
+            raise ValueError('Invalid method for nearest neighbors. Should be one of {}.'.format(_nearest_neighbors_methods_))
+
+    @property
+    def nearest_neighbors_cutoffs(self):
+        """
+        List of cutoffs that delimit the first coordination shell. Cutoffs are 
+        usually defined on the basis of the first minimum of the partial radial 
+        distribution function of each pair of species, 
+        :math:`g_{\\alpha\\beta}(r)`. The list must have the same length as the 
+        number of pairs of species in the system (*e.g.* 2 species yield 4 
+        possible pairs, 3 species yield 6 pairs, etc.).
+        """
+        return self._nearest_neighbors_cutoffs
+
+    @nearest_neighbors_cutoffs.setter
+    def nearest_neighbors_cutoffs(self, value):
+        n_pairs = len(self._systems[0].pairs_of_species)
+        if len(value) != n_pairs:
+            raise ValueError("Incorrect number of cutoffs: {} were provided while {} are expected.".format(
+                len(value), n_pairs))
+        else:
+            self._nearest_neighbors_cutoffs = value
 
     def remove(self, frame):
         """
@@ -280,39 +300,30 @@ class Trajectory:
         # Convert method to Enum
         if method is not None:
             try:
-                method = NearestNeighborsMethod(method.lower())
-                self._nearest_neighbors_method = method
+                self.nearest_neighbors_method = method
             except ValueError:
-                raise ValueError('Incorrect method for nearest neighbors. Should be one of {}.'.format(_nearest_neighbors_methods_))
-        else:
-            self._nearest_neighbors_method = NearestNeighborsMethod.Auto
+                raise ValueError('Invalid method for nearest neighbors. Should be one of {}.'.format(_nearest_neighbors_methods_))
 
         # Read neighbors from the trajectory file if method is 'auto' (default)
-        if self._nearest_neighbors_method is NearestNeighborsMethod.Auto:
+        if self.nearest_neighbors_method == 'auto':
             neighbors = self.dump('nearest_neighbors') 
             # if no neighbors in the system, fallback to fixed-cutoffs method
             if None in neighbors[0]:
-                self.compute_nearest_neighbors(method=NearestNeighborsMethod.Fixed.value,
+                self.compute_nearest_neighbors(method='fixed',
                                                cutoffs=cutoffs)
             return        
 
         # Compute cutoffs if not provided (for 'fixed' and 'sann')
-        if self._nearest_neighbors_method in [NearestNeighborsMethod.Fixed,
-                                              NearestNeighborsMethod.SANN]:
-            pairs_of_species = numpy.asarray(self._systems[0].pairs_of_species)
+        if self.nearest_neighbors_method in ['fixed', 'sann']:
             if cutoffs is None:
                 if None in self.nearest_neighbors_cutoffs:
                     self.compute_nearest_neighbors_cutoffs()
             else:
-                if len(cutoffs) != len(pairs_of_species):
-                    raise ValueError("Incorrect number of cutoffs: {} were provided while {} are expected.".format(
-                        len(cutoffs), len(pairs_of_species)))
-                else:
-                    self.nearest_neighbors_cutoffs = cutoffs
+                self.nearest_neighbors_cutoffs = cutoffs
 
         # Iterate over the systems
         for system in self._systems:
-            system.compute_nearest_neighbors(self._nearest_neighbors_method,
+            system.compute_nearest_neighbors(self.nearest_neighbors_method,
                                              self.nearest_neighbors_cutoffs)
 
     def set_nearest_neighbors_cutoff(self, s_a, s_b, rcut, mirror=True):

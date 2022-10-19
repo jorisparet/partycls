@@ -12,7 +12,7 @@ authored by `Daniele Coslovich <https://www2.units.it/daniele.coslovich/>`_.
 import re
 import numpy
 from .particle import aliases
-from .core.utils import standardize_condition, NearestNeighborsMethod
+from .core.utils import standardize_condition, _nearest_neighbors_methods_
 from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
 
@@ -56,7 +56,7 @@ class System:
         self.particle = particle
         self.cell = cell
         # nearest neighbors
-        self._nearest_neighbors_method = NearestNeighborsMethod.Auto
+        self.nearest_neighbors_method = 'auto'
         self.nearest_neighbors_cutoffs = [None for pair in self.pairs_of_species]
 
     @property 
@@ -65,11 +65,15 @@ class System:
         Method used to identify the nearest neighbors of all the particles
         in the system. Should be one of ``"fixed"``, ``"sann"`` or ``"voronoi"``.
         """
-        return self._nearest_neighbors_method.value
+        return self._nearest_neighbors_method
 
     @nearest_neighbors_method.setter
     def nearest_neighbors_method(self, value):
-        self._nearest_neighbors_method = NearestNeighborsMethod(value.lower())
+        value = value.lower()
+        if value in _nearest_neighbors_methods_:
+            self._nearest_neighbors_method = value
+        else:
+            raise ValueError('Invalid method for nearest neighbors. Should be one of {}.'.format(_nearest_neighbors_methods_))
 
     @property
     def n_dimensions(self):
@@ -335,11 +339,7 @@ class System:
         """
 
         # Set up
-        if isinstance(method, str):
-            method = NearestNeighborsMethod(method.lower())
-            self._nearest_neighbors_method = method
-        else:
-            self._nearest_neighbors_method = method
+        self.nearest_neighbors_method = method
         positions = self.dump('position')
         species_id = self.dump('species_id')
         n_species = len(self.distinct_species)
@@ -349,7 +349,7 @@ class System:
         
         # Computation
         #  Fixed-cutoffs ('fixed')
-        if method is NearestNeighborsMethod.Fixed:
+        if method == 'fixed':
             num_part = len(self.particle)
             positions = positions.T
             cutoffs_sq = numpy.array(cutoffs, dtype=numpy.float64)**2
@@ -363,7 +363,7 @@ class System:
             return
         
         #  Solid-Angle Nearest Neighbors ('sann')
-        if method is NearestNeighborsMethod.SANN:
+        if method == 'sann':
             positions = positions.T
             rmax = 1.5 * numpy.max(cutoffs)
             for p in self.particle:
@@ -375,7 +375,7 @@ class System:
             return
 
         #  Voronoi neighbors ('voronoi')
-        if method is NearestNeighborsMethod.Voronoi:
+        if method == 'voronoi':
             try:
                 import pyvoro
 

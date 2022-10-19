@@ -77,11 +77,5 @@ def standardize_condition(condition):
     else:
         raise ValueError('"{}" is not a valid condition'.format(condition))
 
-@enum.unique
-class NearestNeighborsMethod(enum.Enum):
-    Auto = 'auto'
-    Fixed = 'fixed'
-    SANN = 'sann'
-    Voronoi = 'voronoi'
-
-_nearest_neighbors_methods_ = [method.value for method in NearestNeighborsMethod]
+# Valid nearest neighbors methods
+_nearest_neighbors_methods_ = ['auto', 'fixed', 'sann', 'voronoi']
