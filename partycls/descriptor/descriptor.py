@@ -445,7 +445,19 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         an ideal gas with the same density. This is used internally to set
         the dimensions of lists of neighbors. A too small number creates a
         risk of overfilling the lists of neighbors, and a too large number
-        increases memory usage.
+        increases memory usage. This only works if the associated ``Trajectory``
+        has valid cutoffs in the ``Trajectory.nearest_neighbors_cutoffs`` list
+        attribute. This sets the value of the ``max_num_neighbors`` attribute
+        during the computation of the descriptor.
+
+    max_num_neighbors : int, default: 100
+        Maximum number of neighbors. This is used internally to set the dimensions
+        of lists of neighbors. This number is automatically adjusted to limit
+        memory usage if the associated ``Trajectory`` has valid cutoffs in the 
+        ``Trajectory.nearest_neighbors_cutoffs`` list attribute. The
+        default value ``100`` is used if no cutoffs can be used to estimate a
+        better value. The default value is sufficient in most cases, otherwise 
+        this number can manually be increased **before** computing the descriptor.
     """
 
     def __init__(self, trajectory, accept_nans=True, verbose=False):
@@ -467,8 +479,9 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)
-        # scaling factor for neighbors array size
+        # neighbors array size
         self.neighbors_boost = 1.5
+        self.max_num_neighbors = 100
 
     def _manage_nearest_neighbors(self):
         """
@@ -524,11 +537,15 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         # Create a list of arrays neighbors list
         self._neighbors_number = []
         for n in range(len(self._neighbors)):
+            # array size for neighbors
+            if not None in self.trajectory.nearest_neighbors_cutoffs:
+                rho = max([sys.density for sys in self.trajectory])
+                rmax = max(self.trajectory.nearest_neighbors_cutoffs)
+                nmax_ideal = 4.0 * numpy.pi * rho * rmax**2
+                self.max_num_neighbors = int(self.neighbors_boost * nmax_ideal)
+            # allocate and fill the arrays
             npart = len(self.groups[0][n])
-            # TODO: 100 should not be hardcoded but we don't necessarily have
-            # a reference cutoff here to evaluate an appropriate number
-            # (e.g. with Voronoi neighbors or neighbors read from file)
-            _neighbors = numpy.ndarray((npart, 100), dtype=numpy.int64)
+            _neighbors = numpy.ndarray((npart, self.max_num_neighbors), dtype=numpy.int64)
             _neighbors_number = numpy.ndarray(npart, dtype=numpy.int64)
             for i in range(npart):
                 nmax = len(self._neighbors[n][i])
@@ -587,10 +604,10 @@ class AngularStructuralDescriptor(StructuralDescriptor):
         rho = max([sys.density for sys in self.trajectory])
         rmax = max(cutoffs)
         nmax_ideal = 4.0 * numpy.pi * rho * rmax**2
-        nn_max = int(self.neighbors_boost * nmax_ideal)
+        self.max_num_neighbors = int(self.neighbors_boost * nmax_ideal)
         for n in range(n_frames):
             n_0 = len(idx_0[n])
-            neighbors = numpy.zeros((n_0, nn_max), dtype=numpy.int64, order='F')
+            neighbors = numpy.zeros((n_0, self.max_num_neighbors), dtype=numpy.int64, order='F')
             num_neighbors = numpy.zeros(n_0, dtype=numpy.int64)
             pos_0_n = pos_0[n].T
             pos_1_n = pos_1[n].T
