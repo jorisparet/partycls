@@ -41,14 +41,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import CompactnessDescriptor
+	from partycls.descriptors import CompactnessDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = CompactnessDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.compactness.CompactnessDescriptor.__init__
+.. automethod:: partycls.descriptors.compactness.CompactnessDescriptor.__init__
 
 Requirements
 ------------
@@ -88,11 +88,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	  list([448, 951, 706, 337, 481, 536, 14, 16, 258, 241, 496, 574, 502, 447, 860])
 	  list([639, 397, 799, 578, 230, 913, 636, 796, 640, 772, 500, 270, 354, 123, 874, 608, 826, 810])]
 
-We now instantiate a :py:class:`CompactnessDescriptor <partycls.descriptor.compactness.CompactnessDescriptor>` on this trajectory and restrict the analysis to type-B particles only:
+We now instantiate a :py:class:`CompactnessDescriptor <partycls.descriptors.compactness.CompactnessDescriptor>` on this trajectory and restrict the analysis to type-B particles only:
 
 .. code-block:: python
 
-	from partycls.descriptor import CompactnessDescriptor
+	from partycls.descriptors import CompactnessDescriptor
 
 	# instantiation
 	D = CompactnessDescriptor(traj)

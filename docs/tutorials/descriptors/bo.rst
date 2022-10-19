@@ -51,14 +51,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import BondOrientationalDescriptor
+	from partycls.descriptors import BondOrientationalDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = BondOrientationalDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.bo.BondOrientationalDescriptor.__init__
+.. automethod:: partycls.descriptors.bo.BondOrientationalDescriptor.__init__
 
 Requirements
 ------------
@@ -95,11 +95,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
 	  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
 
-We now instantiate a :py:class:`BondOrientationalDescriptor <partycls.descriptor.bo.BondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`:
+We now instantiate a :py:class:`BondOrientationalDescriptor <partycls.descriptors.bo.BondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`:
 
 .. code-block:: python
 
-	from partycls.descriptor import BondOrientationalDescriptor
+	from partycls.descriptors import BondOrientationalDescriptor
 
 	# instantiation
 	D = BondOrientationalDescriptor(traj, orders=[2,4,6,8])

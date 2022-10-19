@@ -39,14 +39,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import SmoothedBondOrientationalDescriptor
+	from partycls.descriptors import SmoothedBondOrientationalDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = SmoothedBondOrientationalDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor.__init__
+.. automethod:: partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.__init__
 
 Requirements
 ------------
@@ -86,11 +86,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 .. note::
 	If not computed in :py:class:`Trajectory <partycls.trajectory.Trajectory>` or manually set, the cutoffs :math:`\{ r_{\alpha\beta}^c \}` will be computed from inside the descriptor.
 
-We now instantiate a :py:class:`SmoothedBondOrientationalDescriptor <partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`, :math:`\xi=1.3` and :math:`\gamma=8`:
+We now instantiate a :py:class:`SmoothedBondOrientationalDescriptor <partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set the grid of orders :math:`\{l_n\} = \{2,4,6,8\}`, :math:`\xi=1.3` and :math:`\gamma=8`:
 
 .. code-block:: python
 
-	from partycls.descriptor import SmoothedBondOrientationalDescriptor
+	from partycls.descriptors import SmoothedBondOrientationalDescriptor
 
 	# instantiation
 	D = SmoothedBondOrientationalDescriptor(traj,

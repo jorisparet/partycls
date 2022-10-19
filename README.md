@@ -33,7 +33,7 @@ Thanks to a flexible system of filters, partycls makes it easy to restrict the a
 
 ```python
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor
+from partycls.descriptors import BondAngleDescriptor
 
 traj = Trajectory('trajectory.xyz')
 D = BondAngleDescriptor(traj)

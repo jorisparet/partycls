@@ -45,14 +45,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import RadialBondOrientationalDescriptor
+	from partycls.descriptors import RadialBondOrientationalDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = RadialBondOrientationalDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__
+.. automethod:: partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.__init__
 
 Demonstration
 -------------
@@ -66,11 +66,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-We now instantiate a :py:class:`RadialBondOrientationalDescriptor <partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set set the grid of orders :math:`\{l_m\} = \{4,6\}`, the grid of distances :math:`\{d_n\} = \{1.0, 1.25, 1.50\}`, the Gaussian shell width :math:`\delta=0.2` and the skin width :math:`\sigma = 2.5`:
+We now instantiate a :py:class:`RadialBondOrientationalDescriptor <partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set set the grid of orders :math:`\{l_m\} = \{4,6\}`, the grid of distances :math:`\{d_n\} = \{1.0, 1.25, 1.50\}`, the Gaussian shell width :math:`\delta=0.2` and the skin width :math:`\sigma = 2.5`:
 
 .. code-block:: python
 
-	from partycls.descriptor import RadialBondOrientationalDescriptor
+	from partycls.descriptors import RadialBondOrientationalDescriptor
 
 	# instantiation
 	D = RadialBondOrientationalDescriptor(traj,

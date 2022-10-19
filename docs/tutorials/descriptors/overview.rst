@@ -1,7 +1,7 @@
 Overview
 ========
 
-Each structural descriptors inherits from the base class :py:class:`StructuralDescriptor <partycls.descriptor.descriptor.StructuralDescriptor>` and is computed for a given :py:class:`Trajectory <partycls.trajectory.Trajectory>`.
+Each structural descriptors inherits from the base class :py:class:`StructuralDescriptor <partycls.descriptors.descriptor.StructuralDescriptor>` and is computed for a given :py:class:`Trajectory <partycls.trajectory.Trajectory>`.
 
 Most descriptors require information about the neighbors of each of the considered particles. Nearest neighbors, *i.e.* particles inside of the first coordination shell, are computed at the level of the trajectory itself or directly read from the input trajectory file. This information is then propagated to the descriptors that rely on it to perform the computations.
 

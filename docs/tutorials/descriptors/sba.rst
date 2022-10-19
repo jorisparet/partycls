@@ -39,14 +39,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import SmoothedBondAngleDescriptor
+	from partycls.descriptors import SmoothedBondAngleDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = SmoothedBondAngleDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor.__init__
+.. automethod:: partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.__init__
 
 Requirements
 ------------
@@ -86,11 +86,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 .. note::
 	If not computed in :py:class:`Trajectory <partycls.trajectory.Trajectory>` or manually set, the cutoffs :math:`\{ r_{\alpha\beta}^c \}` will be computed from inside the descriptor.
 
-We now instantiate a :py:class:`SmoothedBondAngleDescriptor <partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta \theta = 18^\circ`, :math:`\xi=1.3` and :math:`\gamma=8`:
+We now instantiate a :py:class:`SmoothedBondAngleDescriptor <partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta \theta = 18^\circ`, :math:`\xi=1.3` and :math:`\gamma=8`:
 
 .. code-block:: python
 
-	from partycls.descriptor import SmoothedBondAngleDescriptor
+	from partycls.descriptors import SmoothedBondAngleDescriptor
 
 	# instantiation
 	D = SmoothedBondAngleDescriptor(traj,

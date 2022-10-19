@@ -25,14 +25,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import TetrahedralDescriptor
+	from partycls.descriptors import TetrahedralDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = TetrahedralDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__
+.. automethod:: partycls.descriptors.tetrahedrality.TetrahedralDescriptor.__init__
 
 Requirements
 ------------
@@ -69,11 +69,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
 	  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
 
-We now instantiate a :py:class:`TetrahedralDescriptor <partycls.descriptor.tetrahedrality.TetrahedralDescriptor>` on this trajectory and restrict the analysis to type-B particles only:
+We now instantiate a :py:class:`TetrahedralDescriptor <partycls.descriptors.tetrahedrality.TetrahedralDescriptor>` on this trajectory and restrict the analysis to type-B particles only:
 
 .. code-block:: python
 
-	from partycls.descriptor import TetrahedralDescriptor
+	from partycls.descriptors import TetrahedralDescriptor
 
 	# instantiation
 	D = TetrahedralDescriptor(traj)

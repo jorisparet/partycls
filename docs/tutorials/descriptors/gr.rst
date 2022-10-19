@@ -21,14 +21,14 @@ Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Tr
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import RadialDescriptor
+	from partycls.descriptors import RadialDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = RadialDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.gr.RadialDescriptor.__init__
+.. automethod:: partycls.descriptors.gr.RadialDescriptor.__init__
 
 Demonstration
 -------------
@@ -42,11 +42,11 @@ We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that c
 	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-We now instantiate a :py:class:`RadialDescriptor <partycls.descriptor.gr.RadialDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta r = 0.1` and :math:`(r_\mathrm{min},r_\mathrm{max}) = (1, 1.5)` to set the grid of distances :math:`\{d_n\}`:
+We now instantiate a :py:class:`RadialDescriptor <partycls.descriptors.gr.RadialDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta r = 0.1` and :math:`(r_\mathrm{min},r_\mathrm{max}) = (1, 1.5)` to set the grid of distances :math:`\{d_n\}`:
 
 .. code-block:: python
 
-	from partycls.descriptor import RadialDescriptor
+	from partycls.descriptors import RadialDescriptor
 
 	# instantiation
 	D = RadialDescriptor(traj, dr=0.1, bounds=(1.0, 1.5))
