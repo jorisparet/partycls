@@ -15,6 +15,9 @@ from .particle import aliases
 from .core.utils import standardize_condition, _nearest_neighbors_methods_
 from .neighbors_wrap import nearest_neighbors as nearest_neighbors_f90
 
+# 'auto' is only allowed in Trajectory
+_nearest_neighbors_methods_.remove('auto')
+
 
 class System:
     """
@@ -310,7 +313,6 @@ class System:
         provided method. Neighbors are stored in the ``nearest_neighbors`` particle 
         property. Available methods are:
 
-        - ``'auto'`` : read neighbors from the trajectory file, if explicitly requested with the ``additional_fields`` argument in the constructor.
         - ``'fixed'`` : use fixed cutoffs for each pair of species in the trajectory.
         - ``'sann'`` : solid-angle based nearest neighbor algorithm (see https://doi.org/10.1063/1.4729313).
         - ``'voronoi'`` : radical Voronoi tessellation method (uses particles' radii) (see https://doi.org/10.1016/0022-3093(82)90093-X)      
