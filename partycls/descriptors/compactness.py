@@ -183,3 +183,9 @@ class CompactnessDescriptor(AngularStructuralDescriptor):
                     if m in neigh_neigh_i[k_idx]:
                         tetras.append([i,j,k,m])
         return numpy.array(tetras, dtype=numpy.int64)
+
+class TongTanakaDescriptor(CompactnessDescriptor):
+    """
+    Alias for the class ``CompactnessDescriptor``.
+    """
+    pass

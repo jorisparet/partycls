@@ -6,7 +6,7 @@ import os
 from partycls import Trajectory
 from partycls.descriptors.descriptor import AngularStructuralDescriptor
 from partycls.descriptors import RadialDescriptor, BondAngleDescriptor
-from partycls.descriptors import BondOrientationalDescriptor, LechnerDellagoDescriptor
+from partycls.descriptors import BondOrientationalDescriptor, LocallyAveragedBondOrientationalDescriptor
 from partycls.descriptors import SmoothedBondOrientationalDescriptor, SmoothedBondAngleDescriptor
 from partycls.descriptors import RadialBondOrientationalDescriptor
 from partycls.descriptors import TetrahedralDescriptor
@@ -213,7 +213,7 @@ class Test(unittest.TestCase):
                          'wrong average value for q_1')
         
     def test_lechner_dellago(self):
-        D = LechnerDellagoDescriptor(self.traj)
+        D = LocallyAveragedBondOrientationalDescriptor(self.traj)
         # D.cutoffs = self.cutoffs
         self._compute(D)
         self.assertEqual(float32(D.average[0]), float32(0.02164681),

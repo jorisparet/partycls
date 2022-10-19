@@ -88,7 +88,6 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     name = 'radial bond-orientational'
     symbol = 'rbo'
     
-    
     def __init__(self, trajectory, lmin=1, lmax=8, orders=None,
                  bounds=(1,2.5), dr=0.1, distance_grid=None,
                  delta=0.1, skin=2.5, exponent=2,
@@ -287,3 +286,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
 
     def _set_grid(self):
         self.grid = [(l,r) for l in self._orders for r in self._distance_grid]
+
+class BoattiniDescriptor(RadialBondOrientationalDescriptor):
+    """
+    Alias for the class ``RadialBondOrientationalDescriptor``.
+    """

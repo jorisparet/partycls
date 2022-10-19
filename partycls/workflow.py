@@ -86,9 +86,9 @@ class Workflow:
                      'bo': BondOrientationalDescriptor,
                      'boo': BondOrientationalDescriptor,
                      'bop': BondOrientationalDescriptor,
-                     'ld': LechnerDellagoDescriptor,
-                     'lechner-dellago': LechnerDellagoDescriptor,
-                     'lechner dellago': LechnerDellagoDescriptor}
+                     'ld': LocallyAveragedBondOrientationalDescriptor,
+                     'lechner-dellago': LocallyAveragedBondOrientationalDescriptor,
+                     'lechner dellago': LocallyAveragedBondOrientationalDescriptor}
 
     clustering_db = {'k-means': KMeans,
                      'kmeans': KMeans,
