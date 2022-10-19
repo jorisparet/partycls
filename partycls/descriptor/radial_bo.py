@@ -204,18 +204,6 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
     @distance_grid.setter
     def distance_grid(self, value):
         self._set_bounds_distances(self._dr, self._bounds, value)
-    
-    @property
-    def mixed_grid(self):
-        """
-        Mixed grids of bond orientational orders :math:`\{ l_m \}` and
-        distances :math:`\{ d_n \}` in the form of a list of tuples ``(l,r)``.
-        """
-        mixed_grid = []
-        for l in self.grid:
-            for r in self._distance_grid:
-                mixed_grid.append((l,r))
-        return mixed_grid
 
     def compute(self):
         """
