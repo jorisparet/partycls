@@ -198,7 +198,7 @@ def show_ovito(system, color, view='top', palette=None, cmap='viridis',
         from ovito.io import import_file
         from ovito.vis import Viewport, TachyonRenderer
     except ImportError:
-        print('install ovito to display the particles')
+        print('Warning: install `ovito` to display the particles.')
         return
     import os
     import tempfile
