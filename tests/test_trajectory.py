@@ -173,6 +173,17 @@ class Test(unittest.TestCase):
                          108, 37, 34, 71, 79, 48, 19, 22]),
                          'wrong neighbors with method "sann"')
 
+    def test_neighbors_voronoi(self):
+        # compute neighbors
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        traj.compute_nearest_neighbors(method='voronoi')
+        # check neighbors
+        ngh = traj[0].particle[17].nearest_neighbors
+        self.assertEqual(set(ngh), set([108, 63, 19, 67, 122, 71, 34, 102, 124, 
+                                        48, 79, 145, 96, 22, 126, 3, 37]),
+                         'wrong neighbors with method "voronoi"')
+
     @unittest.skipIf(not HAS_PYVORO, 'no pyvoro module')
     def test_voronoi_signatures(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
