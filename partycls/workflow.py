@@ -103,7 +103,9 @@ class Workflow:
                      TetrahedralDescriptor.symbol: TetrahedralDescriptor,
                      CompactnessDescriptor.symbol: CompactnessDescriptor,
                      'tong-tanaka': TongTanakaDescriptor,
-                     'tong tanaka': TongTanakaDescriptor}
+                     'tong tanaka': TongTanakaDescriptor,
+                     CoordinationDescriptor.symbol: CoordinationDescriptor,
+                     'coordination': CoordinationDescriptor}
 
     clustering_db = {'k-means': KMeans,
                      'kmeans': KMeans,
