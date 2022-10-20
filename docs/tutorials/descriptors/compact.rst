@@ -50,6 +50,10 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptors.compactness.CompactnessDescriptor.__init__
 
+.. hint::
+
+	The alias :py:class:`TongTanakaDescriptor <partycls.descriptors.compactness.TongTanakaDescriptor>` can be used in place of :py:class:`CompactnessDescriptor <partycls.descriptors.compactness.CompactnessDescriptor>`.
+
 Requirements
 ------------
 

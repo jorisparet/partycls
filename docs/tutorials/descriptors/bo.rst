@@ -60,6 +60,10 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptors.bo.BondOrientationalDescriptor.__init__
 
+.. hint::
+
+	The alias :py:class:`SteinhardtDescriptor <partycls.descriptors.bo.SteinhardtDescriptor>` can be used in place of :py:class:`BondOrientationalDescriptor <partycls.descriptors.bo.BondOrientationalDescriptor>`.
+
 Requirements
 ------------
 

@@ -168,11 +168,15 @@ The table below shows the requirements of each structural descriptors in terms o
 	  - √
 	  - ✕
 	  - ✕
-	* - :doc:`ld`
+	* - :doc:`labo`
 	  - √
 	  - ✕
 	  - ✕
 	* - :doc:`compact`
+	  - √
+	  - ✕
+	  - ✕
+	* - :doc:`coord`
 	  - √
 	  - ✕
 	  - ✕

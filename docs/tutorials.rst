@@ -39,9 +39,10 @@ An overview and a detailed presentation of the built-in structural descriptors:
 - :doc:`tutorials/descriptors/sba`
 - :doc:`tutorials/descriptors/bo`
 - :doc:`tutorials/descriptors/sbo`
-- :doc:`tutorials/descriptors/ld`
+- :doc:`tutorials/descriptors/labo`
 - :doc:`tutorials/descriptors/rbo`
 - :doc:`tutorials/descriptors/compact`
+- :doc:`tutorials/descriptors/coord`
 
 You can also check out the API of the :py:mod:`partycls.descriptors` subpackage.
 
@@ -57,6 +58,7 @@ You can also check out the API of the :py:mod:`partycls.descriptors` subpackage.
 	tutorials/descriptors/sba
 	tutorials/descriptors/bo
 	tutorials/descriptors/sbo
-	tutorials/descriptors/ld
+	tutorials/descriptors/labo
 	tutorials/descriptors/rbo
 	tutorials/descriptors/compact
+	tutorials/descriptors/coord

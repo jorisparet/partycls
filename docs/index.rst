@@ -35,9 +35,10 @@ partycls implements various structural descriptors:
 - :doc:`tutorials/descriptors/sba`
 - :doc:`tutorials/descriptors/bo`
 - :doc:`tutorials/descriptors/sbo`
-- :doc:`tutorials/descriptors/ld`
+- :doc:`tutorials/descriptors/labo`
 - :doc:`tutorials/descriptors/rbo`
 - :doc:`tutorials/descriptors/compact`
+- :doc:`tutorials/descriptors/coord`
 
 On top of these native descriptors, partycls supports additional structural descriptors via `DScribe <https://singroup.github.io/dscribe>`_.
 

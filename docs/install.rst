@@ -6,7 +6,7 @@ The package is compatible with Python >= 3.6 (tested on 3.6, 3.7, 3.8 and 3.9). 
 From PyPI
 ---------
 
-The latest stable release in available on `PyPI <https://pypi.org/project/partycls/>`_. Install it with ``pip``:
+The latest stable release is available on `PyPI <https://pypi.org/project/partycls/>`_. Install it with ``pip``:
 
 .. code-block:: sh
 
@@ -30,7 +30,7 @@ Run the tests using:
 	
 	make test
 
-or manually compile the Fortran source and run the tests:
+or manually compile the Fortran sources and run the tests:
 
 .. code-block:: sh
 

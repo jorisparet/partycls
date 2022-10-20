@@ -54,6 +54,10 @@ The constructor takes the following parameters:
 
 .. automethod:: partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.__init__
 
+.. hint::
+
+	The alias :py:class:`BoattiniDescriptor <partycls.descriptors.radial_bo.BoattiniDescriptor>` can be used in place of :py:class:`RadialBondOrientationalDescriptor <partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor>`.
+
 Demonstration
 -------------
 
