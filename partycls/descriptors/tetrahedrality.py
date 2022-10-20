@@ -104,13 +104,13 @@ class TetrahedralDescriptor(StructuralDescriptor):
         
     def compute(self):
         """
-        Compute the tetrahedrality for the particles in group=0
+        Compute the tetrahedrality for the particles in group=0.
         Returns the data matrix and also overwrites the ``features`` attribute.
 
         Returns
         -------
         features : numpy.ndarray
-            Data matrix with bond-orientational correlations.
+            Data matrix with the degree of tetrahedrality.
         """
         self._set_up(dtype=numpy.float64)
         self._manage_nearest_neighbors()
