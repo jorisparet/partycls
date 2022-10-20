@@ -63,7 +63,7 @@ Nearest neighbors can be directly from the input trajectory file if it contains 
 This, however, must be specified when reading the input file through the ``additional_fields`` parameter.
 
 .. warning::
-	Currently, this only works for trajectory files in XYZ format.
+	Currently, this only works for trajectory files in XYZ format and for a few formats supported by `atooms <https://framagit.org/atooms/atooms>`_.
 
 Example:
 
