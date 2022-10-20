@@ -155,12 +155,13 @@ class CompactnessDescriptor(StructuralDescriptor):
         for n in self._trange(n_frames):
             pos_all_n = pos_all[n].T
             for i in range(len(self.groups[0][n])):
+                idx_i = self.groups[0][n][i]._index
                 nn_i = self._neighbors_number[n][i]
-                tetra_i = self.tetrahedra(i, 
+                tetra_i = self.tetrahedra(idx_i, 
                                           list(self._neighbors[n][i][0:nn_i]),
                                           self._subsidiary_neighbors[n][i])
-                theta_i = compute.compactness(pos_all_n, tetra_i.T, radii[n], box[n])
-                self.features[row] = theta_i
+                omega_i = compute.compactness(pos_all_n, tetra_i.T, radii[n], box[n])
+                self.features[row] = omega_i
                 row += 1
         self._handle_nans()
         return self.features

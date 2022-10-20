@@ -844,15 +844,15 @@ CONTAINS
   
 
   !!!!!!!!!! COMPACTNESS !!!!!!!!!!
-  SUBROUTINE compactness(pos, tetrahedra, radii, box, thetas)
+  SUBROUTINE compactness(pos, tetrahedra, radii, box, big_omega)
     ! parameters
     INTEGER(8), INTENT(in) :: tetrahedra(:,:)
     REAL(8), INTENT(in)    :: pos(:,:), radii(:), box(:)
-    REAL(8), INTENT(OUT)   :: thetas
+    REAL(8), INTENT(OUT)   :: big_omega
     ! variables
     INTEGER(8)             :: tetra_idx, j, j_idx, k, k_idx
     REAL(8)                :: delta, norm, d_perfect, d_actual
-    REAL(8)                :: r_jk(SIZE(box)), hbox(SIZE(box)), theta(SIZE(tetrahedra,2))
+    REAL(8)                :: r_jk(SIZE(box)), hbox(SIZE(box)), omega(SIZE(tetrahedra,2))
     ! computation
     hbox = box / 2.0
     DO tetra_idx=1,SIZE(tetrahedra,2)
@@ -872,9 +872,9 @@ CONTAINS
           END IF
         END DO
       END DO
-      theta(tetra_idx) = delta / norm
+      omega(tetra_idx) = delta / norm
     END DO
-    thetas = SUM(theta) / SIZE(theta)
+    big_omega = SUM(omega) / SIZE(omega)
   END SUBROUTINE compactness
 
   
