@@ -25,7 +25,7 @@ class LocallyAveragedBondOrientationalDescriptor(BondOrientationalDescriptor):
     feature vector for particle :math:`i` is given by
 
     .. math::
-        X^\mathrm{LD}(i) = (\: \\bar{Q}_{l_\mathrm{min}}(i) \;\; \dots \;\; \\bar{Q}_{l_\mathrm{max}}(i) \:) .
+        X^\mathrm{LABO}(i) = (\: \\bar{Q}_{l_\mathrm{min}}(i) \;\; \dots \;\; \\bar{Q}_{l_\mathrm{max}}(i) \:) .
     
     See the tutorials for more details.
     
