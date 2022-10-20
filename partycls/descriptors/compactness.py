@@ -128,6 +128,7 @@ class CompactnessDescriptor(StructuralDescriptor):
                                       trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)
+        self._dimension_check(dimension=3)
         self.grid = numpy.zeros(1, dtype=numpy.float64)
         
     def compute(self):

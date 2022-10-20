@@ -397,6 +397,15 @@ class StructuralDescriptor:
             print('Warning: discarding {} NaN samples from the array of features.'.format(num_nans))
         return self.features[collapsed_rows]
 
+    def _dimension_check(self, dimension):
+        """
+        Check if the dimension of the trajectory is compatible with the reference
+        dimension `dimension` of the descriptor.
+        """
+        if self.trajectory[0].n_dimensions != dimension:
+            raise ValueError('trajectory must be {}-dimensional for the {} descriptor.'.format(dimension,
+                                                                                             self.name))
+    
     def _group_init(self, group):
         """
         Initialize the group ``group`` with all the particles by default.

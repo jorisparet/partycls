@@ -149,8 +149,7 @@ class BondOrientationalDescriptor(StructuralDescriptor):
         StructuralDescriptor.__init__(self, trajectory,
                                       accept_nans=accept_nans,
                                       verbose=verbose)
-        if self.trajectory[0].n_dimensions == 2:
-            raise ValueError('trajectory must be 3-dimensional to be used with a {} descriptor'.format(self.name))
+        self._dimension_check(dimension=3)
         self._bounds(lmin, lmax, orders)
 
     @property
