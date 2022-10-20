@@ -12,5 +12,5 @@ from .smoothed_bo import SmoothedBondOrientationalDescriptor
 from .radial_bo import RadialBondOrientationalDescriptor, BoattiniDescriptor
 from .tetrahedrality import TetrahedralDescriptor
 from .compactness import CompactnessDescriptor, TongTanakaDescriptor
-from .coordination import GlobalCoordinationDescriptor, ChemicalCoordinationDescriptor
+from .coordination import CoordinationDescriptor
 from .dscribe import DscribeDescriptor, DscribeChemicalDescriptor
