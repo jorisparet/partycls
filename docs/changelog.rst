@@ -4,11 +4,12 @@ Changelog
 - 2.0.0:
 	- New features:
 		- Add new structural descriptors:
-			- :py:class:`TetrahedralDescriptor <partycls.descriptor.tetrahedrality.TetrahedralDescriptor>` (:doc:`tutorial <tutorials/descriptors/tetra>`).
-			- :py:class:`SmoothedBondAngleDescriptor <partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor>` (:doc:`tutorial <tutorials/descriptors/sba>`).
-			- :py:class:`SmoothedBondOrientationalDescriptor <partycls.descriptor.smoothed_bo.SmoothedBondOrientationalDescriptor>` (:doc:`tutorial <tutorials/descriptors/sbo>`).
-			- :py:class:`RadialBondOrientationalDescriptor <partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor>` (:doc:`tutorial <tutorials/descriptors/rbo>`).
-			- :py:class:`CompactnessDescriptor <partycls.descriptor.compactness.CompactnessDescriptor>` (:doc:`tutorial <tutorials/descriptors/compact>`).
+			- :py:class:`TetrahedralDescriptor <partycls.descriptors.tetrahedrality.TetrahedralDescriptor>` (:doc:`tutorial <tutorials/descriptors/tetra>`).
+			- :py:class:`SmoothedBondAngleDescriptor <partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor>` (:doc:`tutorial <tutorials/descriptors/sba>`).
+			- :py:class:`SmoothedBondOrientationalDescriptor <partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor>` (:doc:`tutorial <tutorials/descriptors/sbo>`).
+			- :py:class:`RadialBondOrientationalDescriptor <partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor>` (:doc:`tutorial <tutorials/descriptors/rbo>`).
+			- :py:class:`CompactnessDescriptor <partycls.descriptors.compactness.CompactnessDescriptor>` (:doc:`tutorial <tutorials/descriptors/compact>`).
+			- :py:class:`CoordinationDescriptor <partycls.descriptors.coordination.CoordinationDescriptor>` (:doc:`tutorial <tutorials/descriptors/coord>`).
 		- Add radical Voronoi tessellation to identify nearest neighbors in :py:meth:`Trajectory.compute_nearest_neighbors() <partycls.trajectory.Trajectory.compute_nearest_neighbors>` using ``method="voronoi"``.
 		- Add Voronoi tessellation to compute particles' Voronoi signatures in :py:meth:`Trajectory.compute_voronoi_signatures() <partycls.trajectory.Trajectory.compute_voronoi_signatures>`.
 		- List-type ``additional_fields`` (*e.g.* lists of neighbors) can now be read and written by :py:class:`Trajectory <partycls.trajectory.Trajectory>`.
@@ -19,6 +20,8 @@ Changelog
 		- A few new particle aliases (*e.g.* for neighbors and Voronoi signatures).
 		- Improved docstrings and documentation.
 	- Non backward-compatible changes:
+		- Subpackage ``partycls.descriptor`` renamed ``partycls.descriptors``.
+		- Deletion of abstract class ``AngularStructuralDescriptor``.
 		- Nearest neighbors and their cutoffs are now computed in :py:class:`Trajectory <partycls.trajectory.Trajectory>` and :py:class:`System <partycls.system.System>` with the :py:meth:`compute_nearest_neighbors() <partycls.trajectory.Trajectory.compute_nearest_neighbors>` and :py:meth:`compute_nearest_neighbors_cutoffs() <partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs>` methods.
 		- No more unique index as ``Particle.index`` attribute in :py:class:`Particle <partycls.particle.Particle>`.
 		- Rename a few attributes and methods.
