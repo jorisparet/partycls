@@ -11,6 +11,7 @@ from partycls.descriptors import SmoothedBondOrientationalDescriptor, SmoothedBo
 from partycls.descriptors import RadialBondOrientationalDescriptor
 from partycls.descriptors import TetrahedralDescriptor
 from partycls.descriptors import CompactnessDescriptor
+from partycls.descriptors import GlobalCoordinationDescriptor, ChemicalCoordinationDescriptor
 
 import numpy
 from numpy import float32
@@ -316,6 +317,49 @@ class Test(unittest.TestCase):
         D.compute()
         self.assertEqual(float32(D.average[0]), float32(0.11607557),
                          'wrong average value for compactness')
+
+    def test_global_coordination(self):
+        # trajectory and neighbors
+        traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        traj.compute_nearest_neighbors()
+        # descriptor (filter on group=0)
+        D = GlobalCoordinationDescriptor(traj)
+        D.add_filter("species == 'B'", group=0)
+        X = D.compute()
+        for i, pi in enumerate(D.groups[0][0]):
+            self.assertEqual(len(pi.nearest_neighbors), X[i,0], 
+                             'wrong global coordination number (g0)')
+        # descriptor (filter on group=1)
+        D.add_filter("species == 'B'", group=1)
+        X = D.compute()
+        n_B = [1, 0, 1, 0, 1, 0, 0, 0, 0, 0]
+        for i in range(len(n_B)):
+            self.assertEqual(n_B[i], X[i,0], 
+                            "wrong global coordination number (g0,g1)")
+
+    def test_chemical_coordination(self):
+        # trajectory and neighbors
+        traj = Trajectory(os.path.join(self.data_dir, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+        traj.compute_nearest_neighbors()
+        # descriptor (filter on group=0)
+        D = ChemicalCoordinationDescriptor(traj)
+        D.add_filter("species == 'B'", group=0)
+        X_0 = D.compute()
+        for i, pi in enumerate(D.groups[0][0]):
+            self.assertEqual(len(pi.nearest_neighbors), sum(X_0[i]), 
+                             'wrong chemical coordination number (g0)')
+        # descriptor (filter on group=1)
+        D.add_filter("species == 'B'", group=1)
+        X_1 = D.compute()
+        for i in range(len(D.groups[0][0])):
+            self.assertEqual(X_1[i,1], X_0[i,1],
+                             'wrong chemical coordination number for spe=B (g0,g1)')
+            self.assertEqual(X_1[i,0], 0,
+                             'wrong chemical coordination number for spe=A (g0,g1)')
 
 if __name__ == '__main__':
     unittest.main()
