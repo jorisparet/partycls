@@ -76,8 +76,7 @@ partycls implements various structural descriptors:
 * Locally averaged bond-orientational descriptor
 * Radial bond-orientational descriptor
 * Compactness descriptor
-* Global coordination descriptor
-* Chemical coordination descriptor
+* Coordination descriptor
 
 ### Machine learning
 
