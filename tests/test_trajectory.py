@@ -200,7 +200,9 @@ class Test(unittest.TestCase):
     def test_show(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=3)
-        traj.show(backend='matplotlib', outfile='traj_show_matplotlib')
+        traj.show(backend='matplotlib', outfile='traj_show_matplotlib_')
+        for i in range(4):
+            os.remove("traj_show_matplotlib_{:04}.png".format(i))
 
     def test_angular_zscore_pca_kmeans(self):
         D = BondAngleDescriptor(self.traj)

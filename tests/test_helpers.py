@@ -18,13 +18,20 @@ class Test(unittest.TestCase):
         s = self.traj[0]
         fig = show_matplotlib(s, 'species')
         fig = show_matplotlib(s, 'radius')
-        show_matplotlib(s, 'radius', outfile='')
+        show_matplotlib(s, 'radius', outfile='matplotlib_radius')
+        os.remove("matplotlib_radius.png")
         
     def test_show_ovito(self):
         from partycls.helpers import show_ovito
         s = self.traj[0]
-        fig = show_ovito(s, 'species', outfile='ovito_species.png')
-        fig = show_ovito(s, 'radius', outfile='ovito_radius.png')
+        # species
+        out = 'ovito_species.png'
+        fig = show_ovito(s, 'species', outfile=out)
+        os.remove(out)
+        # radius
+        out = 'ovito_radius.png'
+        fig = show_ovito(s, 'radius', outfile=out)
+        os.remove(out)
 
     def test_show_3dmol(self):
         from partycls.helpers import show_3dmol
