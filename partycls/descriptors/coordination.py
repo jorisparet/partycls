@@ -7,9 +7,9 @@ class CoordinationDescriptor(StructuralDescriptor):
     Coordination descriptor.
     
     The coordination number :math:`n_\\alpha(i)` of a particle :math:`i` is given
-    by the number of its :math:`N_b(i)` nearest neighbors whose chemical species 
+    by the number of its nearest neighbors whose chemical species 
     is :math:`\\alpha`, where  :math:`\\alpha` is either one of the :math:`n`
-    chemical species :math:`\\alpha_{i=1 \dots n}` in the trajectory 
+    chemical species :math:`\{ \\alpha_i \}_{i=1 \dots n}` in the trajectory 
     (*i.e.* partial coordination number, :math:`\\alpha = \\alpha_i`) or all 
     species at once (*i.e.* total coordination number, 
     :math:`\\alpha = \mathrm{all}`).
@@ -17,10 +17,10 @@ class CoordinationDescriptor(StructuralDescriptor):
     The resulting **full** feature vector for particle :math:`i` is given by
 
     .. math::
-        X^\mathrm{N}(i) = (\: n_\mathrm{all} \;\;  n_{\\alpha_1}(i) \;\; \dots \;\; n_{\\alpha_n}(i) \:) ,
+        X^\mathrm{N}(i) = (\: n_\mathrm{all}(i) \;\;  n_{\\alpha_1}(i) \;\; \dots \;\; n_{\\alpha_n}(i) \:) ,
     
-    but depends on wether the user requests the total coordination number, the
-    partial ones, or both.
+    but its size depends on whether the user requests the total coordination 
+    number, the partial ones, or both.
 
     .. note::
 
@@ -95,11 +95,11 @@ class CoordinationDescriptor(StructuralDescriptor):
             Trajectory on which the structural descriptor will be computed.
 
         total : bool, default: True
-            Compute the total coordination number, :math:`n`.
+            Compute the total coordination number.
 
         partial : bool, default: False
-            Compute the coordination number :math:`n_\\alpha` for each chemical 
-            species :math:`\\alpha` separately.
+            Compute the coordination number :math:`n_{\\alpha_i}` for each chemical 
+            species :math:`\\alpha_i` separately.
 
         accept_nans: bool, default: True
             If ``False``, discard any row from the array of features that contains a 
