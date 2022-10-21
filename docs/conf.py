@@ -119,16 +119,11 @@ intersphinx_mapping = {
 nbsphinx_prolog = r"""
 {% set docname = env.doc2path(env.docname, base='doc') %}
 
-.. only:: html
+.. tip::
+	
+	Run this notebook online: |binder|
 
-    .. role:: raw-html(raw)
-        :format: html
-
-    .. nbinfo::
-
-        Interactive online version:
-        :raw-html:`<a href="https://mybinder.org/v2/gh/jorisparet/partycls/{{ env.config.release }}?filepath={{ docname }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>`
-
-   __ https://github.com/jorisparet/partycls/blob/
-        {{ env.config.release }}/{{ docname }}
+	.. |binder| image:: https://mybinder.org/badge_logo.svg
+			:target: https://mybinder.org/v2/gh/jorisparet/partycls/{{ env.config.release }}?filepath={{ docname }}
+			:alt: Binder badge
 """
