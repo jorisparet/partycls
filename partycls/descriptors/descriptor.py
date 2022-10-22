@@ -141,7 +141,7 @@ class StructuralDescriptor:
         
         If ``False``, discard any row from the array of features that contains a
         `NaN` element. Warning: this will delete the selected rows from the
-        array of featyres! Use the method ``dismiss_nans`` instead to return a 
+        array of features! Use the method ``dismiss_nans()`` instead to return a 
         filtered copy of the array of features.
         
         If ``True``, keep `NaN` elements in the array of features.
