@@ -15,10 +15,12 @@ Nearest neighbors
 Nearest neighbors can be computed using the following method:
 
 .. automethod:: partycls.trajectory.Trajectory.compute_nearest_neighbors
+	:noindex:
 
 Nearest neighbors cutoffs can be automatically computed for each pair of species in the trajectory on the basis of the first minimum of the partial radial distribution functions :math:`g_{\alpha\beta}(r)`, where :math:`\alpha` and :math:`\beta` are species indices. This is done using the following method:
 
 .. automethod:: partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs
+	:noindex:
 
 Alternatively, both the nearest neighbors method and cutoffs can be set as instance attributes of :py:class:`Trajectory <partycls.trajectory.Trajectory>`:
 

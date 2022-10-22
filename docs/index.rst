@@ -61,7 +61,6 @@ For a more detailed documentation, you can check the :doc:`API <api>`.
 
 .. toctree::
 	:hidden:
-	:maxdepth: 2
 
 	Home <self>
 	install
