@@ -57,7 +57,7 @@ Optional
 ~~~~~~~~
 
 - `MDTraj <https://www.mdtraj.org>`_ (additional trajectory formats)
-- `atooms <https://framagit.org/atooms/atooms>`_ < 3.0.0 (additional trajectory formats)
+- `atooms <https://framagit.org/atooms/atooms>`_ (additional trajectory formats)
 - `DScribe <https://singroup.github.io/dscribe>`_ (additional descriptors)
 - `Matplotlib <https://matplotlib.org/>`_ (visualization)
 - `OVITO <https://ovito.org/>`_ (visualization)

@@ -756,19 +756,13 @@ class Trajectory:
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `atooms` module found.')
         
-        # Read additional fields if the trajectory format allows
-        if self.additional_fields:
-            try:
-                atooms_traj = _Trajectory(self.filename, fmt=self.fmt, fields=['id', 'pos'] + self.additional_fields)
-            except TypeError:
-                print('This trajectory format does not support additional fields')
-                print('Warning: ignoring additional fields.')
-                self.additional_fields = []
-                atooms_traj = _Trajectory(self.filename, fmt=self.fmt)
-        else:
-            atooms_traj = _Trajectory(self.filename, fmt=self.fmt)
+        default_neighbors_fields = ['neighbor', 'neighbors', 
+                                    'neighbour', 'neighbours', 
+                                    'nearest_neighbors',
+                                    'nearest_neighbours']
 
         # Fill the native Trajectory using atooms Trajectory
+        atooms_traj = _Trajectory(self.filename, fmt=self.fmt)
         for atooms_sys in atooms_traj:
             cell = Cell(atooms_sys.cell.side)
             system = System(cell=cell)
@@ -779,8 +773,12 @@ class Trajectory:
                 particle._index = n
                 # additional fields
                 for field in self.additional_fields:
-                    value = atooms_p.__getattribute__(field)
-                    particle.__setattr__(field, value)
+                    if field in default_neighbors_fields:
+                        value = atooms_p.__getattribute__('neighbors')
+                        particle.__setattr__('nearest_neighbors', value)
+                    else:
+                        value = atooms_p.__getattribute__(field)
+                        particle.__setattr__(field, value)
                 system.particle.append(particle)
             self._systems.append(system)
         atooms_traj.close()

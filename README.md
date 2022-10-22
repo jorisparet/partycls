@@ -96,7 +96,7 @@ partycls relies on several external packages, most of which only provide additio
 ### Optional
 
 * [MDTraj](https://www.mdtraj.org) (additional trajectory formats)
-* [atooms](https://framagit.org/atooms/atooms) < 3.0.0 (additional trajectory formats)
+* [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
 * [DScribe](https://singroup.github.io/dscribe) (additional descriptors)
 * [Matplotlib](https://matplotlib.org/) (visualization)
 * [OVITO](https://ovito.org/) (visualization)
