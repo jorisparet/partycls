@@ -7,6 +7,8 @@ such as structural analysis of disordered or partially ordered materials, and
 integrates the necessary tools of unsupervised learning into a streamlined workflow.
 """
 
+from .core._version import __version__
+
 from .workflow import Workflow
 from .trajectory import Trajectory
 from .clustering import *
