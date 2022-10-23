@@ -36,6 +36,12 @@ class Trajectory:
         original trajectory file.
     """
 
+    # accepted names for neighbors when reading/writing
+    _default_neighbors_fields = ['neighbor', 'neighbors', 
+                                 'neighbour', 'neighbours', 
+                                 'nearest_neighbors',
+                                 'nearest_neighbours']
+
     def __init__(self, filename, fmt=None, backend=None, top=None,
                  additional_fields=None, first=0, last=None, step=1):
         """
@@ -630,25 +636,20 @@ class Trajectory:
                             cluster_field_name = default_cluster_fields[cluster_field_mask.index(True)]
                             cidx = other_fields.index(cluster_field_name)
                             
-                    # neighbors
-                    default_neighbors_fields = ['neighbor', 'neighbors', 
-                                                'neighbour', 'neighbours', 
-                                                'nearest_neighbors',
-                                                'nearest_neighbours']
                     read_neigh_field = True in [
-                        ngh_field in self.additional_fields for ngh_field in default_neighbors_fields]
+                        ngh_field in self.additional_fields for ngh_field in self._default_neighbors_fields]
                     if read_neigh_field:
-                        neigh_field_mask = [nf in other_fields for nf in default_neighbors_fields]
+                        neigh_field_mask = [nf in other_fields for nf in self._default_neighbors_fields]
                         has_neighbors_field = True in neigh_field_mask
                         if has_neighbors_field:
-                            neighbors_field_name = default_neighbors_fields[neigh_field_mask.index(True)]
+                            neighbors_field_name = self._default_neighbors_fields[neigh_field_mask.index(True)]
                             nidx = other_fields.index(neighbors_field_name)
                             
                     # other additional fields
                     fields_to_read = []
                     fields_to_read_idx = []
                     for field in self.additional_fields:
-                        if field not in [*default_cluster_fields, *default_neighbors_fields]:
+                        if field not in [*default_cluster_fields, *self._default_neighbors_fields]:
                             fidx = other_fields.index(field)
                             fields_to_read.append(field)
                             fields_to_read_idx.append(fidx)
@@ -755,11 +756,6 @@ class Trajectory:
             from atooms.trajectory import Trajectory as _Trajectory
         except ModuleNotFoundError:
             raise ModuleNotFoundError('No `atooms` module found.')
-        
-        default_neighbors_fields = ['neighbor', 'neighbors', 
-                                    'neighbour', 'neighbours', 
-                                    'nearest_neighbors',
-                                    'nearest_neighbours']
 
         # Fill the native Trajectory using atooms Trajectory
         atooms_traj = _Trajectory(self.filename, fmt=self.fmt)
@@ -773,7 +769,7 @@ class Trajectory:
                 particle._index = n
                 # additional fields
                 for field in self.additional_fields:
-                    if field in default_neighbors_fields:
+                    if field in self._default_neighbors_fields:
                         value = atooms_p.__getattribute__('neighbors')
                         particle.__setattr__('nearest_neighbors', value)
                     else:
@@ -870,27 +866,23 @@ class Trajectory:
 
     def _write_atooms(self, output_path, fmt, fields, precision):
         try:
-            from atooms.trajectory import Trajectory as AtoomsTrajectory
+            from atooms.trajectory import Trajectory as _Trajectory
             from atooms.system import System as _System
             from atooms.system import Particle as _Particle
             from atooms.system import Cell as _Cell
         except ModuleNotFoundError:
             print('No `atooms` module found.')
 
-        # TODO: The reason not to use the factory directly here is to
-        # be able to test if additional fields are allowed. We can
-        # find better ways to do that
-        try:
-            _Trajectory = AtoomsTrajectory.formats[fmt]
-        except KeyError:
-            raise KeyError("Trajectory format `{}` is not supported by atooms".format(fmt))
+        # open an output trajectory
+        atooms_traj = _Trajectory(output_path, fmt=fmt, mode='w')
 
-        # Write additional fields if the trajectory format allows
-        try:
-            atooms_traj = _Trajectory(output_path, 'w', fields=['id', 'pos'] + fields)
-        except TypeError:
-            print('This trajectory format does not support additional fields (e.g. cluster labels)')
+        # additional fields
+        variables = ['particle.species', 'particle.position']
+        for field in fields:
+            variables.append('particle.{}'.format(field))
+        atooms_traj.variables = variables
 
+        # write the output trajectory
         for n, system in enumerate(self._systems):
             new_cell = _Cell(side=system.cell.side)
             new_system = _System(cell=new_cell)
@@ -899,6 +891,13 @@ class Trajectory:
                 spe = particle.species
                 label = particle.label
                 new_particle = _Particle(species=spe, position=pos)
+                # additional fields
+                for field in fields:
+                    if field in self._default_neighbors_fields:
+                        value = particle.__getattribute__('nearest_neighbors')
+                    else:
+                        value = particle.__getattribute__(field)
+                    new_particle.__setattr__(field, value)
                 new_particle.label = label
                 new_system.particle.append(new_particle)
             atooms_traj.write(new_system, step=n)
