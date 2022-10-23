@@ -52,6 +52,9 @@ extensions = [
 # include __init__ methods
 autoclass_content = 'both'
 
+# sort members by the order they appear in source files
+autodoc_member_order = 'bysource'
+
 # bibtex files
 bibtex_bibfiles = [
 	'joss.bib',
