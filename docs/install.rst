@@ -62,5 +62,5 @@ Optional
 - `Matplotlib <https://matplotlib.org/>`_ (visualization)
 - `OVITO <https://ovito.org/>`_ (visualization)
 - `Py3DMol <https://github.com/avirshup/py3dmol>`_ (interactive 3D visualization)
-- `pyvoro <https://github.com/joe-jordan/pyvoro>`_ (Voronoi neighbors and tessellation)
+- `pyvoro <https://github.com/joe-jordan/pyvoro>`_ or its `memory-optimized fork <https://framagit.org/coslo/pyvoro>`_ for large systems (Voronoi neighbors and tessellation)
 - `tqdm <https://tqdm.github.io/>`_ (progress bars)

@@ -101,7 +101,7 @@ partycls relies on several external packages, most of which only provide additio
 * [Matplotlib](https://matplotlib.org/) (visualization)
 * [OVITO](https://ovito.org/) (visualization)
 * [Py3DMol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
-* [pyvoro](https://github.com/joe-jordan/pyvoro) (Voronoi neighbors and tessellation)
+* [pyvoro](https://github.com/joe-jordan/pyvoro) or its [memory-optimized fork](https://framagit.org/coslo/pyvoro) for large systems (Voronoi neighbors and tessellation)
 * [tqdm](https://tqdm.github.io/) (progress bars)
 
 Documentation
