@@ -806,6 +806,8 @@ class Trajectory:
             self._systems.append(system)
 
     def _write_xyz(self, output_path, additional_fields, precision):
+        from collections.abc import Iterable
+
         if not output_path.endswith('.xyz'):
             output_path += '.xyz'
         # deal with additional fields that are aliases
@@ -829,7 +831,7 @@ class Trajectory:
                     line += '{} '.format(' '.join('{:.{}f}'.format(p_i, precision) for p_i in particle.position))
                     for field in processed_fields:
                         attribute = particle.__getattribute__(field)
-                        if isinstance(attribute, list):
+                        if isinstance(attribute, Iterable):
                             line += '{} '.format(','.join(map(str, attribute)))
                         else:
                             line += '{} '.format(attribute)
