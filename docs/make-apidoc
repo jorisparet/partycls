@@ -1,2 +1,0 @@
-rm -rf source/*
-sphinx-apidoc --module-first -f -o source/ ../partycls ../partycls/*_wrap* ../partycls/descriptors/*_wrap*
