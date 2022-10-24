@@ -11,6 +11,11 @@
   
 **partycls** is a Python package for cluster analysis of systems of interacting particles. By grouping particles that share similar structural or dynamical properties, partycls enables rapid and unsupervised exploration of the system's relevant features. It provides descriptors suitable for applications in condensed matter physics, such as structural analysis of disordered or partially ordered materials, and integrates the necessary tools of unsupervised learning into a streamlined workflow.
 
+Homepage
+--------
+
+For more details and tutorials, visit the homepage at: https://www.jorisparet.com/partycls
+
 Quick start
 -----------
 
@@ -27,7 +32,7 @@ traj[0].show(color='label', backend='ovito')
 
 ![](https://raw.githubusercontent.com/jorisparet/partycls/master/data/snapshots/grains_labels.png)
 
-The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be tuned and customized, check out the [tutorials](https://jorisparet.github.io/partycls/docs/tutorial/) to see how and for further examples.
+The results are also written to a set of files including a labeled trajectory file and additional information on the clustering results. The whole workflow can be tuned and customized, check out the [tutorials](https://www.jorisparet.com/partycls/tutorials) to see how and for further examples.
 
 Thanks to a flexible system of filters, partycls makes it easy to restrict the analysis to a given subset of particles based on arbitrary particle properties. Say we have a binary mixture composed of particles with types A and B, and we are only interested in analyzing the bond angles of B particles in a vertical slice:
 
@@ -67,16 +72,16 @@ partycls accepts several trajectory formats (including custom ones) either throu
 
 partycls implements various structural descriptors: 
 
-* Radial descriptor
-* Tetrahedral descriptor
-* Bond-angle descriptor
-* Smoothed bond-angle descriptor
-* Bond-orientational descriptor
-* Smoothed bond-orientational descriptor
-* Locally averaged bond-orientational descriptor
-* Radial bond-orientational descriptor
-* Compactness descriptor
-* Coordination descriptor
+* [Radial descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/gr.html)
+* [Tetrahedral descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/tetra.html)
+* [Bond-angle descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/ba.html)
+* [Smoothed bond-angle descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/sba.html)
+* [Bond-orientational descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/bo.html)
+* [Smoothed bond-orientational descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/sbo.html)
+* [Locally averaged bond-orientational descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/labo.html)
+* [Radial bond-orientational descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/rbo.html)
+* [Compactness descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/compact.html)
+* [Coordination descriptor](https://www.jorisparet.com/partycls/tutorials/descriptors/coord.html)
 
 ### Machine learning
 
@@ -107,8 +112,9 @@ partycls relies on several external packages, most of which only provide additio
 Documentation
 -------------
 
-- See the [tutorials](https://www.jorisparet.com/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
-- Full [API documentation](https://www.jorisparet.com/partycls/docs/API/).
+Check the [tutorials](https://www.jorisparet.com/partycls/tutorials) to see various examples and detailed instructions on how to run the code, as well as an in-depth presentation of the built-in structural descriptors.
+
+For a more detailed documentation, you can check the [API](https://www.jorisparet.com/partycls/api).
 
 Installation
 ------------
