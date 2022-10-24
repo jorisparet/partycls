@@ -10,7 +10,7 @@ partycls
 .. image:: https://img.shields.io/pypi/v/partycls.svg
 	:target: https://pypi.python.org/pypi/partycls/
 	:alt: pyPI version badge
-.. image:: https://img.shields.io/badge/coverage-89%25-green
+.. image:: https://img.shields.io/badge/coverage-84%25-green
 	#:target:
 	:alt: coverage badge
 .. image:: https://joss.theoj.org/papers/10.21105/joss.03723/status.svg
