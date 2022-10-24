@@ -11,7 +11,7 @@ user: version
 	python setup.py install --user
 
 fortran:
-	cd partycls/descriptor/; f2py -c -m realspace_wrap realspace.f90; cd ../../
+	cd partycls/descriptors/; f2py -c -m realspace_wrap realspace.f90; cd ../../
 	cd partycls/; f2py -c -m neighbors_wrap neighbors.f90; cd ../
 
 test: fortran

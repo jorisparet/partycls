@@ -1,10 +1,10 @@
 numpy
 sklearn
 dscribe # optional
-atooms<3 # optional
+atooms # optional
 mdtraj # optional
 matplotlib # optional
 py3Dmol # optional
-ovito # optional
+ovito<3.7.0 # optional
 git+https://framagit.org/coslo/pyvoro # optional
 tqdm # optional

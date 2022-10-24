@@ -60,7 +60,7 @@ Optional
 - `atooms <https://framagit.org/atooms/atooms>`_ (additional trajectory formats)
 - `DScribe <https://singroup.github.io/dscribe>`_ (additional descriptors)
 - `Matplotlib <https://matplotlib.org/>`_ (visualization)
-- `OVITO <https://ovito.org/>`_ (visualization)
+- `OVITO <https://ovito.org/>`_ < 3.7.0 (visualization)
 - `Py3DMol <https://github.com/avirshup/py3dmol>`_ (interactive 3D visualization)
 - `pyvoro <https://github.com/joe-jordan/pyvoro>`_ or its `memory-optimized fork <https://framagit.org/coslo/pyvoro>`_ for large systems (Voronoi neighbors and tessellation)
 - `tqdm <https://tqdm.github.io/>`_ (progress bars)

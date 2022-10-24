@@ -99,7 +99,7 @@ partycls relies on several external packages, most of which only provide additio
 * [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
 * [DScribe](https://singroup.github.io/dscribe) (additional descriptors)
 * [Matplotlib](https://matplotlib.org/) (visualization)
-* [OVITO](https://ovito.org/) (visualization)
+* [OVITO](https://ovito.org/) < 3.7.0 (visualization)
 * [Py3DMol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
 * [pyvoro](https://github.com/joe-jordan/pyvoro) or its [memory-optimized fork](https://framagit.org/coslo/pyvoro) for large systems (Voronoi neighbors and tessellation)
 * [tqdm](https://tqdm.github.io/) (progress bars)
