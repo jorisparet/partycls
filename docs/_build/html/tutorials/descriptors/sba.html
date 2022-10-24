@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smoothed bond-angle descriptor &mdash; partycls 2.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Bond-orientational descriptor" href="bo.html" />
+    <link rel="prev" title="Bond-angle descriptor" href="ba.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html"> Home</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gr.html">Radial descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tetra.html">Tetrahedral descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ba.html">Bond-angle descriptor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Smoothed bond-angle descriptor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labo.html">Locally averaged bond-orientational descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compact.html">Compactness descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coord.html">Coordination descriptor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Support and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing partycls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">partycls</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
+      <li>Smoothed bond-angle descriptor</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/descriptors/sba.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="smoothed-bond-angle-descriptor">
+<h1>Smoothed bond-angle descriptor<a class="headerlink" href="#smoothed-bond-angle-descriptor" title="Permalink to this heading"></a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>See <a class="reference internal" href="ba.html"><span class="doc">Bond-angle descriptor</span></a> first.</p>
+</div>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h2>
+<p>This is a smooth version of the <a class="reference internal" href="ba.html"><span class="doc">Bond-angle descriptor</span></a> in which the bond angles <span class="math notranslate nohighlight">\(\theta_{jik}\)</span> are multiplied by a weighting function <span class="math notranslate nohighlight">\(f(r_{ij}, r_{ik})\)</span> that depends on the radial distances <span class="math notranslate nohighlight">\(r_{ij}\)</span> and <span class="math notranslate nohighlight">\(r_{ik}\)</span> between <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((i,k)\)</span> respectively, where <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span> can be any particle in the system (<em>i.e.</em> not necessarily a nearest neighbors of <span class="math notranslate nohighlight">\(i\)</span>).</p>
+<p>Essentially, we define the <em>smoothed</em> number of bond angles around particle <span class="math notranslate nohighlight">\(i\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}N_i^S(\theta_n) = \sum_{j=1}^N \sum_{\substack{k=1 \\ k \neq j}}^N f(r_{ij}, r_{ik}) \delta(\theta_n - \theta_{jik}) ,\end{split}\]</div>
+<p>where the superscript <span class="math notranslate nohighlight">\(S\)</span> indicates the smooth nature of the descriptor, and <span class="math notranslate nohighlight">\(f(r_{ij}, r_{ik})\)</span> is the following smoothing function:</p>
+<div class="math notranslate nohighlight">
+\[f(r_{ij}, r_{ik}) = \exp \left[ - \left[ ( r_{ij} / r_{\alpha\beta}^c )^\gamma + ( r_{ik} / r_{\alpha\beta'}^c )^\gamma \right] \right] H( R_\mathrm{max}^c - r_{ij} ) H( R_\mathrm{max}^c - r_{ik}) ,\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(r_{\alpha\beta}^c\)</span> and <span class="math notranslate nohighlight">\(r_{\alpha\beta'}^c\)</span> are the first minima of the corresponding partial radial distribution functions for the pairs <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((i,k)\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> is an integer.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_\mathrm{max}^c = \xi \times \max(\{ r_{\alpha\beta}^c \})\)</span> is the largest nearest neighbor cutoff rescaled by <span class="math notranslate nohighlight">\(\xi &gt; 1\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(H\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Heaviside_step_function">Heavide step function</a>, which ensures for efficiency reasons, that the descriptor only has contributions from particles within a distance <span class="math notranslate nohighlight">\(R_\mathrm{max}^c\)</span>.</p></li>
+</ul>
+<p>We then consider <span class="math notranslate nohighlight">\(N_i^S(\theta_n)\)</span> for a set of angles <span class="math notranslate nohighlight">\(\{ \theta_n \}\)</span> that go from <span class="math notranslate nohighlight">\(\theta_0 = 0^\circ\)</span> to <span class="math notranslate nohighlight">\(\theta_{n_\mathrm{max}}=180^\circ\)</span> by steps of <span class="math notranslate nohighlight">\(\Delta \theta\)</span>. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[X^\mathrm{SBA}(i) = (\: N_i^S(\theta_0) \;\; N_i^S(\theta_1) \;\; \dots \;\; N_i^S(\theta_{n_\mathrm{max}}) \:) .\]</div>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Instantiating this descriptor on a <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">SmoothedBondAngleDescriptor</span>
+
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">SmoothedBondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The constructor takes the following parameters:</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.__init__">
+<span class="sig-prename descclassname"><span class="pre">SmoothedBondAngleDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_enlargement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptors/smoothed_ba.html#SmoothedBondAngleDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trajectory</strong> (<a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
+<li><p><strong>dtheta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta \theta\)</span> in degrees.</p></li>
+<li><p><strong>cutoff_enlargement</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 1.3</em>) – Scaling factor <span class="math notranslate nohighlight">\(\xi\)</span> for the largest nearest neighbors cutoff
+<span class="math notranslate nohighlight">\(\max(\{ r_\mathrm{\alpha\beta}^c \})\)</span> to consider neighbors <span class="math notranslate nohighlight">\(j\)</span>
+a distance <span class="math notranslate nohighlight">\(R_\mathrm{max}^c = \xi \times \max(\{r_{\alpha\beta}^c\})\)</span>
+away from the central particle <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><strong>exponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Exponent <span class="math notranslate nohighlight">\(\gamma\)</span> in the smoothing function
+<span class="math notranslate nohighlight">\(f(r_{ij},r_{ik})\)</span>.</p></li>
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
+is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>The computation of this descriptor relies on:</p>
+<ul class="simple">
+<li><p><strong>Nearest neighbors cutoffs</strong>. These can either be set in the <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> prior to the computation of the descriptor, or computed from inside the descriptor using a default method.</p></li>
+</ul>
+</section>
+<section id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this heading"></a></h2>
+<p>We consider an input trajectory file <code class="file docutils literal notranslate"><span class="pre">trajectory.xyz</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>. We can either compute or set the nearest neighbors cutoffs <span class="math notranslate nohighlight">\(\{ r_{\alpha\beta}^c \}\)</span> for the smoothing directly in <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+
+<span class="c1"># open the trajectory</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+
+<span class="c1"># compute the nearest neighbors cutoffs</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors_cutoffs</span><span class="p">(</span><span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;computed cuttofs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
+
+<span class="c1"># set the nearest neighbors cuttofs</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;manually set cuttofs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>computed cutoffs:
+ [1.4500000000000004, 1.3500000000000003, 1.3500000000000003, 1.2500000000000002]
+manually set cutoffs:
+ [1.45, 1.35, 1.35, 1.25]
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If not computed in <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> or manually set, the cutoffs <span class="math notranslate nohighlight">\(\{ r_{\alpha\beta}^c \}\)</span> will be computed from inside the descriptor.</p>
+</div>
+<p>We now instantiate a <a class="reference internal" href="../../source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor" title="partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor</span></code></a> on this trajectory and restrict the analysis to type-B particles only. We set <span class="math notranslate nohighlight">\(\Delta \theta = 18^\circ\)</span>, <span class="math notranslate nohighlight">\(\xi=1.3\)</span> and <span class="math notranslate nohighlight">\(\gamma=8\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">SmoothedBondAngleDescriptor</span>
+
+<span class="c1"># instantiation</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">SmoothedBondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span>
+                                <span class="n">dtheta</span><span class="o">=</span><span class="mf">18.0</span><span class="p">,</span>
+                                <span class="n">cutoff_enlargement</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span>
+                                <span class="n">exponent</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># print the grid of angles (in degrees)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+
+<span class="c1"># restrict the analysis to type-B particles</span>
+<span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># compute the descriptor&#39;s data matrix</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c1"># print the first three feature vectors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid:
+ [  9.  27.  45.  63.  81.  99. 117. 135. 153. 171.]
+feature vectors:
+ [[ 0.          0.24735055  5.1652519  29.43498845 10.5325834  14.99235213
+  19.81940987 10.74915154  5.74995792  3.83545611]
+  [ 0.          0.16020613  4.79852719 35.17585892  9.27868908 14.30365693
+  20.88630866 12.92153832  2.269351    7.38748952]
+  [ 0.          0.08214317 11.23967682 32.2093987   4.0642088  24.10157113
+  19.94955473  7.72183504 12.2267004   3.29940419]]
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grid</span></code> shows the grid of angles <span class="math notranslate nohighlight">\(\{ \theta_n \}\)</span> in degrees, where <span class="math notranslate nohighlight">\(\Delta \theta = 18^\circ\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature</span> <span class="pre">vectors</span></code> shows the first three feature vectors <span class="math notranslate nohighlight">\(X^\mathrm{SBA}(1)\)</span>, <span class="math notranslate nohighlight">\(X^\mathrm{SBA}(2)\)</span> and <span class="math notranslate nohighlight">\(X^\mathrm{SBA}(3)\)</span> corresponding to the grid.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ba.html" class="btn btn-neutral float-left" title="Bond-angle descriptor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bo.html" class="btn btn-neutral float-right" title="Bond-orientational descriptor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Joris Paret.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

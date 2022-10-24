@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>partycls.helpers &mdash; partycls 2.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Support and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing partycls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">partycls</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>partycls.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for partycls.helpers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various helper functions for visualization, cluster analysis, etc.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">adjusted_mutual_info_score</span> <span class="k">as</span> <span class="n">AMI</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">adjusted_rand_score</span> <span class="k">as</span> <span class="n">ARI</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">silhouette_samples</span><span class="p">,</span> <span class="n">silhouette_score</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AMI&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;ARI&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;silhouette_samples&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;silhouette_score&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;show_matplotlib&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;show_ovito&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;show_3dmol&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;shannon_entropy&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;merge_clusters&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;sort_clusters&#39;</span><span class="p">]</span>
+
+<span class="n">_palette</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#50514f&quot;</span><span class="p">,</span> <span class="s2">&quot;#f25f5c&quot;</span><span class="p">,</span> <span class="s2">&quot;#ffe066&quot;</span><span class="p">,</span> <span class="s2">&quot;#247ba0&quot;</span><span class="p">,</span> <span class="s2">&quot;#70c1b3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#0cce6b&quot;</span><span class="p">,</span> <span class="s2">&quot;#c200fb&quot;</span><span class="p">,</span> <span class="s2">&quot;#e2a0ff&quot;</span><span class="p">,</span> <span class="s2">&quot;#6622cc&quot;</span><span class="p">,</span> <span class="s2">&quot;#119822&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">hex_to_rgb</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">/</span> <span class="mi">256</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="show_matplotlib"><a class="viewcode-back" href="../../source/partycls.html#partycls.helpers.show_matplotlib">[docs]</a><span class="k">def</span> <span class="nf">show_matplotlib</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+                    <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a snapshot of the ``system`` using matplotlib.</span>
+<span class="sd">    The figure is returned for further customization or visualization </span>
+<span class="sd">    in jupyter notebooks.    </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    system : System</span>
+<span class="sd">        The system to visualize.</span>
+
+<span class="sd">    color : str</span>
+<span class="sd">        Particle property to use for color coding, *e.g.* ``&quot;species&quot;``, ``&quot;label&quot;``.</span>
+
+<span class="sd">    view : str, default: &quot;top&quot;</span>
+<span class="sd">        View type, *i.e.* face of the box to show. Only works for a 3D system.</span>
+
+<span class="sd">    palette : list, default: None</span>
+<span class="sd">        List of colors when coloring particles according to a discrete property,</span>
+<span class="sd">        such as ``&quot;species&quot;`` or ``&quot;label&quot;``. A default palette will be used if </span>
+<span class="sd">        not specified.</span>
+
+<span class="sd">    cmap : str, default: &quot;viridis&quot;</span>
+<span class="sd">        Name of a matplotlib colormap to use when coloring particles according</span>
+<span class="sd">        to a continuous property such as ``&quot;velocity&quot;`` or ``&quot;energy&quot;``. List of </span>
+<span class="sd">        available colormaps can be found in ``matplotlib.cm.cmaps_listed``.</span>
+
+<span class="sd">    outfile : str, default: None</span>
+<span class="sd">        Output filename to save the snapshot. Default is to not save.</span>
+
+<span class="sd">    linewidth : float, default: 0.5</span>
+<span class="sd">        Line width.</span>
+
+<span class="sd">    alpha : float, default: 1.0</span>
+<span class="sd">        Transparency parameter.</span>
+
+<span class="sd">    show : bool, default: False</span>
+<span class="sd">        Show the snapshot when calling the function.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        Figure of the snapshot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.cm</span> <span class="kn">import</span> <span class="n">cmaps_listed</span>
+    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;install matplotlib to display the particles&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="kn">from</span> <span class="nn">.core.utils</span> <span class="kn">import</span> <span class="n">tipify</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">argsort</span>
+
+    <span class="n">views</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+             <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+             <span class="s1">&#39;front&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+             <span class="s1">&#39;back&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+             <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+             <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]}</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="o">-</span><span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="o">-</span><span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="c1"># scale marker size relative to box size</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">()</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># color according to a specific property</span>
+    <span class="n">property_vals</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;particle.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+
+    <span class="c1"># discrete property?</span>
+    <span class="n">discrete</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tipify</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">property_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span>
+    <span class="c1"># corresponding color system</span>
+    <span class="n">discrete_colors</span> <span class="o">=</span> <span class="n">_palette</span> <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">palette</span>
+    <span class="n">colormap</span> <span class="o">=</span> <span class="n">cmaps_listed</span><span class="p">[</span><span class="n">cmap</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+        <span class="n">property_set</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">property_vals</span><span class="p">))</span>
+        <span class="n">property_set</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">color_db</span> <span class="o">=</span> <span class="n">discrete_colors</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color_db</span> <span class="o">=</span> <span class="n">colormap</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">property_vals</span><span class="p">))</span>
+
+    <span class="c1"># list of individual colors</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pn</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+            <span class="n">p_color</span> <span class="o">=</span> <span class="n">color_db</span><span class="p">[</span><span class="n">property_set</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">color</span><span class="p">))]</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_color</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color_db</span><span class="p">[</span><span class="n">pn</span><span class="p">])</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+
+    <span class="c1"># positions and radii</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">)</span>
+
+    <span class="c1"># plot 3D</span>
+    <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">n_dimensions</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span> <span class="o">=</span> <span class="n">views</span><span class="p">[</span><span class="n">view</span><span class="p">]</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[:,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[:,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">zi</span><span class="p">)</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[:,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">zi</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="n">argsort</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+        <span class="n">sizes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">scale</span> <span class="o">*</span> <span class="n">R</span><span class="p">[</span><span class="n">order</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">order</span><span class="p">],</span>
+                   <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">sizes</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="c1"># plot 2D</span>
+    <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">n_dimensions</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">R</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+                   <span class="n">linewidths</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+<div class="viewcode-block" id="show_ovito"><a class="viewcode-back" href="../../source/partycls.html#partycls.helpers.show_ovito">[docs]</a><span class="k">def</span> <span class="nf">show_ovito</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+               <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">),</span> <span class="n">zoom</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a snapshot of the ``system`` using Ovito.</span>
+<span class="sd">    The image is returned for further customization or visualization </span>
+<span class="sd">    in jupyter notebooks.        </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    system : System</span>
+<span class="sd">        The system to visualize.</span>
+
+<span class="sd">    color : str</span>
+<span class="sd">        Particle property to use for color coding, e.g. ``&quot;species&quot;``, ``&quot;label&quot;``.</span>
+
+<span class="sd">    view : str, default: &quot;top&quot;</span>
+<span class="sd">        View type, *i.e.* face of the box to show. Only works for a 3D system.</span>
+
+<span class="sd">    palette : list, default: &quot;viridis&quot;</span>
+<span class="sd">        List of colors when coloring particles according to a discrete property,</span>
+<span class="sd">        such as ``&quot;species&quot;`` or ``&quot;label&quot;``. Colors must be expressed in RGB format through</span>
+<span class="sd">        tuples (*e.g.* ``palette=[(0,0,1), (1,0,0)]``). A default palette will be used</span>
+<span class="sd">        if not specified.</span>
+<span class="sd">   </span>
+<span class="sd">    cmap : str, optional</span>
+<span class="sd">        Name of a matplotlib colormap to use when coloring particles according</span>
+<span class="sd">        to a continuous property such as ``&quot;velocity&quot;`` or &quot;``energy&quot;``. List of </span>
+<span class="sd">        available colormap can be found in ``matplotlib.cm.cmaps_listed``.</span>
+
+<span class="sd">    outfile : str, default: None</span>
+<span class="sd">        Output filename to save the snapshot. The default is to not save.</span>
+
+<span class="sd">    size : tuple, default: (640, 480)</span>
+<span class="sd">        Size of the image to render.</span>
+
+<span class="sd">    zoom : bool, default: True</span>
+<span class="sd">        Zoom on the simulation box.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Image</span>
+<span class="sd">        Rendered image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+        <span class="kn">from</span> <span class="nn">ovito.vis</span> <span class="kn">import</span> <span class="n">Viewport</span><span class="p">,</span> <span class="n">TachyonRenderer</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: install `ovito` to display the particles.&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">tempfile</span>
+    <span class="kn">from</span> <span class="nn">.core.utils</span> <span class="kn">import</span> <span class="n">tipify</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.cm</span> <span class="kn">import</span> <span class="n">cmaps_listed</span>
+
+    <span class="c1"># discrete property?</span>
+    <span class="n">property_vals</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;particle.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+    <span class="n">discrete</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tipify</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">property_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span>
+    <span class="c1"># corresponding color system</span>
+    <span class="n">discrete_colors</span> <span class="o">=</span> <span class="n">_palette</span> <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">palette</span>
+    <span class="n">colormap</span> <span class="o">=</span> <span class="n">cmaps_listed</span><span class="p">[</span><span class="n">cmap</span><span class="p">]</span>
+
+    <span class="c1"># discrete or continuous color field</span>
+    <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">discrete_colors</span> <span class="o">=</span> <span class="n">_palette</span>
+        <span class="n">discrete_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">discrete_colors</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">discrete_colors</span> <span class="o">=</span> <span class="n">palette</span>
+    <span class="c1"># corresponding palette / colormap</span>
+    <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+        <span class="n">property_set</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">property_vals</span><span class="p">))</span>
+        <span class="n">property_set</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">color_db</span> <span class="o">=</span> <span class="n">discrete_colors</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color_db</span> <span class="o">=</span> <span class="n">colormap</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">property_vals</span><span class="p">))</span>
+    
+    <span class="c1"># individual particle color</span>
+    <span class="k">for</span> <span class="n">pn</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+            <span class="n">p_color</span> <span class="o">=</span> <span class="n">color_db</span><span class="p">[</span><span class="n">property_set</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">color</span><span class="p">))]</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">p_color</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color_db</span><span class="p">[</span><span class="n">pn</span><span class="p">]</span>
+    
+    <span class="c1"># Get a temporary file to write the sample</span>
+    <span class="n">fh</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.xyz&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tmp_file</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">name</span>
+    <span class="c1"># Self-contained EXYZ dump (it is not clean to use trajectories here)</span>
+    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">)))</span>
+    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Properties=species:S:1:pos:R:3:radius:R:1:color:R:3 Lattice=&quot;</span><span class="si">{}</span><span class="s1">,0.,0.,0.,</span><span class="si">{}</span><span class="s1">,0.,0.,0.,</span><span class="si">{}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="o">*</span><span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+    <span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Ovito stuff. Can be customized by client code.</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="n">tmp_file</span><span class="p">)</span>
+    <span class="c1"># Ovito seems to ignore the lattice info of exyz file</span>
+    <span class="c1"># so we forcibly set the cell info here</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cell_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cell_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cell_</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cell_</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">add_to_scene</span><span class="p">()</span>
+
+    <span class="n">views</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;top&#39;</span><span class="p">:</span>    <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Top</span><span class="p">,</span>
+             <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Bottom</span><span class="p">,</span>
+             <span class="s1">&#39;front&#39;</span><span class="p">:</span>  <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Front</span><span class="p">,</span>
+             <span class="s1">&#39;back&#39;</span><span class="p">:</span>   <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Back</span><span class="p">,</span>
+             <span class="s1">&#39;left&#39;</span><span class="p">:</span>   <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Left</span><span class="p">,</span>
+             <span class="s1">&#39;right&#39;</span><span class="p">:</span>  <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Right</span><span class="p">}</span>
+    <span class="n">vp_type</span> <span class="o">=</span> <span class="n">views</span><span class="p">[</span><span class="n">view</span><span class="p">]</span>
+    <span class="n">vp</span> <span class="o">=</span> <span class="n">Viewport</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">vp_type</span><span class="p">)</span>
+
+    <span class="c1"># Render</span>
+    <span class="k">if</span> <span class="n">zoom</span><span class="p">:</span>
+        <span class="n">vp</span><span class="o">.</span><span class="n">zoom_all</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="n">tmp_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+        
+    <span class="n">vp</span><span class="o">.</span><span class="n">render_image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> 
+                    <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> 
+                    <span class="n">renderer</span><span class="o">=</span><span class="n">TachyonRenderer</span><span class="p">())</span>
+
+    <span class="c1"># Scene is a singleton, so we must clear it</span>
+    <span class="n">pipeline</span><span class="o">.</span><span class="n">remove_from_scene</span><span class="p">()</span>
+    
+    <span class="c1"># remove temporary exyz file</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_file</span><span class="p">)</span>
+
+    <span class="c1"># Try to display the image (e.g. in a jupyter notebook)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outfile</span></div>
+
+
+<div class="viewcode-block" id="show_3dmol"><a class="viewcode-back" href="../../source/partycls.html#partycls.helpers.show_3dmol">[docs]</a><span class="k">def</span> <span class="nf">show_3dmol</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize the ``system`` using 3dmol.</span>
+<span class="sd">    The py3Dmol view is returned for further customization or visualization </span>
+<span class="sd">    in jupyter notebooks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    system : System</span>
+<span class="sd">        The system to visualize.</span>
+
+<span class="sd">    color : str</span>
+<span class="sd">        Particle property to use for color coding, *e.g.* ``&quot;species&quot;``, ``&quot;label&quot;``.</span>
+<span class="sd">        This property must be a string or an integer.</span>
+
+<span class="sd">    palette : list, default: None</span>
+<span class="sd">        List of colors when coloring particles according to a discrete property,</span>
+<span class="sd">        such as ``&quot;species&quot;`` or ``&quot;label&quot;``. A default palette will be used if not </span>
+<span class="sd">        specified.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the ``color`` parameter refers to a ``float`` particle property.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    view : py3Dmol.view</span>
+<span class="sd">        py3Dmol view.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">py3Dmol</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;install py3Dmol to display the particles&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="kn">from</span> <span class="nn">.trajectory</span> <span class="kn">import</span> <span class="n">tipify</span>
+
+    <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">palette</span> <span class="o">=</span> <span class="n">_palette</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">py3Dmol</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+    <span class="n">view</span><span class="o">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="c1"># color according to a specific property</span>
+    <span class="n">property_vals</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;particle.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+    <span class="n">property_set</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">property_vals</span><span class="p">))</span>
+    <span class="n">property_set</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tipify</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">property_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;cannot color particle according to a float property&#39;</span><span class="p">)</span>
+    <span class="c1"># plot particles</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+        <span class="n">p_color</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="n">property_set</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">color</span><span class="p">))]</span>
+        <span class="n">view</span><span class="o">.</span><span class="n">addSphere</span><span class="p">({</span><span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                   <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                   <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]},</span>
+                        <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
+                        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">p_color</span><span class="p">})</span>
+    <span class="c1"># plot cell</span>
+    <span class="n">view</span><span class="o">.</span><span class="n">addBox</span><span class="p">({</span><span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                            <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                            <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+                 <span class="s1">&#39;dimensions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">[</span><span class="mi">2</span><span class="p">]},</span>
+                 <span class="s1">&#39;wireframe&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">view</span></div>
+
+
+<div class="viewcode-block" id="shannon_entropy"><a class="viewcode-back" href="../../source/partycls.html#partycls.helpers.shannon_entropy">[docs]</a><span class="k">def</span> <span class="nf">shannon_entropy</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shannon entropy of distribution :math:`p(x)`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    px : numpy.array</span>
+<span class="sd">        Distribution :math:`p(x)`.</span>
+
+<span class="sd">    dx : float, default: 1.0</span>
+<span class="sd">        Differential of x.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    S : float</span>
+<span class="sd">        Shannon entropy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">px</span> <span class="o">*</span> <span class="n">dx</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">P</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">S</span> <span class="o">+=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">S</span></div>
+
+
+<div class="viewcode-block" id="merge_clusters"><a class="viewcode-back" href="../../source/partycls.html#partycls.helpers.merge_clusters">[docs]</a><span class="k">def</span> <span class="nf">merge_clusters</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">n_clusters_min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">epsilon_</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merge clusters into ``n_clusters_min`` new clusters based on the</span>
+<span class="sd">    probabilities that particles initially belong to each of the original</span>
+<span class="sd">    clusters with a certain probability and using an entropy criterion.</span>
+<span class="sd">    </span>
+<span class="sd">    See https://doi.org/10.1198/jcgs.2010.08111 (Baudry et al.).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    weights : list</span>
+<span class="sd">        Probabilities that each particle belongs to each cluster.</span>
+<span class="sd">        If there are :math`N` particles, then the length of the list (or first</span>
+<span class="sd">        dimension of the array) must be :math:`N`. If there are math:`K` original</span>
+<span class="sd">        clusters, each element of ``weights`` (or the first dimension of the array)</span>
+<span class="sd">        must be :math:`K`. ``weights[i][j]`` (list) or ``weights[i,k]`` (array) is the </span>
+<span class="sd">        probability that particle ``i`` belongs to cluster ``k`` before merging.</span>
+<span class="sd">        For each particle, ``sum(weights[i])`` is equal to 1.</span>
+
+<span class="sd">    n_clusters_min : int, default: 2</span>
+<span class="sd">        Final number of clusters after merging.</span>
+
+<span class="sd">    epsilon_ : float</span>
+<span class="sd">        Small number (close to zero). This is needed as a replacement for zero</span>
+<span class="sd">        when computing a logarithm to avoid errors.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_weights : numpy.ndarray</span>
+<span class="sd">        New weights after merging. Same shape and interpretation as the</span>
+<span class="sd">        ``weights`` input parameter.</span>
+
+<span class="sd">    new_labels : list</span>
+<span class="sd">        New discrete labels based on the weights after merging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># number of clusters (to be changed during the merge)</span>
+    <span class="n">n_clusters</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># print(&quot;# i  j  delta_entropy&quot;)</span>
+    <span class="k">while</span> <span class="n">n_clusters</span> <span class="o">&gt;</span> <span class="n">n_clusters_min</span><span class="p">:</span>
+        <span class="c1"># loop over all pairs of clusters and consider what happens if we merge</span>
+        <span class="n">d_evals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">labs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>  <span class="c1"># i loops over clusters</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                <span class="n">delta_ent</span> <span class="o">=</span> <span class="n">_compute_delta_ent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">new_weights</span><span class="p">)</span>
+                <span class="n">d_evals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta_ent</span><span class="p">)</span>
+                <span class="n">labs</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+                <span class="c1"># print entropy change for (i,j)</span>
+                <span class="c1"># print(&#39;  {i}  {j}  {:.4f}&#39;.format(i,j,delta_ent))</span>
+
+        <span class="n">best_merge_index</span> <span class="o">=</span> <span class="n">d_evals</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">d_evals</span><span class="p">))</span>
+        <span class="c1"># print(&quot;# best merge: {}, gain={:.4f}&quot;.format(labs[best_merge_index],</span>
+        <span class="c1">#                                              d_evals[best_merge_index]))</span>
+
+        <span class="c1"># do the merge...</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">new_weights</span><span class="p">:</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">labs</span><span class="p">[</span><span class="n">best_merge_index</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">w</span><span class="p">[</span><span class="n">labs</span><span class="p">[</span><span class="n">best_merge_index</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">labs</span><span class="p">[</span><span class="n">best_merge_index</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">epsilon_</span>
+
+        <span class="c1"># print(&quot;# ICL entropy before (total) : {:.4f}&quot;.format(_compute_ICL_ent(weights, epsilon_)))</span>
+        <span class="c1"># print(&quot;# ICL entropy after  (total) : {:.4f}&quot;.format(_compute_ICL_ent(new_weights, epsilon_)))</span>
+
+        <span class="n">n_clusters</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="c1"># new discrete labels based on the new weights</span>
+    <span class="n">new_labels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">wi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_weights</span><span class="p">):</span>
+        <span class="n">new_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">wi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_weights</span><span class="p">,</span> <span class="n">new_labels</span></div>
+
+
+<div class="viewcode-block" id="sort_clusters"><a class="viewcode-back" href="../../source/partycls.html#partycls.helpers.sort_clusters">[docs]</a><span class="k">def</span> <span class="nf">sort_clusters</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">centroids</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">shannon_entropy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a consistent labeling of the clusters based on their centroids by</span>
+<span class="sd">    computing an associated numerical value as sorting criterion. By default, </span>
+<span class="sd">    the labeling is based on the Shannon entropy of each cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    labels : list</span>
+<span class="sd">        Original labels.</span>
+
+<span class="sd">    centroids : numpy.ndarray</span>
+<span class="sd">        Cluster centroids.</span>
+
+<span class="sd">    func : function, default: ``shannon_entropy``</span>
+<span class="sd">        Function used to associate a numerical value to each cluster, to be</span>
+<span class="sd">        used as sorting criterion. This function must accept a list or a </span>
+<span class="sd">        one dimensional array as parameter (this parameter being the </span>
+<span class="sd">        coordinates of a given centroid).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_labels : list</span>
+<span class="sd">        New labels based on centroid entropies.</span>
+
+<span class="sd">    new_centroids : numpy.ndarray</span>
+<span class="sd">        Centroids arranged in order of descending entropies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_clusters</span> <span class="o">=</span> <span class="n">centroids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">new_centroids</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
+    <span class="n">new_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">entropies</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">)</span>
+    <span class="c1"># Shannon entropy of each cluster based on centroids</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="n">entropies</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">centroids</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+    <span class="c1"># rank distributions according to their entropies</span>
+    <span class="n">entropies</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">ranks</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">entropies</span><span class="p">))</span>
+    <span class="c1"># Change particles</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)):</span>
+        <span class="n">k_i</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">k_new</span> <span class="o">=</span> <span class="n">ranks</span><span class="p">[</span><span class="n">k_i</span><span class="p">]</span>
+        <span class="n">new_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k_new</span>
+    <span class="c1"># change fractions, hist and dist</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
+        <span class="n">k_new</span> <span class="o">=</span> <span class="n">ranks</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">new_centroids</span><span class="p">[</span><span class="n">k_new</span><span class="p">]</span> <span class="o">=</span> <span class="n">centroids</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">new_labels</span><span class="p">,</span> <span class="n">new_centroids</span></div>
+
+
+<span class="k">def</span> <span class="nf">_compute_delta_ent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Entropy change on merging two clusters (following Baudry).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delta_ent</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>  <span class="c1"># each w is a vector of weights (this is a loop over particles)</span>
+        <span class="n">w_merge</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>  <span class="c1"># for this particle, add the weights for cluster i and j</span>
+        <span class="n">delta_ent</span> <span class="o">+=</span> <span class="n">w_merge</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w_merge</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">delta_ent</span> <span class="o">-=</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">delta_ent</span> <span class="o">-=</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">delta_ent</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_ICL_ent</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">epsilon_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ICL entropy from list of weights.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ICL_ent</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+        <span class="n">wts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">epsilon_</span><span class="p">)</span>
+        <span class="n">ICL_ent</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wts</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">wts</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ICL_ent</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Joris Paret.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
