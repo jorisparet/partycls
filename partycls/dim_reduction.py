@@ -31,7 +31,6 @@ class PCA(_PCA):
         -------
         numpy.ndarray
             Features in the reduced space.
-
         """
         return self.fit_transform(X)
 
@@ -55,7 +54,6 @@ class TSNE(_TSNE):
         -------
         numpy.ndarray
             Features in the reduced space.
-
         """
         return self.fit_transform(X)
 
@@ -79,7 +77,6 @@ class LocallyLinearEmbedding(_LocallyLinearEmbedding):
         -------
         numpy.ndarray
             Features in the reduced space.
-
         """
         return self.fit_transform(X)
 
@@ -96,6 +93,10 @@ class AutoEncoder(MLPRegressor):
 
     @property
     def n_components(self):
+        """
+        Number of nodes at the level of the bottleneck layer (*i.e.* dimension
+        after reduction).
+        """
         return min(self.hidden_layer_sizes)
 
     def reduce(self, X):
@@ -113,7 +114,6 @@ class AutoEncoder(MLPRegressor):
         -------
         numpy.ndarray
             Features in the reduced space.
-
         """
 
         # Train the network to reproduce its input as output

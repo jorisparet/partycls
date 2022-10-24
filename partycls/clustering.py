@@ -5,7 +5,7 @@ Clustering algorithms.
 import numpy
 from sklearn.cluster import KMeans as _KMeans
 from sklearn.mixture import GaussianMixture as _GaussianMixture
-from partycls.descriptor import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
+from partycls.descriptors import StructuralDescriptor, DummyDescriptor, BondOrientationalDescriptor
 
 __all__ = ['Clustering', 'KMeans', 'GaussianMixture', 'CommunityInference']
 
@@ -13,59 +13,59 @@ __all__ = ['Clustering', 'KMeans', 'GaussianMixture', 'CommunityInference']
 class Clustering:
     """
     Base class for clustering methods.
-    
-    If a scikit-learn compatible backend is available (see `backend`
-    parameter below), it will be used within Strategy.
-
-    Parameters
-    ----------
-    
-    n_clusters : int, optional
-        Requested number of clusters. The default is 2.
-    
-    n_init : int, optional
-        Number of times the clustering will be run with different seeds. 
-        The default is 1.
-            
-    backend : scikit-learn compatible backend, optional
-        Backend used for the clustering method. If provided, it must
-        be an object implementing an sklearn compatible interface,
-        with a `fit()` method and a `labels_` attribute. Duck typing
-        is assumed. The default is None.
 
     Attributes
     ----------
-
-    n_clusters : int, optional
+    n_clusters : int
         Number of clusters.
     
-    n_init : int, optional
+    n_init : int
         Number of times the clustering is run.
     
-    labels : list of int
-        Cluster labels. The default is None. Initialized after the `fit`
+    labels : list
+        Cluster labels. The default is ``None``. Initialized after the ``fit``
         method is called.
     """
 
     def __init__(self, n_clusters=2, n_init=1, backend=None):
+        """
+        If a scikit-learn compatible ``backend`` is available, it will be 
+        used within Strategy.
+
+        Parameters
+        ----------
+        n_clusters : int, default: 2
+            Requested number of clusters.
+        
+        n_init : int, default: 1
+            Number of times the clustering will be run with different seeds.
+                
+        backend : scikit-learn compatible backend, default: None
+            Backend used for the clustering method. If provided, it must
+            be an object implementing an scikit-learn compatible interface,
+            with a ``fit`` method and a ``labels_`` attribute. Duck typing
+            is assumed.
+        """
         self.n_clusters = n_clusters
         self.n_init = n_init
         self.backend = backend
         self.labels = None
 
-    def __str__(self):
-        rep = 'Clustering(method="{}", n_clusters={}, n_init={})'
-        return rep.format(self.full_name, self.n_clusters, self.n_init)
-
-    def __repr__(self):
-        return self.__str__()
-
     def fit(self, X):
         """
-        Run a scikit-learn compatible clustering backend (if available) on `X`.
+        Run a scikit-learn compatible clustering backend (if available) on ``X``.
 
         Subclasses implementing a specific clustering algorithm must
         override this method.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Dataset matrix for which to compute the clusters.
+
+        Returns
+        -------
+        None
         """
         if self.backend is not None:
             if hasattr(X, 'features'):
@@ -76,6 +76,9 @@ class Clustering:
 
     @property
     def fractions(self):
+        """
+        ``numpy.ndarray`` with the fractions of particles in each cluster.
+        """
         if self.labels is not None:
             f_k = numpy.empty(self.n_clusters, dtype=numpy.float64)
             for k in range(self.n_clusters):
@@ -84,6 +87,9 @@ class Clustering:
 
     @property
     def populations(self):
+        """
+        ``numpy.ndarray`` with the number of particles in each cluster.
+        """
         if self.labels is not None:
             n_k = numpy.empty(self.n_clusters, dtype=numpy.int64)
             for k in range(self.n_clusters):
@@ -96,13 +102,13 @@ class Clustering:
         
         Each object in the dataset over which the clustering was performed is 
         assigned a discrete label. This label represents the index of the 
-        nearest cluster center to which this object belongs. The centroid (i.e. 
+        nearest cluster center to which this object belongs. The centroid (*i.e.* 
         the cluster center), is thus the average feature vector of all the 
         objects in the cluster.
         
-        Cluster memberships of the objects are stored in the `labels`
+        Cluster memberships of the objects are stored in the ``labels``
         attribute. Coordinates of the centroids can then be calculated for an
-        arbitrary dataset `X`, provided it has the same shape as the original 
+        arbitrary dataset ``X``, provided it has the same shape as the original 
         dataset used for the clustering.
 
         Parameters
@@ -113,7 +119,7 @@ class Clustering:
         Returns
         -------
         C_k : numpy.ndarray
-            Cluster centroids. C_k[n] is the coordinates of the n-th cluster 
+            Cluster centroids. ``C_k[n]`` is the coordinates of the n-th cluster 
             center.
         """
         n_features = X.shape[1]
@@ -126,28 +132,52 @@ class Clustering:
             C_k[k] = C_k[k] / n_k[k]
         return C_k
 
+    def __str__(self):
+        rep = 'Clustering(method="{}", n_clusters={}, n_init={})'
+        return rep.format(self.full_name, self.n_clusters, self.n_init)
+
+    def __repr__(self):
+        return self.__str__()
 
 class KMeans(Clustering):
     """
     KMeans clustering.
     
-    This class relies on the class `KMeans` from the machine learning package 
-    "scikit-learn". An instance of sklearn.cluster.KMeans is created when 
-    calling the `fit` method, and is then accessible through the `backend`
-    attribute for later use. See scikit's documentation for more information on
+    This class relies on the class ``KMeans`` from the machine learning package 
+    scikit-learn. An instance of ``sklearn.cluster.KMeans`` is created when 
+    calling the ``fit`` method, and is then accessible through the ``backend``
+    attribute for later use. See scikit-learn's documentation for more information on
     the original class.
     """
 
     def __init__(self, n_clusters=2, n_init=1):
+        """
+        Parameters
+        ----------
+        n_clusters : int, default: 2
+            Requested number of clusters.
+        
+        n_init : int, default: 1
+            Number of times the clustering will be run with different seeds.
+        """
         self.symbol = 'kmeans'
         self.full_name = 'K-Means'
         Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
 
     def fit(self, X):
         """
-        Run the K-Means algorithm on `X`.
-        The predicted labels are updated in the attribute `labels` of 
-        the current instance of `KMeans`.
+        Run the K-Means algorithm on ``X``.
+        The predicted labels are updated in the attribute ``labels`` of 
+        the current instance of ``KMeans``.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Dataset matrix for which to compute the clusters.
+
+        Returns
+        -------
+        None
         """
         self.backend = _KMeans(n_clusters=self.n_clusters,
                                n_init=self.n_init)
@@ -162,23 +192,41 @@ class GaussianMixture(Clustering):
     """
     Gaussian Mixture.
     
-    This class relies on the class `GaussianMixture` from the machine learning 
-    package "scikit-learn". An instance of sklearn.mixture.GaussianMixture is 
-    created when calling the `fit` method, and is then accessible through the 
-    `backend` attribute for later use. See scikit's documentation for more 
+    This class relies on the class ``GaussianMixture`` from the machine learning 
+    package scikit-learn. An instance of ``sklearn.mixture.GaussianMixture`` is 
+    created when calling the ``fit`` method, and is then accessible through the 
+    ``backend`` attribute for later use. See scikit-learn's documentation for more 
     information on the original class.
     """
 
     def __init__(self, n_clusters=2, n_init=1):
+        """
+        Parameters
+        ----------
+        n_clusters : int, default: 2
+            Requested number of clusters.
+        
+        n_init : int, default: 1
+            Number of times the clustering will be run with different seeds.       
+        """
         self.symbol = 'gmm'
         self.full_name = 'Gaussian Mixture'
         Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
 
     def fit(self, X):
         """
-        Run the EM algorithm on `X` using a mixture of Gaussians.
-        The predicted labels are updated in the attribute `labels` of the 
-        current instance of `GaussianMixture`.
+        Run the expectation-maximization algorithm on ``X`` using a mixture of 
+        Gaussians. The predicted labels are updated in the attribute ``labels`` of the 
+        current instance of ``GaussianMixture``.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Dataset matrix for which to compute the clusters.
+
+        Returns
+        -------
+        None
         """
         self.backend = _GaussianMixture(n_components=self.n_clusters,
                                         n_init=self.n_init)
@@ -192,11 +240,20 @@ class GaussianMixture(Clustering):
 class CommunityInference(Clustering):
     """
     Community Inference is a hard clustering method based on information 
-    theory. See "Paret et al. https://doi.org/10.1063/5.0004732" for more 
+    theory. See https://doi.org/10.1063/5.0004732 (Paret et. al) for more 
     details.
     """
 
     def __init__(self, n_clusters=2, n_init=1):
+        """
+        Parameters
+        ----------
+        n_clusters : int, default: 2
+            Requested number of clusters.
+        
+        n_init : int, default: 1
+            Number of times the clustering will be run with different seeds.           
+        """
         self.symbol = 'cinf'
         self.full_name = 'Community Inference'
         Clustering.__init__(self, n_clusters=n_clusters, n_init=n_init)
@@ -204,7 +261,18 @@ class CommunityInference(Clustering):
 
     def fit(self, X):
         """
-        Community inference algorithm.
+        Run the community inference algorithm on ``X``, where ``X``
+        is an instance of ``StructuralDescriptor`` with a ``normalize``
+        method. Otherwise ``X`` is converted to a dummy descriptor.
+
+        Parameters
+        ----------
+        X : StructuralDescriptor
+            Descriptor on which the community algorithm inference will be run.
+
+        Returns
+        -------
+        None
         """
         if isinstance(X, StructuralDescriptor):
             descriptor = X
@@ -234,7 +302,7 @@ class CommunityInference(Clustering):
         import random
 
         # shortcuts
-        N = descriptor.size
+        N = descriptor.n_samples
         K = self.n_clusters
         Km1 = K - 1  # loop invariant
 

@@ -19,9 +19,16 @@ args = dict(name='partycls',
             long_description_content_type="text/markdown",
             author='Joris Paret',
             author_email='joris.paret@gmail.com',
+            maintainer='Joris Paret',
+            url='https://github.com/jorisparet/partycls',
+            download_url='https://pypi.org/project/partycls',
+            keywords=['physics', 'condensed matter', 'structure',
+                      'machine learning', 'unsupervised', 'clustering',
+                      'molecular dynamics', 'particle',
+                      'descriptor', 'radial', 'angular', 'correlation'],
             packages=['partycls',
                       'partycls/core',
-                      'partycls/descriptor'],
+                      'partycls/descriptors'],
             install_requires=['numpy', 'sklearn'],
             license='GPLv3',
             setup_requires = ['numpy'],
@@ -41,8 +48,11 @@ args = dict(name='partycls',
 try:
     from numpy.distutils.core import setup, Extension
     
-    args["ext_modules"] = [Extension('partycls.descriptor.realspace_wrap',
-                                     sources=['partycls/descriptor/realspace.f90'],
+    args["ext_modules"] = [Extension('partycls.descriptors.realspace_wrap',
+                                     sources=['partycls/descriptors/realspace.f90'],
+                                     extra_f90_compile_args=[]),
+                           Extension('partycls.neighbors_wrap',
+                                     sources=['partycls/neighbors.f90'],
                                      extra_f90_compile_args=[])]
 
 except (ModuleNotFoundError, ImportError):

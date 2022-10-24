@@ -1,23 +1,33 @@
+"""
+Useful functions for an internal use in the main code.
+"""
+
 import re
+import enum
 from partycls.particle import aliases
 
 
 def tipify(s):
     """
-    Convert a string `s` into the best matching type.
+    Convert a string ``s`` into the best matching type,
+    *i.e.* an instance of ``int``, ``float``, ``str`` 
+    or a list of those types.
 
     Parameters
     ----------
     s : str
-        String to convert
+        String to convert.
 
     Returns
     -------
-    int, float, or str
-        Best-matching type for the input string `s`.
-
+    s : int, float, str or list
+        Best-matching type for the input string ``s``.
     """
     if '_' in s:
+        return s
+    elif ',' in s:
+        s = s.split(sep=',')
+        s = [tipify(s_i) for s_i in s]
         return s
     else:
         try:
@@ -31,25 +41,26 @@ def tipify(s):
 
 def standardize_condition(condition):
     """
-    Check that the condition is correctly formated (i.e <attr> _operator_ <val>).
+    Check that the condition is correctly formated 
+    (*i.e* in the form ``"<attr> _operator_ <val>"``).
 
     Parameters
     ----------
     condition : str
-        condition.
+        Condition to standardize.
 
     Raises
     ------
     ValueError
-        If condition is not valid or if the <attr> is not recognized).
+        If ``condition`` is not valid or if the 
+        ``"<attr>"`` keyword is not recognized.
 
     Returns
     -------
     condition : str
-        A standardized condition.
-
+        The standardized condition.
     """
-    regexp = re.search('(\w+\.?\w*\[?\d?\]?)\s?(<|<=|==|>=|>)\s?([\'|\"]?\w+[\'|\"]?)', condition)
+    regexp = re.search('(\w+\.?\w*\[?\d?\]?)\s?(<|<=|\!=|==|>=|>)\s?([\'|\"]?[\w\(\),]+[\'|\"]?)', condition)
     if regexp:
         attr = regexp.group(1)
         operator = regexp.group(2)
@@ -65,3 +76,6 @@ def standardize_condition(condition):
         return condition
     else:
         raise ValueError('"{}" is not a valid condition'.format(condition))
+
+# Valid nearest neighbors methods
+_nearest_neighbors_methods_ = ['auto', 'fixed', 'sann', 'voronoi']

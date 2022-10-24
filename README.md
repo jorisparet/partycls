@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/pypi/l/partycls.svg)](https://en.wikipedia.org/wiki/GNU_General_Public_License)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.03723/status.svg)](https://doi.org/10.21105/joss.03723)
 [![build](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml/badge.svg)](https://github.com/jorisparet/partycls/actions/workflows/build-test.yml)
-![coverage](https://img.shields.io/badge/coverage-78%25-yellowgreen)
+![coverage](https://img.shields.io/badge/coverage-89%25-green)
   
 **partycls** is a Python package for cluster analysis of systems of interacting particles. By grouping particles that share similar structural or dynamical properties, partycls enables rapid and unsupervised exploration of the system's relevant features. It provides descriptors suitable for applications in condensed matter physics, such as structural analysis of disordered or partially ordered materials, and integrates the necessary tools of unsupervised learning into a streamlined workflow.
 
@@ -33,7 +33,7 @@ Thanks to a flexible system of filters, partycls makes it easy to restrict the a
 
 ```python
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor
+from partycls.descriptors import BondAngleDescriptor
 
 traj = Trajectory('trajectory.xyz')
 D = BondAngleDescriptor(traj)
@@ -56,43 +56,74 @@ clustering.fit(D.features)
 print('Cluster membership of the particles', clustering.labels)
 ```
 
-Features
---------
+Main features
+-------------
 
-- partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). The code is currently optimized for small and medium system sizes (of order 10⁴ particles). Multiple trajectory frames can be analyzed to extend the structural dataset.
-- partycls implements various structural descriptors: radial distribution, bond-angle distribution, standard bond order parameters (see the [original paper](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.28.784)), and locally averaged bond order parameters (see the [original paper](https://aip.scitation.org/doi/10.1063/1.2977970)). On top of these native descriptors, partycls supports additional structural descriptors via [DScribe](https://singroup.github.io/dscribe).
-- partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms.
+### Trajectory formats
 
-Requirements
+partycls accepts several trajectory formats (including custom ones) either through its built-in trajectory reader or via third-party packages, such as [MDTraj](www.mdtraj.org) and [atooms](https://framagit.org/atooms/atooms). The code is currently optimized for small and medium system sizes (of order 10⁴ particles). Multiple trajectory frames can be analyzed to extend the structural dataset.
+
+### Structural descriptors
+
+partycls implements various structural descriptors: 
+
+* Radial descriptor
+* Tetrahedral descriptor
+* Bond-angle descriptor
+* Smoothed bond-angle descriptor
+* Bond-orientational descriptor
+* Smoothed bond-orientational descriptor
+* Locally averaged bond-orientational descriptor
+* Radial bond-orientational descriptor
+* Compactness descriptor
+* Coordination descriptor
+
+### Machine learning
+
+partycls performs feature scaling, dimensionality reduction and cluster analysis using the [scikit-learn](https://scikit-learn.org) package and additional built-in algorithms.
+
+Dependencies
 ------------
 
-* Fortran compiler
-* [numpy](https://pypi.org/project/numpy/)
+partycls relies on several external packages, most of which only provide additional features and are not necessarily required.
+
+### Required
+
+* Fortran compiler (*e.g.* [gfortran](https://gcc.gnu.org/wiki/GFortran))
+* [NumPy](https://pypi.org/project/numpy/)
 * [scikit-learn](https://scikit-learn.org)
-* [optional] [mdtraj](https://www.mdtraj.org) (additional trajectory formats)
-* [optional] [atooms](https://framagit.org/atooms/atooms) < 3.0.0 (additional trajectory formats)
-* [optional] [dscribe](https://singroup.github.io/dscribe) (additional descriptors)
-* [optional] [matplotlib](https://matplotlib.org/) (visualization)
-* [optional] [ovito](https://ovito.org/) (visualization)
-* [optional] [py3Dmol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
+
+### Optional
+
+* [MDTraj](https://www.mdtraj.org) (additional trajectory formats)
+* [atooms](https://framagit.org/atooms/atooms) (additional trajectory formats)
+* [DScribe](https://singroup.github.io/dscribe) (additional descriptors)
+* [Matplotlib](https://matplotlib.org/) (visualization)
+* [OVITO](https://ovito.org/) < 3.7.0 (visualization)
+* [Py3DMol](https://github.com/avirshup/py3dmol) (interactive 3D visualization)
+* [pyvoro](https://github.com/joe-jordan/pyvoro) or its [memory-optimized fork](https://framagit.org/coslo/pyvoro) for large systems (Voronoi neighbors and tessellation)
+* [tqdm](https://tqdm.github.io/) (progress bars)
 
 Documentation
 -------------
 
-- See the [tutorials](https://jorisparet.github.io/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
-- Full [API documentation](https://jorisparet.github.io/partycls/docs/API/).
+- See the [tutorials](https://www.jorisparet.com/partycls/docs/tutorial/) (Jupyter notebooks) for a step-by-step introduction to the main features of partycls and some of its applications.
+- Full [API documentation](https://www.jorisparet.com/partycls/docs/API/).
 
 Installation
 ------------
 
-**1.** From [pypi](https://pypi.org/project/partycls/):
+### From PyPI
+
+The latest stable release is available on [PyPI](https://pypi.org/project/partycls/). Install it with `pip`:
 
 ```bash
 pip install partycls
 ```
-----------
 
-**2.** From the [code repository](https://github.com/jorisparet/partycls):
+### From source 
+
+To install the latest development version from source, clone the source code from the official [GitHub repository](https://github.com/jorisparet/partycls) and install it with:
 
 ```bash
 git clone https://github.com/jorisparet/partycls.git
@@ -106,10 +137,12 @@ Run the tests using:
 make test
 ```
 
-or manually compile the Fortran source and run the tests:
+or manually compile the Fortran sources and run the tests:
 
 ```bash
-cd partycls/descriptor/
+cd partycls/
+f2py -c -m neighbors_wrap neighbors.f90
+cd descriptor/
 f2py -c -m realspace_wrap realspace.f90
 cd ../../
 pytest tests/
@@ -121,11 +154,11 @@ Support and contribution
 If you wish to contribute or report an issue, feel free to [contact us](mailto:joris.paret@gmail.com) or to use the [issue tracker](https://github.com/jorisparet/partycls/issues) and [pull requests](https://github.com/jorisparet/partycls/pulls) from the [code repository](https://github.com/jorisparet/partycls).
 
 We largely follow the [GitHub flow](https://guides.github.com/introduction/flow/) to integrate community contributions. In essence:
-* fork the repository ;
-* create a feature branch from *master* ;
-* unleash your creativity ;
-* run the tests ;
-* open a pull request ;
+1. Fork the repository.
+2. Create a feature branch from `master`.
+3. Unleash your creativity.
+4. Run the tests.
+5. Open a pull request.
 
 We also welcome contributions from other platforms, such as GitLab instances. Just let us know where to find your feature branch.
 
@@ -155,6 +188,6 @@ Bibtex entry:
 Authors
 -------
 
-[Joris Paret](https://jorisparet.github.io/)
+[Joris Paret](https://www.jorisparet.com/)
 
 [Daniele Coslovich](https://www.units.it/daniele.coslovich/)

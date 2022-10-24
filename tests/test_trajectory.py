@@ -4,8 +4,10 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor
+from partycls.descriptors import BondAngleDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans
+
+from numpy import float32
 
 try:
     import atooms
@@ -13,12 +15,17 @@ try:
 except ModuleNotFoundError:
     HAS_ATOOMS = False
 
+try:
+    import pyvoro
+    HAS_PYVORO = True
+except ModuleNotFoundError:
+    HAS_PYVORO = False
+
 class Test(unittest.TestCase):
 
     def setUp(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         self.traj = Trajectory(os.path.join(data, 'dislocation.xyz'), fmt='xyz')
-        self.cutoffs = [1.45, 1.25, 1.25, 1.075]
 
     def test_xyz(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
@@ -72,6 +79,30 @@ class Test(unittest.TestCase):
         except:
             pass
         
+    def test_additional_list_field(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'traj_with_neighbors.xyz'), 
+                          additional_fields=['radius', 'neighbors'])       
+        neighbors_all = traj.dump('neighbors')
+        self.assertEqual(list(neighbors_all[0][0]), [1,2,3])
+        self.assertEqual(list(neighbors_all[1][1]), [2,3])
+        neighbors_A = traj.dump('neighbors', subset="species == 'A'")
+        self.assertEqual(list(neighbors_A[0][0]), [1,2,3])
+        self.assertEqual(list(neighbors_A[1][0]), [1,2])
+        
+    def test_additional_field_label(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'traj_with_labels.xyz'),
+                                       additional_fields=['cluster'])
+        # check if 'cluster' was correctly set to Particle.label
+        expected_labels = [1,0,1,1,1,0]
+        count = 0
+        for system in traj:
+            for particle in system.particle:
+                self.assertEqual(particle.label, expected_labels[count],
+                                 'incorrect particle label')
+                count += 1
+            
     def test_get_property(self):
         data = os.path.join(os.path.dirname(__file__), '../data/')
         traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'), 
@@ -109,9 +140,72 @@ class Test(unittest.TestCase):
         traj.set_property('radius', 0.7, "species == 'A'")
         self.assertEqual(list(traj[0].dump('radius', "species == 'A'")), [0.7])
 
+    def test_compute_fixed_cutoffs(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'wahn_N1000.xyz'))
+        # compute cutoffs
+        traj.compute_nearest_neighbors_cutoffs(dr=0.1)
+        self.assertEqual(set(map(float32, traj.nearest_neighbors_cutoffs)),
+                         set(map(float32, [1.45, 1.35, 1.35, 1.25])),
+                         'wrong computed cutoffs')
+
+    def test_neighbors_fixed(self):
+        # compute neighbors
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_cutoffs = [1.45, 1.175, 1.175, 1.05]
+        traj.compute_nearest_neighbors(method='fixed')
+        # check neighbors
+        ngh = traj[0].particle[17].nearest_neighbors
+        self.assertEqual(set(ngh), set([3, 19, 22, 34, 37, 48, 63, 67,
+                         71, 79, 96, 102, 108, 124, 126, 145]),
+                         'wrong neighbors with method "fixed"')
+
+    def test_neighbors_sann(self):
+        # compute neighbors
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        traj.nearest_neighbors_cutoffs = [1.45, 1.175, 1.175, 1.05]
+        traj.compute_nearest_neighbors(method='sann')
+        # check neighbors
+        ngh = traj[0].particle[17].nearest_neighbors
+        self.assertEqual(set(ngh), set([145, 124, 126, 96, 3, 67, 
+                         108, 37, 34, 71, 79, 48, 19, 22]),
+                         'wrong neighbors with method "sann"')
+
+    def test_neighbors_voronoi(self):
+        # compute neighbors
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        traj.compute_nearest_neighbors(method='voronoi')
+        # check neighbors
+        ngh = traj[0].particle[17].nearest_neighbors
+        self.assertEqual(set(ngh), set([108, 63, 19, 67, 122, 71, 34, 102, 124, 
+                                        48, 79, 145, 96, 22, 126, 3, 37]),
+                         'wrong neighbors with method "voronoi"')
+
+    @unittest.skipIf(not HAS_PYVORO, 'no pyvoro module')
+    def test_voronoi_signatures(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'wahn_N1000.xyz'))
+        # compute voronoi signatures
+        traj.set_property('radius', 0.525, subset="species == 'A'")
+        traj.set_property('radius', 0.475, subset="species == 'B'")
+        traj.compute_voronoi_signatures()
+        # check a few signatures
+        signatures = traj[0].dump('signature')
+        self.assertEqual(signatures[5], '0_0_12', 'wrong Voronoi signature')
+        self.assertEqual(signatures[20], '0_2_8_2', 'wrong Voronoi signature')
+
+    def test_show(self):
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=3)
+        traj.show(backend='matplotlib', outfile='traj_show_matplotlib_')
+        for i in range(4):
+            os.remove("traj_show_matplotlib_{:04}.png".format(i))
+
     def test_angular_zscore_pca_kmeans(self):
         D = BondAngleDescriptor(self.traj)
-        D.cutoffs = self.cutoffs
         D.add_filter("species == 'A'", group=0)
         X = D.compute()
         scaler = ZScore()
@@ -126,13 +220,51 @@ class Test(unittest.TestCase):
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore',
                       dim_reduction='pca', clustering='kmeans')
         wf.descriptor.add_filter('species == "A"', group=0)
-        wf.descriptor.cutoffs = self.cutoffs
         wf.dim_reduction.n_components = 3
         wf.clustering.n_init = 100
         wf.disable_output()
         wf.run()
         # print('Fractions :', clustering.fractions, '(via workflow)')
         self.assertEqual(set(clustering.fractions), set(wf.fractions))
+
+    def test_particle_fold(self):
+        from partycls.cell import Cell
+        from partycls.particle import Particle
+        c = Cell([2.0, 2.0, 2.0])
+        p = Particle([1.5, 0.0, 0.0])
+        print(p)
+        # fold back into cell
+        p.fold(c)
+        print(p)
+        self.assertEqual(p.position[0], -0.5, "wrong particle folding")
+
+    def test_pairs_of_species_id(self):
+        # load trajectory
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        # species ID
+        species_id = set(traj[0].pairs_of_species_id)
+        self.assertEqual(species_id, set([(1,1), (1,2), (2,1), (2,2)]),
+                         "wrong pairs of species ID")
+
+    def test_dump_cell(self):
+        Lx = self.traj[0].dump('cell.side[0]')
+        self.assertEqual(Lx, 3.0, "wrong dumping of iterable cell property")
+
+    def test_set_property_list(self):
+        # load trajectory
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'))
+        # set cell property using a list
+        traj[0].set_property('cell.side', [1.0, 1.0, 1.0])
+        sides = traj[0].cell.side
+        self.assertEqual(set(sides), set([1.0]), "wrong value set forcell property")
+        # set particle property using a list
+        radii = [0.5, 0.4, 0.4]
+        traj[0].set_property('radius', radii)
+        for i, p in enumerate(traj[0].particle):
+            self.assertEqual(p.radius, radii[i], "wrong value set particle property")
+
         
 if __name__ == '__main__':
     unittest.main()

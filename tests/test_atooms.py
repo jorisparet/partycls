@@ -28,6 +28,28 @@ class Test(unittest.TestCase):
         self.assertEqual(list(traj[0].cell.side), [5.0, 5.0, 5.0])
 
     @unittest.skipIf(not HAS_ATOOMS, 'no atooms module')
+    def test_additional_fields(self):
+        fname = os.path.join(self.data_dir, 'traj_with_neighbors.xyz')
+        traj = Trajectory(fname, fmt='xyz', backend='atooms', additional_fields=['neighbors'])
+        # Neighbors
+        #  radius should not be read
+        self.assertEqual(traj[0].particle[1].radius, 0.5,
+                         "radius was not a requested additional field")
+        #  neighbors should be read
+        self.assertEqual(set(traj[0].particle[0].nearest_neighbors),
+                         set([1,2,3]),
+                         "neighbors were read incorrectly")
+        # Read radii
+        traj = Trajectory(fname, fmt='xyz', backend='atooms', additional_fields=['radius'])
+        #  radius should be read
+        self.assertEqual(traj[0].particle[1].radius, 0.4,
+                         "radius was not a requested additional field")
+        #  neighbors should not be read
+        self.assertEqual(traj[0].particle[0].nearest_neighbors, None,
+                         "neighbors was not a requested additional field")
+
+
+    @unittest.skipIf(not HAS_ATOOMS, 'no atooms module')
     def test_rumd(self):
         fname = os.path.join(self.data_dir, 'kalj_N256_rho1.185_rumd.xyz.gz')
         traj = Trajectory(fname, fmt='rumd', backend='atooms')

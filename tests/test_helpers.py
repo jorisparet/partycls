@@ -4,7 +4,7 @@ import unittest
 import os
 
 from partycls import Trajectory
-from partycls.descriptor import BondAngleDescriptor
+from partycls.descriptors import BondAngleDescriptor
 from partycls import Workflow, ZScore, PCA, KMeans
 
 class Test(unittest.TestCase):
@@ -18,19 +18,34 @@ class Test(unittest.TestCase):
         s = self.traj[0]
         fig = show_matplotlib(s, 'species')
         fig = show_matplotlib(s, 'radius')
-        show_matplotlib(s, 'radius', outfile='')
+        show_matplotlib(s, 'radius', outfile='matplotlib_radius')
+        os.remove("matplotlib_radius.png")
         
     def test_show_ovito(self):
         from partycls.helpers import show_ovito
         s = self.traj[0]
-        fig = show_ovito(s, 'species')
-        fig = show_ovito(s, 'radius')
+        # species
+        out = 'ovito_species.png'
+        fig = show_ovito(s, 'species', outfile=out)
+        os.remove(out)
+        # radius
+        out = 'ovito_radius.png'
+        fig = show_ovito(s, 'radius', outfile=out)
+        os.remove(out)
+
+    def test_show_3dmol(self):
+        from partycls.helpers import show_3dmol
+        from random import randint
+        s = self.traj[0]
+        for p in s.particle:
+            p.label = randint(0,1)
+        view = show_3dmol(s, 'label')
 
     def test_sort_merge_clusters(self):
         # Adapted from 4th tutorial
         import random
         import numpy as np
-        from partycls.descriptor import BondAngleDescriptor
+        from partycls.descriptors import BondAngleDescriptor
         from partycls import PCA, GaussianMixture
         from partycls.helpers import merge_clusters, sort_clusters
 
@@ -54,8 +69,8 @@ class Test(unittest.TestCase):
 
         # Sort clusters
         new_labels, new_centroids = sort_clusters(C.labels, C.centroids(X_red))
-        self.assertEqual(list(new_labels), [1, 0, 1, 1, 2, 1, 2, 0, 1,
-                                            0, 1, 3, 3, 0, 3, 1, 0, 3, 0, 1, 3, 0, 0, 3, 0, 0, 3])
+        self.assertEqual(list(new_labels), [0, 1, 0, 0, 3, 0, 3, 1, 0, 1, 0, 2, 2,
+                                            1, 2, 0, 1, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2])
         
         # Use weights from GMM to merge the clusters into `n_cluster_min`
         # this returns new weights and new labels

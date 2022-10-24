@@ -29,7 +29,6 @@ class ZScore(StandardScaler):
         -------
         numpy.ndarray
             Scaled features.
-
         """
         return self.fit_transform(X)
 
@@ -42,7 +41,7 @@ class MinMax(MinMaxScaler):
     def scale(self, X):
         """
         Transform features by scaling each feature to a given range (default 
-        is [0,1]).
+        is :math:`[0,1]`).
 
         Parameters
         ----------
@@ -53,7 +52,6 @@ class MinMax(MinMaxScaler):
         -------
         numpy.ndarray
             Scaled features.
-
         """
         return self.fit_transform(X)
 
@@ -76,7 +74,6 @@ class MaxAbs(MaxAbsScaler):
         -------
         numpy.ndarray
             Scaled features.
-
         """
         return self.fit_transform(X)
 
@@ -99,6 +96,5 @@ class Robust(RobustScaler):
         -------
         numpy.ndarray
             Scaled features.
-
         """
         return self.fit_transform(X)
