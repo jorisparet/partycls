@@ -226,6 +226,45 @@ class Test(unittest.TestCase):
         wf.run()
         # print('Fractions :', clustering.fractions, '(via workflow)')
         self.assertEqual(set(clustering.fractions), set(wf.fractions))
+
+    def test_particle_fold(self):
+        from partycls.cell import Cell
+        from partycls.particle import Particle
+        c = Cell([2.0, 2.0, 2.0])
+        p = Particle([1.5, 0.0, 0.0])
+        print(p)
+        # fold back into cell
+        p.fold(c)
+        print(p)
+        self.assertEqual(p.position[0], -0.5, "wrong particle folding")
+
+    def test_pairs_of_species_id(self):
+        # load trajectory
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'kalj_N150.xyz'), last=0)
+        # species ID
+        species_id = set(traj[0].pairs_of_species_id)
+        self.assertEqual(species_id, set([(1,1), (1,2), (2,1), (2,2)]),
+                         "wrong pairs of species ID")
+
+    def test_dump_cell(self):
+        Lx = self.traj[0].dump('cell.side[0]')
+        self.assertEqual(Lx, 3.0, "wrong dumping of iterable cell property")
+
+    def test_set_property_list(self):
+        # load trajectory
+        data = os.path.join(os.path.dirname(__file__), '../data/')
+        traj = Trajectory(os.path.join(data, 'traj_with_masses.xyz'))
+        # set cell property using a list
+        traj[0].set_property('cell.side', [1.0, 1.0, 1.0])
+        sides = traj[0].cell.side
+        self.assertEqual(set(sides), set([1.0]), "wrong value set forcell property")
+        # set particle property using a list
+        radii = [0.5, 0.4, 0.4]
+        traj[0].set_property('radius', radii)
+        for i, p in enumerate(traj[0].particle):
+            self.assertEqual(p.radius, radii[i], "wrong value set particle property")
+
         
 if __name__ == '__main__':
     unittest.main()

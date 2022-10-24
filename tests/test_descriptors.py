@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from tabnanny import verbose
 import unittest
 import os
 
@@ -21,6 +22,13 @@ try:
     HAS_PYVORO = True
 except ModuleNotFoundError:
     HAS_PYVORO = False
+
+try:
+    from partycls.descriptors import DscribeChemicalDescriptor
+    from dscribe.descriptors import SOAP
+    HAS_DSCRIBE = True
+except ModuleNotFoundError:
+    HAS_DSCRIBE = False
 
 class Test(unittest.TestCase):
 
@@ -352,6 +360,36 @@ class Test(unittest.TestCase):
         D.total = True
         D.partial = False
         self.assertEqual(set(D.grid), set(['all']))
+
+    @unittest.skipIf(not HAS_DSCRIBE, 'no dscribe module')
+    def test_dscribe(self):
+        # trajectory and neighbors
+        traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'))
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.4250, 1.3250, 1.3250, 1.2750]
+        traj.compute_nearest_neighbors()
+        # set atomic symbols to species
+        traj.set_property('species', 'C', "species == 'A'")
+        traj.set_property('species', 'H', "species == 'B'")
+        # descriptor
+        D = DscribeChemicalDescriptor(traj, backend=SOAP, sigma=0.1, rcut=3.0,
+                                      lmax=7, nmax=7, rbf='gto', verbose=True)
+        X = D.compute()
+
+    def test_handle_nans(self):
+        # trajectory and neighbors
+        traj = Trajectory(os.path.join(self.data_dir, 'wahn_N1000.xyz'))
+        traj.nearest_neighbors_method = 'fixed'
+        traj.nearest_neighbors_cutoffs = [1.4250, 1.3250, 1.3250, 1.2750]
+        traj.compute_nearest_neighbors()
+        # arbitrary descriptor
+        D = BondOrientationalDescriptor(traj)
+        D.verbose = True
+        D.accept_nans = False
+        D.add_filter("species == 'B'", group=0)
+        D.add_filter("species == 'B'", group=1)
+        X = D.compute()
+
 
 if __name__ == '__main__':
     unittest.main()

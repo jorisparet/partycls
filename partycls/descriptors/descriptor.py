@@ -394,7 +394,7 @@ class StructuralDescriptor:
         """
         collapsed_rows, num_nans = self._find_nans()
         if num_nans > 0 and self.verbose:
-            print('Warning: discarding {} NaN samples from the array of features.'.format(num_nans))
+            print('Warning: discarding {} NaN sample(s) from the array of features.'.format(num_nans))
         return self.features[collapsed_rows]
 
     def _dimension_check(self, dimension):

@@ -33,11 +33,12 @@ class Test(unittest.TestCase):
         # Same via workflow
         wf = Workflow(self.traj, descriptor='ba', scaling='zscore', clustering='kmeans')
         wf.clustering.n_init = 100
-        wf.disable_output()
+        print(wf)
         wf.run()
         # check if both methods give the same result
         self.assertEqual(set(wf.fractions), set(clustering.fractions),
                          'different cluster fractions')
+
 
     def test_radial_ci(self):
         D = RadialDescriptor(self.traj)
