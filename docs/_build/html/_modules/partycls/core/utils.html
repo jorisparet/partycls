@@ -6,6 +6,7 @@
   <title>partycls.core.utils &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -14,7 +15,11 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../about.html" />
@@ -42,6 +47,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
@@ -76,25 +82,30 @@
            <div itemprop="articleBody">
              
   <h1>Source code for partycls.core.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Useful functions for an internal use in the main code.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">from</span> <span class="nn">partycls.particle</span> <span class="kn">import</span> <span class="n">aliases</span>
 
 
 <div class="viewcode-block" id="tipify"><a class="viewcode-back" href="../../../source/partycls.core.html#partycls.core.utils.tipify">[docs]</a><span class="k">def</span> <span class="nf">tipify</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a string `s` into the best matching type.</span>
+<span class="sd">    Convert a string ``s`` into the best matching type,</span>
+<span class="sd">    *i.e.* an instance of ``int``, ``float``, ``str`` </span>
+<span class="sd">    or a list of those types.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        String to convert</span>
+<span class="sd">        String to convert.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    int, float, or str</span>
-<span class="sd">        Best-matching type for the input string `s`.</span>
-
+<span class="sd">    s : int, float, str or list</span>
+<span class="sd">        Best-matching type for the input string ``s``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s1">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">s</span>
@@ -114,23 +125,24 @@
 
 <div class="viewcode-block" id="standardize_condition"><a class="viewcode-back" href="../../../source/partycls.core.html#partycls.core.utils.standardize_condition">[docs]</a><span class="k">def</span> <span class="nf">standardize_condition</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check that the condition is correctly formated (i.e &lt;attr&gt; _operator_ &lt;val&gt;).</span>
+<span class="sd">    Check that the condition is correctly formated </span>
+<span class="sd">    (*i.e* in the form ``&quot;&lt;attr&gt; _operator_ &lt;val&gt;&quot;``).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    condition : str</span>
-<span class="sd">        condition.</span>
+<span class="sd">        Condition to standardize.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        If condition is not valid or if the &lt;attr&gt; is not recognized).</span>
+<span class="sd">        If ``condition`` is not valid or if the </span>
+<span class="sd">        ``&quot;&lt;attr&gt;&quot;`` keyword is not recognized.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    condition : str</span>
-<span class="sd">        A standardized condition.</span>
-
+<span class="sd">        The standardized condition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">regexp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(\w+\.?\w*\[?\d?\]?)\s?(&lt;|&lt;=|\!=|==|&gt;=|&gt;)\s?([</span><span class="se">\&#39;</span><span class="s1">|</span><span class="se">\&quot;</span><span class="s1">]?[\w\(\),]+[</span><span class="se">\&#39;</span><span class="s1">|</span><span class="se">\&quot;</span><span class="s1">]?)&#39;</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">regexp</span><span class="p">:</span>
@@ -149,14 +161,8 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot; is not a valid condition&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">condition</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="NearestNeighborsMethod"><a class="viewcode-back" href="../../../source/partycls.core.html#partycls.core.utils.NearestNeighborsMethod">[docs]</a><span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
-<span class="k">class</span> <span class="nc">NearestNeighborsMethod</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">Auto</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span>
-    <span class="n">Fixed</span> <span class="o">=</span> <span class="s1">&#39;fixed&#39;</span>
-    <span class="n">SANN</span> <span class="o">=</span> <span class="s1">&#39;sann&#39;</span>
-    <span class="n">Voronoi</span> <span class="o">=</span> <span class="s1">&#39;voronoi&#39;</span></div>
-
-<span class="n">_nearest_neighbors_methods_</span> <span class="o">=</span> <span class="p">[</span><span class="n">method</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">NearestNeighborsMethod</span><span class="p">]</span>
+<span class="c1"># Valid nearest neighbors methods</span>
+<span class="n">_nearest_neighbors_methods_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;fixed&#39;</span><span class="p">,</span> <span class="s1">&#39;sann&#39;</span><span class="p">,</span> <span class="s1">&#39;voronoi&#39;</span><span class="p">]</span>
 </pre></div>
 
            </div>

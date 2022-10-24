@@ -40,22 +40,83 @@ We then consider :math:`Q^R_{l,n}(i)` for a sequence of orders :math:`\{ l_m \} 
 Setup
 -----
 
-Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Trajectory>` can be done as follows:
 
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import RadialBondOrientationalDescriptor
+	from partycls.descriptors import RadialBondOrientationalDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = RadialBondOrientationalDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.radial_bo.RadialBondOrientationalDescriptor.__init__
+.. automethod:: partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.__init__
+
+.. hint::
+
+	The alias :py:class:`BoattiniDescriptor <partycls.descriptors.radial_bo.BoattiniDescriptor>` can be used in place of :py:class:`RadialBondOrientationalDescriptor <partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor>`.
 
 Demonstration
 -------------
+
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``:
+
+.. code-block:: python
+
+	from partycls import Trajectory
+
+	# open the trajectory
+	traj = Trajectory("trajectory.xyz")
+
+We now instantiate a :py:class:`RadialBondOrientationalDescriptor <partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set set the grid of orders :math:`\{l_m\} = \{4,6\}`, the grid of distances :math:`\{d_n\} = \{1.0, 1.25, 1.50\}`, the Gaussian shell width :math:`\delta=0.2` and the skin width :math:`\sigma = 2.5`:
+
+.. code-block:: python
+
+	from partycls.descriptors import RadialBondOrientationalDescriptor
+
+	# instantiation
+	D = RadialBondOrientationalDescriptor(traj,
+					      orders=[4,6],
+					      distance_grid=[1.0, 1.25, 1.50],
+					      delta=0.2,
+					      skin=2.5)
+
+	# print the grid of orders
+	print("orders:\n", D.orders)
+	# print the grid of distances
+	print("distances:\n", D.distance_grid)
+	# print the mixed grid of orders and distances
+	print("mixed grid:\n", D.grid)
+
+	# restrict the analysis to type-B particles
+	D.add_filter("species == 'B'", group=0)
+
+	# compute the descriptor's data matrix
+	X = D.compute()
+
+	# print the first three feature vectors
+	print("feature vectors:\n", X[0:3])
+
+.. code-block:: none
+	:caption: **Output:**
+
+	orders:
+	 [4 6]
+	distances:
+	 [1.   1.25 1.5 ]
+	mixed grid:
+	 [(4, 1.0), (4, 1.25), (4, 1.5), (6, 1.0), (6, 1.25), (6, 1.5)]
+	feature vectors:
+	 [[0.10876497 0.08802174 0.08958731 0.41008552 0.18769869 0.17186267]
+	  [0.09036718 0.05933577 0.07556535 0.49122192 0.2396785  0.17942327]
+	  [0.09049389 0.11888597 0.06950139 0.3981864  0.18440161 0.18568249]]
+
+- ``orders`` shows the grid of orders :math:`\{ l_m \}`.
+- ``distances`` shows the grid of distances :math:`\{ d_n \}`.
+- ``mixed grid`` shows the mixed grid of orders and distances.
+- ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{RBO}(1)`, :math:`X^\mathrm{RBO}(2)` and :math:`X^\mathrm{RBO}(3)` corresponding to the (mixed) grid.
 
 References
 ----------

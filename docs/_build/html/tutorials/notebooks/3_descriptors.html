@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3. Descriptors &mdash; partycls 1.1.1 documentation</title>
+  <title>3. Setting and computing descriptors &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,16 +16,20 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4. Going further" href="4_going_further.html" />
-    <link rel="prev" title="2. Workflow" href="2_workflow.html" /> 
+    <link rel="next" title="4. More advanced applications" href="4_going_further.html" />
+    <link rel="prev" title="2. Setting and running a workflow" href="2_workflow.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,21 +52,21 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html"> Home</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="1_trajectory.html">1. Trajectories</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2_workflow.html">2. Workflow</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3. Descriptors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Common-properties">3.1. Common properties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Radial-descriptor">3.2. Radial descriptor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Bond-angle-descriptor">3.3. Bond angle descriptor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Bond-orientational-parameters">3.4. Bond orientational parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Lechner-Dellago-bond-orientational-parameters">3.5. Lechner-Dellago bond orientational parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Interfacing-with-DScribe">3.6. Interfacing with DScribe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_trajectory.html">1. Manipulating a trajectory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_workflow.html">2. Setting and running a workflow</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3. Setting and computing descriptors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Structural-descriptors">3.1. Structural descriptors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Practical-example-1---The-radial-descriptor">3.2. Practical example 1 - The radial descriptor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Practical-example-2---The-bond-orientational-descriptor">3.3. Practical example 2 - The bond-orientational descriptor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Practical-example-3---Interfacing-with-DScribe">3.4. Practical example 3 - Interfacing with DScribe</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="4_going_further.html">4. Going further</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4_going_further.html">4. More advanced applications</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a></li>
@@ -88,7 +94,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
-      <li><span class="section-number">3. </span>Descriptors</li>
+      <li><span class="section-number">3. </span>Setting and computing descriptors</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/tutorials/notebooks/3_descriptors.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -376,31 +382,56 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Descriptors">
-<h1><span class="section-number">3. </span>Descriptors<a class="headerlink" href="#Descriptors" title="Permalink to this headline"></a></h1>
-<p>In this notebook, we will take a look at the different structural descriptors and learn how to parametrize them and add filters.</p>
-<div class="section" id="Common-properties">
-<h2><span class="section-number">3.1. </span>Common properties<a class="headerlink" href="#Common-properties" title="Permalink to this headline"></a></h2>
-<p>A structural descriptor <span class="math notranslate nohighlight">\(S(x)\)</span> is a collection of <span class="math notranslate nohighlight">\(N\)</span> individual empirical distribution functions or arbitrary features vectors <span class="math notranslate nohighlight">\(\{s_i(\vec{x})\}\)</span>, defined over a grid <span class="math notranslate nohighlight">\(\{x_j\}\)</span> of <span class="math notranslate nohighlight">\(M\)</span> features. This data set is stored in the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of each descriptor class as a matrix:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/1.1.1?filepath=/home/joris/test_partycls-2.0.0/partycls/docs/tutorials/notebooks/3_descriptors.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a></p>
+</div>
+<section id="Setting-and-computing-descriptors">
+<h1><span class="section-number">3. </span>Setting and computing descriptors<a class="headerlink" href="#Setting-and-computing-descriptors" title="Permalink to this heading"></a></h1>
+<p>In this notebook, we will take a look at some of the available descriptors to learn how to parametrize them, and add filters to them to compute partial correlations or to restrict the analysis to a given subset of particles.</p>
+<div class="admonition warning">
+<p class="admonition-title fa fa-exclamation-circle">Important</p>
+<p>Check out <a class="reference external" href="../descriptors/overview.html">this tutorial</a> for an overview of the available structural descriptors, as well as the detailed presentations of each individual descriptor under <strong>Tutorials</strong> » <strong>Structural descriptors</strong> in the documentation.</p>
+</div>
+<section id="Structural-descriptors">
+<h2><span class="section-number">3.1. </span>Structural descriptors<a class="headerlink" href="#Structural-descriptors" title="Permalink to this heading"></a></h2>
+<p>A structural descriptor <span class="math notranslate nohighlight">\(S\)</span> is a collection of <span class="math notranslate nohighlight">\(N\)</span> individual empirical distributions or feature vectors, <span class="math notranslate nohighlight">\(\{s_i(\vec{x})\}\)</span>, defined over a grid <span class="math notranslate nohighlight">\(\{x_j\}\)</span> of <span class="math notranslate nohighlight">\(M\)</span> features.</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{pmatrix}
+\[\begin{split}S = \begin{pmatrix}
 s_0(x_0) &amp; s_0(x_1) &amp; ... &amp; s_0(x_M) \\
 s_1(x_0) &amp; s_1(x_1) &amp; ... &amp; s_1(x_M) \\
 ...      &amp; ...      &amp; ... &amp; ... \\
 s_N(x_0) &amp; s_N(x_1) &amp; ... &amp; s_N(x_M)
 \end{pmatrix}\end{split}\]</div>
-<p><code class="docutils literal notranslate"><span class="pre">features</span></code> is None by default and is defined only when the <code class="docutils literal notranslate"><span class="pre">compute()</span></code> method is called.</p>
-<p>The features can be calculated between two arbitrary subsets of particles called “groups”: - group 0 is the main group, <em>i.e.</em> particles for which the features are being calculated ; - group 1 is the secondary group, <em>i.e.</em> particles that are being considered when calculating the features ; These groups are formed by adding filters on particles’ properties (species, radius, position, etc.).</p>
-<p>All descriptor classes inherit from the abstract class <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code>, thus having several common properties and attributes such as: * <code class="docutils literal notranslate"><span class="pre">trajectory</span></code> : a descriptor is defined for a given <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> (see the <strong>Trajectories</strong> notebook) ; * <code class="docutils literal notranslate"><span class="pre">dimension</span></code> : the spatial dimension of the descriptor. Indeed, some descriptors can only be computed for 2D or 3D trajectories ; * <code class="docutils literal notranslate"><span class="pre">grid</span></code> : grid over which the structural features will be computed. For instance, the values of interparticle
-distances <span class="math notranslate nohighlight">\(r\)</span> (<em>i.e.</em> bins) when using a radial descriptor ; * <code class="docutils literal notranslate"><span class="pre">active_filters</span></code> : list of all active filters on the both groups of particles ; * <code class="docutils literal notranslate"><span class="pre">features</span></code> : array of all the computed structural features for particles in the main group (<span class="math notranslate nohighlight">\(i.e.\)</span> group 0) ; * <code class="docutils literal notranslate"><span class="pre">size</span></code> : number of individual correlation functions <span class="math notranslate nohighlight">\(N\)</span> ; * <code class="docutils literal notranslate"><span class="pre">n_features</span></code> : the number of features <span class="math notranslate nohighlight">\(M\)</span> for the descriptor (equivalent to the length of <code class="docutils literal notranslate"><span class="pre">grid</span></code> and <code class="docutils literal notranslate"><span class="pre">features.shape[1]</span></code>) ; * <code class="docutils literal notranslate"><span class="pre">average</span></code> :
-average feature vector of the descriptor, <em>i.e.</em> <span class="math notranslate nohighlight">\(\sum_i s_i(\vec{x})\)</span> ;</p>
-<p>Let us consider a pratical example by creating a structural descriptor on a trajectory file:</p>
+<p>Each structural descriptor inherits from a base class <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code>, which stores the data matrix <span class="math notranslate nohighlight">\(S\)</span> as an attribute called <code class="docutils literal notranslate"><span class="pre">features</span></code> of type <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>. The features can be computed between two arbitrary subsets of particles called “<em>groups</em>”:</p>
+<ul class="simple">
+<li><p><strong>group 0</strong> is the main group, <em>i.e.</em> particles for which the structural features are being computed.</p></li>
+<li><p><strong>group 1</strong> is the secondary group, <em>i.e.</em> particles that are being considered when computing the structural features.</p></li>
+</ul>
+<p>These groups are formed by adding <strong>filters</strong> on particle properties (<em>e.g.</em> species, radius, position, etc.). For instance, in order to compute a given partial correlation function <span class="math notranslate nohighlight">\(C_{\alpha\beta}(x)\)</span> between two chemical species <span class="math notranslate nohighlight">\((\alpha, \beta)\)</span>, one would add a first filter on group 0 to select only type-<span class="math notranslate nohighlight">\(\alpha\)</span> particles, and a second filter on group 1 to select only type-<span class="math notranslate nohighlight">\(\beta\)</span> particles. This will be discussed further in the rest of this notebook.</p>
+<p>The base class <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code> has the following properties and attributes, shared by all the descriptors:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">trajectory</span></code>: a descriptor is defined for a given <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> (see <a class="reference external" href="1_trajectory.html">this notebook</a> to learn more about trajectories).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dimension</span></code>: the spatial dimension of the descriptor. Indeed, some descriptors can only be computed for 2D or 3D trajectories.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grid</span></code>: grid of features over which the structural features will be computed. For instance, the values of interparticle distances <span class="math notranslate nohighlight">\(r\)</span> (<em>i.e.</em> bins) when using a radial descriptor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">active_filters</span></code>: list of all the active filters on both groups prior to the computation of the descriptor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">features</span></code>: array of all the structural structural features for particles in the main group (<em>i.e.</em> group 0). This attribute is <code class="docutils literal notranslate"><span class="pre">None</span></code> by default and is set only when the the descriptor is computed, upon calling the <code class="docutils literal notranslate"><span class="pre">compute()</span></code> method (see example below).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_features</span></code>: number of features <span class="math notranslate nohighlight">\(M\)</span> of the descriptor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_samples</span></code>: total number of particles considered to compute the descriptor (<em>i.e.</em> number of particles in group 0).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">average</span></code>: average feature vector of the descriptor, <span class="math notranslate nohighlight">\(\langle s \rangle = (1/N) \sum_i s_i(\vec{x})\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups</span></code>: composition of the groups: <code class="docutils literal notranslate"><span class="pre">groups[0]</span></code> and <code class="docutils literal notranslate"><span class="pre">groups[1]</span></code> contain lists of all the <code class="docutils literal notranslate"><span class="pre">Particle</span></code> instances in groups 0 and 1 respectively.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code>: show progress information and warnings about the computation of the descriptor when this attribute is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when it is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">accept_nans</span></code>: if <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a <em>NaN</em> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <em>NaN</em> elements in the array of features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">neighbors_boost</span></code>: scaling factor to estimate the number of neighbors relative to a an ideal gas with the same density. This is used internally to set the dimensions of lists of neighbors. A too small number creates a risk of overfilling the lists of neighbors, and a too large number increases memory usage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_num_neighbors</span></code>: maximum number of neighbors. This is used internally to set the dimensions of lists of neighbors. This number is automatically adjusted to limit memory usage if the associated <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> has valid cutoffs in the <code class="docutils literal notranslate"><span class="pre">Trajectory.nearest_neighbors_cutoffs</span></code> list attribute.</p></li>
+</ul>
+<p>These attributes and properties will be detailed in the rest of this notebook. We start by creating an abstract <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code> a on a trajectory file to illustrate some of them:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">StructuralDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">StructuralDescriptor</span>
 
 <span class="c1"># Open a trajectory</span>
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
@@ -410,8 +441,15 @@ average feature vector of the descriptor, <em>i.e.</em> <span class="math notran
 </pre></div>
 </div>
 </div>
-<p>Note that the class <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code> is abstract and does not perform any computation. This is only an example to show the common properties of the subclasses. Actual examples will be shown later in this notebook.</p>
-<p>By default, all particles are included in groups 0 and 1. The composition of these groups is accessible through the attribute <code class="docutils literal notranslate"><span class="pre">groups</span></code>, a tuple with two elements: - <code class="docutils literal notranslate"><span class="pre">groups[0]</span></code> is the list of particles in the main group (group #0) - <code class="docutils literal notranslate"><span class="pre">groups[1]</span></code> the particles in the secondary group (group #1)</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Note</p>
+<p>We emphasize that the class <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code> is <strong>abstract</strong> and does not perform any computation. This is only an example to show the common properties of the subclasses. Actual examples will be shown later in this notebook.</p>
+</div>
+<p>By default, all particles are included in groups 0 and 1. The composition of these groups is accessible through the attribute <code class="docutils literal notranslate"><span class="pre">groups</span></code>, a tuple with two elements:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">groups[0]</span></code> is the list of particles in the main group (group 0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups[1]</span></code> the particles in the secondary group (group 1)</p></li>
+</ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -435,9 +473,10 @@ average feature vector of the descriptor, <em>i.e.</em> <span class="math notran
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of frames in the trajectory</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Frames :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of frames in the trajectory:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
+
 <span class="c1"># Length of the groups</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Groups :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of the groups:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -446,8 +485,8 @@ average feature vector of the descriptor, <em>i.e.</em> <span class="math notran
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Frames : 21
-Groups : 21 21
+Number of frames in the trajectory: 21
+Length of the groups: 21 21
 </pre></div></div>
 </div>
 <p>Each of these sublists contains all the particles that belong to the group:</p>
@@ -456,11 +495,13 @@ Groups : 21 21
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The first 3 particles in the first frame of group 0</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A few particles in the first frame of group 0:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
 
 <span class="c1"># All particles are in both groups by default.</span>
 <span class="c1"># Number of particles in the groups of the first frame</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group sizes (first frame) :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group sizes (first frame) :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -469,28 +510,49 @@ Groups : 21 21
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[Particle(position=[ 0.819926 -1.760086  0.36845 ], species=A, label=-1, radius=0.5, index=139843682019504, species_id=1), Particle(position=[ 0.29098   1.24579  -2.495344], species=A, label=-1, radius=0.5, index=139842893704208, species_id=1), Particle(position=[2.484607 0.35245  1.371003], species=A, label=-1, radius=0.5, index=139842893704112, species_id=1)]
+A few particles in the first frame of group 0:
+Particle(position=[ 0.819926 -1.760086  0.36845 ], species=A, label=-1, radius=0.5, nearest_neighbors=None, species_id=1)
+Particle(position=[ 0.29098   1.24579  -2.495344], species=A, label=-1, radius=0.5, nearest_neighbors=None, species_id=1)
+Particle(position=[2.484607 0.35245  1.371003], species=A, label=-1, radius=0.5, nearest_neighbors=None, species_id=1)
+
 Group sizes (first frame) : 150 150
 </pre></div></div>
 </div>
-<div class="section" id="Filters">
-<h3><span class="section-number">3.1.1. </span>Filters<a class="headerlink" href="#Filters" title="Permalink to this headline"></a></h3>
-<p>To restrict the computation of the descriptor to a given subset, we apply a filter with the method <code class="docutils literal notranslate"><span class="pre">add_filter</span></code>. This is done by specifying the filter with a string of the form:</p>
+<p>The total group sizes, trajectory-wide, can be accessed with the <code class="docutils literal notranslate"><span class="pre">group_size()</span></code> method:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group sizes (total) :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Group sizes (total) : 3150 3150
+</pre></div></div>
+</div>
+<section id="Filters">
+<h3><span class="section-number">3.1.1. </span>Filters<a class="headerlink" href="#Filters" title="Permalink to this heading"></a></h3>
+<p>To restrict the computation of the descriptor to a given subset, we can apply a filter with the method <code class="docutils literal notranslate"><span class="pre">add_filter()</span></code>. This is done by specifying the filter with a string of the form:</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;particle.&lt;attribute&gt;</span> <span class="pre">_operator_</span> <span class="pre">&lt;value&gt;&quot;</span></code></p>
 <p>or simply</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;&lt;attribute&gt;</span> <span class="pre">_operator_</span> <span class="pre">&lt;value&gt;&quot;</span></code></p>
-<p>for common attributes. Ex. <code class="docutils literal notranslate"><span class="pre">&quot;species</span> <span class="pre">==</span> <span class="pre">'A'&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;particle.radius</span> <span class="pre">&lt;</span> <span class="pre">0.5&quot;</span></code>.</p>
-<p>We must also specify the <code class="docutils literal notranslate"><span class="pre">group</span></code> over which this filter is applied.</p>
-<p>The current input trajectory file is a binary mixture of particles labeled <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> with chemical fractions of 0.8 and 0.2 respectively. Let us restrict the computation of the structural features to B particles only:</p>
+<p>for common attributes, <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">&quot;species</span> <span class="pre">==</span> <span class="pre">'A'&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;particle.radius</span> <span class="pre">&lt;</span> <span class="pre">0.5&quot;</span></code>.</p>
+<p>The group onto which the filter is applied must also be specified.</p>
+<p>The current input trajectory file is a binary mixture of particles labeled <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> with chemical fractions of 0.8 and 0.2 respectively. Let us restrict the computation of the structural features to type-B particles only:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a filter on group 0</span>
 <span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Active filters</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">active_filters</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Active filters:&quot;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">active_filters</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -499,55 +561,26 @@ Group sizes (first frame) : 150 150
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[(&#34;particle.species == &#39;B&#39;&#34;, 0)]
+Active filters: [(&#34;particle.species == &#39;B&#39;&#34;, 0)]
 </pre></div></div>
 </div>
-<p>Group #0 now contains only B particles, and group #1 still contains all the particles:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Group sizes in the first frame</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group #0 :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;(first frame)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group #1 :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;(first frame)&#39;</span><span class="p">)</span>
-
-<span class="c1"># Group sizes over all frames</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Size of group #0 :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group #1 :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
-
-<span class="c1"># Fractions of particles in the groups</span>
-<span class="c1">#  (over the whole trajectory)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group #0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group #1 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Size of group #0 : 30 (first frame)
-Size of group #1 : 150 (first frame)
-
-Size of group #0 : 630 (total)
-Size of group #1 : 3150 (total)
-
-Group #0 fraction : 0.2 (total)
-Group #1 fraction : 1.0 (total)
-</pre></div></div>
-</div>
-<p>This means that the features will be computed for B particles only, but by considering all particles (both A and B). Now, let us make this a partial correlation by focusing the analysis on A particles:</p>
+<p>Group 0 now contains only B particles, and group 1 still contains all the particles:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">active_filters</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Group sizes in the first frame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group 0 :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;(first frame)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group 1 :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;(first frame)&#39;</span><span class="p">)</span>
 
-<span class="c1"># New fractions</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group #0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group #1 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># Group sizes over all frames</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Size of group 0 :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group 1 :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Fractions of particles in the groups</span>
+<span class="c1">#  (over the whole trajectory)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group 0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group 1 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -556,24 +589,26 @@ Group #1 fraction : 1.0 (total)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[(&#34;particle.species == &#39;B&#39;&#34;, 0), (&#34;particle.species == &#39;A&#39;&#34;, 1)]
-Group #0 fraction : 0.2
-Group #1 fraction : 0.8
+Size of group 0 : 30 (first frame)
+Size of group 1 : 150 (first frame)
+
+Size of group 0 : 630 (total)
+Size of group 1 : 3150 (total)
+
+Group 0 fraction : 0.2 (total)
+Group 1 fraction : 1.0 (total)
 </pre></div></div>
 </div>
-<p>If the descriptor was describing radial correlations, this would be equivalent to computing the partial RDF between B and A particles, <span class="math notranslate nohighlight">\(g_{BA}(r)\)</span>.</p>
-<p><strong>N.B.</strong> We can cumulate filters by adding them successively (as long as there are particles left in the specified group).</p>
-<p>Filters can be removed with the methods <code class="docutils literal notranslate"><span class="pre">clear_filters</span></code> (clears all filters on the specified group) and <code class="docutils literal notranslate"><span class="pre">clear_all_filters</span></code> (clears all filters on both groups):</p>
+<p>This means that the features will be computed for type-B particles only, but by considering all particles (both type-A and type-B). Now, let us make this a partial correlation by focusing the analysis on A particles:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove filter on group #0</span>
-<span class="n">D</span><span class="o">.</span><span class="n">clear_filters</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group #0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Active filters:&quot;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">active_filters</span><span class="p">)</span>
 
-<span class="c1"># Remove all filters (both groups #0 and #1)</span>
-<span class="n">D</span><span class="o">.</span><span class="n">clear_all_filters</span><span class="p">()</span>
+<span class="c1"># New fractions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group #0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group #1 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -583,28 +618,58 @@ Group #1 fraction : 0.8
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Group #0 fraction : 1.0
-Group #1 fraction : 1.0
+Active filters: [(&#34;particle.species == &#39;B&#39;&#34;, 0), (&#34;particle.species == &#39;A&#39;&#34;, 1)]
+
+Group #0 fraction : 0.2
+Group #1 fraction : 0.8
 </pre></div></div>
 </div>
-<p>All particles are included again in both groups.</p>
+<div class="admonition warning">
+<p class="admonition-title fa fa-exclamation-circle">Important</p>
+<p>More than one filter can be applied to the same group. Filters can be cumulated, as long as there are particles left in the corresponding group.</p>
 </div>
-<div class="section" id="Accessing-a-group-property">
-<h3><span class="section-number">3.1.2. </span>Accessing a group property<a class="headerlink" href="#Accessing-a-group-property" title="Permalink to this headline"></a></h3>
-<p>Much like the method <code class="docutils literal notranslate"><span class="pre">Trajectory.get_property</span></code> (see the <strong>Trajectories</strong> notebook), the properties of the particles in each group can be accessed through the method <code class="docutils literal notranslate"><span class="pre">get_group_property</span></code> (also called <code class="docutils literal notranslate"><span class="pre">dump</span></code> for short):</p>
+<p>Filters can be removed with the methods <code class="docutils literal notranslate"><span class="pre">clear_filters()</span></code> (clears all filters on the specified group) and <code class="docutils literal notranslate"><span class="pre">clear_all_filters()</span></code> (clears all filters on both groups):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove filter on group #0</span>
+<span class="n">D</span><span class="o">.</span><span class="n">clear_filters</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group 0 fraction:&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="c1"># Remove all filters (both groups #0 and #1)</span>
+<span class="n">D</span><span class="o">.</span><span class="n">clear_all_filters</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group 1 fraction:&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Group 0 fraction: 1.0
+Group 1 fraction: 1.0
+</pre></div></div>
+</div>
+<p>All particles are included again in both groups.</p>
+</section>
+<section id="Accessing-a-group-property">
+<h3><span class="section-number">3.1.2. </span>Accessing a group property<a class="headerlink" href="#Accessing-a-group-property" title="Permalink to this heading"></a></h3>
+<p>Much like the method <code class="docutils literal notranslate"><span class="pre">Trajectory.get_property</span></code> (see <a class="reference external" href="1_trajectory.html">this notebook</a>), the properties of the particles in each group can be accessed through the method <code class="docutils literal notranslate"><span class="pre">get_group_property()</span></code> (also called <code class="docutils literal notranslate"><span class="pre">dump()</span></code> for short):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Species of the particles in group #0</span>
-<span class="n">species</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">get_group_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">species</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">get_group_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="c1"># 10 first particles in the first frame</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">species</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
 
 <span class="c1"># Keep only B particles in group #0</span>
 <span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
 <span class="c1"># 10 first particles in the first frame</span>
-<span class="n">species</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">get_group_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">species</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">get_group_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">species</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -620,7 +685,7 @@ Group #1 fraction : 1.0
 </div>
 <p>A few more examples:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positions of particles in group #0</span>
@@ -634,31 +699,36 @@ Group #1 fraction : 1.0
 </pre></div>
 </div>
 </div>
-<p><strong>N.B</strong> note that, unlike <code class="docutils literal notranslate"><span class="pre">Trajectory.get_property</span></code>, this method only applies to particles. Moreover, the groups being a data structure natively related to filters, it <em>does not</em> accept a <code class="docutils literal notranslate"><span class="pre">subset</span></code> parameter.</p>
-<hr class="docutils" />
-<p>** IMPORTANT:</p>
-</style><p>** mastering the notion of groups (their data structure, etc.) is not essential to use the code. This is only useful for specific usage, as will become clear with the rest of this notebook and the next.</p>
-<p>Now, in order to actually compute the structural features, the method <code class="docutils literal notranslate"><span class="pre">compute</span></code> must be called: <code class="docutils literal notranslate"><span class="pre">D.compute()</span></code>. This will set the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute. Let us move to more practical examples with actual descriptors.</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Note</p>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">Trajectory.get_property()</span></code>, this method only applies to particles. Moreover, it <strong>does not</strong> accept a <code class="docutils literal notranslate"><span class="pre">subset</span></code> parameter.</p>
 </div>
+<p>Mastering the notion of <em>groups</em> (<em>i.e.</em> their internal structure and all their attributes) is not essential to use the code. This is only useful for specific usage, as will become clear with the rest of this notebook and the next.</p>
+<p>In order to compute the structural features, the method <code class="docutils literal notranslate"><span class="pre">compute()</span></code> must be called. This will set the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute. Let us move on to more practical examples with some of the structural descriptors available in the code.</p>
+<div class="admonition warning">
+<p class="admonition-title fa fa-exclamation-circle">Important</p>
+<p>For a more detailed presentation of each descriptor, check out the tutorials under <strong>Tutorials</strong> » <strong>Structural descriptors</strong> in the documentation.</p>
 </div>
-<div class="section" id="Radial-descriptor">
-<h2><span class="section-number">3.2. </span>Radial descriptor<a class="headerlink" href="#Radial-descriptor" title="Permalink to this headline"></a></h2>
-<p>The class <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code> computes the radial correlations of a central particle with all its surrounding particles up to a given distance <span class="math notranslate nohighlight">\(R\)</span>. In practice, for a particle <span class="math notranslate nohighlight">\(i\)</span>, it computes a histogram for particles between <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(r + \mathrm{d}r\)</span> between the specified range:</p>
+</section>
+</section>
+<section id="Practical-example-1---The-radial-descriptor">
+<h2><span class="section-number">3.2. </span>Practical example 1 - The radial descriptor<a class="headerlink" href="#Practical-example-1---The-radial-descriptor" title="Permalink to this heading"></a></h2>
+<p>The class <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code> computes the radial correlations of a central particle with all its surrounding particles within the range of distances <span class="math notranslate nohighlight">\((r_\mathrm{min}, r_\mathrm{max})\)</span>. For a given particle <span class="math notranslate nohighlight">\(i\)</span>, it computes a histogram that counts the particles between <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(r + \Delta r\)</span> between the specified range. See the <a class="reference external" href="../descriptors/gr.html">dedicated tutorial</a>.</p>
+<p>We create a radial descriptor and set the <code class="docutils literal notranslate"><span class="pre">verbose</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">True</span></code> to show the progression:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
 
-<span class="c1"># radial descriptor between r=0 and r=2 with bin size dr=0.1</span>
-<span class="n">D_r</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="c1"># compute the features (also sets D_r.features)</span>
-<span class="n">X_r</span> <span class="o">=</span> <span class="n">D_r</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="c1"># Open a trajectory</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-<span class="c1"># grid</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;grid = &#39;</span><span class="p">,</span> <span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-<span class="c1"># radial histogram of particle #0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;radial histogram of particle #0 :&#39;</span><span class="p">,</span> <span class="n">X_r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Radial descriptor between r=0 and r=2 with bin size dr=0.1</span>
+<span class="n">D_r</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Grid</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Grid of distances:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -667,70 +737,42 @@ Group #1 fraction : 1.0
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-grid =  [0.025 0.075 0.125 0.175 0.225 0.275 0.325 0.375 0.425 0.475 0.525 0.575
- 0.625 0.675 0.725 0.775 0.825 0.875 0.925 0.975 1.025 1.075 1.125 1.175
- 1.225 1.275 1.325 1.375 1.425 1.475 1.525 1.575 1.625 1.675 1.725 1.775
- 1.825 1.875 1.925 1.975]
-radial histogram of particle #0 : [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 2 1 3 1 1 2 1 2 0 1 0 0 3 2 3 3 4 3
- 4 2 3]
+Grid of distances:
+ [0.05 0.15 0.25 0.35 0.45 0.55 0.65 0.75 0.85 0.95 1.05 1.15 1.25 1.35
+ 1.45 1.55 1.65 1.75 1.85 1.95]
 </pre></div></div>
 </div>
-<p>The average of the descriptor is the average over all histograms:</p>
+<p>We compute the descriptor:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">D_r</span><span class="o">.</span><span class="n">average</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the features (this also sets D_r.features)</span>
+<span class="n">X_r</span> <span class="o">=</span> <span class="n">D_r</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_24_0.png" src="../../_images/tutorials_notebooks_3_descriptors_24_0.png" />
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Computing gr descriptor: 100%|█████████████████████████████████████████| 21/21 [00:00&lt;00:00, 1145.37it/s]
+</pre></div></div>
 </div>
-</div>
-<p>Note that the bounds for the grid can be set automatically through the integer parameter <code class="docutils literal notranslate"><span class="pre">n_shells</span></code> (instead of specifying <code class="docutils literal notranslate"><span class="pre">bounds</span></code> manually). This will set the upper bound automatically by counting the number of coordination shells (default value is 3).</p>
-<p>An example with a filter:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A-A correlation</span>
-<span class="n">D_r_AA</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="n">D_r_AA</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">D_r_AA</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">D_r_AA</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-
-<span class="c1"># A-B correlation</span>
-<span class="n">D_r_AB</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="n">D_r_AB</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">D_r_AB</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">D_r_AB</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<p>Let us normalize the distributions in order to get true <span class="math notranslate nohighlight">\(g(r)\)</span>.</p>
-<p>As mentioned in the <strong>Workflow</strong> notebook, the class <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code> implements a normalization function that allows for two types of normalization through a <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter: * <code class="docutils literal notranslate"><span class="pre">method='r2'</span></code> returns <span class="math notranslate nohighlight">\(r^2g(r)\)</span> (default) ; * <code class="docutils literal notranslate"><span class="pre">method='gr'</span></code> returns the standard <span class="math notranslate nohighlight">\(g(r)\)</span> ;</p>
-<p>In our case, we are interested in standard <span class="math notranslate nohighlight">\(g(r)\)</span> and <span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span>:</p>
+<p>The variable <code class="docutils literal notranslate"><span class="pre">X_r</span></code> contains all the structural features, and can also be accessed through the attribute <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
+<p>The average of the descriptor is the average over all histograms:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># /!\ normalization depends on the descriptor in this case</span>
-<span class="n">g</span>    <span class="o">=</span> <span class="n">D_r</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
-<span class="n">g_AA</span> <span class="o">=</span> <span class="n">D_r_AA</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r_AA</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
-<span class="n">g_AB</span> <span class="o">=</span> <span class="n">D_r_AB</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r_AB</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="c1"># plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r_AA</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g_AA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A-A&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r_AB</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g_AB</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A-B&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Plot the average descriptor</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">D_r</span><span class="o">.</span><span class="n">average</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$r$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Average&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -742,65 +784,49 @@ radial histogram of particle #0 : [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 2 1 3 1
 <img alt="../../_images/tutorials_notebooks_3_descriptors_28_0.png" src="../../_images/tutorials_notebooks_3_descriptors_28_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Bond-angle-descriptor">
-<h2><span class="section-number">3.3. </span>Bond angle descriptor<a class="headerlink" href="#Bond-angle-descriptor" title="Permalink to this headline"></a></h2>
-<p>Similarly, the class <code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor</span></code> counts the number of particles <span class="math notranslate nohighlight">\((j,k)\)</span> around a central particle <span class="math notranslate nohighlight">\(i\)</span> such that the angle <span class="math notranslate nohighlight">\(\widehat{jik}\)</span> is in the range <span class="math notranslate nohighlight">\([\theta, \theta + \mathrm{d} \theta\)</span>]. Particles <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span> must be in the first coordination shell of particle particle <span class="math notranslate nohighlight">\(i\)</span>.</p>
-<p>This class inherits from a class <code class="docutils literal notranslate"><span class="pre">AngularStructuralDescriptor</span></code> (that inherits from <code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code>). It has several additional attributes:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">nearest_neighbors_method</span></code> : must be <code class="docutils literal notranslate"><span class="pre">&quot;FC&quot;</span></code> (fixed cutoff) or <code class="docutils literal notranslate"><span class="pre">&quot;SANN&quot;</span></code> (solid angle based nearest-neighbors). See the documentation for more details ;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cutoffs</span></code> : cutoffs can be set manually when using <code class="docutils literal notranslate"><span class="pre">nearest_neighbors_method</span> <span class="pre">=</span> <span class="pre">&quot;FC&quot;</span></code>, or through the method <code class="docutils literal notranslate"><span class="pre">set_cutoff</span></code>. If not specified, they are computed automatically ;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">neighbors</span></code> : list of nearest neighbors for each particle (in group 0). This is set once the method <code class="docutils literal notranslate"><span class="pre">nearest_neighbors</span></code> has been called ;</p></li>
-</ul>
-<p><strong>N.B.</strong> When using <code class="docutils literal notranslate"><span class="pre">&quot;FC&quot;</span></code> as nearest neighbors method and letting the code find the cutoffs automatically, it may happen that some cutoffs do not coincide with the actual cutoff <span class="math notranslate nohighlight">\(r_{cut}^{\alpha\beta}\)</span> for a pair <span class="math notranslate nohighlight">\((\alpha,\beta)\)</span> of species. Indeed, if the shape of <span class="math notranslate nohighlight">\(g_{\alpha\beta(r)}\)</span> is peculiar (<em>e.g.</em> very ordered systems or splitting of the first peak), the identification of the first coordination shell may be wrong. In this case, it is recommended to check the values
-of <code class="docutils literal notranslate"><span class="pre">cutoffs</span></code>.</p>
-<div class="nbinput docutils container">
+<p>Another example with filters:</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A-A correlation</span>
+<span class="n">D_r_AA</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">D_r_AA</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">D_r_AA</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">D_r_AA</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 
-<span class="c1"># bond angle descriptor with bin size dtheta=4 (in degrees)</span>
-<span class="n">D_ba</span> <span class="o">=</span> <span class="n">BondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">dtheta</span><span class="o">=</span><span class="mf">4.0</span><span class="p">)</span>
-<span class="c1"># compute the features</span>
-<span class="n">X_ba</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-
-<span class="c1"># cutoffs used to find neighbors</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;all pairs of species :&#39;</span><span class="p">,</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pairs_of_species</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;associated cutoffs :&#39;</span><span class="p">,</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">cutoffs</span><span class="p">)</span>
-
-<span class="c1"># grid (from 0 to 180 deg.)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">grid = &#39;</span><span class="p">,</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-<span class="c1"># bond angles histogram of particle #0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;radial histogram of particle #0 :&#39;</span><span class="p">,</span> <span class="n">X_ba</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="c1"># neighbors of particles #0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;neighbors of particle #0 :&#39;</span><span class="p">,</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># A-B correlation</span>
+<span class="n">D_r_AB</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">D_r_AB</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">D_r_AB</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">D_r_AB</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-all pairs of species : [(&#39;A&#39;, &#39;A&#39;), (&#39;A&#39;, &#39;B&#39;), (&#39;B&#39;, &#39;A&#39;), (&#39;B&#39;, &#39;B&#39;)]
-associated cutoffs : [1.4500000000000004, 1.2500000000000002, 1.2500000000000002, 1.9500000000000004]
-
-grid =  [  2.   6.  10.  14.  18.  22.  26.  30.  34.  38.  42.  46.  50.  54.
-  58.  62.  66.  70.  74.  78.  82.  86.  90.  94.  98. 102. 106. 110.
- 114. 118. 122. 126. 130. 134. 138. 142. 146. 150. 154. 158. 162. 166.
- 170. 174. 178.]
-radial histogram of particle #0 : [ 0  0  0  0  0  0  0  0  0  0  2 12 10 16 16  0 12  6  4  4  0 10 10  4
-  4  6 12 20  8  8  0  6  4  4  0  8  4  4  6  6  2  2  0  0  0]
-neighbors of particle #0 : [ 16  37  39  56  63  69  75  89  90  96  98 101 113 123 144]
-</pre></div></div>
-</div>
-<p>Average of the descriptor:</p>
+<p>Let us normalize the distributions in order to get true <span class="math notranslate nohighlight">\(g(r)\)</span>.</p>
+<p>As mentioned in the <a class="reference external" href="2_workflow.html">notebook on worflows</a>, the class <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code> implements a normalization function that allows for two types of normalization through a <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method='r2'</span></code> returns <span class="math notranslate nohighlight">\(r^2g(r)\)</span> (default) ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method='gr'</span></code> returns the standard <span class="math notranslate nohighlight">\(g(r)\)</span> ;</p></li>
+</ul>
+<p>In our case, we are interested in standard <span class="math notranslate nohighlight">\(g(r)\)</span> and <span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_ba</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">average</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># /!\ Normalization depends on the descriptor in this case</span>
+<span class="n">g</span>    <span class="o">=</span> <span class="n">D_r</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<span class="n">g_AA</span> <span class="o">=</span> <span class="n">D_r_AA</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r_AA</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<span class="n">g_AB</span> <span class="o">=</span> <span class="n">D_r_AB</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r_AB</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r_AA</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g_AA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A-A&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r_AB</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g_AB</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A-B&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$r$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$g(r)$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -812,116 +838,57 @@ neighbors of particle #0 : [ 16  37  39  56  63  69  75  89  90  96  98 101 113 
 <img alt="../../_images/tutorials_notebooks_3_descriptors_32_0.png" src="../../_images/tutorials_notebooks_3_descriptors_32_0.png" />
 </div>
 </div>
-<p>The class <code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor</span></code> also implements a normalization function with a <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter. : * <code class="docutils literal notranslate"><span class="pre">method='sin'</span></code>: by construction, the probability density of <span class="math notranslate nohighlight">\(\theta\)</span> has a sinusoidal shape in 3D for uniformly distributed points on a sphere (default) ; * <code class="docutils literal notranslate"><span class="pre">method='pdf'</span></code> : gives a flat probability density for uniformly distributed points on a sphere ;</p>
-<div class="nbinput docutils container">
+</section>
+<section id="Practical-example-2---The-bond-orientational-descriptor">
+<h2><span class="section-number">3.3. </span>Practical example 2 - The bond-orientational descriptor<a class="headerlink" href="#Practical-example-2---The-bond-orientational-descriptor" title="Permalink to this heading"></a></h2>
+<p>The class <code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor</span></code> computes the bond-orientational parameters <span class="math notranslate nohighlight">\(q_l\)</span>. See the <a class="reference external" href="../descriptors/bo.html">dedicated tutorial</a>.</p>
+<p>For this example, we use a sample of a <a class="reference external" href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.44.3752">Wahnström</a> polydisperse binary mixture: 50% large particles (A), 50% small particles (B).</p>
+<p>Like most descriptors, this descriptor requires the <strong>nearest neighbors</strong> of the particles to compute the structural features. This can be done directly at the level of the trajectory:</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">grid</span>
-<span class="n">q_sin</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_ba</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;sin&#39;</span><span class="p">)</span>
-<span class="n">q_flat</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_ba</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;../data/wahn_N1000.xyz&quot;</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">q_sin</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sin&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">q_flat</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Compute the nearest neighbors</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s1">&#39;fixed&#39;</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.425</span><span class="p">,</span> <span class="mf">1.325</span><span class="p">,</span> <span class="mf">1.325</span><span class="p">,</span> <span class="mf">1.275</span><span class="p">]</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Note</p>
+<p>If not done manually, this will be done <strong>automatically</strong> from inside the descriptor using a default method and default parameters.</p>
 </div>
-<div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_34_0.png" src="../../_images/tutorials_notebooks_3_descriptors_34_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Bond-orientational-parameters">
-<h2><span class="section-number">3.4. </span>Bond orientational parameters<a class="headerlink" href="#Bond-orientational-parameters" title="Permalink to this headline"></a></h2>
-<p>The class <code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor</span></code> computes bond orientational parameters <span class="math notranslate nohighlight">\(q_l\)</span> (see <a class="reference external" href="http://doi.org/10.1103/PhysRevB.28.784">Steinhardt et al.</a>) around particle <span class="math notranslate nohighlight">\(i\)</span> surrounded by nearest neighbors <span class="math notranslate nohighlight">\(\{j\}\)</span>.</p>
-<p>This class also inherits from the class <code class="docutils literal notranslate"><span class="pre">AngularStructuralDescriptor</span></code> (see the section <strong>Bond angle descriptor</strong> or the documentation for more details).</p>
-<p>The minimal and maximal orders of <span class="math notranslate nohighlight">\(l\)</span> must be specified through the parameters <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>. Otherwise, specific values of <span class="math notranslate nohighlight">\(l\)</span> can be computed by using the list parameter <code class="docutils literal notranslate"><span class="pre">orders</span></code>:</p>
-<div class="nbinput docutils container">
+<p>We now create the descriptor, set <code class="docutils literal notranslate"><span class="pre">verbose</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, and add filters to compute bond-orientational parameters only between type-B particles:</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">BondOrientationalDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">BondOrientationalDescriptor</span>
 
-<span class="c1"># BOP descriptor</span>
-<span class="n">D_bo</span> <span class="o">=</span> <span class="n">BondOrientationalDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">lmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;range of values for l :&#39;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+<span class="c1"># Descriptor</span>
+<span class="n">D_bo</span> <span class="o">=</span> <span class="n">BondOrientationalDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># compute specific values instead</span>
-<span class="n">D_bo</span><span class="o">.</span><span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;specific values of l :&#39;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-
-<span class="c1"># change nearest neighbors method and compute</span>
-<span class="n">D_bo</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s1">&#39;SANN&#39;</span>
-<span class="n">X_bo</span> <span class="o">=</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="c1"># Filters</span>
+<span class="n">D_bo</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">D_bo</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-range of values for l : [1 2 3 4 5 6 7 8]
-specific values of l : [4 6]
-</pre></div></div>
-</div>
-<p>Distributions of <span class="math notranslate nohighlight">\(q_4\)</span> and <span class="math notranslate nohighlight">\(q_6\)</span>:</p>
+<p>For this descriptor, the <code class="docutils literal notranslate"><span class="pre">grid</span></code> attribute is the set of orders <span class="math notranslate nohighlight">\(\{ l_n \}\)</span> used for the computation of the <span class="math notranslate nohighlight">\(\{ q_l \}\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># q_4 (/!\ FIRST element of the grid)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X_bo</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$q_4$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grid of orders</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Grid of orders:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
 
-<span class="c1"># q_6 (/!\ SECOND element of the grid)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X_bo</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$q_6$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_38_0.png" src="../../_images/tutorials_notebooks_3_descriptors_38_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_38_1.png" src="../../_images/tutorials_notebooks_3_descriptors_38_1.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Lechner-Dellago-bond-orientational-parameters">
-<h2><span class="section-number">3.5. </span>Lechner-Dellago bond orientational parameters<a class="headerlink" href="#Lechner-Dellago-bond-orientational-parameters" title="Permalink to this headline"></a></h2>
-<p>The class <code class="docutils literal notranslate"><span class="pre">LechnerDellagoDescriptor</span></code> computes a variant <span class="math notranslate nohighlight">\(\bar{q}_l\)</span> (as introduced by <a class="reference external" href="http://doi.org/10.1063/1.2977970">Lechner &amp; Dellago</a>) of the previously mentioned bond orientational parameters, <span class="math notranslate nohighlight">\(q_l\)</span>. This class inherits from <code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor</span></code> and thus has the same parameters and attributes.</p>
-<p>Note that this descriptor is more computationally expensive than its parent class.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">LechnerDellagoDescriptor</span>
-
-<span class="c1"># Lechner-Dellago descriptor</span>
-<span class="n">D_ld</span> <span class="o">=</span> <span class="n">LechnerDellagoDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
-<span class="c1"># compute specific of values of l</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;grid of l :&#39;</span><span class="p">,</span> <span class="n">D_ld</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-
-<span class="c1"># change nearest neighbors method and compute</span>
-<span class="n">D_ld</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s1">&#39;SANN&#39;</span>
-<span class="n">X_ld</span> <span class="o">=</span> <span class="n">D_ld</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="c1"># Use specific values instead</span>
+<span class="n">D_bo</span><span class="o">.</span><span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New grid of orders:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -930,56 +897,134 @@ specific values of l : [4 6]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-grid of l : [4 6]
+Grid of orders:
+ [1 2 3 4 5 6 7 8]
+New grid of orders:
+ [4 6]
 </pre></div></div>
 </div>
+<p>We now compute the descriptor:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># q_4 (/!\ FIRST element of the grid)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X_ld</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\bar</span><span class="si">{q}</span><span class="s1">_4$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># q_6 (/!\ SECOND element of the grid)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X_ld</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\bar</span><span class="si">{q}</span><span class="s1">_6$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the structural features</span>
+<span class="n">X_bo</span> <span class="o">=</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Computing bo descriptor: 100%|████████████████████████████████████████████| 1/1 [00:00&lt;00:00, 126.21it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
 <div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_41_0.png" src="../../_images/tutorials_notebooks_3_descriptors_41_0.png" />
+<div class="highlight"><pre>
+Warning: found 2 NaN sample(s) in the array of features.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<p>In addition to the progress bar, the <code class="docutils literal notranslate"><span class="pre">verbose</span></code> attribute can tell us about some things happening during the computation. Here, we see a printed message regarding <em>NaN</em> elements: this can happen to some descriptors under certain conditions.</p>
+<p>Here, two type-B particles did not have any other type-B particle as nearest neighbor, making the computation of the <span class="math notranslate nohighlight">\(\{ q_l \}\)</span> impossible. These data points can be removed from the dataset using the <code class="docutils literal notranslate"><span class="pre">discard_nans()</span></code> method:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter out NaN elements</span>
+<span class="n">X_bo_clean</span> <span class="o">=</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">discard_nans</span><span class="p">()</span>
+
+<span class="c1"># Size of the original and filtered datasets</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of samples (unfiltered):&quot;</span><span class="p">,</span> <span class="n">X_bo</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of samples (filtered):&quot;</span><span class="p">,</span> <span class="n">X_bo_clean</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_41_1.png" src="../../_images/tutorials_notebooks_3_descriptors_41_1.png" />
+<div class="highlight"><pre>
+Warning: discarding 2 NaN samples from the array of features.
+Number of samples (unfiltered): 500
+Number of samples (filtered): 498
+</pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Interfacing-with-DScribe">
-<h2><span class="section-number">3.6. </span>Interfacing with DScribe<a class="headerlink" href="#Interfacing-with-DScribe" title="Permalink to this headline"></a></h2>
-<p>Several common machine learning descriptors, such as SOAP (smooth overlap of atomic positions) or ACSF (atom-centered symmetry functions), can be computed using an adapter for the <a class="reference external" href="https://singroup.github.io/dscribe/latest/">DScribe</a> package.</p>
-<p>This is done using two classes: - <code class="docutils literal notranslate"><span class="pre">DscribeDescriptor</span></code> : does not account for the chemical information. Essentially, all the particles are considered as hydrogen atoms ; - <code class="docutils literal notranslate"><span class="pre">DscribeChemicalDescriptor</span></code> : accounts for the chemical information. Be sure that the species in the input trajectory are labeled with atomic symbols (<code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;H&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Si&quot;</span></code>) instead of labels such as <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;2&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>.</p>
-<p>As a proof of principle, let us perform two distinct clusterings using these classes and the SOAP descriptor. We will use a sample of a Wahnström polydisperse binary mixture: 50% large particles (“A”), 50% small particles (“B”).</p>
-<div class="nbinput nblast docutils container">
+<p>The <code class="docutils literal notranslate"><span class="pre">accept_nans</span></code> property allows to directly filter out <em>NaN</em> elements when computing the descriptor. This can be set directly when instantiating the descriptor, or after its computation:</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span><span class="p">,</span> <span class="n">Workflow</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">DscribeDescriptor</span><span class="p">,</span> <span class="n">DscribeChemicalDescriptor</span>
-<span class="kn">from</span> <span class="nn">dscribe.descriptors</span> <span class="kn">import</span> <span class="n">SOAP</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D_bo</span><span class="o">.</span><span class="n">accept_nans</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="c1"># Trajectory</span>
+<span class="c1"># Size of the array of features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of samples:&quot;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Warning: found 2 NaN sample(s) in the array of features.
+Warning: discarding 2 NaN samples from the array of features.
+
+Number of samples: 498
+</pre></div></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title fa fa-exclamation-circle">Warning</p>
+<p>This property <strong>overwrites</strong> the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute if the descriptor was already computed. Use <code class="docutils literal notranslate"><span class="pre">discard_nans()</span></code> instead to return a filtered copy of the dataset, and keep the <em>NaN</em> elements in <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
+</div>
+<p>As mentioned above, this descriptor requires nearest neighbors to perform the computation. The attribute <code class="docutils literal notranslate"><span class="pre">max_num_neighbors</span></code> is adjusted automatically to limit memory usage when storing lists of neighbors internally:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max. number of neighbors per particle:&quot;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">max_num_neighbors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Max. number of neighbors per particle: 66
+</pre></div></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title fa fa-exclamation-circle">Important</p>
+<p>In some rare cases (<em>e.g.</em> strongly heterogeneous systems), the allocated memory may be insufficient to store lists of neighbors. This overflow will most likely result in a “<strong>Segmentation fault (core dumped)</strong>” error. In that case, manually increasing <code class="docutils literal notranslate"><span class="pre">max_num_neighbors</span></code> or <code class="docutils literal notranslate"><span class="pre">neighbors_boost</span></code> before the computation will solve the problem.</p>
+</div>
+</section>
+<section id="Practical-example-3---Interfacing-with-DScribe">
+<h2><span class="section-number">3.4. </span>Practical example 3 - Interfacing with DScribe<a class="headerlink" href="#Practical-example-3---Interfacing-with-DScribe" title="Permalink to this heading"></a></h2>
+<p>Several common machine learning descriptors, such as SOAP (smooth overlap of atomic positions) or ACSF (atom-centered symmetry functions), can be computed using an adapter for the <a class="reference external" href="https://singroup.github.io/dscribe/latest/">DScribe</a> package.</p>
+<p>This is done using two classes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DscribeDescriptor</span></code> : does not account for the chemical information. Essentially, all the particles are considered as hydrogen atoms.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DscribeChemicalDescriptor</span></code> : accounts for the chemical information. Be sure that the species in the input trajectory are labeled with atomic symbols (<code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;H&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;O&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Si&quot;</span></code>) instead of labels such as <code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;2&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>.</p></li>
+</ul>
+<p>As a proof of principle, let us perform two distinct clusterings using these classes and the SOAP descriptor. We use a sample of a Wahnström mixture again:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Trajectory</span>
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/wahn_N1000.xyz&#39;</span><span class="p">)</span>
 
 <span class="c1"># Change the radius sizes (for visualization purpose)</span>
@@ -988,13 +1033,17 @@ grid of l : [4 6]
 </pre></div>
 </div>
 </div>
-<div class="section" id="Without-chemical-information">
-<h3><span class="section-number">3.6.1. </span>Without chemical information<a class="headerlink" href="#Without-chemical-information" title="Permalink to this headline"></a></h3>
+<section id="Without-chemical-information">
+<h3><span class="section-number">3.4.1. </span>Without chemical information<a class="headerlink" href="#Without-chemical-information" title="Permalink to this heading"></a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SOAP descriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Workflow</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">DscribeDescriptor</span>
+<span class="kn">from</span> <span class="nn">dscribe.descriptors</span> <span class="kn">import</span> <span class="n">SOAP</span>
+
+<span class="c1"># SOAP descriptor</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">DscribeDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">SOAP</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rcut</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">nmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">rbf</span><span class="o">=</span><span class="s1">&#39;gto&#39;</span><span class="p">)</span>
 
 <span class="c1"># Workflow</span>
@@ -1008,41 +1057,52 @@ grid of l : [4 6]
 </div>
 </div>
 <p>We expect the clustering to partition the particles based on their species (A and B), purely based on spatial correlations since the <code class="docutils literal notranslate"><span class="pre">DscribeDescriptor</span></code> does not account for the chemistry.</p>
-<p>Let us look at two snapshots of the sample: in the first we shall color based on the species, in the second based on cluster labels:</p>
+<p>Let us look at two snapshots of the sample: in the first color particles based on their species (A or B), in the second based on cluster labels (0 or 1):</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First snapshot: species</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Second snapshot: labels</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_47_0.png" src="../../_images/tutorials_notebooks_3_descriptors_47_0.png" />
+<img alt="../../_images/tutorials_notebooks_3_descriptors_54_0.png" src="../../_images/tutorials_notebooks_3_descriptors_54_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Second snapshot: labels</span>
+<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_47_1.png" src="../../_images/tutorials_notebooks_3_descriptors_47_1.png" />
+<img alt="../../_images/tutorials_notebooks_3_descriptors_55_0.png" src="../../_images/tutorials_notebooks_3_descriptors_55_0.png" />
 </div>
 </div>
 <p>We see that, for the vast majority of the particles, the clustering was able to recover the species solely based on spatial correlation.</p>
-<p><strong>N.B.</strong> the colors in the second snapshot depend on the execution (labels 0 and 1 can be reversed).</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Note</p>
+<p>The colors in the second snapshot depend on the execution (labels 0 and 1 can be reversed).</p>
 </div>
-<div class="section" id="With-chemical-information">
-<h3><span class="section-number">3.6.2. </span>With chemical information<a class="headerlink" href="#With-chemical-information" title="Permalink to this headline"></a></h3>
-<p>Let us now repeat the previous clustering using chemical information. As mentioned before, the species of the particles should be atomic symbols. Let us first change the name of the species labels, say <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>–&gt;<code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>–&gt;<code class="docutils literal notranslate"><span class="pre">&quot;H&quot;</span></code> :</p>
+</section>
+<section id="With-chemical-information">
+<h3><span class="section-number">3.4.2. </span>With chemical information<a class="headerlink" href="#With-chemical-information" title="Permalink to this heading"></a></h3>
+<p>Let us now repeat the previous clustering using chemical information. As mentioned before, the species of the particles should be atomic symbols. Let us first change the name of the species labels, say <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>→<code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>→<code class="docutils literal notranslate"><span class="pre">&quot;H&quot;</span></code> :</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the name of the species</span>
@@ -1053,10 +1113,12 @@ grid of l : [4 6]
 </div>
 <p>Let us now repeat the clustering using <code class="docutils literal notranslate"><span class="pre">DscribeChemicalDescriptor</span></code>:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Descriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">DscribeChemicalDescriptor</span>
+
+<span class="c1"># Descriptor</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">DscribeChemicalDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">SOAP</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rcut</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">nmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">rbf</span><span class="o">=</span><span class="s1">&#39;gto&#39;</span><span class="p">)</span>
 
 <span class="c1"># Workflow</span>
@@ -1071,43 +1133,54 @@ grid of l : [4 6]
 </div>
 <p>This time again, a quick way to visualize the results is to visually compare species and cluster labels:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First snapshot: species</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Second snapshot: labels</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_54_0.png" src="../../_images/tutorials_notebooks_3_descriptors_54_0.png" />
+<img alt="../../_images/tutorials_notebooks_3_descriptors_62_0.png" src="../../_images/tutorials_notebooks_3_descriptors_62_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Second snapshot: labels</span>
+<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/tutorials_notebooks_3_descriptors_54_1.png" src="../../_images/tutorials_notebooks_3_descriptors_54_1.png" />
+<img alt="../../_images/tutorials_notebooks_3_descriptors_63_0.png" src="../../_images/tutorials_notebooks_3_descriptors_63_0.png" />
 </div>
 </div>
 <p>The first clustering was already able to distinguish between the species, so this comes as no surprise that this is still the case here.</p>
-<p><strong>N.B.</strong> like the previous clustering, the colors in the second snapshot depend on the execution (labels 0 and 1 can be reversed).</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Note</p>
+<p>Like the previous clustering, the colors in the second snapshot depend on the execution (labels 0 and 1 can be reversed).</p>
 </div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="2_workflow.html" class="btn btn-neutral float-left" title="2. Workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="4_going_further.html" class="btn btn-neutral float-right" title="4. Going further" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="2_workflow.html" class="btn btn-neutral float-left" title="2. Setting and running a workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="4_going_further.html" class="btn btn-neutral float-right" title="4. More advanced applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

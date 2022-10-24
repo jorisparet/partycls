@@ -6,6 +6,7 @@
   <title>partycls.cell &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,7 +15,11 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
@@ -42,6 +47,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
@@ -79,8 +85,8 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Simulation cell.</span>
 
-<span class="sd">This class is inspired by the `atooms` framework authored by Daniele Coslovich</span>
-<span class="sd">See https://framagit.org/atooms/atooms </span>
+<span class="sd">This class is inspired by the framework `atooms &lt;https://framagit.org/atooms/atooms&gt;`_</span>
+<span class="sd">authored by `Daniele Coslovich &lt;https://www2.units.it/daniele.coslovich/&gt;`_.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -90,31 +96,30 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Orthorhombic cell.</span>
 <span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    </span>
-<span class="sd">    side : list of float or float array</span>
-<span class="sd">        List of lengths for the sides of the cell.</span>
-<span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    </span>
-<span class="sd">    side : float array</span>
-<span class="sd">        List of lengths for the sides of the cell. The default is None (will</span>
-<span class="sd">        set `True` in each direction).</span>
+<span class="sd">    side : numpy.ndarray</span>
+<span class="sd">        List of lengths for the sides of the cell.</span>
 <span class="sd">        </span>
-<span class="sd">    periodic : bool array</span>
+<span class="sd">    periodic : numpy.ndarray</span>
 <span class="sd">        Periodicity of the cell on each axis.</span>
-<span class="sd">    </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; c = Cell([2.0, 2.0, 2.0])</span>
-<span class="sd">    &gt;&gt;&gt; c.volume</span>
-<span class="sd">    8.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        side : list</span>
+<span class="sd">            List of lengths for the sides of the cell.</span>
+
+<span class="sd">        periodic : list, default: None</span>
+<span class="sd">            Periodicity of the cell on each axis. Default is ``None`` (sets ``True``)</span>
+<span class="sd">            in each direction.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; c = Cell([2.0, 2.0, 2.0], periodic=[True, True, True ])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">side</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="c1"># Periodic boundary conditions apply separately on each axis</span>

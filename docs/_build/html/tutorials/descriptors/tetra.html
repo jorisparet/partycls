@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tetrahedral descriptor &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,10 +16,14 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -46,8 +52,10 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html"> Home</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
@@ -55,6 +63,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Tetrahedral descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 </ul>
 </li>
@@ -62,9 +71,10 @@
 <li class="toctree-l3"><a class="reference internal" href="sba.html">Smoothed bond-angle descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labo.html">Locally averaged bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compact.html">Compactness descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coord.html">Coordination descriptor</a></li>
 </ul>
 </li>
 </ul>
@@ -125,10 +135,10 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="tetrahedral-descriptor">
-<h1>Tetrahedral descriptor<a class="headerlink" href="#tetrahedral-descriptor" title="Permalink to this headline"></a></h1>
-<div class="section" id="definition">
-<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<section id="tetrahedral-descriptor">
+<h1>Tetrahedral descriptor<a class="headerlink" href="#tetrahedral-descriptor" title="Permalink to this heading"></a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h2>
 <p>The degree of tetrahedrality of a particle <span class="math notranslate nohighlight">\(i\)</span> is the average deviation of the bond angles <span class="math notranslate nohighlight">\(\{ \theta_{jik} \}\)</span> between <span class="math notranslate nohighlight">\(i\)</span> and all the possible pairs of its nearest neighbors <span class="math notranslate nohighlight">\((j,k)\)</span> from the ideal angle in a tetrahedron, <span class="math notranslate nohighlight">\(\theta_\mathrm{tetra} = 109.5^\circ\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}T(i) = \frac{1}{N_\mathrm{ba}(i)} \sum_{j=1}^{N_b(i)} \sum_{\substack{k=1 \\ k \neq j}}^{N_b(i)} | \cos(\theta_{jik}) - \cos(\theta_\mathrm{tetra}) | ,\end{split}\]</div>
@@ -137,14 +147,14 @@
 \[X^\mathrm{T}(i) = (\: T(i) \:) .\]</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Unlike most descriptors, this descriptor is scalar. Its feature vector <span class="math notranslate nohighlight">\(X^\mathrm{T}(i)\)</span> is thus composed of a single feature.</p>
+<p>Unlike most descriptors, this descriptor is <strong>scalar</strong>. Its feature vector <span class="math notranslate nohighlight">\(X^\mathrm{T}(i)\)</span> is thus composed of a single feature, and the inherited <code class="docutils literal notranslate"><span class="pre">grid</span></code> attribute is therefore not relevant.</p>
 </div>
-</div>
-<div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
-<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Instantiating this descriptor on a <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> can be done as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">TetrahedralDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">TetrahedralDescriptor</span>
 
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">TetrahedralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
@@ -152,8 +162,8 @@
 </div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">TetrahedralDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/tetrahedrality.html#TetrahedralDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.tetrahedrality.TetrahedralDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="partycls.descriptors.tetrahedrality.TetrahedralDescriptor.__init__">
+<span class="sig-prename descclassname"><span class="pre">TetrahedralDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptors/tetrahedrality.html#TetrahedralDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -168,35 +178,45 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="demonstration">
-<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
-<p>We consider an input trajectory file <code class="docutils literal notranslate"><span class="pre">&quot;trajectory.xyz&quot;</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>:</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>The computation of this descriptor relies on:</p>
+<ul class="simple">
+<li><p><strong>Lists of nearest neighbors</strong>. These can either be read from the input trajectory file, computed in the <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a>, or computed from inside the descriptor using a default method.</p></li>
+</ul>
+</section>
+<section id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this heading"></a></h2>
+<p>We consider an input trajectory file <code class="file docutils literal notranslate"><span class="pre">trajectory.xyz</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>. We compute the lists of nearest neighbors using the fixed-cutoffs method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
 <span class="c1"># open the trajectory</span>
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
 
-<span class="c1"># compute the neighbors using Voronoi tessellation</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;voronoi&#39;</span><span class="p">)</span>
+<span class="c1"># compute the neighbors using pre-computed cuttofs</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cuttofs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
 <span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;nearest_neighbors&quot;</span><span class="p">)</span>
 
 <span class="c1"># print the first three neighbors lists for the first trajectory frame</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;neighbors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">nearest_neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>neighbors:
- [list([767, 113, 323, 276, 322, 332, 980, 425, 801, 16, 171, 258, 901, 241])
-  list([448, 481, 496, 574, 706, 536, 337, 241, 951, 16, 14, 258, 502, 447, 860])
-  list([799, 123, 608, 913, 500, 826, 230, 636, 796, 772, 810, 639, 270, 578, 874, 397, 354])]
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>neighbors:
+ [list([16, 113, 171, 241, 258, 276, 322, 323, 332, 425, 767, 801, 901, 980])
+  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
+  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
 </pre></div>
 </div>
-<p>We now instantiate and compute a <code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor</span></code> on this trajectory:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">TetrahedralDescriptor</span>
+</div>
+<p>We now instantiate a <a class="reference internal" href="../../source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor" title="partycls.descriptors.tetrahedrality.TetrahedralDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TetrahedralDescriptor</span></code></a> on this trajectory and restrict the analysis to type-B particles only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">TetrahedralDescriptor</span>
 
 <span class="c1"># instantiation</span>
-<span class="n">D</span> <span class="o">=</span> <span class="n">TetrahedralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">dtheta</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">TetrahedralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
 
 <span class="c1"># restrict the analysis to type-B particles</span>
 <span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -208,15 +228,20 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>feature vectors:
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>feature vectors:
  [[0.48286880]
   [0.48912898]
   [0.47882811]]
 </pre></div>
 </div>
 </div>
-</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">feature</span> <span class="pre">vectors</span></code> shows the first three feature vectors <span class="math notranslate nohighlight">\(X^\mathrm{T}(1)\)</span>, <span class="math notranslate nohighlight">\(X^\mathrm{R}(2)\)</span> and <span class="math notranslate nohighlight">\(X^\mathrm{R}(3)\)</span>.</p></li>
+</ul>
+</section>
+</section>
 
 
            </div>

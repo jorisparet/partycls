@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Changelog &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -14,7 +16,11 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
@@ -44,6 +50,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -101,21 +108,55 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline"></a></h1>
+<section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
 <ul class="simple">
 <li><dl class="simple">
 <dt>2.0.0:</dt><dd><ul>
 <li><dl class="simple">
 <dt>New features:</dt><dd><ul>
-<li><p>New feature.</p></li>
+<li><dl class="simple">
+<dt>Add new structural descriptors:</dt><dd><ul>
+<li><p><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor" title="partycls.descriptors.tetrahedrality.TetrahedralDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TetrahedralDescriptor</span></code></a> (<a class="reference internal" href="tutorials/descriptors/tetra.html"><span class="doc">tutorial</span></a>).</p></li>
+<li><p><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor" title="partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor</span></code></a> (<a class="reference internal" href="tutorials/descriptors/sba.html"><span class="doc">tutorial</span></a>).</p></li>
+<li><p><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor" title="partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor</span></code></a> (<a class="reference internal" href="tutorials/descriptors/sbo.html"><span class="doc">tutorial</span></a>).</p></li>
+<li><p><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor" title="partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor</span></code></a> (<a class="reference internal" href="tutorials/descriptors/rbo.html"><span class="doc">tutorial</span></a>).</p></li>
+<li><p><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor" title="partycls.descriptors.compactness.CompactnessDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompactnessDescriptor</span></code></a> (<a class="reference internal" href="tutorials/descriptors/compact.html"><span class="doc">tutorial</span></a>).</p></li>
+<li><p><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor" title="partycls.descriptors.coordination.CoordinationDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoordinationDescriptor</span></code></a> (<a class="reference internal" href="tutorials/descriptors/coord.html"><span class="doc">tutorial</span></a>).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Add radical Voronoi tessellation to identify nearest neighbors in <a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_nearest_neighbors" title="partycls.trajectory.Trajectory.compute_nearest_neighbors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Trajectory.compute_nearest_neighbors()</span></code></a> using <code class="docutils literal notranslate"><span class="pre">method=&quot;voronoi&quot;</span></code>.</p></li>
+<li><p>Add Voronoi tessellation to compute particles’ Voronoi signatures in <a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_voronoi_signatures" title="partycls.trajectory.Trajectory.compute_voronoi_signatures"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Trajectory.compute_voronoi_signatures()</span></code></a>.</p></li>
+<li><p>List-type <code class="docutils literal notranslate"><span class="pre">additional_fields</span></code> (<em>e.g.</em> lists of neighbors) can now be read and written by <a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a>.</p></li>
+<li><p>Nearest neighbors can be read from the input trajectory file using the <code class="docutils literal notranslate"><span class="pre">additional_fields</span></code> parameter.</p></li>
+<li><p>Add a <code class="xref py py-attr docutils literal notranslate"><span class="pre">verbose</span></code> attribute to descriptors to show warnings, messages and progress bars (using <a class="reference external" href="https://tqdm.github.io/">tqdm</a>) for the computation of the descriptors.</p></li>
+<li><p>Add an <code class="xref py py-attr docutils literal notranslate"><span class="pre">accept_nans</span></code> property and a <code class="xref py py-meth docutils literal notranslate"><span class="pre">discard_nans()</span></code> method to descriptors to filter out (or keep) <em>NaN</em> elements in the <code class="xref py py-attr docutils literal notranslate"><span class="pre">features</span></code> array when some feature vectors cannot be computed (<em>e.g.</em> due to a lack of neighbors).</p></li>
+<li><p><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.write" title="partycls.trajectory.Trajectory.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Trajectory.write()</span></code></a> now handles particle aliases.</p></li>
+<li><p>A few new particle aliases (<em>e.g.</em> for neighbors and Voronoi signatures).</p></li>
+<li><p>Improved docstrings and documentation.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Non backward-compatible changes:</dt><dd><ul>
+<li><p>Subpackage <code class="docutils literal notranslate"><span class="pre">partycls.descriptor</span></code> renamed <code class="docutils literal notranslate"><span class="pre">partycls.descriptors</span></code>.</p></li>
+<li><p>Deletion of abstract class <code class="docutils literal notranslate"><span class="pre">AngularStructuralDescriptor</span></code>.</p></li>
+<li><p>Nearest neighbors and their cutoffs are now computed in <a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> and <a class="reference internal" href="source/partycls.html#partycls.system.System" title="partycls.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> with the <a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_nearest_neighbors" title="partycls.trajectory.Trajectory.compute_nearest_neighbors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_nearest_neighbors()</span></code></a> and <a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs" title="partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_nearest_neighbors_cutoffs()</span></code></a> methods.</p></li>
+<li><p>No more unique index as <code class="docutils literal notranslate"><span class="pre">Particle.index</span></code> attribute in <a class="reference internal" href="source/partycls.html#partycls.particle.Particle" title="partycls.particle.Particle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Particle</span></code></a>.</p></li>
+<li><p>Rename a few attributes and methods.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
 <dt>Fixes:</dt><dd><ul>
-<li><p>Fix.</p></li>
+<li><p>Major increase in performance for the computation of nearest neighbors and for the computation of most descriptors.</p></li>
+<li><p>Fix the computation of partial correlations in descriptors when <code class="docutils literal notranslate"><span class="pre">group=1</span></code> is not trivial.</p></li>
+<li><p>Fix the setup of <code class="xref py py-attr docutils literal notranslate"><span class="pre">bounds</span></code> in <code class="xref py py-class docutils literal notranslate"><span class="pre">RadialDescriptor</span></code>.</p></li>
+<li><p>Minor fixes throughout the code.</p></li>
 </ul>
 </dd>
 </dl>
@@ -125,7 +166,7 @@
 </dl>
 </li>
 </ul>
-</div>
+</section>
 
 
            </div>

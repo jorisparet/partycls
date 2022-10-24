@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Radial descriptor &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,10 +16,14 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -46,8 +52,10 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html"> Home</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
@@ -63,9 +71,10 @@
 <li class="toctree-l3"><a class="reference internal" href="sba.html">Smoothed bond-angle descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labo.html">Locally averaged bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compact.html">Compactness descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coord.html">Coordination descriptor</a></li>
 </ul>
 </li>
 </ul>
@@ -126,21 +135,21 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="radial-descriptor">
-<h1>Radial descriptor<a class="headerlink" href="#radial-descriptor" title="Permalink to this headline"></a></h1>
-<div class="section" id="definition">
-<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<section id="radial-descriptor">
+<h1>Radial descriptor<a class="headerlink" href="#radial-descriptor" title="Permalink to this heading"></a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\mathbf{r}_i\)</span> be the position of particle <span class="math notranslate nohighlight">\(i\)</span> and define <span class="math notranslate nohighlight">\(r_{ij} = |\mathbf{r}_j - \mathbf{r}_i|\)</span> as the distance between particle <span class="math notranslate nohighlight">\(i\)</span> and its neighbors <span class="math notranslate nohighlight">\(j\)</span>.</p>
-<p>We define <span class="math notranslate nohighlight">\(n_i(r_m)\)</span> as the number of neighbors <span class="math notranslate nohighlight">\(j\)</span> of particle <span class="math notranslate nohighlight">\(i\)</span> for which <span class="math notranslate nohighlight">\(r_{ij}\)</span> is between <span class="math notranslate nohighlight">\(r_m = r_\mathrm{min} + m \times \Delta r\)</span> and <span class="math notranslate nohighlight">\(r_{m+1} = r_\mathrm{min} + (m+1) \times \Delta r\)</span> <span id="id1">[<a class="reference internal" href="#id10">1</a>]</span>. Here, <span class="math notranslate nohighlight">\(\Delta r\)</span> has the interpration of a bin width in a histogram.</p>
+<p>We define <span class="math notranslate nohighlight">\(n_i(r_m)\)</span> as the number of neighbors <span class="math notranslate nohighlight">\(j\)</span> of particle <span class="math notranslate nohighlight">\(i\)</span> for which <span class="math notranslate nohighlight">\(r_{ij}\)</span> is between <span class="math notranslate nohighlight">\(r_m = r_\mathrm{min} + m \times \Delta r\)</span> and <span class="math notranslate nohighlight">\(r_{m+1} = r_\mathrm{min} + (m+1) \times \Delta r\)</span> <span id="id1">[<a class="reference internal" href="#id10" title="Joris Paret, Robert L. Jack, and Daniele Coslovich. Assessing the structural heterogeneity of supercooled liquids through community inference. J. Chem. Phys., 152(14):144502, 2020. doi:10.1063/5.0004732.">1</a>]</span>. Here, <span class="math notranslate nohighlight">\(\Delta r\)</span> has the interpration of a bin width in a histogram.</p>
 <p>We then consider <span class="math notranslate nohighlight">\(n_i(r_m)\)</span> for a set of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span> separated by <span class="math notranslate nohighlight">\(\Delta r\)</span>, <span class="math notranslate nohighlight">\(\{ d_n \} = \{ r_0, r_1, \dots, r_{n_\mathrm{max}} \}\)</span>. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[X^\mathrm{R}(i) = (\: n_i(r_0) \;\; n_i(r_1) \;\; \dots \;\; n_i(r_{n_\mathrm{max}}) \:) .\]</div>
-</div>
-<div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
-<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Instantiating this descriptor on a <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> can be done as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
 
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
@@ -148,8 +157,8 @@
 </div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="partycls.descriptor.gr.RadialDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">RadialDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_shells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/gr.html#RadialDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.gr.RadialDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="partycls.descriptors.radial.RadialDescriptor.__init__">
+<span class="sig-prename descclassname"><span class="pre">RadialDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_shells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptors/radial.html#RadialDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.radial.RadialDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -170,17 +179,18 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="demonstration">
-<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
-<p>We consider an input trajectory file <code class="docutils literal notranslate"><span class="pre">&quot;trajectory.xyz&quot;</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>:</p>
+</section>
+<section id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this heading"></a></h2>
+<p>We consider an input trajectory file <code class="file docutils literal notranslate"><span class="pre">trajectory.xyz</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
+<span class="c1"># open the trajectory</span>
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We now instantiate and compute a <code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code> on this trajectory:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
+<p>We now instantiate a <a class="reference internal" href="../../source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor" title="partycls.descriptors.radial.RadialDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadialDescriptor</span></code></a> on this trajectory and restrict the analysis to type-B particles only. We set <span class="math notranslate nohighlight">\(\Delta r = 0.1\)</span> and <span class="math notranslate nohighlight">\((r_\mathrm{min},r_\mathrm{max}) = (1, 1.5)\)</span> to set the grid of distances <span class="math notranslate nohighlight">\(\{d_n\}\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
 
 <span class="c1"># instantiation</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
@@ -198,26 +208,31 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Output: litteral</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span><span class="p">:</span>
- <span class="p">[</span><span class="mf">1.05</span> <span class="mf">1.15</span> <span class="mf">1.25</span> <span class="mf">1.35</span> <span class="mf">1.45</span><span class="p">]</span>
-<span class="n">feature</span> <span class="n">vectors</span><span class="p">:</span>
- <span class="p">[[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">5</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">4</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]]</span>
+<p>Output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid:
+ [1.05 1.15 1.25 1.35 1.45]
+feature vectors:
+ [[2 2 1 1 3]
+  [5 1 0 1 2]
+  [4 2 1 0 1]]
 </pre></div>
 </div>
-</div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
-<p id="id2"><dl class="citation">
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grid</span></code> shows the grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>, where <span class="math notranslate nohighlight">\(\Delta r = 0.1\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature</span> <span class="pre">vectors</span></code> shows the first three feature vectors <span class="math notranslate nohighlight">\(X^\mathrm{R}(1)\)</span>, <span class="math notranslate nohighlight">\(X^\mathrm{R}(2)\)</span> and <span class="math notranslate nohighlight">\(X^\mathrm{R}(3)\)</span> corresponding to the grid.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<div class="docutils container" id="id2">
+<dl class="citation">
 <dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Joris Paret, Robert L. Jack, and Daniele Coslovich. Assessing the structural heterogeneity of supercooled liquids through community inference. <em>J. Chem. Phys.</em>, 152(14):144502, 2020. URL: <a class="reference external" href="https://aip.scitation.org/doi/10.1063/5.0004732">https://aip.scitation.org/doi/10.1063/5.0004732</a>, <a class="reference external" href="https://doi.org/10.1063/5.0004732">doi:10.1063/5.0004732</a>.</p>
+<dd><p>Joris Paret, Robert L. Jack, and Daniele Coslovich. Assessing the structural heterogeneity of supercooled liquids through community inference. <em>J. Chem. Phys.</em>, 152(14):144502, 2020. <a class="reference external" href="https://doi.org/10.1063/5.0004732">doi:10.1063/5.0004732</a>.</p>
 </dd>
 </dl>
-</p>
 </div>
-</div>
+</section>
+</section>
 
 
            </div>

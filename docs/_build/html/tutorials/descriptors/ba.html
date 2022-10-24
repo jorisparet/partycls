@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bond-angle descriptor &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,10 +16,14 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -46,8 +52,10 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html"> Home</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
@@ -56,6 +64,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Bond-angle descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
@@ -63,9 +72,10 @@
 <li class="toctree-l3"><a class="reference internal" href="sba.html">Smoothed bond-angle descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labo.html">Locally averaged bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compact.html">Compactness descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coord.html">Coordination descriptor</a></li>
 </ul>
 </li>
 </ul>
@@ -126,20 +136,20 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="bond-angle-descriptor">
-<h1>Bond-angle descriptor<a class="headerlink" href="#bond-angle-descriptor" title="Permalink to this headline"></a></h1>
-<div class="section" id="definition">
-<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
-<p>The <em>empirical</em> distribution of bond angles <span class="math notranslate nohighlight">\(N_i(\theta_n)\)</span> around a central particle <span class="math notranslate nohighlight">\(i\)</span> is obtained by counting, for all the possible pairs of it nearest neighbors <span class="math notranslate nohighlight">\((j,k)\)</span>, the number of bond angles <span class="math notranslate nohighlight">\(\theta_{jik}\)</span> between <span class="math notranslate nohighlight">\(\theta_n = n \times \Delta \theta\)</span> and <span class="math notranslate nohighlight">\(\theta_{n+1} = (n+1) \times \Delta \theta\)</span>, where <span class="math notranslate nohighlight">\(\Delta \theta\)</span> has the interpration of a bin width in a histogram <span id="id1">[<a class="reference internal" href="gr.html#id10">1</a>]</span>.</p>
+<section id="bond-angle-descriptor">
+<h1>Bond-angle descriptor<a class="headerlink" href="#bond-angle-descriptor" title="Permalink to this heading"></a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h2>
+<p>The <em>empirical</em> distribution of bond angles <span class="math notranslate nohighlight">\(N_i(\theta_n)\)</span> around a central particle <span class="math notranslate nohighlight">\(i\)</span> is obtained by counting, for all the possible pairs of it nearest neighbors <span class="math notranslate nohighlight">\((j,k)\)</span>, the number of bond angles <span class="math notranslate nohighlight">\(\theta_{jik}\)</span> between <span class="math notranslate nohighlight">\(\theta_n = n \times \Delta \theta\)</span> and <span class="math notranslate nohighlight">\(\theta_{n+1} = (n+1) \times \Delta \theta\)</span>, where <span class="math notranslate nohighlight">\(\Delta \theta\)</span> has the interpration of a bin width in a histogram <span id="id1">[<a class="reference internal" href="gr.html#id10" title="Joris Paret, Robert L. Jack, and Daniele Coslovich. Assessing the structural heterogeneity of supercooled liquids through community inference. J. Chem. Phys., 152(14):144502, 2020. doi:10.1063/5.0004732.">1</a>]</span>.</p>
 <p>We then consider <span class="math notranslate nohighlight">\(N_i(\theta_n)\)</span> for a set of angles <span class="math notranslate nohighlight">\(\{ \theta_n \}\)</span> that go from <span class="math notranslate nohighlight">\(\theta_0 = 0^\circ\)</span> to <span class="math notranslate nohighlight">\(\theta_{n_\mathrm{max}}=180^\circ\)</span> by steps of <span class="math notranslate nohighlight">\(\Delta \theta\)</span>. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[X^\mathrm{BA}(i) = (\: N_i(\theta_0) \;\; N_i(\theta_1) \;\; \dots \;\; N_i(\theta_{n_\mathrm{max}}) \:) .\]</div>
-</div>
-<div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
-<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Instantiating this descriptor on a <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> can be done as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
 
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">BondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
@@ -147,8 +157,8 @@
 </div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="partycls.descriptor.ba.BondAngleDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">BondAngleDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/ba.html#BondAngleDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.ba.BondAngleDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="partycls.descriptors.ba.BondAngleDescriptor.__init__">
+<span class="sig-prename descclassname"><span class="pre">BondAngleDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptors/ba.html#BondAngleDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.ba.BondAngleDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -164,17 +174,42 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="demonstration">
-<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
-<p>We consider an input trajectory file <code class="docutils literal notranslate"><span class="pre">&quot;trajectory.xyz&quot;</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>:</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>The computation of this descriptor relies on:</p>
+<ul class="simple">
+<li><p><strong>Lists of nearest neighbors</strong>. These can either be read from the input trajectory file, computed in the <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a>, or computed from inside the descriptor using a default method.</p></li>
+</ul>
+</section>
+<section id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this heading"></a></h2>
+<p>We consider an input trajectory file <code class="file docutils literal notranslate"><span class="pre">trajectory.xyz</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>. We compute the lists of nearest neighbors using the fixed-cutoffs method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
+<span class="c1"># open the trajectory</span>
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+
+<span class="c1"># compute the neighbors using pre-computed cuttofs</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cuttofs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">)</span>
+<span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;nearest_neighbors&quot;</span><span class="p">)</span>
+
+<span class="c1"># print the first three neighbors lists for the first trajectory frame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;neighbors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">nearest_neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>We now instantiate and compute a <code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor</span></code> on this trajectory:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id11" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>neighbors:
+ [list([16, 113, 171, 241, 258, 276, 322, 323, 332, 425, 767, 801, 901, 980])
+  list([14, 241, 337, 447, 448, 481, 496, 502, 536, 574, 706, 860, 951])
+  list([123, 230, 270, 354, 500, 578, 608, 636, 639, 640, 796, 799, 810, 826, 874, 913])]
+</pre></div>
+</div>
+</div>
+<p>We now instantiate a <a class="reference internal" href="../../source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor" title="partycls.descriptors.ba.BondAngleDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BondAngleDescriptor</span></code></a> on this trajectory and restrict the analysis to type-B particles only. We set <span class="math notranslate nohighlight">\(\Delta \theta = 18^\circ\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
 
 <span class="c1"># instantiation</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">BondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">dtheta</span><span class="o">=</span><span class="mf">18.0</span><span class="p">)</span>
@@ -192,8 +227,9 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>grid:
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid:
  [  9.  27.  45.  63.  81.  99. 117. 135. 153. 171.]
 feature vectors:
  [[ 0  0  4 44 12 18 28 14  6  6]
@@ -202,16 +238,22 @@ feature vectors:
 </pre></div>
 </div>
 </div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
-<p id="id2"><dl class="citation">
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grid</span></code> shows the grid of angles <span class="math notranslate nohighlight">\(\{ \theta_n \}\)</span> in degrees, where <span class="math notranslate nohighlight">\(\Delta \theta = 18^\circ\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature</span> <span class="pre">vectors</span></code> shows the first three feature vectors <span class="math notranslate nohighlight">\(X^\mathrm{BA}(1)\)</span>, <span class="math notranslate nohighlight">\(X^\mathrm{BA}(2)\)</span> and <span class="math notranslate nohighlight">\(X^\mathrm{BA}(3)\)</span> corresponding to the grid.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<div class="docutils container" id="id2">
+<dl class="citation">
 <dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Joris Paret, Robert L. Jack, and Daniele Coslovich. Assessing the structural heterogeneity of supercooled liquids through community inference. <em>J. Chem. Phys.</em>, 152(14):144502, 2020. URL: <a class="reference external" href="https://aip.scitation.org/doi/10.1063/5.0004732">https://aip.scitation.org/doi/10.1063/5.0004732</a>, <a class="reference external" href="https://doi.org/10.1063/5.0004732">doi:10.1063/5.0004732</a>.</p>
+<dd><p>Joris Paret, Robert L. Jack, and Daniele Coslovich. Assessing the structural heterogeneity of supercooled liquids through community inference. <em>J. Chem. Phys.</em>, 152(14):144502, 2020. <a class="reference external" href="https://doi.org/10.1063/5.0004732">doi:10.1063/5.0004732</a>.</p>
 </dd>
 </dl>
-</p>
 </div>
-</div>
+</section>
+</section>
 
 
            </div>

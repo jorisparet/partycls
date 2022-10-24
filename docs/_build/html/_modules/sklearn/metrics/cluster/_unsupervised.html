@@ -6,6 +6,7 @@
   <title>sklearn.metrics.cluster._unsupervised &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
@@ -14,7 +15,11 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../../../about.html" />
@@ -42,6 +47,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API</a></li>
@@ -94,7 +100,6 @@
 <span class="kn">from</span> <span class="nn">..pairwise</span> <span class="kn">import</span> <span class="n">pairwise_distances_chunked</span>
 <span class="kn">from</span> <span class="nn">..pairwise</span> <span class="kn">import</span> <span class="n">pairwise_distances</span>
 <span class="kn">from</span> <span class="nn">...preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
-<span class="kn">from</span> <span class="nn">...utils.validation</span> <span class="kn">import</span> <span class="n">_deprecate_positional_args</span>
 
 
 <span class="k">def</span> <span class="nf">check_number_of_labels</span><span class="p">(</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">):</span>
@@ -109,13 +114,15 @@
 <span class="sd">        Number of samples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">n_labels</span> <span class="o">&lt;</span> <span class="n">n_samples</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of labels is </span><span class="si">%d</span><span class="s2">. Valid values are 2 &quot;</span>
-                         <span class="s2">&quot;to n_samples - 1 (inclusive)&quot;</span> <span class="o">%</span> <span class="n">n_labels</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Number of labels is </span><span class="si">%d</span><span class="s2">. Valid values are 2 to n_samples - 1 (inclusive)&quot;</span>
+            <span class="o">%</span> <span class="n">n_labels</span>
+        <span class="p">)</span>
 
 
-<div class="viewcode-block" id="silhouette_score"><a class="viewcode-back" href="../../../../source/partycls.html#partycls.helpers.silhouette_score">[docs]</a><span class="nd">@_deprecate_positional_args</span>
-<span class="k">def</span> <span class="nf">silhouette_score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<div class="viewcode-block" id="silhouette_score"><a class="viewcode-back" href="../../../../source/partycls.html#partycls.helpers.silhouette_score">[docs]</a><span class="k">def</span> <span class="nf">silhouette_score</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the mean Silhouette Coefficient of all samples.</span>
 
 <span class="sd">    The Silhouette Coefficient is calculated using the mean intra-cluster</span>
@@ -182,10 +189,9 @@
 
 <span class="sd">    .. [2] `Wikipedia entry on the Silhouette Coefficient</span>
 <span class="sd">           &lt;https://en.wikipedia.org/wiki/Silhouette_(clustering)&gt;`_</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">sample_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">X</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;csc&#39;</span><span class="p">,</span> <span class="s1">&#39;csr&#39;</span><span class="p">])</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;csc&quot;</span><span class="p">,</span> <span class="s2">&quot;csr&quot;</span><span class="p">])</span>
         <span class="n">random_state</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:</span><span class="n">sample_size</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;precomputed&quot;</span><span class="p">:</span>
@@ -210,14 +216,14 @@
 <span class="sd">        Distribution of cluster labels in ``labels``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># accumulate distances from each sample to each cluster</span>
-    <span class="n">clust_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_freqs</span><span class="p">)),</span>
-                           <span class="n">dtype</span><span class="o">=</span><span class="n">D_chunk</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">clust_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_freqs</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">D_chunk</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">)):</span>
-        <span class="n">clust_dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">D_chunk</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                                      <span class="n">minlength</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">label_freqs</span><span class="p">))</span>
+        <span class="n">clust_dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span>
+            <span class="n">labels</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">D_chunk</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">minlength</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">label_freqs</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="c1"># intra_index selects intra-cluster distances within clust_dists</span>
-    <span class="n">intra_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">)),</span> <span class="n">labels</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">)])</span>
+    <span class="n">intra_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">)),</span> <span class="n">labels</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">D_chunk</span><span class="p">)])</span>
     <span class="c1"># intra_clust_dists are averaged over cluster size outside this function</span>
     <span class="n">intra_clust_dists</span> <span class="o">=</span> <span class="n">clust_dists</span><span class="p">[</span><span class="n">intra_index</span><span class="p">]</span>
     <span class="c1"># of the remaining distances we normalise and extract the minimum</span>
@@ -227,8 +233,7 @@
     <span class="k">return</span> <span class="n">intra_clust_dists</span><span class="p">,</span> <span class="n">inter_clust_dists</span>
 
 
-<div class="viewcode-block" id="silhouette_samples"><a class="viewcode-back" href="../../../../source/partycls.html#partycls.helpers.silhouette_samples">[docs]</a><span class="nd">@_deprecate_positional_args</span>
-<span class="k">def</span> <span class="nf">silhouette_samples</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+<div class="viewcode-block" id="silhouette_samples"><a class="viewcode-back" href="../../../../source/partycls.html#partycls.helpers.silhouette_samples">[docs]</a><span class="k">def</span> <span class="nf">silhouette_samples</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the Silhouette Coefficient for each sample.</span>
 
 <span class="sd">    The Silhouette Coefficient is a measure of how well samples are clustered</span>
@@ -267,7 +272,7 @@
 <span class="sd">        If ``X`` is the distance array itself, use &quot;precomputed&quot; as the metric.</span>
 <span class="sd">        Precomputed distance matrices must have 0 along the diagonal.</span>
 
-<span class="sd">    `**kwds` : optional keyword parameters</span>
+<span class="sd">    **kwds : optional keyword parameters</span>
 <span class="sd">        Any further parameters are passed directly to the distance function.</span>
 <span class="sd">        If using a ``scipy.spatial.distance`` metric, the parameters are still</span>
 <span class="sd">        metric dependent. See the scipy docs for usage examples.</span>
@@ -287,18 +292,21 @@
 
 <span class="sd">    .. [2] `Wikipedia entry on the Silhouette Coefficient</span>
 <span class="sd">       &lt;https://en.wikipedia.org/wiki/Silhouette_(clustering)&gt;`_</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;csc&#39;</span><span class="p">,</span> <span class="s1">&#39;csr&#39;</span><span class="p">])</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;csc&quot;</span><span class="p">,</span> <span class="s2">&quot;csr&quot;</span><span class="p">])</span>
 
     <span class="c1"># Check for non-zero diagonal entries in precomputed distance matrix</span>
-    <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s1">&#39;precomputed&#39;</span><span class="p">:</span>
-        <span class="n">atol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span> <span class="o">*</span> <span class="mi">100</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">atol</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;The precomputed distance matrix contains non-zero &#39;</span>
-                <span class="s1">&#39;elements on the diagonal. Use np.fill_diagonal(X, 0).&#39;</span>
-            <span class="p">)</span>
+    <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;precomputed&quot;</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;The precomputed distance matrix contains non-zero &quot;</span>
+            <span class="s2">&quot;elements on the diagonal. Use np.fill_diagonal(X, 0).&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+            <span class="n">atol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">atol</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>  <span class="c1"># integral dtype</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
 
     <span class="n">le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
@@ -306,16 +314,16 @@
     <span class="n">label_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
     <span class="n">check_number_of_labels</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">le</span><span class="o">.</span><span class="n">classes_</span><span class="p">),</span> <span class="n">n_samples</span><span class="p">)</span>
 
-    <span class="n">kwds</span><span class="p">[</span><span class="s1">&#39;metric&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric</span>
-    <span class="n">reduce_func</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_silhouette_reduce</span><span class="p">,</span>
-                                    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">label_freqs</span><span class="o">=</span><span class="n">label_freqs</span><span class="p">)</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">pairwise_distances_chunked</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">reduce_func</span><span class="p">,</span>
-                                              <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
+    <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;metric&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric</span>
+    <span class="n">reduce_func</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">_silhouette_reduce</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">label_freqs</span><span class="o">=</span><span class="n">label_freqs</span>
+    <span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">pairwise_distances_chunked</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reduce_func</span><span class="o">=</span><span class="n">reduce_func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
     <span class="n">intra_clust_dists</span><span class="p">,</span> <span class="n">inter_clust_dists</span> <span class="o">=</span> <span class="n">results</span>
     <span class="n">intra_clust_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">intra_clust_dists</span><span class="p">)</span>
     <span class="n">inter_clust_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">inter_clust_dists</span><span class="p">)</span>
 
-    <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">label_freqs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;clip&#39;</span><span class="p">)</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">label_freqs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;clip&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
         <span class="n">intra_clust_dists</span> <span class="o">/=</span> <span class="n">denom</span>
 
@@ -331,8 +339,8 @@
 
 <span class="sd">    It is also known as the Variance Ratio Criterion.</span>
 
-<span class="sd">    The score is defined as ratio between the within-cluster dispersion and</span>
-<span class="sd">    the between-cluster dispersion.</span>
+<span class="sd">    The score is defined as ratio of the sum of between-cluster dispersion and</span>
+<span class="sd">    of within-cluster dispersion.</span>
 
 <span class="sd">    Read more in the :ref:`User Guide &lt;calinski_harabasz_index&gt;`.</span>
 
@@ -365,7 +373,7 @@
 
     <span class="n">check_number_of_labels</span><span class="p">(</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
 
-    <span class="n">extra_disp</span><span class="p">,</span> <span class="n">intra_disp</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span>
+    <span class="n">extra_disp</span><span class="p">,</span> <span class="n">intra_disp</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_labels</span><span class="p">):</span>
         <span class="n">cluster_k</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">labels</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span>
@@ -373,13 +381,15 @@
         <span class="n">extra_disp</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">mean_k</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">intra_disp</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">cluster_k</span> <span class="o">-</span> <span class="n">mean_k</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="mf">1.</span> <span class="k">if</span> <span class="n">intra_disp</span> <span class="o">==</span> <span class="mf">0.</span> <span class="k">else</span>
-            <span class="n">extra_disp</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_samples</span> <span class="o">-</span> <span class="n">n_labels</span><span class="p">)</span> <span class="o">/</span>
-            <span class="p">(</span><span class="n">intra_disp</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_labels</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="mf">1.0</span>
+        <span class="k">if</span> <span class="n">intra_disp</span> <span class="o">==</span> <span class="mf">0.0</span>
+        <span class="k">else</span> <span class="n">extra_disp</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_samples</span> <span class="o">-</span> <span class="n">n_labels</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">intra_disp</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_labels</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">davies_bouldin_score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the Davies-Bouldin score.</span>
+    <span class="sd">&quot;&quot;&quot;Compute the Davies-Bouldin score.</span>
 
 <span class="sd">    The score is defined as the average similarity measure of each cluster with</span>
 <span class="sd">    its most similar cluster, where similarity is the ratio of within-cluster</span>
@@ -427,8 +437,7 @@
         <span class="n">cluster_k</span> <span class="o">=</span> <span class="n">_safe_indexing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span>
         <span class="n">centroid</span> <span class="o">=</span> <span class="n">cluster_k</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">centroids</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">centroid</span>
-        <span class="n">intra_dists</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pairwise_distances</span><span class="p">(</span>
-            <span class="n">cluster_k</span><span class="p">,</span> <span class="p">[</span><span class="n">centroid</span><span class="p">]))</span>
+        <span class="n">intra_dists</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pairwise_distances</span><span class="p">(</span><span class="n">cluster_k</span><span class="p">,</span> <span class="p">[</span><span class="n">centroid</span><span class="p">]))</span>
 
     <span class="n">centroid_distances</span> <span class="o">=</span> <span class="n">pairwise_distances</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
 

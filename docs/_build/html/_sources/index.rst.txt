@@ -3,14 +3,19 @@ partycls
 
 .. image:: https://img.shields.io/pypi/l/partycls.svg
 	:target: https://en.wikipedia.org/wiki/GNU_General_Public_License
+	:alt: license badge
 .. image:: https://img.shields.io/badge/python-3.6+-blue.svg
 	#:target:
+	:alt:  python version badge
 .. image:: https://img.shields.io/pypi/v/partycls.svg
 	:target: https://pypi.python.org/pypi/partycls/
+	:alt: pyPI version badge
 .. image:: https://img.shields.io/badge/coverage-84%25-green
 	#:target:
+	:alt: coverage badge
 .. image:: https://joss.theoj.org/papers/10.21105/joss.03723/status.svg
 	:target: https://doi.org/10.21105/joss.03723
+	:alt: joss badge
 
 **partycls** is a Python package for cluster analysis of systems of interacting particles. By grouping particles that share similar structural or dynamical properties, partycls enables rapid and unsupervised exploration of the system's relevant features. It provides descriptors suitable for applications in condensed matter physics, such as structural analysis of disordered or partially ordered materials, and integrates the necessary tools of unsupervised learning into a streamlined workflow.
 
@@ -29,15 +34,16 @@ Structural descriptors
 
 partycls implements various structural descriptors:
 
-- :doc:`tutorials/descriptors/gr` :cite:`paret_2020`
+- :doc:`tutorials/descriptors/gr`
 - :doc:`tutorials/descriptors/tetra`
-- :doc:`tutorials/descriptors/ba` :cite:`paret_2020`
+- :doc:`tutorials/descriptors/ba`
 - :doc:`tutorials/descriptors/sba`
-- :doc:`tutorials/descriptors/bo` :cite:`steinhardt_1983`
+- :doc:`tutorials/descriptors/bo`
 - :doc:`tutorials/descriptors/sbo`
-- :doc:`tutorials/descriptors/ld` :cite:`lechner_2008`
-- :doc:`tutorials/descriptors/rbo` :cite:`boattini_2021`
-- :doc:`tutorials/descriptors/compact` :cite:`tong_2018`
+- :doc:`tutorials/descriptors/labo`
+- :doc:`tutorials/descriptors/rbo`
+- :doc:`tutorials/descriptors/compact`
+- :doc:`tutorials/descriptors/coord`
 
 On top of these native descriptors, partycls supports additional structural descriptors via `DScribe <https://singroup.github.io/dscribe>`_.
 
@@ -53,12 +59,10 @@ Check the :doc:`tutorials <tutorials>` to see various examples and detailed inst
 
 For a more detailed documentation, you can check the :doc:`API <api>`.
 
-References
-----------
-
 .. toctree::
 	:hidden:
 
+	Home <self>
 	install
 	tutorials
 	api
@@ -66,7 +70,3 @@ References
 	citing
 	changelog
 	about
-
-.. bibliography:: references.bib
-	:style: unsrt
-	:filter: docname in docnames

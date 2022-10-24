@@ -13,7 +13,7 @@ Subpackages
    :maxdepth: 4
 
    partycls.core
-   partycls.descriptor
+   partycls.descriptors
 
 Submodules
 ----------
@@ -54,14 +54,6 @@ partycls.helpers module
 -----------------------
 
 .. automodule:: partycls.helpers
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-partycls.neighbors\_wrap module
--------------------------------
-
-.. automodule:: partycls.neighbors_wrap
    :members:
    :undoc-members:
    :show-inheritance:

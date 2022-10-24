@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -14,14 +16,18 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="partycls package" href="source/partycls.html" />
-    <link rel="prev" title="Compactness descriptor" href="tutorials/descriptors/compact.html" /> 
+    <link rel="prev" title="Coordination descriptor" href="tutorials/descriptors/coord.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,6 +50,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
@@ -104,39 +111,470 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="api">
-<h1>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h1>
+<section id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
 <p>A more detailed documentation of the code as extracted from the docstrings.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="source/partycls.html">partycls package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/partycls.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="source/partycls.core.html">partycls.core package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="source/partycls.descriptor.html">partycls.descriptor package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.core.html">partycls.core package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.core.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.core.html#module-partycls.core.utils">partycls.core.utils module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.core.html#partycls.core.utils.tipify"><code class="docutils literal notranslate"><span class="pre">tipify()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.core.html#partycls.core.utils.standardize_condition"><code class="docutils literal notranslate"><span class="pre">standardize_condition()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.descriptors.html">partycls.descriptors package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.averaged_bo">partycls.descriptors.averaged_bo module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.features"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.name"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LocallyAveragedBondOrientationalDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">LocallyAveragedBondOrientationalDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.averaged_bo.LechnerDellagoDescriptor"><code class="docutils literal notranslate"><span class="pre">LechnerDellagoDescriptor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.ba">partycls.descriptors.ba module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.features"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.name"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.dtheta"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.dtheta</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.compute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.ba.BondAngleDescriptor.normalize"><code class="docutils literal notranslate"><span class="pre">BondAngleDescriptor.normalize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.bo">partycls.descriptors.bo module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.features"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.name"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.orders"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.orders</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.BondOrientationalDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">BondOrientationalDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.bo.SteinhardtDescriptor"><code class="docutils literal notranslate"><span class="pre">SteinhardtDescriptor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.compactness">partycls.descriptors.compactness module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.features"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.name"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.compute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.CompactnessDescriptor.tetrahedra"><code class="docutils literal notranslate"><span class="pre">CompactnessDescriptor.tetrahedra()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.compactness.TongTanakaDescriptor"><code class="docutils literal notranslate"><span class="pre">TongTanakaDescriptor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.coordination">partycls.descriptors.coordination module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.features"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.name"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.total"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.total</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.partial"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.partial</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.coordination.CoordinationDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">CoordinationDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.descriptor">partycls.descriptors.descriptor module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.features"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.accept_nans"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.accept_nans</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.n_samples"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.n_samples</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.n_features"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.n_features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.average"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.average</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.add_filter"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.add_filter()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.clear_filters"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.clear_filters()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.clear_all_filters"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.clear_all_filters()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.group_size"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.group_size()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.group_fraction"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.group_fraction()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.get_group_property"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.get_group_property()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.dump"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.dump()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.compute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.normalize"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.normalize()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.StructuralDescriptor.discard_nans"><code class="docutils literal notranslate"><span class="pre">StructuralDescriptor.discard_nans()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.DummyDescriptor"><code class="docutils literal notranslate"><span class="pre">DummyDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.DummyDescriptor.name"><code class="docutils literal notranslate"><span class="pre">DummyDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.DummyDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">DummyDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.descriptor.DummyDescriptor.normalize"><code class="docutils literal notranslate"><span class="pre">DummyDescriptor.normalize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.dscribe">partycls.descriptors.dscribe module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.dscribe.DscribeDescriptor"><code class="docutils literal notranslate"><span class="pre">DscribeDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.dscribe.DscribeDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">DscribeDescriptor.compute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.dscribe.DscribeDescriptor.normalize"><code class="docutils literal notranslate"><span class="pre">DscribeDescriptor.normalize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.dscribe.DscribeChemicalDescriptor"><code class="docutils literal notranslate"><span class="pre">DscribeChemicalDescriptor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.radial">partycls.descriptors.radial module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.features"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.name"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.n_shells"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.n_shells</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.bounds"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.bounds</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.dr"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.dr</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.compute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial.RadialDescriptor.normalize"><code class="docutils literal notranslate"><span class="pre">RadialDescriptor.normalize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.radial_bo">partycls.descriptors.radial_bo module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.features"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.name"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.orders"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.orders</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.bounds"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.bounds</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.dr"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.dr</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.distance_grid"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.distance_grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.RadialBondOrientationalDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">RadialBondOrientationalDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.radial_bo.BoattiniDescriptor"><code class="docutils literal notranslate"><span class="pre">BoattiniDescriptor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.smoothed_ba">partycls.descriptors.smoothed_ba module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.features"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.name"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.smoothed_bo">partycls.descriptors.smoothed_bo module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.grid"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.grid</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.features"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.name"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.smoothed_bo.SmoothedBondOrientationalDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">SmoothedBondOrientationalDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.descriptors.html#module-partycls.descriptors.tetrahedrality">partycls.descriptors.tetrahedrality module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.trajectory"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.trajectory</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.active_filters"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.active_filters</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.dimension"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.dimension</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.features"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.features</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.groups"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.groups</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.verbose"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.verbose</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.neighbors_boost"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.neighbors_boost</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.max_num_neighbors"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.max_num_neighbors</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.name"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.symbol"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.symbol</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/partycls.descriptors.html#partycls.descriptors.tetrahedrality.TetrahedralDescriptor.compute"><code class="docutils literal notranslate"><span class="pre">TetrahedralDescriptor.compute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="source/partycls.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.cell">partycls.cell module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.clustering">partycls.clustering module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.dim_reduction">partycls.dim_reduction module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.feature_scaling">partycls.feature_scaling module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.helpers">partycls.helpers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.neighbors_wrap">partycls.neighbors_wrap module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.particle">partycls.particle module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.system">partycls.system module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.trajectory">partycls.trajectory module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.workflow">partycls.workflow module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.cell">partycls.cell module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.cell.Cell"><code class="docutils literal notranslate"><span class="pre">Cell</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.cell.Cell.side"><code class="docutils literal notranslate"><span class="pre">Cell.side</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.cell.Cell.periodic"><code class="docutils literal notranslate"><span class="pre">Cell.periodic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.cell.Cell.volume"><code class="docutils literal notranslate"><span class="pre">Cell.volume</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.clustering">partycls.clustering module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering"><code class="docutils literal notranslate"><span class="pre">Clustering</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.n_clusters"><code class="docutils literal notranslate"><span class="pre">Clustering.n_clusters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.n_init"><code class="docutils literal notranslate"><span class="pre">Clustering.n_init</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.labels"><code class="docutils literal notranslate"><span class="pre">Clustering.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.fit"><code class="docutils literal notranslate"><span class="pre">Clustering.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.fractions"><code class="docutils literal notranslate"><span class="pre">Clustering.fractions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.populations"><code class="docutils literal notranslate"><span class="pre">Clustering.populations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.Clustering.centroids"><code class="docutils literal notranslate"><span class="pre">Clustering.centroids()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.clustering.KMeans"><code class="docutils literal notranslate"><span class="pre">KMeans</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.KMeans.fit"><code class="docutils literal notranslate"><span class="pre">KMeans.fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.clustering.GaussianMixture"><code class="docutils literal notranslate"><span class="pre">GaussianMixture</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.GaussianMixture.fit"><code class="docutils literal notranslate"><span class="pre">GaussianMixture.fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.clustering.CommunityInference"><code class="docutils literal notranslate"><span class="pre">CommunityInference</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.clustering.CommunityInference.fit"><code class="docutils literal notranslate"><span class="pre">CommunityInference.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.dim_reduction">partycls.dim_reduction module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.PCA"><code class="docutils literal notranslate"><span class="pre">PCA</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.PCA.symbol"><code class="docutils literal notranslate"><span class="pre">PCA.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.PCA.full_name"><code class="docutils literal notranslate"><span class="pre">PCA.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.PCA.reduce"><code class="docutils literal notranslate"><span class="pre">PCA.reduce()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.TSNE"><code class="docutils literal notranslate"><span class="pre">TSNE</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.TSNE.symbol"><code class="docutils literal notranslate"><span class="pre">TSNE.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.TSNE.full_name"><code class="docutils literal notranslate"><span class="pre">TSNE.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.TSNE.reduce"><code class="docutils literal notranslate"><span class="pre">TSNE.reduce()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.LocallyLinearEmbedding"><code class="docutils literal notranslate"><span class="pre">LocallyLinearEmbedding</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.LocallyLinearEmbedding.symbol"><code class="docutils literal notranslate"><span class="pre">LocallyLinearEmbedding.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.LocallyLinearEmbedding.full_name"><code class="docutils literal notranslate"><span class="pre">LocallyLinearEmbedding.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.LocallyLinearEmbedding.reduce"><code class="docutils literal notranslate"><span class="pre">LocallyLinearEmbedding.reduce()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.AutoEncoder"><code class="docutils literal notranslate"><span class="pre">AutoEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.AutoEncoder.symbol"><code class="docutils literal notranslate"><span class="pre">AutoEncoder.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.AutoEncoder.full_name"><code class="docutils literal notranslate"><span class="pre">AutoEncoder.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.AutoEncoder.n_components"><code class="docutils literal notranslate"><span class="pre">AutoEncoder.n_components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.dim_reduction.AutoEncoder.reduce"><code class="docutils literal notranslate"><span class="pre">AutoEncoder.reduce()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.feature_scaling">partycls.feature_scaling module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.ZScore"><code class="docutils literal notranslate"><span class="pre">ZScore</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.ZScore.symbol"><code class="docutils literal notranslate"><span class="pre">ZScore.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.ZScore.full_name"><code class="docutils literal notranslate"><span class="pre">ZScore.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.ZScore.scale"><code class="docutils literal notranslate"><span class="pre">ZScore.scale()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MinMax"><code class="docutils literal notranslate"><span class="pre">MinMax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MinMax.symbol"><code class="docutils literal notranslate"><span class="pre">MinMax.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MinMax.full_name"><code class="docutils literal notranslate"><span class="pre">MinMax.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MinMax.scale"><code class="docutils literal notranslate"><span class="pre">MinMax.scale()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MaxAbs"><code class="docutils literal notranslate"><span class="pre">MaxAbs</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MaxAbs.symbol"><code class="docutils literal notranslate"><span class="pre">MaxAbs.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MaxAbs.full_name"><code class="docutils literal notranslate"><span class="pre">MaxAbs.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.MaxAbs.scale"><code class="docutils literal notranslate"><span class="pre">MaxAbs.scale()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.Robust"><code class="docutils literal notranslate"><span class="pre">Robust</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.Robust.symbol"><code class="docutils literal notranslate"><span class="pre">Robust.symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.Robust.full_name"><code class="docutils literal notranslate"><span class="pre">Robust.full_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.feature_scaling.Robust.scale"><code class="docutils literal notranslate"><span class="pre">Robust.scale()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.helpers">partycls.helpers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.AMI"><code class="docutils literal notranslate"><span class="pre">AMI()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.ARI"><code class="docutils literal notranslate"><span class="pre">ARI()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.silhouette_samples"><code class="docutils literal notranslate"><span class="pre">silhouette_samples()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.silhouette_score"><code class="docutils literal notranslate"><span class="pre">silhouette_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.show_matplotlib"><code class="docutils literal notranslate"><span class="pre">show_matplotlib()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.show_ovito"><code class="docutils literal notranslate"><span class="pre">show_ovito()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.show_3dmol"><code class="docutils literal notranslate"><span class="pre">show_3dmol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.shannon_entropy"><code class="docutils literal notranslate"><span class="pre">shannon_entropy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.merge_clusters"><code class="docutils literal notranslate"><span class="pre">merge_clusters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.helpers.sort_clusters"><code class="docutils literal notranslate"><span class="pre">sort_clusters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.particle">partycls.particle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle"><code class="docutils literal notranslate"><span class="pre">Particle</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle.position"><code class="docutils literal notranslate"><span class="pre">Particle.position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle.species"><code class="docutils literal notranslate"><span class="pre">Particle.species</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle.label"><code class="docutils literal notranslate"><span class="pre">Particle.label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle.radius"><code class="docutils literal notranslate"><span class="pre">Particle.radius</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle.nearest_neighbors"><code class="docutils literal notranslate"><span class="pre">Particle.nearest_neighbors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.particle.Particle.fold"><code class="docutils literal notranslate"><span class="pre">Particle.fold()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.system">partycls.system module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.system.System"><code class="docutils literal notranslate"><span class="pre">System</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.particle"><code class="docutils literal notranslate"><span class="pre">System.particle</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.cell"><code class="docutils literal notranslate"><span class="pre">System.cell</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.nearest_neighbors_cutoffs"><code class="docutils literal notranslate"><span class="pre">System.nearest_neighbors_cutoffs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.nearest_neighbors_method"><code class="docutils literal notranslate"><span class="pre">System.nearest_neighbors_method</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.n_dimensions"><code class="docutils literal notranslate"><span class="pre">System.n_dimensions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.density"><code class="docutils literal notranslate"><span class="pre">System.density</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.distinct_species"><code class="docutils literal notranslate"><span class="pre">System.distinct_species</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.pairs_of_species"><code class="docutils literal notranslate"><span class="pre">System.pairs_of_species</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.pairs_of_species_id"><code class="docutils literal notranslate"><span class="pre">System.pairs_of_species_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.chemical_fractions"><code class="docutils literal notranslate"><span class="pre">System.chemical_fractions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.get_property"><code class="docutils literal notranslate"><span class="pre">System.get_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.dump"><code class="docutils literal notranslate"><span class="pre">System.dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.set_property"><code class="docutils literal notranslate"><span class="pre">System.set_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.compute_nearest_neighbors"><code class="docutils literal notranslate"><span class="pre">System.compute_nearest_neighbors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.compute_voronoi_signatures"><code class="docutils literal notranslate"><span class="pre">System.compute_voronoi_signatures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.show"><code class="docutils literal notranslate"><span class="pre">System.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.system.System.fold"><code class="docutils literal notranslate"><span class="pre">System.fold()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.trajectory">partycls.trajectory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory"><code class="docutils literal notranslate"><span class="pre">Trajectory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.filename"><code class="docutils literal notranslate"><span class="pre">Trajectory.filename</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.fmt"><code class="docutils literal notranslate"><span class="pre">Trajectory.fmt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.backend"><code class="docutils literal notranslate"><span class="pre">Trajectory.backend</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.additional_fields"><code class="docutils literal notranslate"><span class="pre">Trajectory.additional_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.nearest_neighbors_method"><code class="docutils literal notranslate"><span class="pre">Trajectory.nearest_neighbors_method</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.nearest_neighbors_cutoffs"><code class="docutils literal notranslate"><span class="pre">Trajectory.nearest_neighbors_cutoffs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.remove"><code class="docutils literal notranslate"><span class="pre">Trajectory.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.get_property"><code class="docutils literal notranslate"><span class="pre">Trajectory.get_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.dump"><code class="docutils literal notranslate"><span class="pre">Trajectory.dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.set_property"><code class="docutils literal notranslate"><span class="pre">Trajectory.set_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_nearest_neighbors"><code class="docutils literal notranslate"><span class="pre">Trajectory.compute_nearest_neighbors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.set_nearest_neighbors_cutoff"><code class="docutils literal notranslate"><span class="pre">Trajectory.set_nearest_neighbors_cutoff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs"><code class="docutils literal notranslate"><span class="pre">Trajectory.compute_nearest_neighbors_cutoffs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.compute_voronoi_signatures"><code class="docutils literal notranslate"><span class="pre">Trajectory.compute_voronoi_signatures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.show"><code class="docutils literal notranslate"><span class="pre">Trajectory.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.write"><code class="docutils literal notranslate"><span class="pre">Trajectory.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.trajectory.Trajectory.fold"><code class="docutils literal notranslate"><span class="pre">Trajectory.fold()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/partycls.html#module-partycls.workflow">partycls.workflow module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow"><code class="docutils literal notranslate"><span class="pre">Workflow</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.trajectory"><code class="docutils literal notranslate"><span class="pre">Workflow.trajectory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.descriptor"><code class="docutils literal notranslate"><span class="pre">Workflow.descriptor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.scaling"><code class="docutils literal notranslate"><span class="pre">Workflow.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.dim_reduction"><code class="docutils literal notranslate"><span class="pre">Workflow.dim_reduction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.clustering"><code class="docutils literal notranslate"><span class="pre">Workflow.clustering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.output_metadata"><code class="docutils literal notranslate"><span class="pre">Workflow.output_metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.features"><code class="docutils literal notranslate"><span class="pre">Workflow.features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.scaled_features"><code class="docutils literal notranslate"><span class="pre">Workflow.scaled_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.reduced_features"><code class="docutils literal notranslate"><span class="pre">Workflow.reduced_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.naming_convention"><code class="docutils literal notranslate"><span class="pre">Workflow.naming_convention</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.descriptor_db"><code class="docutils literal notranslate"><span class="pre">Workflow.descriptor_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.clustering_db"><code class="docutils literal notranslate"><span class="pre">Workflow.clustering_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.scaling_db"><code class="docutils literal notranslate"><span class="pre">Workflow.scaling_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.dim_reduction_db"><code class="docutils literal notranslate"><span class="pre">Workflow.dim_reduction_db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.labels"><code class="docutils literal notranslate"><span class="pre">Workflow.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.fractions"><code class="docutils literal notranslate"><span class="pre">Workflow.fractions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.populations"><code class="docutils literal notranslate"><span class="pre">Workflow.populations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.centroids"><code class="docutils literal notranslate"><span class="pre">Workflow.centroids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.run"><code class="docutils literal notranslate"><span class="pre">Workflow.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.set_output_metadata"><code class="docutils literal notranslate"><span class="pre">Workflow.set_output_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.disable_output"><code class="docutils literal notranslate"><span class="pre">Workflow.disable_output()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.write_trajectory"><code class="docutils literal notranslate"><span class="pre">Workflow.write_trajectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.write_log"><code class="docutils literal notranslate"><span class="pre">Workflow.write_log()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.write_centroids"><code class="docutils literal notranslate"><span class="pre">Workflow.write_centroids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.write_labels"><code class="docutils literal notranslate"><span class="pre">Workflow.write_labels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/partycls.html#partycls.workflow.Workflow.write_dataset"><code class="docutils literal notranslate"><span class="pre">Workflow.write_dataset()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-</div>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tutorials/descriptors/compact.html" class="btn btn-neutral float-left" title="Compactness descriptor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorials/descriptors/coord.html" class="btn btn-neutral float-left" title="Coordination descriptor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="source/partycls.html" class="btn btn-neutral float-right" title="partycls package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

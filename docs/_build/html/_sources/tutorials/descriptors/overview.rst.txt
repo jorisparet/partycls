@@ -1,7 +1,7 @@
 Overview
 ========
 
-Each structural descriptors inherits from the base class ``StructuralDescriptor`` and is computed for a given ``Trajectory``.
+Each structural descriptors inherits from the base class :py:class:`StructuralDescriptor <partycls.descriptors.descriptor.StructuralDescriptor>` and is computed for a given :py:class:`Trajectory <partycls.trajectory.Trajectory>`.
 
 Most descriptors require information about the neighbors of each of the considered particles. Nearest neighbors, *i.e.* particles inside of the first coordination shell, are computed at the level of the trajectory itself or directly read from the input trajectory file. This information is then propagated to the descriptors that rely on it to perform the computations.
 
@@ -10,17 +10,19 @@ There are several method to identify the neighbors of the central particles, and
 Nearest neighbors
 -----------------
 
-``Trajectory`` instances have several attributes and methods to identify nearest neighbors and determine the cutoffs delimiting the first coordination shell.
+:py:class:`Trajectory <partycls.trajectory.Trajectory>` instances have several attributes and methods to identify nearest neighbors and determine the cutoffs delimiting the first coordination shell.
 
 Nearest neighbors can be computed using the following method:
 
 .. automethod:: partycls.trajectory.Trajectory.compute_nearest_neighbors
+	:noindex:
 
 Nearest neighbors cutoffs can be automatically computed for each pair of species in the trajectory on the basis of the first minimum of the partial radial distribution functions :math:`g_{\alpha\beta}(r)`, where :math:`\alpha` and :math:`\beta` are species indices. This is done using the following method:
 
 .. automethod:: partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs
+	:noindex:
 
-Alternatively, both the nearest neighbors method and cutoffs can be set as instance attributes of ``Trajectory``:
+Alternatively, both the nearest neighbors method and cutoffs can be set as instance attributes of :py:class:`Trajectory <partycls.trajectory.Trajectory>`:
 
 .. code-block:: python
 
@@ -29,7 +31,7 @@ Alternatively, both the nearest neighbors method and cutoffs can be set as insta
 	traj.nearest_neighbors_cutoffs = [1.5, 1.4, 1.4, 1.3]
 	traj.compute_nearest_neighbors()
 
-Once computed, the lists of nearest neighbors are stored as ``Particle`` attributes. These can be accessed through the ``Trajectory.get_property`` method, or by iterating over the particles:
+Once computed, the lists of nearest neighbors are stored as :py:class:`Particle <partycls.particle.Particle>` attributes. These can be accessed through the :py:meth:`Trajectory.get_property() <partycls.trajectory.Trajectory.get_property>` method, or by iterating over the particles:
 
 .. code-block:: python
 
@@ -63,7 +65,7 @@ Nearest neighbors can be directly from the input trajectory file if it contains 
 This, however, must be specified when reading the input file through the ``additional_fields`` parameter.
 
 .. warning::
-	Currently, this only works for trajectory files in XYZ format.
+	Currently, this only works for trajectory files in XYZ format and for a few formats supported by `atooms <https://framagit.org/atooms/atooms>`_.
 
 Example:
 
@@ -119,7 +121,7 @@ Set using one of:
 Voronoi tessellation can be used in molecular simulations to identify nearest neighbors by construction of Voronoi polyhedra :cite:`bernal_1959`, which consists in drawing orthogonal planes at the mid-points between the central particle and each of its neighbors (*i.e.* its `Wigner-Seitz cell <https://en.wikipedia.org/wiki/Wigner%E2%80%93Seitz_cell>`_). In particular, the *radical* variant of Voronoi tessellation :cite:`gellatly_1982`, which accounts for the relative sizes of the particles to determine of the positions of the intersecting planes, provides better results for multi-components systems.
 
 .. warning::
-	This method uses the effective particles' radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the ``Trajectory`` instance using the ``Trajectory.set_property`` method. Otherwise, default values will be used.
+	This method uses the effective particles' radii. This information must thus be provided either from an additional field in the input trajectory file, or directly at the level of the :py:class:`Trajectory <partycls.trajectory.Trajectory>` instance using the :py:meth:`Trajectory.set_property() <partycls.trajectory.Trajectory.set_property>` method. Otherwise, default values will be used.
 
 Examples:
 
@@ -130,7 +132,7 @@ Examples:
 	traj = Trajectory('trajectory.xyz', additional_fields=['radius'])
 	traj.compute_nearest_neighbors(method='voronoi')
 
-2. Particles' radii are set in the ``Trajectory``:
+2. Particles' radii are set in the :py:class:`Trajectory <partycls.trajectory.Trajectory>`:
 
 .. code-block:: python
 
@@ -145,16 +147,14 @@ Neighbors & structural descriptors
 The table below shows the requirements of each structural descriptors in terms of neighbors and cutoffs. Note that these requirements are automatically satisfied when computing the descriptors if not explicitly set by the user.
 
 .. list-table:: Required types of neighbors & cutoffs
-	:widths: 20 20 20 20 20
+	:widths: 20 20 20 20
 	:header-rows: 1
 
 	* - 
-	  - Type-0 [1]_
-	  - Type-1 [2]_
-	  - Extended [3]_
-	  - Cutoffs [4]_
+	  - Nearest [1]_
+	  - Extended [2]_
+	  - Cutoffs [3]_
 	* - :doc:`gr`
-	  - ✕
 	  - ✕
 	  - ✕
 	  - ✕
@@ -162,47 +162,42 @@ The table below shows the requirements of each structural descriptors in terms o
 	  - √
 	  - ✕
 	  - ✕
-	  - ✕
 	* - :doc:`ba`
 	  - √
-	  - ✕
 	  - ✕
 	  - ✕
 	* - :doc:`bo`
 	  - √
 	  - ✕
 	  - ✕
-	  - ✕
-	* - :doc:`ld`
-	  - √
+	* - :doc:`labo`
 	  - √
 	  - ✕
 	  - ✕
 	* - :doc:`compact`
 	  - √
+	  - ✕
+	  - ✕
+	* - :doc:`coord`
 	  - √
 	  - ✕
 	  - ✕
-	* - :doc:`sba`
+	* - :doc:`rbo`
 	  - ✕
+	  - √
+	  - ✕
+	* - :doc:`sba`
 	  - ✕
 	  - √
 	  - √
 	* - :doc:`sbo`
 	  - ✕
-	  - ✕
-	  - √
-	  - √
-	* - :doc:`rbo`
-	  - ✕
-	  - ✕
 	  - √
 	  - √
 
-.. [1] Nearest neighbors of the central particles (for particles in ``group=0``).
-.. [2] Nearest neighbors of the nearest neighbors of the central particles (for particles in ``group=1``).
-.. [3] Neighbors at fixed distances, beyond the first coordination shell (for particles in ``group=0``). These are computed directly by the descriptor.
-.. [4] Nearest neighbors cutoffs for normalization. These are computed automatically if not provided in the ``Trajectory``.
+.. [1] Nearest neighbors, computed in the :py:class:`Trajectory <partycls.trajectory.Trajectory>` on the basis of one the nearest neighbors methods presented above.
+.. [2] Extended neighbors at **fixed distances**, *i.e.* beyond the first coordination shell. These are computed directly in the descriptor.
+.. [3] Nearest neighbors cutoffs :math:`\{ r_{\alpha\beta}^c \}` for normalization. These are computed automatically if not provided in the :py:class:`Trajectory <partycls.trajectory.Trajectory>`.
 
 References
 ----------

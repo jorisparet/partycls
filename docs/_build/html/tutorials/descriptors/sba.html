@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smoothed bond-angle descriptor &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,10 +16,14 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -46,8 +52,10 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials.html"> Home</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials.html#detailed-examples">Detailed examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../tutorials.html#structural-descriptors">Structural descriptors</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview</a></li>
@@ -57,14 +65,16 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Smoothed bond-angle descriptor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bo.html">Bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sbo.html">Smoothed bond-orientational descriptor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ld.html">Lechner-Dellago descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="labo.html">Locally averaged bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbo.html">Radial bond-orientational descriptor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compact.html">Compactness descriptor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coord.html">Coordination descriptor</a></li>
 </ul>
 </li>
 </ul>
@@ -125,16 +135,16 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="smoothed-bond-angle-descriptor">
-<h1>Smoothed bond-angle descriptor<a class="headerlink" href="#smoothed-bond-angle-descriptor" title="Permalink to this headline"></a></h1>
+<section id="smoothed-bond-angle-descriptor">
+<h1>Smoothed bond-angle descriptor<a class="headerlink" href="#smoothed-bond-angle-descriptor" title="Permalink to this heading"></a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>See <a class="reference internal" href="ba.html"><span class="doc">Bond-angle descriptor</span></a> first.</p>
 </div>
-<div class="section" id="definition">
-<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline"></a></h2>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h2>
 <p>This is a smooth version of the <a class="reference internal" href="ba.html"><span class="doc">Bond-angle descriptor</span></a> in which the bond angles <span class="math notranslate nohighlight">\(\theta_{jik}\)</span> are multiplied by a weighting function <span class="math notranslate nohighlight">\(f(r_{ij}, r_{ik})\)</span> that depends on the radial distances <span class="math notranslate nohighlight">\(r_{ij}\)</span> and <span class="math notranslate nohighlight">\(r_{ik}\)</span> between <span class="math notranslate nohighlight">\((i,j)\)</span> and <span class="math notranslate nohighlight">\((i,k)\)</span> respectively, where <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span> can be any particle in the system (<em>i.e.</em> not necessarily a nearest neighbors of <span class="math notranslate nohighlight">\(i\)</span>).</p>
-<p>Essentially, we define the (non-integer) number of bond angles around particle <span class="math notranslate nohighlight">\(i\)</span> as</p>
+<p>Essentially, we define the <em>smoothed</em> number of bond angles around particle <span class="math notranslate nohighlight">\(i\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}N_i^S(\theta_n) = \sum_{j=1}^N \sum_{\substack{k=1 \\ k \neq j}}^N f(r_{ij}, r_{ik}) \delta(\theta_n - \theta_{jik}) ,\end{split}\]</div>
 <p>where the superscript <span class="math notranslate nohighlight">\(S\)</span> indicates the smooth nature of the descriptor, and <span class="math notranslate nohighlight">\(f(r_{ij}, r_{ik})\)</span> is the following smoothing function:</p>
@@ -150,12 +160,12 @@
 <p>We then consider <span class="math notranslate nohighlight">\(N_i^S(\theta_n)\)</span> for a set of angles <span class="math notranslate nohighlight">\(\{ \theta_n \}\)</span> that go from <span class="math notranslate nohighlight">\(\theta_0 = 0^\circ\)</span> to <span class="math notranslate nohighlight">\(\theta_{n_\mathrm{max}}=180^\circ\)</span> by steps of <span class="math notranslate nohighlight">\(\Delta \theta\)</span>. The resulting feature vector for particle <span class="math notranslate nohighlight">\(i\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[X^\mathrm{SBA}(i) = (\: N_i^S(\theta_0) \;\; N_i^S(\theta_1) \;\; \dots \;\; N_i^S(\theta_{n_\mathrm{max}}) \:) .\]</div>
-</div>
-<div class="section" id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline"></a></h2>
-<p>Instantiating this descriptor on a <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> can be done as follows:</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Instantiating this descriptor on a <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> can be done as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">SmoothedBondAngleDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">SmoothedBondAngleDescriptor</span>
 
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">SmoothedBondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
@@ -163,8 +173,8 @@
 </div>
 <p>The constructor takes the following parameters:</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor.__init__">
-<span class="sig-prename descclassname"><span class="pre">SmoothedBondAngleDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_enlargement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptor/smoothed_ba.html#SmoothedBondAngleDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptor.smoothed_ba.SmoothedBondAngleDescriptor.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.__init__">
+<span class="sig-prename descclassname"><span class="pre">SmoothedBondAngleDescriptor.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_enlargement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/partycls/descriptors/smoothed_ba.html#SmoothedBondAngleDescriptor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor.__init__" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -186,43 +196,46 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="demonstration">
-<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this headline"></a></h2>
-<p>We consider an input trajectory file <code class="docutils literal notranslate"><span class="pre">&quot;trajectory.xyz&quot;</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>:</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>The computation of this descriptor relies on:</p>
+<ul class="simple">
+<li><p><strong>Nearest neighbors cutoffs</strong>. These can either be set in the <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> prior to the computation of the descriptor, or computed from inside the descriptor using a default method.</p></li>
+</ul>
+</section>
+<section id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this heading"></a></h2>
+<p>We consider an input trajectory file <code class="file docutils literal notranslate"><span class="pre">trajectory.xyz</span></code> in XYZ format that contains two particle types <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>. We can either compute or set the nearest neighbors cutoffs <span class="math notranslate nohighlight">\(\{ r_{\alpha\beta}^c \}\)</span> for the smoothing directly in <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
+<span class="c1"># open the trajectory</span>
 <span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;trajectory.xyz&quot;</span><span class="p">)</span>
+
+<span class="c1"># compute the nearest neighbors cutoffs</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors_cutoffs</span><span class="p">(</span><span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;computed cuttofs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
+
+<span class="c1"># set the nearest neighbors cuttofs</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;manually set cuttofs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We compute the nearest neighbors cutoffs <span class="math notranslate nohighlight">\(\{ r_{\alpha\beta}^c \}\)</span> for the smoothing:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors_cutoffs</span><span class="p">(</span><span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;computed cutoffs:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>computed cutoffs:
- [1.45, 1.35, 1.35, 1.25]
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>computed cutoffs:
+ [1.4500000000000004, 1.3500000000000003, 1.3500000000000003, 1.2500000000000002]
 manually set cutoffs:
  [1.45, 1.35, 1.35, 1.25]
 </pre></div>
 </div>
-<p>Alternatively, we can set the cutoffs manually if they are known:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;manually set cutoffs:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>manually set cutoffs:
- [1.45, 1.35, 1.35, 1.25]
-</pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If not computed in the <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> or manually set, the cutoffs will be computed from inside the descriptor.</p>
+<p>If not computed in <a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trajectory</span></code></a> or manually set, the cutoffs <span class="math notranslate nohighlight">\(\{ r_{\alpha\beta}^c \}\)</span> will be computed from inside the descriptor.</p>
 </div>
-<p>We now instantiate and compute a <code class="docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor</span></code> on this trajectory:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">SmoothedBondAngleDescriptor</span>
+<p>We now instantiate a <a class="reference internal" href="../../source/partycls.descriptors.html#partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor" title="partycls.descriptors.smoothed_ba.SmoothedBondAngleDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SmoothedBondAngleDescriptor</span></code></a> on this trajectory and restrict the analysis to type-B particles only. We set <span class="math notranslate nohighlight">\(\Delta \theta = 18^\circ\)</span>, <span class="math notranslate nohighlight">\(\xi=1.3\)</span> and <span class="math notranslate nohighlight">\(\gamma=8\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">SmoothedBondAngleDescriptor</span>
 
 <span class="c1"># instantiation</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">SmoothedBondAngleDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span>
@@ -243,8 +256,9 @@ manually set cutoffs:
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-litteral notranslate"><div class="highlight"><pre><span></span>grid:
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid:
  [  9.  27.  45.  63.  81.  99. 117. 135. 153. 171.]
 feature vectors:
  [[ 0.          0.24735055  5.1652519  29.43498845 10.5325834  14.99235213
@@ -256,7 +270,12 @@ feature vectors:
 </pre></div>
 </div>
 </div>
-</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">grid</span></code> shows the grid of angles <span class="math notranslate nohighlight">\(\{ \theta_n \}\)</span> in degrees, where <span class="math notranslate nohighlight">\(\Delta \theta = 18^\circ\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature</span> <span class="pre">vectors</span></code> shows the first three feature vectors <span class="math notranslate nohighlight">\(X^\mathrm{SBA}(1)\)</span>, <span class="math notranslate nohighlight">\(X^\mathrm{SBA}(2)\)</span> and <span class="math notranslate nohighlight">\(X^\mathrm{SBA}(3)\)</span> corresponding to the grid.</p></li>
+</ul>
+</section>
+</section>
 
 
            </div>

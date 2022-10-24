@@ -6,6 +6,7 @@
   <title>partycls.workflow &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
@@ -14,7 +15,11 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
@@ -42,6 +47,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
@@ -84,8 +90,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptor</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span><span class="p">,</span> <span class="n">RadialDescriptor</span><span class="p">,</span> \
-    <span class="n">BondOrientationalDescriptor</span><span class="p">,</span> <span class="n">LechnerDellagoDescriptor</span>
+<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">.clustering</span> <span class="kn">import</span> <span class="n">KMeans</span><span class="p">,</span> <span class="n">GaussianMixture</span><span class="p">,</span> <span class="n">CommunityInference</span>
 <span class="kn">from</span> <span class="nn">.dim_reduction</span> <span class="kn">import</span> <span class="n">PCA</span><span class="p">,</span> <span class="n">TSNE</span><span class="p">,</span> <span class="n">LocallyLinearEmbedding</span><span class="p">,</span> <span class="n">AutoEncoder</span>
 <span class="kn">from</span> <span class="nn">.feature_scaling</span> <span class="kn">import</span> <span class="n">ZScore</span><span class="p">,</span> <span class="n">MinMax</span><span class="p">,</span> <span class="n">MaxAbs</span><span class="p">,</span> <span class="n">Robust</span>
@@ -97,83 +102,26 @@
 
 <div class="viewcode-block" id="Workflow"><a class="viewcode-back" href="../../source/partycls.html#partycls.workflow.Workflow">[docs]</a><span class="k">class</span> <span class="nc">Workflow</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A workflow is a clustering procedure that goes through the following steps:</span>
+<span class="sd">    A Workflow is a clustering procedure that goes through the following steps:</span>
+
 <span class="sd">    - compute a structural descriptor on a given trajectory ;</span>
-<span class="sd">    - (optional) apply a feature scaling on the previously computed structural features ;</span>
-<span class="sd">    - (optional) apply a dimensionality reduction on the (raw/scaled) features ;</span>
+<span class="sd">    - (*optional*) apply a feature scaling on the previously computed structural features ;</span>
+<span class="sd">    - (*optional*) apply a dimensionality reduction on the (raw/scaled) features ;</span>
 <span class="sd">    - run a clustering algorithm to partition particles into structurally different clusters ;</span>
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    </span>
-<span class="sd">    trajectory : Trajectory, or str</span>
-<span class="sd">        An instance of `Trajectory` a path to trajectory file to read, or </span>
-<span class="sd">        an instance of a class with compatible interface.</span>
-<span class="sd">        </span>
-<span class="sd">    descriptor : str, or an instance of StructuralDescriptor</span>
-<span class="sd">        Structural descriptor to be computed on the trajectory. See the</span>
-<span class="sd">        `descriptor_db` class attribute for compatible strings. Examples :</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;gr&#39; : radial distribution of particles around a central particle.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;ba&#39; : angular distribution of pairs of nearest neighbors of a central particle.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;bo&#39; : Steinhardt bond-orientational order parameter (see https://doi.org/10.1103/PhysRevB.28.784)</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;ld&#39; : Lechner-Dellago cond-orientational order parameter (see https://doi.org/10.1063/1.2977970)</span>
-<span class="sd">        </span>
-<span class="sd">    scaling : str, None, or an object with the proper interface, optional, default: None</span>
-<span class="sd">        Feature scaling method. See the `scaling_db` class attribute for</span>
-<span class="sd">        compatible strings. Examples:</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;zscore&#39; : standardize features by removing the mean and scaling to unit variance</span>
-<span class="sd">            </span>
-<span class="sd">        &#39;minmax&#39; : scale and translate each feature individually such that it </span>
-<span class="sd">        is in the given range on the training set, e.g. between zero and one</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;maxabs&#39; : scale and translate each feature individually such that the </span>
-<span class="sd">        maximal absolute value of each feature in the training set will be 1.</span>
-<span class="sd">            </span>
-<span class="sd">        &#39;robust&#39; : remove the median and scale the data according to the </span>
-<span class="sd">        specified quantile range (default is between 25th quantile and 75th</span>
-<span class="sd">        quantile).</span>
-<span class="sd">            </span>
-<span class="sd">    dim_reduction : str, None, or an object with the proper interface, optional, default: None</span>
-<span class="sd">        Dimensionality reduction method. See the `dim_reduction_db` class attribute</span>
-<span class="sd">        for compatible strings. Examples:</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;pca&#39; : Principal Component Analysis.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;tsne&#39; : t-distributed Stochastic Neighbor Embedding.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;lle&#39; : Locally Linear Embedding.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;ae&#39; : neural network Auto-Encoder.</span>
-<span class="sd">        </span>
-<span class="sd">    clustering : str, an instance of `Clustering`, or an object with the proper interface, optional, default: &#39;kmeans&#39;</span>
-<span class="sd">        Clustering algorithm. See the `clustering_db` class attribute for </span>
-<span class="sd">        compatible strings. Examples:</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;kmeans&#39; : K-Means algorithm.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;gmm&#39; : Gaussian Mixture Model.</span>
-<span class="sd">        </span>
-<span class="sd">        &#39;cinf&#39; : Community Inference (see https://doi.org/10.1063/5.0004732).</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    </span>
 <span class="sd">    trajectory : Trajectory</span>
-<span class="sd">        The trajectory file as read by the Trajectory class.</span>
+<span class="sd">        The trajectory file as read by the ``Trajectory`` class.</span>
 <span class="sd">        </span>
 <span class="sd">    descriptor : StructuralDescriptor</span>
 <span class="sd">        Structural descriptor associated to the trajectory.</span>
 <span class="sd">        </span>
-<span class="sd">    scaling : ZScore, MinMax, MaxAbs, Robust</span>
-<span class="sd">        Feature scaling.</span>
+<span class="sd">    scaling : ZScore, MinMax, MaxAbs or Robust</span>
+<span class="sd">        Feature scaling method.</span>
 <span class="sd">        </span>
-<span class="sd">    dim_reduction : PCA, TSNE, LocallyLinearEmbedding, AutoEncoder</span>
-<span class="sd">        Dimensionality reduction.</span>
+<span class="sd">    dim_reduction : PCA, TSNE, LocallyLinearEmbedding or AutoEncoder</span>
+<span class="sd">        Dimensionality reduction method.</span>
 <span class="sd">        </span>
 <span class="sd">    clustering : Clustering</span>
 <span class="sd">        Clustering method.</span>
@@ -184,47 +132,64 @@
 <span class="sd">        </span>
 <span class="sd">    features: numpy.ndarray</span>
 <span class="sd">        Raw features as computed by the associated structural descriptor.</span>
-<span class="sd">        Initial value is None if features were not computed.</span>
+<span class="sd">        Initial value is ``None`` if features were not computed.</span>
 <span class="sd">        </span>
 <span class="sd">    scaled_features: numpy.ndarray</span>
 <span class="sd">        Features after being rescaled by a feature scaling method.</span>
-<span class="sd">        Equal to None if no scaling is applied to the features.</span>
+<span class="sd">        Equal to ``None`` if no scaling is applied to the features.</span>
 <span class="sd">        </span>
 <span class="sd">    reduced_features: numpy.ndarray</span>
 <span class="sd">        Features in the reduced space after applying a dimensionality reduction</span>
-<span class="sd">        technique. Equal to None if no reduction is applied to the features.</span>
+<span class="sd">        technique. Equal to ``None`` if no reduction is applied to the features.</span>
 <span class="sd">        </span>
 <span class="sd">    naming_convention : str</span>
 <span class="sd">        Base name for output files. </span>
-<span class="sd">        Default is &#39;{filename}.{code}.{descriptor}.{clustering}&#39;, where each</span>
+<span class="sd">        Default is ``&quot;{filename}.{code}.{descriptor}.{clustering}&quot;``, where each</span>
 <span class="sd">        tag will be replaced by its value in the current instance of </span>
-<span class="sd">        `Workflow` (e.g. &quot;traj.xyz.partycls.gr.kmeans&quot;).</span>
+<span class="sd">        ``Workflow`` (*e.g.* ``&quot;traj.xyz.partycls.gr.kmeans&quot;``).</span>
 <span class="sd">        </span>
 <span class="sd">        Base name can be changed using any combination of the available tags:</span>
-<span class="sd">        {filename}, {code}, {descriptor}, {scaling}, {dim_reduction}, {clustering}.</span>
-<span class="sd">        Example: &quot;{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}&quot;.</span>
-<span class="sd">        </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
+
+<span class="sd">        - ``{filename}``</span>
+<span class="sd">        - ``{code}``</span>
+<span class="sd">        - ``{descriptor}``</span>
+<span class="sd">        - ``{scaling}``</span>
+<span class="sd">        - ``{dim_reduction}``</span>
+<span class="sd">        - ``{clustering}``</span>
 <span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; from partycls import Workflow</span>
-<span class="sd">    &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;, descriptor=&#39;ba&#39;, scaling=&#39;zscore&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; wf.run()</span>
+<span class="sd">        Example: ``&quot;{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}&quot;``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Databases</span>
-    <span class="n">descriptor_db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gr&#39;</span><span class="p">:</span> <span class="n">RadialDescriptor</span><span class="p">,</span>
+    <span class="n">descriptor_db</span> <span class="o">=</span> <span class="p">{</span><span class="n">RadialDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">RadialDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;rad&#39;</span><span class="p">:</span> <span class="n">RadialDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;radial&#39;</span><span class="p">:</span> <span class="n">RadialDescriptor</span><span class="p">,</span>
-                     <span class="s1">&#39;ba&#39;</span><span class="p">:</span> <span class="n">BondAngleDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;gr&#39;</span><span class="p">:</span> <span class="n">RadialDescriptor</span><span class="p">,</span>
+                     <span class="n">BondAngleDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">BondAngleDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;ang&#39;</span><span class="p">:</span> <span class="n">BondAngleDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;angular&#39;</span><span class="p">:</span> <span class="n">BondAngleDescriptor</span><span class="p">,</span>
-                     <span class="s1">&#39;bo&#39;</span><span class="p">:</span> <span class="n">BondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="n">SmoothedBondOrientationalDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">SmoothedBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="n">BondOrientationalDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">BondOrientationalDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;boo&#39;</span><span class="p">:</span> <span class="n">BondOrientationalDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;bop&#39;</span><span class="p">:</span> <span class="n">BondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;steinhardt&#39;</span><span class="p">:</span> <span class="n">SteinhardtDescriptor</span><span class="p">,</span>
+                     <span class="n">LocallyAveragedBondOrientationalDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">LocallyAveragedBondOrientationalDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;ld&#39;</span><span class="p">:</span> <span class="n">LechnerDellagoDescriptor</span><span class="p">,</span>
                      <span class="s1">&#39;lechner-dellago&#39;</span><span class="p">:</span> <span class="n">LechnerDellagoDescriptor</span><span class="p">,</span>
-                     <span class="s1">&#39;lechner dellago&#39;</span><span class="p">:</span> <span class="n">LechnerDellagoDescriptor</span><span class="p">}</span>
+                     <span class="s1">&#39;lechner dellago&#39;</span><span class="p">:</span> <span class="n">LechnerDellagoDescriptor</span><span class="p">,</span>
+                     <span class="n">SmoothedBondOrientationalDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">SmoothedBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;sboo&#39;</span><span class="p">:</span> <span class="n">SmoothedBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;sbop&#39;</span><span class="p">:</span> <span class="n">SmoothedBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="n">RadialBondOrientationalDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">RadialBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;rboo&#39;</span><span class="p">:</span> <span class="n">RadialBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;rbop&#39;</span><span class="p">:</span> <span class="n">RadialBondOrientationalDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;boattini&#39;</span><span class="p">:</span> <span class="n">BoattiniDescriptor</span><span class="p">,</span>
+                     <span class="n">TetrahedralDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">TetrahedralDescriptor</span><span class="p">,</span>
+                     <span class="n">CompactnessDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">CompactnessDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;tong-tanaka&#39;</span><span class="p">:</span> <span class="n">TongTanakaDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;tong tanaka&#39;</span><span class="p">:</span> <span class="n">TongTanakaDescriptor</span><span class="p">,</span>
+                     <span class="n">CoordinationDescriptor</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="n">CoordinationDescriptor</span><span class="p">,</span>
+                     <span class="s1">&#39;coordination&#39;</span><span class="p">:</span> <span class="n">CoordinationDescriptor</span><span class="p">}</span>
 
     <span class="n">clustering_db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;k-means&#39;</span><span class="p">:</span> <span class="n">KMeans</span><span class="p">,</span>
                      <span class="s1">&#39;kmeans&#39;</span><span class="p">:</span> <span class="n">KMeans</span><span class="p">,</span>
@@ -255,7 +220,54 @@
                         <span class="s1">&#39;ae&#39;</span><span class="p">:</span> <span class="n">AutoEncoder</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trajectory</span><span class="p">,</span> <span class="n">descriptor</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim_reduction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clustering</span><span class="o">=</span><span class="s1">&#39;kmeans&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        trajectory : Trajectory</span>
+<span class="sd">            An instance of ``Trajectory`` or a path to trajectory file to read, or </span>
+<span class="sd">            an instance of a class with compatible interface.</span>
+<span class="sd">            </span>
+<span class="sd">        descriptor : StructuralDescriptor, default: &quot;gr&quot;</span>
+<span class="sd">            An instance of ``StructuralDescriptor``, the short name of a descriptor </span>
+<span class="sd">            (str), or an instance of a class with compatible interface. See the</span>
+<span class="sd">            ``descriptor_db`` class attribute for compatible strings. Examples:</span>
+<span class="sd">            </span>
+<span class="sd">            - ``&quot;gr&quot;`` : radial distribution of particles around a central particle.</span>
+<span class="sd">            - ``&quot;ba&quot;`` : angular distribution of pairs of nearest neighbors of a central particle.</span>
+<span class="sd">            - ``&quot;bo&quot;`` : Steinhardt bond-orientational order parameter.</span>
+<span class="sd">            - ``&quot;ld&quot;`` : Lechner-Dellago cond-orientational order parameter.</span>
+<span class="sd">            </span>
+<span class="sd">        scaling : method, default: None</span>
+<span class="sd">            Feature scaling method. See the ``scaling_db`` class attribute for</span>
+<span class="sd">            compatible strings. Examples:</span>
+<span class="sd">            </span>
+<span class="sd">            - ``&quot;zscore&quot;`` : standardize features by removing the mean and scaling to unit variance</span>
+<span class="sd">            - ``&quot;minmax&quot;`` : scale and translate each feature individually such that it is in the given range on the training set, *e.g.* between zero and one</span>
+<span class="sd">            - ``&quot;maxabs&quot;`` : scale and translate each feature individually such that the maximal absolute value of each feature in the training set will be 1.</span>
+<span class="sd">            - ``&quot;robust&quot;`` : remove the median and scale the data according to the specified quantile range (default is between 25th quantile and 75th quantile)</span>
+<span class="sd">                </span>
+<span class="sd">        dim_reduction : method, default: None</span>
+<span class="sd">            Dimensionality reduction method. See the ``dim_reduction_db`` class attribute</span>
+<span class="sd">            for compatible strings. Examples:</span>
+<span class="sd">            </span>
+<span class="sd">            - ``&quot;pca&quot;`` : Principal Component Analysis</span>
+<span class="sd">            - ``&quot;tsne&quot;`` : t-distributed Stochastic Neighbor Embedding</span>
+<span class="sd">            - ``&quot;lle&quot;`` : Locally Linear Embedding</span>
+<span class="sd">            - ``&quot;ae&quot;`` : neural network Auto-Encoder</span>
+<span class="sd">            </span>
+<span class="sd">        clustering : Clustering, default: &#39;kmeans&#39;</span>
+<span class="sd">            Clustering algorithm. See the ``clustering_db`` class attribute for </span>
+<span class="sd">            compatible strings. Examples:</span>
+<span class="sd">            </span>
+<span class="sd">            - ``&quot;kmeans&quot;`` : K-Means algorithm</span>
+<span class="sd">            - ``&quot;gmm&quot;`` : Gaussian Mixture Model</span>
+<span class="sd">            - ``&quot;cinf&quot;`` : Community Inference (see https://doi.org/10.1063/5.0004732).</span>
 
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; wf = Workflow(&#39;trajectory.xyz&#39;, descriptor=&#39;ba&#39;, scaling=&#39;zscore&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; wf.run()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Trajectory</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trajectory</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">trajectory</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
@@ -326,16 +338,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_end</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clustering labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">labels</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fractions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fraction of particles in each cluster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">fractions</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">populations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Number of particles in each cluster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">populations</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">centroids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Centroid of each cluster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">centroids</span>
+
     <span class="c1"># TODO: like scipy functions, we may return a dict() with the optimization results</span>
 <div class="viewcode-block" id="Workflow.run"><a class="viewcode-back" href="../../source/partycls.html#partycls.workflow.Workflow.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the clustering and write the output files according to the</span>
-<span class="sd">        defined workflow :</span>
-<span class="sd">        - compute the descriptor ;</span>
-<span class="sd">        - (optional) apply feature scaling ;</span>
-<span class="sd">        - (optional) apply dimensionality reduction ;</span>
-<span class="sd">        - compute the clustering ;</span>
-<span class="sd">        - (optional) write the output files ;        </span>
+<span class="sd">        defined Workflow :</span>
+
+<span class="sd">        - compute the descriptor</span>
+<span class="sd">        - (*optional*) apply feature scaling</span>
+<span class="sd">        - (*optional*) apply dimensionality reduction</span>
+<span class="sd">        - compute the clustering</span>
+<span class="sd">        - (*optional*) write the output files     </span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -345,8 +386,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
-
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Start the timer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -397,36 +437,27 @@
                 <span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="n">filetype</span><span class="p">][</span><span class="s1">&#39;writer&#39;</span><span class="p">]</span>
                 <span class="n">writer</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="n">filetype</span><span class="p">])</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">labels</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fractions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">fractions</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">populations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">populations</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">centroids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">centroids</span>
-
 <div class="viewcode-block" id="Workflow.set_output_metadata"><a class="viewcode-back" href="../../source/partycls.html#partycls.workflow.Workflow.set_output_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">set_output_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Change the output properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        what : {&#39;trajectory&#39;, &#39;log&#39;, &#39;centroids&#39;, &#39;labels&#39;, or &#39;dataset&#39;}</span>
-<span class="sd">            Type of output file to change..</span>
-<span class="sd">        **kwargs : keywords arguments (specific to each type of file)</span>
-<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        what : str</span>
+<span class="sd">            Type of output file to change. Must be one of:</span>
+<span class="sd">            </span>
+<span class="sd">            - ``&quot;trajectory&quot;``</span>
+<span class="sd">            - ``&quot;log&quot;``</span>
+<span class="sd">            - ``&quot;centroids&quot;``</span>
+<span class="sd">            - ``&quot;labels&quot;``</span>
+<span class="sd">            - ``&quot;dataset&quot;``</span>
+
+<span class="sd">        **kwargs : </span>
+<span class="sd">            Keywords arguments (specific to each type of file)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
+<span class="sd">        None</span>
 <span class="sd">        </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -434,7 +465,6 @@
 <span class="sd">        &gt;&gt;&gt; wf.set_output_metadata(&#39;log&#39;, enable=False) # do not write the log file</span>
 <span class="sd">        &gt;&gt;&gt; wf.set_output_metadata(&#39;trajectory&#39;, filename=&#39;awesome_trajectory.xyz&#39;) # change the default output name</span>
 <span class="sd">        &gt;&gt;&gt; wf.run(&#39;dataset&#39;, enable=True, precision=8) # write the dataset and change the writing precision to 8 digits</span>
-<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="n">what</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
@@ -445,8 +475,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
-<span class="sd">        </span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;enable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
@@ -458,24 +487,28 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str, optional</span>
+<span class="sd">        filename : str, default: None</span>
 <span class="sd">            Filename of the output trajectory. Uses a default naming convention</span>
 <span class="sd">            if not specified. The default is None.</span>
-<span class="sd">        fmt : str, optional</span>
-<span class="sd">            Output trajectory format. The default is &#39;xyz&#39;.</span>
-<span class="sd">        backend : str, optional</span>
+
+<span class="sd">        fmt : str, default: &quot;xyz&quot;</span>
+<span class="sd">            Output trajectory format.</span>
+
+<span class="sd">        backend : str, default: None</span>
 <span class="sd">            Name of the backend to use to write the trajectory. Must be either</span>
-<span class="sd">            &#39;atooms&#39; or &#39;mdtraj&#39;. The default is None.</span>
-<span class="sd">        additional_fields : list, optional</span>
-<span class="sd">            Additional fields (i.e. particle properties) to write in the</span>
-<span class="sd">            output trajectory. Note that all the `Particle` objects should</span>
-<span class="sd">            have the specified properties as attributes. The default is [].</span>
-<span class="sd">        precision : int, optional</span>
-<span class="sd">            Number of decimals when writing the output trajectory. The default is 6.</span>
+<span class="sd">            ``None``, ``&quot;atooms&quot;`` or ``&quot;mdtraj&quot;``.</span>
+
+<span class="sd">        additional_fields : list, default: None</span>
+<span class="sd">            Additional fields (*i.e.* particle properties) to write in the</span>
+<span class="sd">            output trajectory. Note that all the ``Particle`` objects should</span>
+<span class="sd">            have the specified properties as attributes.</span>
+
+<span class="sd">        precision : int, default: 6</span>
+<span class="sd">            Number of decimals when writing the output trajectory.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
+<span class="sd">        None</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -483,7 +516,6 @@
 <span class="sd">        &gt;&gt;&gt; wf.write_trajectory(fmt=&#39;rumd&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; wf.write_trajectory(additional_field=[&#39;particle.mass&#39;]) # `Particle` must have the attribute `mass`.</span>
 <span class="sd">        &gt;&gt;&gt; wf.write_trajectory(filename=&#39;my_custom_name&#39;, precision=8)</span>
-<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">additional_fields</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">additional_fields</span> <span class="o">=</span> <span class="p">[]</span>
@@ -503,18 +535,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str, optional</span>
+<span class="sd">        filename : str, default: None</span>
 <span class="sd">            Filename of the log file. Uses a default naming convention</span>
-<span class="sd">            if not specified. The default is None.</span>
-<span class="sd">        precision : int, optional</span>
-<span class="sd">            Number of decimals when writing the log file. The default is 6.</span>
-<span class="sd">        **kwargs : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
+<span class="sd">            if not specified.</span>
+
+<span class="sd">        precision : int, default: 6</span>
+<span class="sd">            Number of decimals when writing the log file.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
-<span class="sd">        </span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
@@ -546,17 +576,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str, optional</span>
+<span class="sd">        filename : str, default: None</span>
 <span class="sd">            Filename of the centroids file. Uses a default naming convention</span>
-<span class="sd">            if not specified. The default is None.</span>
-<span class="sd">        precision : int, optional</span>
-<span class="sd">            Number of decimals when writing the centroids file. The default is 6.</span>
+<span class="sd">            if not specified.</span>
 
+<span class="sd">        precision : int, default: 6</span>
+<span class="sd">            Number of decimals when writing the centroids file.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
-<span class="sd">        </span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">(</span><span class="s1">&#39;centroids&#39;</span><span class="p">)</span>
@@ -579,14 +608,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str, optional</span>
+<span class="sd">        filename : str, default: None</span>
 <span class="sd">            Filename of the labels file. Uses a default naming convention</span>
-<span class="sd">            if not specified. The default is None.</span>
+<span class="sd">            if not specified.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
-<span class="sd">        </span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
@@ -598,21 +626,21 @@
 
 <div class="viewcode-block" id="Workflow.write_dataset"><a class="viewcode-back" href="../../source/partycls.html#partycls.workflow.Workflow.write_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">write_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Write the full raw dataset from the descriptor as an array (i.e. all </span>
+<span class="sd">        Write the full raw dataset from the descriptor as an array (*i.e.* all </span>
 <span class="sd">        the individual raw features of each particle).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str, optional</span>
+<span class="sd">        filename : str, default: None</span>
 <span class="sd">            Filename of the dataset file. Uses a default naming convention</span>
-<span class="sd">            if not specified. The default is None.</span>
-<span class="sd">        precision : int, optional</span>
-<span class="sd">            Number of decimals when writing the dataset file. The default is 6.</span>
+<span class="sd">            if not specified.</span>
+
+<span class="sd">        precision : int, default: 6</span>
+<span class="sd">            Number of decimals when writing the dataset file.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        None.</span>
-
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_file</span><span class="p">(</span><span class="s1">&#39;dataset&#39;</span><span class="p">)</span>

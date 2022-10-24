@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>partycls.core package &mdash; partycls 1.1.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -14,13 +16,17 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="partycls.descriptor package" href="partycls.descriptor.html" />
+    <link rel="next" title="partycls.descriptors package" href="partycls.descriptors.html" />
     <link rel="prev" title="partycls package" href="partycls.html" /> 
 </head>
 
@@ -44,6 +50,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
@@ -103,53 +110,49 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="module-partycls.core">
-<span id="partycls-core-package"></span><h1>partycls.core package<a class="headerlink" href="#module-partycls.core" title="Permalink to this headline"></a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
-</div>
-<div class="section" id="module-partycls.core.utils">
-<span id="partycls-core-utils-module"></span><h2>partycls.core.utils module<a class="headerlink" href="#module-partycls.core.utils" title="Permalink to this headline"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">NearestNeighborsMethod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#NearestNeighborsMethod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
-<p>An enumeration.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod.Auto">
-<span class="sig-name descname"><span class="pre">Auto</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'auto'</span></em><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod.Auto" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod.Fixed">
-<span class="sig-name descname"><span class="pre">Fixed</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'fixed'</span></em><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod.Fixed" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod.SANN">
-<span class="sig-name descname"><span class="pre">SANN</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'sann'</span></em><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod.SANN" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="partycls.core.utils.NearestNeighborsMethod.Voronoi">
-<span class="sig-name descname"><span class="pre">Voronoi</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'voronoi'</span></em><a class="headerlink" href="#partycls.core.utils.NearestNeighborsMethod.Voronoi" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
+<section id="module-partycls.core">
+<span id="partycls-core-package"></span><h1>partycls.core package<a class="headerlink" href="#module-partycls.core" title="Permalink to this heading"></a></h1>
+<p>Information about the software (authors, version, etc.) and useful functions.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-partycls.core.utils">
+<span id="partycls-core-utils-module"></span><h2>partycls.core.utils module<a class="headerlink" href="#module-partycls.core.utils" title="Permalink to this heading"></a></h2>
+<p>Useful functions for an internal use in the main code.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="partycls.core.utils.tipify">
+<span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">tipify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#tipify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.tipify" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a string <code class="docutils literal notranslate"><span class="pre">s</span></code> into the best matching type,
+<em>i.e.</em> an instance of <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>
+or a list of those types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – String to convert.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>s</strong> – Best-matching type for the input string <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="partycls.core.utils.standardize_condition">
 <span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_condition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#standardize_condition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.standardize_condition" title="Permalink to this definition"></a></dt>
-<dd><p>Check that the condition is correctly formated (i.e &lt;attr&gt; _operator_ &lt;val&gt;).</p>
+<dd><p>Check that the condition is correctly formated
+(<em>i.e</em> in the form <code class="docutils literal notranslate"><span class="pre">&quot;&lt;attr&gt;</span> <span class="pre">_operator_</span> <span class="pre">&lt;val&gt;&quot;</span></code>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>condition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – condition.</p>
+<dd class="field-odd"><p><strong>condition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Condition to standardize.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If condition is not valid or if the &lt;attr&gt; is not recognized).</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">condition</span></code> is not valid or if the
+    <code class="docutils literal notranslate"><span class="pre">&quot;&lt;attr&gt;&quot;</span></code> keyword is not recognized.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>condition</strong> – A standardized condition.</p>
+<dd class="field-odd"><p><strong>condition</strong> – The standardized condition.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
@@ -157,32 +160,15 @@
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="partycls.core.utils.tipify">
-<span class="sig-prename descclassname"><span class="pre">partycls.core.utils.</span></span><span class="sig-name descname"><span class="pre">tipify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/core/utils.html#tipify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.core.utils.tipify" title="Permalink to this definition"></a></dt>
-<dd><p>Convert a string <cite>s</cite> into the best matching type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – String to convert</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Best-matching type for the input string <cite>s</cite>.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="partycls.html" class="btn btn-neutral float-left" title="partycls package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="partycls.descriptor.html" class="btn btn-neutral float-right" title="partycls.descriptor package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="partycls.descriptors.html" class="btn btn-neutral float-right" title="partycls.descriptors package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

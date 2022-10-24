@@ -6,7 +6,7 @@ The package is compatible with Python >= 3.6 (tested on 3.6, 3.7, 3.8 and 3.9). 
 From PyPI
 ---------
 
-The latest stable release in available on `PyPI <https://pypi.org/project/partycls/>`_. Install it with ``pip``:
+The latest stable release is available on `PyPI <https://pypi.org/project/partycls/>`_. Install it with ``pip``:
 
 .. code-block:: sh
 
@@ -14,6 +14,9 @@ The latest stable release in available on `PyPI <https://pypi.org/project/partyc
 
 From source
 -----------
+
+.. warning::
+	A Fortran compiler (*e.g.* `gfortran <https://gcc.gnu.org/wiki/GFortran>`_) is required to automatically compile Fortran sources. Make sure you have one installed before issuing the ``make install`` command.
 
 To install the latest development version from source, clone the source code from the official `GitHub repository <https://github.com/jorisparet/partycls>`_ and install it with:
 
@@ -30,7 +33,7 @@ Run the tests using:
 	
 	make test
 
-or manually compile the Fortran source and run the tests:
+or manually compile the Fortran sources and run the tests:
 
 .. code-block:: sh
 
@@ -57,10 +60,10 @@ Optional
 ~~~~~~~~
 
 - `MDTraj <https://www.mdtraj.org>`_ (additional trajectory formats)
-- `atooms <https://framagit.org/atooms/atooms>`_ < 3.0.0 (additional trajectory formats)
+- `atooms <https://framagit.org/atooms/atooms>`_ (additional trajectory formats)
 - `DScribe <https://singroup.github.io/dscribe>`_ (additional descriptors)
 - `Matplotlib <https://matplotlib.org/>`_ (visualization)
-- `OVITO <https://ovito.org/>`_ (visualization)
+- `OVITO <https://ovito.org/>`_ **< 3.7.0** (visualization)
 - `Py3DMol <https://github.com/avirshup/py3dmol>`_ (interactive 3D visualization)
-- `pyvoro <https://github.com/joe-jordan/pyvoro>`_ (Voronoi neighbors and tessellation)
+- `pyvoro <https://github.com/joe-jordan/pyvoro>`_ or its `memory-optimized fork <https://framagit.org/coslo/pyvoro>`_ for large systems (Voronoi neighbors and tessellation)
 - `tqdm <https://tqdm.github.io/>`_ (progress bars)

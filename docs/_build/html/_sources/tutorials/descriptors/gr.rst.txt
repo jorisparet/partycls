@@ -16,36 +16,37 @@ We then consider :math:`n_i(r_m)` for a set of distances :math:`\{ d_n \}` separ
 Setup
 -----
 
-Instantiating this descriptor on a ``Trajectory`` can be done as follows:
+Instantiating this descriptor on a :py:class:`Trajectory <partycls.trajectory.Trajectory>` can be done as follows:
 
 .. code-block:: python
 
 	from partycls import Trajectory
-	from partycls.descriptor import RadialDescriptor
+	from partycls.descriptors import RadialDescriptor
 
 	traj = Trajectory("trajectory.xyz")
 	D = RadialDescriptor(traj)
 
 The constructor takes the following parameters:
 
-.. automethod:: partycls.descriptor.gr.RadialDescriptor.__init__
+.. automethod:: partycls.descriptors.radial.RadialDescriptor.__init__
 
 Demonstration
 -------------
 
-We consider an input trajectory file ``"trajectory.xyz"`` in XYZ format that contains two particle types ``"A"`` and ``"B"``:
+We consider an input trajectory file :file:`trajectory.xyz` in XYZ format that contains two particle types ``"A"`` and ``"B"``:
 
 .. code-block:: python
 
 	from partycls import Trajectory
 
+	# open the trajectory
 	traj = Trajectory("trajectory.xyz")
 
-We now instantiate and compute a ``RadialDescriptor`` on this trajectory:
+We now instantiate a :py:class:`RadialDescriptor <partycls.descriptors.radial.RadialDescriptor>` on this trajectory and restrict the analysis to type-B particles only. We set :math:`\Delta r = 0.1` and :math:`(r_\mathrm{min},r_\mathrm{max}) = (1, 1.5)` to set the grid of distances :math:`\{d_n\}`:
 
 .. code-block:: python
 
-	from partycls.descriptor import RadialDescriptor
+	from partycls.descriptors import RadialDescriptor
 
 	# instantiation
 	D = RadialDescriptor(traj, dr=0.1, bounds=(1.0, 1.5))
@@ -62,9 +63,9 @@ We now instantiate and compute a ``RadialDescriptor`` on this trajectory:
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
 	
-Output: litteral
+Output:
 
-.. code-block::
+.. code-block:: none
 
 	grid:
 	 [1.05 1.15 1.25 1.35 1.45]
@@ -72,6 +73,9 @@ Output: litteral
 	 [[2 2 1 1 3]
 	  [5 1 0 1 2]
 	  [4 2 1 0 1]]
+
+- ``grid`` shows the grid of distances :math:`\{ d_n \}`, where :math:`\Delta r = 0.1`.
+- ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{R}(1)`, :math:`X^\mathrm{R}(2)` and :math:`X^\mathrm{R}(3)` corresponding to the grid.
 
 References
 ----------
