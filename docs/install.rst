@@ -15,6 +15,9 @@ The latest stable release is available on `PyPI <https://pypi.org/project/partyc
 From source
 -----------
 
+.. warning::
+	A Fortran compiler (*e.g.* `gfortran <https://gcc.gnu.org/wiki/GFortran>`_) is required to automatically compile Fortran sources. Make sure you have one installed before issuing the ``make install`` command.
+
 To install the latest development version from source, clone the source code from the official `GitHub repository <https://github.com/jorisparet/partycls>`_ and install it with:
 
 .. code-block:: sh
@@ -60,7 +63,7 @@ Optional
 - `atooms <https://framagit.org/atooms/atooms>`_ (additional trajectory formats)
 - `DScribe <https://singroup.github.io/dscribe>`_ (additional descriptors)
 - `Matplotlib <https://matplotlib.org/>`_ (visualization)
-- `OVITO <https://ovito.org/>`_ < 3.7.0 (visualization)
+- `OVITO <https://ovito.org/>`_ **< 3.7.0** (visualization)
 - `Py3DMol <https://github.com/avirshup/py3dmol>`_ (interactive 3D visualization)
 - `pyvoro <https://github.com/joe-jordan/pyvoro>`_ or its `memory-optimized fork <https://framagit.org/coslo/pyvoro>`_ for large systems (Voronoi neighbors and tessellation)
 - `tqdm <https://tqdm.github.io/>`_ (progress bars)
