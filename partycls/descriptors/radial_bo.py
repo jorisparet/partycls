@@ -123,7 +123,8 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
             
         lmax : int, default: 8
             Maximum order :math:`l_\mathrm{max}`. This sets the upper bound of 
-            the grid :math:`\{ l_m \}`.
+            the grid :math:`\{ l_n \}`. For numerical reasons, 
+            :math:`l_\mathrm{max}` cannot be larger than 16.
             
         orders: list, default: None
             Sequence :math:`\{l_m\}` of specific orders to compute, *e.g.* 
@@ -300,7 +301,9 @@ class RadialBondOrientationalDescriptor(BondOrientationalDescriptor):
         if orders is None:
             self._orders = numpy.array(range(lmin, lmax + 1))
         else:
-            self._orders = numpy.array(orders)
+            self._orders = numpy.sort(orders)
+        # check lmax
+        self._check_lmax(self._orders)
         # update (l,r) grid
         self._set_grid()
 

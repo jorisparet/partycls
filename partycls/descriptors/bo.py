@@ -131,7 +131,8 @@ class BondOrientationalDescriptor(StructuralDescriptor):
             
         lmax : int, default: 8
             Maximum order :math:`l_\mathrm{max}`. This sets the upper bound of 
-            the grid :math:`\{ l_n \}`.
+            the grid :math:`\{ l_n \}`. For numerical reasons, 
+            :math:`l_\mathrm{max}` cannot be larger than 16.
             
         orders: list, default: None
             Sequence :math:`\{l_n\}` of specific orders to compute, *e.g.* 
@@ -204,7 +205,14 @@ class BondOrientationalDescriptor(StructuralDescriptor):
         if orders is None:
             self.grid = numpy.array(range(lmin, lmax + 1))
         else:
-            self.grid = numpy.array(orders)
+            self.grid = numpy.sort(orders)
+        # check lmax
+        self._check_lmax(self.grid)
+
+    def _check_lmax(self, grid):
+        if max(grid) > 16:
+            raise ValueError("the largest possible value for an order l is 16.")
+        
 
 class SteinhardtDescriptor(BondOrientationalDescriptor):
     """

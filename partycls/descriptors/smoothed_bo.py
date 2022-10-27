@@ -116,7 +116,8 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
             
         lmax : int, default: 8
             Maximum order :math:`l_\mathrm{max}`. This sets the upper bound of 
-            the grid :math:`\{ l_n \}`.
+            the grid :math:`\{ l_n \}`. For numerical reasons, 
+            :math:`l_\mathrm{max}` cannot be larger than 16.
             
         orders: list, default: None
             Sequence :math:`\{l_n\}` of specific orders to compute, *e.g.* 
