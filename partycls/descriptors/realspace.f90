@@ -4,6 +4,43 @@ MODULE compute
 
   ! Constant Pi
   REAL(8),  PARAMETER :: pi  = 4.0_8 * ATAN(1.0_8)
+
+  ! Tabulated factorials
+  INTEGER(16), PARAMETER, DIMENSION(33) :: factorial = (/ &
+    1_16, &
+    1_16, &
+    2_16, &
+    6_16, &
+    24_16, &
+    120_16, &
+    720_16, &
+    5040_16, &
+    40320_16, &
+    362880_16, &
+    3628800_16, &
+    39916800_16, &
+    479001600_16, &
+    6227020800_16, &
+    87178291200_16, &
+    1307674368000_16, &
+    20922789888000_16, &
+    355687428096000_16, &
+    6402373705728000_16, &
+    121645100408832000_16, &
+    2432902008176640000_16, &
+    51090942171709440000_16, &
+    1124000727777607680000_16, &
+    25852016738884976640000_16, &
+    620448401733239439360000_16, &
+    15511210043330985984000000_16, &
+    403291461126605635584000000_16, &
+    10888869450418352160768000000_16, &
+    304888344611713860501504000000_16, &
+    8841761993739701954543616000000_16, &
+    265252859812191058636308480000000_16, &
+    8222838654177922817725562880000000_16, &
+    263130836933693530167218012160000000_16 &
+  /)
   
 CONTAINS
 
@@ -415,19 +452,8 @@ CONTAINS
     r_sph(2,:) = ATAN2( r_xyz(2,:), r_xyz(1,:) ) ! longitude
     r_sph(3,:) = ATAN2( SQRT(xy), r_xyz(3,:) ) ! latitude 
   END FUNCTION cartesian_to_spherical
-
-
-  !!!!!!!!!! FACTORIAL !!!!!!!!!!
-  RECURSIVE FUNCTION factorial(n) RESULT(fact)
-    INTEGER(8) :: n, fact
-    IF (n == 0) THEN
-       fact = 1
-    ELSE
-       fact = n * factorial(n-1)
-    END IF
-  END FUNCTION factorial
   
-
+  
   !!!!!!!! LEGENDRE FUNCTION !!!!!!!!!!
   FUNCTION plm(l, m, x) RESULT(plmx)
     INTEGER(8), INTENT(in) :: l ! degree
@@ -437,16 +463,16 @@ CONTAINS
     INTEGER(8)             :: i, ll
     REAL(8)                :: fact, pll(SIZE(x)), pmm(SIZE(x)), pmmp1(SIZE(x)), somx2(SIZE(x))
     LOGICAL                :: neg
-    pll = 0.0
+    pll = 0.0_8
     neg = (m < 0)
     m = ABS(m)
-    pmm = 1.0 ! compute P^m_m
+    pmm = 1.0_8 ! compute P^m_m
     IF (m > 0) THEN
-       somx2 = SQRT( (1.0-x)*(1.0+x) )
-       fact = 1.0
+       somx2 = SQRT( (1.0_8 - x) * (1.0_8 + x) )
+       fact = 1.0_8
        DO i=1,m
           pmm = -pmm * fact * somx2
-          fact = fact + 2.0
+          fact = fact + 2.0_8
        END DO
     END IF
     IF (l == m) THEN
@@ -466,7 +492,7 @@ CONTAINS
    END IF
    ! handle negative m
     IF (neg) THEN
-      plmx = (-1.0)**m * REAL(factorial(l-m))/REAL(factorial(l+m)) * plmx
+      plmx = (-1.0_8)**m * REAL(factorial(l-m+1), 8) / REAL(factorial(l+m+1), 8) * plmx
     END IF
   END FUNCTION plm
   
@@ -477,10 +503,12 @@ CONTAINS
     REAL(8), INTENT(in)    :: theta(:), phi(:)
     COMPLEX(8)             :: ylm(SIZE(phi))
     REAL(8)                :: up, down
-    ! TODO: tabulate the factorials?
-    up = (2*l+1)*factorial(l-m)
-    down = 4.0*pi*factorial(l+m)
-    ylm = SQRT(up/down) * plm(l, m, COS(phi)) * EXP(CMPLX(0.0, 1.0)*CMPLX(REAL(m*theta), 0.0))
+    INTEGER(16)            :: minus, plus
+    minus = l - m
+    plus = l + m
+    up = (2*l+1) * REAL(factorial(minus+1), 8)
+    down = 4.0*pi * REAL(factorial(plus+1), 8)
+    ylm = SQRT(up/down) * plm(l, m, COS(phi)) * EXP( CMPLX(0.0, 1.0, KIND=8) * CMPLX(m*theta, 0.0, KIND=8) )
   END FUNCTION ylm
   
 
