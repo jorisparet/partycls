@@ -1,6 +1,11 @@
 Changelog
 =========
 
+- 2.0.1:
+	- Fixes:
+		- Fix precision issue in Fortran for values of :math:`l` larger than 10 in all bond-orientational descriptors.
+		- Set an upper limit :math:`l_\mathrm{max}=16` for all bond-orientational descriptors.
+
 - 2.0.0:
 	- New features:
 		- Add new structural descriptors:

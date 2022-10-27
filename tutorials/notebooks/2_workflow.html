@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2. Setting and running a workflow &mdash; partycls 2.0.0 documentation</title>
+  <title>2. Setting and running a workflow &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
@@ -41,7 +41,7 @@
             <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -95,7 +95,7 @@
           <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
       <li><span class="section-number">2. </span>Setting and running a workflow</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/notebooks/2_workflow.ipynb.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/notebooks/2_workflow.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -383,7 +383,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/2.0.0?filepath=/home/joris/test_partycls-2.0.0/partycls/docs/tutorials/notebooks/2_workflow.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/master?labpath=docs/tutorials/notebooks/2_workflow.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a>. Note that the set up can take a while, as all the dependencies must be installed first.</p>
 </div>
 <section id="Setting-and-running-a-workflow">
 <h1><span class="section-number">2. </span>Setting and running a workflow<a class="headerlink" href="#Setting-and-running-a-workflow" title="Permalink to this heading"></a></h1>
@@ -406,7 +406,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Workflow</span>
 
-<span class="n">wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">)</span>
+<span class="n">wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
 <span class="n">wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -642,9 +642,9 @@ Available string aliases for dim. reduction:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Populations: [ 4560 10590]
-Fractions; [0.3009901 0.6990099]
-Labels: [1 1 1 ... 0 0 0]
+Populations: [10591  4559]
+Fractions; [0.69907591 0.30092409]
+Labels: [0 0 0 ... 1 1 1]
 </pre></div></div>
 </div>
 </section>
@@ -768,7 +768,7 @@ Output format: xyz
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
 <span class="c1"># Load the trajectory</span>
-<span class="n">xtal_traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/dislocation_N8000.xyz&#39;</span><span class="p">)</span>
+<span class="n">xtal_traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/dislocation_N8000.xyz&#39;</span><span class="p">)</span>
 
 <span class="c1"># Visualize the first (and only) frame</span>
 <span class="n">xtal_traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">)</span>
