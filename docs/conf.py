@@ -87,6 +87,13 @@ pygments_style = 'sphinx'
 #
 html_theme = 'sphinx_rtd_theme'
 
+html_context = {
+  'display_github': True,
+  'github_user': 'jorisparet',
+  'github_repo': 'partycls',
+  'github_version': 'master/docs/',
+}
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -120,13 +127,13 @@ intersphinx_mapping = {
 # nbsphinx options (for notebooks)
 # This is processed by Jinja2 and inserted before each notebook
 nbsphinx_prolog = r"""
-{% set docname = env.doc2path(env.docname, base='doc') %}
+{% set docname = env.doc2path(env.docname, base=None) %}
 
 .. tip::
 	
-	Run this notebook online: |binder|
+	Run this notebook online: |binder|. Note that the set up can take a while, as all the dependencies must be installed first.
 
 	.. |binder| image:: https://mybinder.org/badge_logo.svg
-			:target: https://mybinder.org/v2/gh/jorisparet/partycls/{{ env.config.release }}?filepath={{ docname }}
+			:target: https://mybinder.org/v2/gh/jorisparet/partycls/master?labpath=docs/{{ docname }}
 			:alt: Binder badge
 """

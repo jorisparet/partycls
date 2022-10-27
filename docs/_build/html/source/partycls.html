@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>partycls package &mdash; partycls 2.0.0 documentation</title>
+  <title>partycls package &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -41,7 +41,7 @@
             <img src="../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -79,7 +79,7 @@
           <li><a href="../api.html">API</a> &raquo;</li>
       <li>partycls package</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/source/partycls.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/jorisparet/partycls/edit/master/docs/source/partycls.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -388,7 +388,7 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.cell.Cell">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.cell.</span></span><span class="sig-name descname"><span class="pre">Cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">side</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/cell.html#Cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.cell.Cell" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Orthorhombic cell.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.cell.Cell.side">
@@ -415,8 +415,8 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – List of lengths for the sides of the cell.</p></li>
-<li><p><strong>periodic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Periodicity of the cell on each axis. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (sets <code class="docutils literal notranslate"><span class="pre">True</span></code>)
+<li><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – List of lengths for the sides of the cell.</p></li>
+<li><p><strong>periodic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Periodicity of the cell on each axis. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (sets <code class="docutils literal notranslate"><span class="pre">True</span></code>)
 in each direction.</p></li>
 </ul>
 </dd>
@@ -440,7 +440,7 @@ in each direction.</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.clustering.Clustering">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.clustering.</span></span><span class="sig-name descname"><span class="pre">Clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/clustering.html#Clustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.clustering.Clustering" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for clustering methods.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.clustering.Clustering.n_clusters">
@@ -448,7 +448,7 @@ in each direction.</p></li>
 <dd><p>Number of clusters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -459,7 +459,7 @@ in each direction.</p></li>
 <dd><p>Number of times the clustering is run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -471,7 +471,7 @@ in each direction.</p></li>
 method is called.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -481,8 +481,8 @@ used within Strategy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
-<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
+<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
+<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
 <li><p><strong>backend</strong> (<em>scikit-learn compatible backend</em><em>, </em><em>default: None</em>) – Backend used for the clustering method. If provided, it must
 be an object implementing an scikit-learn compatible interface,
 with a <code class="docutils literal notranslate"><span class="pre">fit</span></code> method and a <code class="docutils literal notranslate"><span class="pre">labels_</span></code> attribute. Duck typing
@@ -560,8 +560,8 @@ the original class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
-<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
+<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
+<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
 </ul>
 </dd>
 </dl>
@@ -596,8 +596,8 @@ information on the original class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
-<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
+<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
+<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
 </ul>
 </dd>
 </dl>
@@ -629,8 +629,8 @@ details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
-<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
+<li><p><strong>n_clusters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 2</em>) – Requested number of clusters.</p></li>
+<li><p><strong>n_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Number of times the clustering will be run with different seeds.</p></li>
 </ul>
 </dd>
 </dl>
@@ -972,7 +972,7 @@ metrics, such as the Adjusted Rand Index.</p>
 the above formula.</p></li>
 <li><p><strong>labels_pred</strong> (<em>int array-like</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em>) – A clustering of the data into disjoint subsets, called <span class="math notranslate nohighlight">\(V\)</span> in
 the above formula.</p></li>
-<li><p><strong>average_method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default='arithmetic'</em>) – <p>How to compute the normalizer in the denominator. Possible options
+<li><p><strong>average_method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default='arithmetic'</em>) – <p>How to compute the normalizer in the denominator. Possible options
 are ‘min’, ‘geometric’, ‘arithmetic’, and ‘max’.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.20.</span></p>
@@ -991,7 +991,7 @@ an expected AMI around 0 on average hence can be negative. The value is
 in adjusted nats (based on the natural logarithm).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a> (upperlimited by 1.0)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a> (upperlimited by 1.0)</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1069,7 +1069,7 @@ a permutation).</p>
 close to 0.0. 1.0 stands for perfect match.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -1147,7 +1147,7 @@ overlapping clusters.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>n_samples_a</em><em>, </em><em>n_samples_a</em><em>) </em><em>if metric ==             &quot;precomputed&quot;</em><em> or </em><em>(</em><em>n_samples_a</em><em>, </em><em>n_features</em><em>) </em><em>otherwise</em>) – An array of pairwise distances between samples, or a feature array.</p></li>
 <li><p><strong>labels</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em>) – Label values for each sample.</p></li>
-<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>default='euclidean'</em>) – The metric to use when calculating distance between instances in a
+<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>default='euclidean'</em>) – The metric to use when calculating distance between instances in a
 feature array. If metric is a string, it must be one of the options
 allowed by <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.pairwise.pairwise_distances()</span></code>.
 If <code class="docutils literal notranslate"><span class="pre">X</span></code> is the distance array itself, use “precomputed” as the metric.
@@ -1199,14 +1199,14 @@ been assigned to the wrong cluster, as a different cluster is more similar.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>n_samples_a</em><em>, </em><em>n_samples_a</em><em>) </em><em>if metric ==             &quot;precomputed&quot;</em><em> or </em><em>(</em><em>n_samples_a</em><em>, </em><em>n_features</em><em>) </em><em>otherwise</em>) – An array of pairwise distances between samples, or a feature array.</p></li>
 <li><p><strong>labels</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em>) – Predicted labels for each sample.</p></li>
-<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>default='euclidean'</em>) – The metric to use when calculating distance between instances in a
+<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>default='euclidean'</em>) – The metric to use when calculating distance between instances in a
 feature array. If metric is a string, it must be one of the options
 allowed by <code class="xref py py-func docutils literal notranslate"><span class="pre">metrics.pairwise.pairwise_distances</span></code>. If <code class="docutils literal notranslate"><span class="pre">X</span></code> is
 the distance array itself, use <code class="docutils literal notranslate"><span class="pre">metric=&quot;precomputed&quot;</span></code>.</p></li>
-<li><p><strong>sample_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default=None</em>) – The size of the sample to use when computing the Silhouette Coefficient
+<li><p><strong>sample_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default=None</em>) – The size of the sample to use when computing the Silhouette Coefficient
 on a random subset of the data.
 If <code class="docutils literal notranslate"><span class="pre">sample_size</span> <span class="pre">is</span> <span class="pre">None</span></code>, no sampling is used.</p></li>
-<li><p><strong>random_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>RandomState instance</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Determines random number generation for selecting a subset of samples.
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>RandomState instance</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Determines random number generation for selecting a subset of samples.
 Used when <code class="docutils literal notranslate"><span class="pre">sample_size</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">None</span></code>.
 Pass an int for reproducible results across multiple function calls.
 See <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.1)"><span class="xref std std-term">Glossary</span></a>.</p></li>
@@ -1219,7 +1219,7 @@ metric dependent. See the scipy docs for usage examples.</p></li>
 <dd class="field-even"><p><strong>silhouette</strong> – Mean Silhouette Coefficient for all samples.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
 <p class="rubric">References</p>
@@ -1245,18 +1245,18 @@ in jupyter notebooks.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>system</strong> (<a class="reference internal" href="#partycls.system.System" title="partycls.system.System"><em>System</em></a>) – The system to visualize.</p></li>
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Particle property to use for color coding, <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>.</p></li>
-<li><p><strong>view</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;top&quot;</em>) – View type, <em>i.e.</em> face of the box to show. Only works for a 3D system.</p></li>
-<li><p><strong>palette</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – List of colors when coloring particles according to a discrete property,
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Particle property to use for color coding, <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>.</p></li>
+<li><p><strong>view</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;top&quot;</em>) – View type, <em>i.e.</em> face of the box to show. Only works for a 3D system.</p></li>
+<li><p><strong>palette</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – List of colors when coloring particles according to a discrete property,
 such as <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>. A default palette will be used if
 not specified.</p></li>
-<li><p><strong>cmap</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;viridis&quot;</em>) – Name of a matplotlib colormap to use when coloring particles according
+<li><p><strong>cmap</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;viridis&quot;</em>) – Name of a matplotlib colormap to use when coloring particles according
 to a continuous property such as <code class="docutils literal notranslate"><span class="pre">&quot;velocity&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;energy&quot;</span></code>. List of
 available colormaps can be found in <code class="docutils literal notranslate"><span class="pre">matplotlib.cm.cmaps_listed</span></code>.</p></li>
-<li><p><strong>outfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Output filename to save the snapshot. Default is to not save.</p></li>
-<li><p><strong>linewidth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.5</em>) – Line width.</p></li>
-<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 1.0</em>) – Transparency parameter.</p></li>
-<li><p><strong>show</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show the snapshot when calling the function.</p></li>
+<li><p><strong>outfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Output filename to save the snapshot. Default is to not save.</p></li>
+<li><p><strong>linewidth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.5</em>) – Line width.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 1.0</em>) – Transparency parameter.</p></li>
+<li><p><strong>show</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show the snapshot when calling the function.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1278,18 +1278,18 @@ in jupyter notebooks.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>system</strong> (<a class="reference internal" href="#partycls.system.System" title="partycls.system.System"><em>System</em></a>) – The system to visualize.</p></li>
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Particle property to use for color coding, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>.</p></li>
-<li><p><strong>view</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;top&quot;</em>) – View type, <em>i.e.</em> face of the box to show. Only works for a 3D system.</p></li>
-<li><p><strong>palette</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: &quot;viridis&quot;</em>) – List of colors when coloring particles according to a discrete property,
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Particle property to use for color coding, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>.</p></li>
+<li><p><strong>view</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;top&quot;</em>) – View type, <em>i.e.</em> face of the box to show. Only works for a 3D system.</p></li>
+<li><p><strong>palette</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: &quot;viridis&quot;</em>) – List of colors when coloring particles according to a discrete property,
 such as <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>. Colors must be expressed in RGB format through
 tuples (<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">palette=[(0,0,1),</span> <span class="pre">(1,0,0)]</span></code>). A default palette will be used
 if not specified.</p></li>
-<li><p><strong>cmap</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a matplotlib colormap to use when coloring particles according
+<li><p><strong>cmap</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Name of a matplotlib colormap to use when coloring particles according
 to a continuous property such as <code class="docutils literal notranslate"><span class="pre">&quot;velocity&quot;</span></code> or “<code class="docutils literal notranslate"><span class="pre">energy&quot;</span></code>. List of
 available colormap can be found in <code class="docutils literal notranslate"><span class="pre">matplotlib.cm.cmaps_listed</span></code>.</p></li>
-<li><p><strong>outfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Output filename to save the snapshot. The default is to not save.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>640</em><em>, </em><em>480</em><em>)</em>) – Size of the image to render.</p></li>
-<li><p><strong>zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – Zoom on the simulation box.</p></li>
+<li><p><strong>outfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Output filename to save the snapshot. The default is to not save.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>640</em><em>, </em><em>480</em><em>)</em>) – Size of the image to render.</p></li>
+<li><p><strong>zoom</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – Zoom on the simulation box.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1311,15 +1311,15 @@ in jupyter notebooks.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>system</strong> (<a class="reference internal" href="#partycls.system.System" title="partycls.system.System"><em>System</em></a>) – The system to visualize.</p></li>
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Particle property to use for color coding, <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>.
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Particle property to use for color coding, <em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>.
 This property must be a string or an integer.</p></li>
-<li><p><strong>palette</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – List of colors when coloring particles according to a discrete property,
+<li><p><strong>palette</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – List of colors when coloring particles according to a discrete property,
 such as <code class="docutils literal notranslate"><span class="pre">&quot;species&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;label&quot;</span></code>. A default palette will be used if not
 specified.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If the <code class="docutils literal notranslate"><span class="pre">color</span></code> parameter refers to a <code class="docutils literal notranslate"><span class="pre">float</span></code> particle property.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If the <code class="docutils literal notranslate"><span class="pre">color</span></code> parameter refers to a <code class="docutils literal notranslate"><span class="pre">float</span></code> particle property.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><strong>view</strong> – py3Dmol view.</p>
@@ -1338,14 +1338,14 @@ specified.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>px</strong> (<em>numpy.array</em>) – Distribution <span class="math notranslate nohighlight">\(p(x)\)</span>.</p></li>
-<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 1.0</em>) – Differential of x.</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 1.0</em>) – Differential of x.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>S</strong> – Shannon entropy.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1360,15 +1360,15 @@ clusters with a certain probability and using an entropy criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Probabilities that each particle belongs to each cluster.
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – Probabilities that each particle belongs to each cluster.
 If there are :math`N` particles, then the length of the list (or first
 dimension of the array) must be <span class="math notranslate nohighlight">\(N\)</span>. If there are math:<cite>K</cite> original
 clusters, each element of <code class="docutils literal notranslate"><span class="pre">weights</span></code> (or the first dimension of the array)
 must be <span class="math notranslate nohighlight">\(K\)</span>. <code class="docutils literal notranslate"><span class="pre">weights[i][j]</span></code> (list) or <code class="docutils literal notranslate"><span class="pre">weights[i,k]</span></code> (array) is the
 probability that particle <code class="docutils literal notranslate"><span class="pre">i</span></code> belongs to cluster <code class="docutils literal notranslate"><span class="pre">k</span></code> before merging.
 For each particle, <code class="docutils literal notranslate"><span class="pre">sum(weights[i])</span></code> is equal to 1.</p></li>
-<li><p><strong>n_clusters_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 2</em>) – Final number of clusters after merging.</p></li>
-<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Small number (close to zero). This is needed as a replacement for zero
+<li><p><strong>n_clusters_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 2</em>) – Final number of clusters after merging.</p></li>
+<li><p><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Small number (close to zero). This is needed as a replacement for zero
 when computing a logarithm to avoid errors.</p></li>
 </ul>
 </dd>
@@ -1392,7 +1392,7 @@ the labeling is based on the Shannon entropy of each cluster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Original labels.</p></li>
+<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – Original labels.</p></li>
 <li><p><strong>centroids</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Cluster centroids.</p></li>
 <li><p><strong>func</strong> (function, default: <code class="docutils literal notranslate"><span class="pre">shannon_entropy</span></code>) – Function used to associate a numerical value to each cluster, to be
 used as sorting criterion. This function must accept a list or a
@@ -1419,7 +1419,7 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.particle.Particle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.particle.</span></span><span class="sig-name descname"><span class="pre">Particle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nearest_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/particle.html#Particle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.particle.Particle" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A particle is defined by its position, its type, and additional attributes
 like a radius, a cluster label, a list of neighbors, etc.</p>
 <dl class="py attribute">
@@ -1439,7 +1439,7 @@ like a radius, a cluster label, a list of neighbors, etc.</p>
 <dd><p>Particle type / species.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1450,7 +1450,7 @@ like a radius, a cluster label, a list of neighbors, etc.</p>
 <dd><p>Cluster label of the particle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1461,7 +1461,7 @@ like a radius, a cluster label, a list of neighbors, etc.</p>
 <dd><p>Particle radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1472,7 +1472,7 @@ like a radius, a cluster label, a list of neighbors, etc.</p>
 <dd><p>Zero-based indices of the particle’s nearest neighbors in the <code class="docutils literal notranslate"><span class="pre">System</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1480,13 +1480,13 @@ like a radius, a cluster label, a list of neighbors, etc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>position</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – The position of the particle.
+<li><p><strong>position</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – The position of the particle.
 If not given, it will be set to [0.0, 0.0, 0.0].</p></li>
-<li><p><strong>species</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;A&quot;</em>) – Particle type / species.</p></li>
-<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: -1</em>) – Cluster label of the particle.
+<li><p><strong>species</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;A&quot;</em>) – Particle type / species.</p></li>
+<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: -1</em>) – Cluster label of the particle.
 Default is <code class="docutils literal notranslate"><span class="pre">-1</span></code> (<em>i.e.</em> not belonging to any cluster).</p></li>
-<li><p><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>defaut: 0.5</em>) – Particle radius.</p></li>
-<li><p><strong>nearest_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Indices of the particle’s nearest neighbors in the <code class="docutils literal notranslate"><span class="pre">System</span></code>.</p></li>
+<li><p><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>defaut: 0.5</em>) – Particle radius.</p></li>
+<li><p><strong>nearest_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Indices of the particle’s nearest neighbors in the <code class="docutils literal notranslate"><span class="pre">System</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1523,7 +1523,7 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.system.System">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.system.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">particle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/system.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.system.System" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A system is composed of a collection of particles that lie within an
 orthorhombic cell.</p>
 <dl class="py attribute">
@@ -1532,7 +1532,7 @@ orthorhombic cell.</p>
 <dd><p>All the particles in the system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1555,7 +1555,7 @@ orthorhombic cell.</p>
 in the system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1563,7 +1563,7 @@ in the system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>particle</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – A list of instances of <code class="docutils literal notranslate"><span class="pre">Particle</span></code>.</p></li>
+<li><p><strong>particle</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – A list of instances of <code class="docutils literal notranslate"><span class="pre">Particle</span></code>.</p></li>
 <li><p><strong>cell</strong> (<a class="reference internal" href="#partycls.cell.Cell" title="partycls.cell.Cell"><em>Cell</em></a><em>, </em><em>default: None</em>) – The cell (simulation box).</p></li>
 </ul>
 </dd>
@@ -1629,7 +1629,7 @@ in the system, or for a given subset of particles specified by <code class="docu
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – <p>Requested system property. <code class="docutils literal notranslate"><span class="pre">what</span></code> must be of the form
+<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – <p>Requested system property. <code class="docutils literal notranslate"><span class="pre">what</span></code> must be of the form
 <code class="docutils literal notranslate"><span class="pre">&quot;particle.&lt;attribute&gt;&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;cell.&lt;attribute&gt;&quot;</span></code>.
 The following particle aliases are accepted:</p>
 <ul>
@@ -1656,7 +1656,7 @@ The following particle aliases are accepted:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">'signature'</span></code> : <code class="docutils literal notranslate"><span class="pre">'particle.voronoi_signature'</span></code></p></li>
 </ul>
 </p></li>
-<li><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Subset of particles for which the property must be dumped. Must be
+<li><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Subset of particles for which the property must be dumped. Must be
 of the form <code class="docutils literal notranslate"><span class="pre">&quot;particle.&lt;attribute&gt;&quot;</span></code> unless <code class="docutils literal notranslate"><span class="pre">&quot;&lt;attribute&gt;&quot;</span></code> is an
 alias. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (all particles will be included).
 This is ignored if <code class="docutils literal notranslate"><span class="pre">what</span></code> is cell property.</p></li>
@@ -1694,15 +1694,15 @@ given subset of particles specified by <code class="docutils literal notranslate
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Name of the property to set. This is considered to be a particle
+<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the property to set. This is considered to be a particle
 property by default, unless it starts with “cell”, e.g.
 “cell.side”.</p></li>
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
 will set the same value for all concerned particles. An instance
 of <code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> will assign a specific value to each
 particle. In this case, the size of <code class="docutils literal notranslate"><span class="pre">value</span></code> should respect the
 number of concerned particles.</p></li>
-<li><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Particles for which the property must be set. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+<li><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Particles for which the property must be set. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.
 This is ignored if <code class="docutils literal notranslate"><span class="pre">what</span></code> is cell property.</p></li>
 </ul>
 </dd>
@@ -1734,9 +1734,9 @@ property. Available methods are:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Method to identify the nearest neighbors. Must be one of
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Method to identify the nearest neighbors. Must be one of
 <code class="docutils literal notranslate"><span class="pre">'fixed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'voronoi'</span></code>.</p></li>
-<li><p><strong>cutoffs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – List containing the cutoffs distances for each pair of species
+<li><p><strong>cutoffs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – List containing the cutoffs distances for each pair of species
 in the system (for method <code class="docutils literal notranslate"><span class="pre">'fixed'</span></code> and <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>). For method
 <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>, cutoffs are required as a first guess to identify the nearest
 neighbors. Leave <code class="docutils literal notranslate"><span class="pre">None</span></code> for method <code class="docutils literal notranslate"><span class="pre">'voronoi'</span></code>.</p></li>
@@ -1780,15 +1780,15 @@ etc. Current visualization backends are <code class="docutils literal notranslat
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;matplotlib&quot;</em>) – Name of the backend to use for visualization.</p></li>
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;species&quot;</em>) – Name of the particle property to use as basis for coloring the
+<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;matplotlib&quot;</em>) – Name of the backend to use for visualization.</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;species&quot;</em>) – Name of the particle property to use as basis for coloring the
 particles. This property must be defined for all the particles in the
 system.</p></li>
 <li><p><strong>**kwargs</strong> (<em>additional keyworded arguments</em><em> (</em><em>backend-dependent</em><em>)</em><em>.</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – In case of unknown <code class="docutils literal notranslate"><span class="pre">backend</span></code>.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – In case of unknown <code class="docutils literal notranslate"><span class="pre">backend</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>backend-dependent</p>
@@ -1823,7 +1823,7 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.trajectory.Trajectory">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.trajectory.</span></span><span class="sig-name descname"><span class="pre">Trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/trajectory.html#Trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.trajectory.Trajectory" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A trajectory is composed by one or several frames, each frame being an
 instance of <code class="docutils literal notranslate"><span class="pre">System</span></code>. <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code> instances are iterable. By default, only
 the positions and particle types are being read from the trajectory file.
@@ -1835,7 +1835,7 @@ Additional particle properties in the file can be read using the
 <dd><p>Name of the original trajectory file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1846,7 +1846,7 @@ Additional particle properties in the file can be read using the
 <dd><p>Format of the original trajectory file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1857,7 +1857,7 @@ Additional particle properties in the file can be read using the
 <dd><p>Name of the third-party package used to read the input trajectory file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1869,7 +1869,7 @@ Additional particle properties in the file can be read using the
 original trajectory file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1877,19 +1877,19 @@ original trajectory file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Path to the trajectory file to read.</p></li>
-<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;xyz&quot;</em>) – Format of the trajectory. Needed when using <code class="docutils literal notranslate"><span class="pre">&quot;atooms&quot;</span></code> as a backend.</p></li>
-<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Name of a third-party package to use as backend when reading the input
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Path to the trajectory file to read.</p></li>
+<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;xyz&quot;</em>) – Format of the trajectory. Needed when using <code class="docutils literal notranslate"><span class="pre">&quot;atooms&quot;</span></code> as a backend.</p></li>
+<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Name of a third-party package to use as backend when reading the input
 trajectory. Currently supports <code class="docutils literal notranslate"><span class="pre">&quot;atooms&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;mdtraj&quot;</span></code>.</p></li>
-<li><p><strong>top</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>mdtraj.Trajectory</em><em>, or </em><em>mdtraj.Topology</em><em>, </em><em>defaut: None</em>) – Topology information. Needed when using <code class="docutils literal notranslate"><span class="pre">&quot;mdtraj&quot;</span></code> as backend on a
+<li><p><strong>top</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>mdtraj.Trajectory</em><em>, or </em><em>mdtraj.Topology</em><em>, </em><em>defaut: None</em>) – Topology information. Needed when using <code class="docutils literal notranslate"><span class="pre">&quot;mdtraj&quot;</span></code> as backend on a
 trajectory file whose format requires topology information. See MDTraj
 documentation for more information.</p></li>
-<li><p><strong>additional_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Additional fields (<em>i.e.</em> particle properties) to read from the
+<li><p><strong>additional_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>optional</em><em>, </em><em>default: None</em>) – Additional fields (<em>i.e.</em> particle properties) to read from the
 trajectory. Not all trajectory formats allow for additional fields.</p></li>
-<li><p><strong>first</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 0</em>) – Index of the first frame to consider in the trajectory. Starts at zero.</p></li>
-<li><p><strong>last</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: None</em>) – Index of the last frame to consider in the trajectory. Default is the
+<li><p><strong>first</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 0</em>) – Index of the first frame to consider in the trajectory. Starts at zero.</p></li>
+<li><p><strong>last</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: None</em>) – Index of the last frame to consider in the trajectory. Default is the
 last frame.</p></li>
-<li><p><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Step between each frame to consider in the trajectory. For example,
+<li><p><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Step between each frame to consider in the trajectory. For example,
 if <code class="docutils literal notranslate"><span class="pre">step=2</span></code>, one out of every two frames is read.</p></li>
 </ul>
 </dd>
@@ -1924,7 +1924,7 @@ possible pairs, 3 species yield 6 pairs, etc.).</p>
 <dd><p>Remove the system at position <code class="docutils literal notranslate"><span class="pre">frame</span></code> from the trajectory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Index of the frame to remove from the trajectory.</p>
+<dd class="field-odd"><p><strong>frame</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of the frame to remove from the trajectory.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>None</p>
@@ -1940,7 +1940,7 @@ possible pairs, 3 species yield 6 pairs, etc.).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – <p>Requested system property. <code class="docutils literal notranslate"><span class="pre">what</span></code> must be of the form
+<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – <p>Requested system property. <code class="docutils literal notranslate"><span class="pre">what</span></code> must be of the form
 <code class="docutils literal notranslate"><span class="pre">&quot;particle.&lt;attribute&gt;&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;cell.&lt;attribute&gt;&quot;</span></code>.
 The following particle aliases are accepted:</p>
 <ul>
@@ -1979,7 +1979,7 @@ number of frames in the trajectory. Each element of the list is a
 numpy.ndarray of the requested system property.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -2005,16 +2005,16 @@ trajectory or for a given subset of particles specified by <code class="docutils
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Name of the property to set. This is considered to be a particle
+<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the property to set. This is considered to be a particle
 property by default, unless it starts with <code class="docutils literal notranslate"><span class="pre">&quot;cell&quot;</span></code>, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">&quot;cell.side&quot;</span></code>.</p></li>
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
 will set the same value for all concerned particles. An instance
 of <code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> will assign a specific value to each
 particle. In this case, the shape of <code class="docutils literal notranslate"><span class="pre">value</span></code> should respect the
 number of frames in the trajectory and the number of concerned
 particles.</p></li>
-<li><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Particles to which the property must be set. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+<li><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Particles to which the property must be set. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.
 This is ignored if <code class="docutils literal notranslate"><span class="pre">what</span></code> is a cell property.</p></li>
 </ul>
 </dd>
@@ -2047,16 +2047,16 @@ property. Available methods are:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Method to identify the nearest neighbors. Must be one of
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Method to identify the nearest neighbors. Must be one of
 <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, <code class="docutils literal notranslate"><span class="pre">'fixed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'voronoi'</span></code>. <code class="docutils literal notranslate"><span class="pre">None</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>. If
 method is <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, neighbors are read directly from the trajectory file,
 if specified with the <code class="docutils literal notranslate"><span class="pre">additional_fields</span></code> argument in the constructor.
 If no neighbors are found, falls back to <code class="docutils literal notranslate"><span class="pre">method='fixed'</span></code> instead.</p></li>
-<li><p><strong>cutoffs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – List containing the cutoffs distances for each pair of species
+<li><p><strong>cutoffs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – List containing the cutoffs distances for each pair of species
 in the trajectory (for method <code class="docutils literal notranslate"><span class="pre">'fixed'</span></code> and <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>). If <code class="docutils literal notranslate"><span class="pre">None</span></code>, cutoffs
 will be computed automatically. For method <code class="docutils literal notranslate"><span class="pre">'sann'</span></code>, cutoffs are
 required as a first guess to identify the nearest neighbors.</p></li>
-<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Radial grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> for computing the cutoffs on the basis
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Radial grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> for computing the cutoffs on the basis
 of the first minimum of each partial radial distribution function
 in the trajectory, if cutoffs are not provided.</p></li>
 </ul>
@@ -2083,10 +2083,10 @@ list attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s_a</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Symbol of the first species <span class="math notranslate nohighlight">\(\alpha\)</span>.</p></li>
-<li><p><strong>s_b</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Symbol of the second species <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
-<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Value of the cutoff for the pair <span class="math notranslate nohighlight">\((\alpha,\beta) r\)</span> = <code class="docutils literal notranslate"><span class="pre">(s_a,</span> <span class="pre">s_b)</span></code>.</p></li>
-<li><p><strong>mirror</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: None</em>) – Set the cutoff for the mirror pair <code class="docutils literal notranslate"><span class="pre">(s_a,</span> <span class="pre">s_b)</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>s_a</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Symbol of the first species <span class="math notranslate nohighlight">\(\alpha\)</span>.</p></li>
+<li><p><strong>s_b</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Symbol of the second species <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Value of the cutoff for the pair <span class="math notranslate nohighlight">\((\alpha,\beta) r\)</span> = <code class="docutils literal notranslate"><span class="pre">(s_a,</span> <span class="pre">s_b)</span></code>.</p></li>
+<li><p><strong>mirror</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: None</em>) – Set the cutoff for the mirror pair <code class="docutils literal notranslate"><span class="pre">(s_a,</span> <span class="pre">s_b)</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2105,7 +2105,7 @@ minimum of the partial radial distribution function
 <code class="docutils literal notranslate"><span class="pre">nearest_neighbors_cutoffs</span></code> list attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span> for the radial grid used to compute the partial
+<dd class="field-odd"><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span> for the radial grid used to compute the partial
 radial distribution functions <span class="math notranslate nohighlight">\(g_{\alpha\beta}(r)\)</span>.</p>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2140,16 +2140,16 @@ and <code class="docutils literal notranslate"><span class="pre">&quot;3dmol&quo
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frames</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Indices of the frames to show. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (shows all frames).</p></li>
-<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;matplotlib&quot;</em>) – Name of the backend to use for visualization.</p></li>
-<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;species&quot;</em>) – Name of the particle property to use as basis for coloring the
+<li><p><strong>frames</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Indices of the frames to show. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (shows all frames).</p></li>
+<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;matplotlib&quot;</em>) – Name of the backend to use for visualization.</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;species&quot;</em>) – Name of the particle property to use as basis for coloring the
 particles. This property must be defined for all the particles in
 the system.</p></li>
 <li><p><strong>**kwargs</strong> (<em>additional keyworded arguments</em><em> (</em><em>backend-dependent</em><em>)</em><em>.</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – In case of unknown <code class="docutils literal notranslate"><span class="pre">backend</span></code>.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – In case of unknown <code class="docutils literal notranslate"><span class="pre">backend</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Backend-dependent</p>
@@ -2170,18 +2170,18 @@ the system.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>output_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Name of the output trajectory file.</p></li>
-<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;xyz&quot;</em>) – Format of the output trajectory file.</p></li>
-<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Name of a third-party package to use when writing the output
+<li><p><strong>output_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the output trajectory file.</p></li>
+<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;xyz&quot;</em>) – Format of the output trajectory file.</p></li>
+<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Name of a third-party package to use when writing the output
 trajectory.</p></li>
-<li><p><strong>additional_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Additional fields (<em>i.e.</em> particle properties) to write in the output
+<li><p><strong>additional_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Additional fields (<em>i.e.</em> particle properties) to write in the output
 trajectory. Not all trajectory formats allow for additional fields.
 The default is to not write any additional particle property.</p></li>
-<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the output trajectory.</p></li>
+<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the output trajectory.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – <ul class="simple">
 <li><p>If <code class="docutils literal notranslate"><span class="pre">backend=None</span></code> and <code class="docutils literal notranslate"><span class="pre">fmt</span></code> is not recognized natively.
     - If <code class="docutils literal notranslate"><span class="pre">backend</span></code> is unknown.</p></li>
 </ul>
@@ -2215,7 +2215,7 @@ optional) to perform a structural clustering on a trajectory.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.workflow.Workflow">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.workflow.</span></span><span class="sig-name descname"><span class="pre">Workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descriptor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_reduction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'kmeans'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/workflow.html#Workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.workflow.Workflow" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A Workflow is a clustering procedure that goes through the following steps:</p>
 <ul class="simple">
 <li><p>compute a structural descriptor on a given trajectory ;</p></li>
@@ -2285,7 +2285,7 @@ optional) to perform a structural clustering on a trajectory.</p>
 the properties of all the output files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2345,7 +2345,7 @@ tag will be replaced by its value in the current instance of
 <p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;{filename}_descriptor-{descriptor}_scaling-{scaling}.{code}&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2457,7 +2457,7 @@ defined Workflow :</p>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If a community inference clustering is attempted with feature
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If a community inference clustering is attempted with feature
     scaling or dimensionality reduction.</p>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2473,7 +2473,7 @@ defined Workflow :</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – <p>Type of output file to change. Must be one of:</p>
+<li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – <p>Type of output file to change. Must be one of:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;trajectory&quot;</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code></p></li>
@@ -2517,15 +2517,15 @@ additional fields (if any).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the output trajectory. Uses a default naming convention
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the output trajectory. Uses a default naming convention
 if not specified. The default is None.</p></li>
-<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;xyz&quot;</em>) – Output trajectory format.</p></li>
-<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Name of the backend to use to write the trajectory. Must be either
+<li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;xyz&quot;</em>) – Output trajectory format.</p></li>
+<li><p><strong>backend</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Name of the backend to use to write the trajectory. Must be either
 <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;atooms&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;mdtraj&quot;</span></code>.</p></li>
-<li><p><strong>additional_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Additional fields (<em>i.e.</em> particle properties) to write in the
+<li><p><strong>additional_fields</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Additional fields (<em>i.e.</em> particle properties) to write in the
 output trajectory. Note that all the <code class="docutils literal notranslate"><span class="pre">Particle</span></code> objects should
 have the specified properties as attributes.</p></li>
-<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the output trajectory.</p></li>
+<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the output trajectory.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2550,9 +2550,9 @@ least once with the method <cite>Workflow.run</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the log file. Uses a default naming convention
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the log file. Uses a default naming convention
 if not specified.</p></li>
-<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the log file.</p></li>
+<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the log file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2569,9 +2569,9 @@ from the descriptor (i.e. nor scaled or reduced).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the centroids file. Uses a default naming convention
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the centroids file. Uses a default naming convention
 if not specified.</p></li>
-<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the centroids file.</p></li>
+<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the centroids file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2586,7 +2586,7 @@ if not specified.</p></li>
 <dd><p>Write the clusters’ labels only.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the labels file. Uses a default naming convention
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the labels file. Uses a default naming convention
 if not specified.</p>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -2603,9 +2603,9 @@ the individual raw features of each particle).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the dataset file. Uses a default naming convention
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: None</em>) – Filename of the dataset file. Uses a default naming convention
 if not specified.</p></li>
-<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the dataset file.</p></li>
+<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 6</em>) – Number of decimals when writing the dataset file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

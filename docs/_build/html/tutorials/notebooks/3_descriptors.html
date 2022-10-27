@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3. Setting and computing descriptors &mdash; partycls 2.0.0 documentation</title>
+  <title>3. Setting and computing descriptors &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
@@ -41,7 +41,7 @@
             <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -96,7 +96,7 @@
           <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
       <li><span class="section-number">3. </span>Setting and computing descriptors</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/notebooks/3_descriptors.ipynb.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/notebooks/3_descriptors.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -384,7 +384,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/2.0.0?filepath=/home/joris/test_partycls-2.0.0/partycls/docs/tutorials/notebooks/3_descriptors.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/master?labpath=docs/tutorials/notebooks/3_descriptors.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a>. Note that the set up can take a while, as all the dependencies must be installed first.</p>
 </div>
 <section id="Setting-and-computing-descriptors">
 <h1><span class="section-number">3. </span>Setting and computing descriptors<a class="headerlink" href="#Setting-and-computing-descriptors" title="Permalink to this heading"></a></h1>
@@ -434,7 +434,7 @@ s_N(x_0) &amp; s_N(x_1) &amp; ... &amp; s_N(x_M)
 <span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">StructuralDescriptor</span>
 
 <span class="c1"># Open a trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
 <span class="c1"># Create a descriptor</span>
 <span class="n">D</span> <span class="o">=</span> <span class="n">StructuralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
@@ -722,7 +722,7 @@ Group 1 fraction: 1.0
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
 
 <span class="c1"># Open a trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
 <span class="c1"># Radial descriptor between r=0 and r=2 with bin size dr=0.1</span>
 <span class="n">D_r</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -849,7 +849,7 @@ Computing gr descriptor: 100%|████████████████�
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;../data/wahn_N1000.xyz&quot;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;data/wahn_N1000.xyz&quot;</span><span class="p">)</span>
 
 <span class="c1"># Compute the nearest neighbors</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s1">&#39;fixed&#39;</span>
@@ -1025,7 +1025,7 @@ Max. number of neighbors per particle: 66
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/wahn_N1000.xyz&#39;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/wahn_N1000.xyz&#39;</span><span class="p">)</span>
 
 <span class="c1"># Change the radius sizes (for visualization purpose)</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>

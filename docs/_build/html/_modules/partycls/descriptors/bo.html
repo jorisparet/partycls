@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>partycls.descriptors.bo &mdash; partycls 2.0.0 documentation</title>
+  <title>partycls.descriptors.bo &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -215,7 +215,8 @@
 <span class="sd">            </span>
 <span class="sd">        lmax : int, default: 8</span>
 <span class="sd">            Maximum order :math:`l_\mathrm{max}`. This sets the upper bound of </span>
-<span class="sd">            the grid :math:`\{ l_n \}`.</span>
+<span class="sd">            the grid :math:`\{ l_n \}`. For numerical reasons, </span>
+<span class="sd">            :math:`l_\mathrm{max}` cannot be larger than 16.</span>
 <span class="sd">            </span>
 <span class="sd">        orders: list, default: None</span>
 <span class="sd">            Sequence :math:`\{l_n\}` of specific orders to compute, *e.g.* </span>
@@ -288,7 +289,14 @@
         <span class="k">if</span> <span class="n">orders</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">lmin</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span>
+        <span class="c1"># check lmax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_lmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_lmax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;the largest possible value for an order l is 16.&quot;</span><span class="p">)</span></div>
+        
 
 <div class="viewcode-block" id="SteinhardtDescriptor"><a class="viewcode-back" href="../../../source/partycls.descriptors.html#partycls.descriptors.bo.SteinhardtDescriptor">[docs]</a><span class="k">class</span> <span class="nc">SteinhardtDescriptor</span><span class="p">(</span><span class="n">BondOrientationalDescriptor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

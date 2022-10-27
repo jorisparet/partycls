@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radial descriptor &mdash; partycls 2.0.0 documentation</title>
+  <title>Radial descriptor &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
@@ -41,7 +41,7 @@
             <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -103,7 +103,7 @@
           <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
       <li>Radial descriptor</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/descriptors/gr.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/descriptors/gr.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -163,15 +163,15 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="../../source/partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
-<li><p><strong>n_shells</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 3</em>) – Number of coordination shells (based on the <span class="math notranslate nohighlight">\(g(r)\)</span> of group=0).
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
+<li><p><strong>n_shells</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 3</em>) – Number of coordination shells (based on the <span class="math notranslate nohighlight">\(g(r)\)</span> of group=0).
 This sets the upper bound <span class="math notranslate nohighlight">\(r_\mathrm{max}\)</span> for the distance grid
 <span class="math notranslate nohighlight">\(\{d_n\}\)</span> up to which correlations are computed.</p></li>
-<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>default: None</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((r_\mathrm{min},r_\mathrm{max})\)</span> to describe
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>, </em><em>default: None</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((r_\mathrm{min},r_\mathrm{max})\)</span> to describe
 the radial correlations. If set, this has the priority over <code class="docutils literal notranslate"><span class="pre">n_shells</span></code>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1. Manipulating a trajectory &mdash; partycls 2.0.0 documentation</title>
+  <title>1. Manipulating a trajectory &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
@@ -41,7 +41,7 @@
             <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -101,7 +101,7 @@
           <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
       <li><span class="section-number">1. </span>Manipulating a trajectory</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/notebooks/1_trajectory.ipynb.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/notebooks/1_trajectory.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -389,7 +389,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/2.0.0?filepath=/home/joris/test_partycls-2.0.0/partycls/docs/tutorials/notebooks/1_trajectory.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a></p>
+<p>Run this notebook online: <a class="reference external" href="https://mybinder.org/v2/gh/jorisparet/partycls/master?labpath=docs/tutorials/notebooks/1_trajectory.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" /></a>. Note that the set up can take a while, as all the dependencies must be installed first.</p>
 </div>
 <section id="Manipulating-a-trajectory">
 <h1><span class="section-number">1. </span>Manipulating a trajectory<a class="headerlink" href="#Manipulating-a-trajectory" title="Permalink to this heading"></a></h1>
@@ -404,7 +404,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -438,7 +438,7 @@ Number of frames: 101
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the 10 first frames only</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of frames:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -558,12 +558,12 @@ Particle(position=[ 0.29098   1.24579  -2.495344], species=A, label=-1, radius=0
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a XYZ trajectory</span>
 <span class="c1">#  default value for `fmt` is &quot;xyz&quot;</span>
-<span class="n">traj_xyz</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span>
+<span class="n">traj_xyz</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span>
                       <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">traj_xyz</span><span class="p">)</span>
 
 <span class="c1"># Open a RUMD trajectory</span>
-<span class="n">traj_rumd</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N256_rho1.185_rumd.xyz.gz&#39;</span><span class="p">,</span>
+<span class="n">traj_rumd</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N256_rho1.185_rumd.xyz.gz&#39;</span><span class="p">,</span>
                        <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">traj_rumd</span><span class="p">)</span>
 </pre></div>
@@ -574,8 +574,8 @@ Particle(position=[ 0.29098   1.24579  -2.495344], species=A, label=-1, radius=0
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Trajectory(filename=&#34;../data/kalj_N150.xyz&#34;, number_of_frames=101)
-Trajectory(filename=&#34;../data/kalj_N256_rho1.185_rumd.xyz.gz&#34;, number_of_frames=1)
+Trajectory(filename=&#34;data/kalj_N150.xyz&#34;, number_of_frames=101)
+Trajectory(filename=&#34;data/kalj_N256_rho1.185_rumd.xyz.gz&#34;, number_of_frames=1)
 </pre></div></div>
 </div>
 <p>However, it is possible to rely on external packages to read more formats such as <a class="reference external" href="https://lammps.sandia.gov/">LAMMPS</a>, <a class="reference external" href="https://www.gromacs.org/">GROMACS</a>, etc. or even your custom trajectory formats.</p>
@@ -592,7 +592,7 @@ Trajectory(filename=&#34;../data/kalj_N256_rho1.185_rumd.xyz.gz&#34;, number_of_
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a LAMMPS trajectory using atooms</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/lj_N256_rho1.0.atom&#39;</span><span class="p">,</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/lj_N256_rho1.0.atom&#39;</span><span class="p">,</span>
                   <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;lammps&#39;</span><span class="p">,</span>
                   <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;atooms&#39;</span><span class="p">)</span>
 
@@ -620,7 +620,7 @@ System(number_of_particles=256, species=[&#39;1&#39;], chemical_fractions=[1.], 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a PDB trajectory using MDTraj</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/frame0.pdb&#39;</span><span class="p">,</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/frame0.pdb&#39;</span><span class="p">,</span>
                   <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;mdtraj&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of frames:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
@@ -647,7 +647,7 @@ System(number_of_particles=22, species=[&#39;C&#39; &#39;H&#39; &#39;N&#39; &#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">sys</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of spatial dimensions :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">n_dimensions</span><span class="p">)</span>
@@ -699,7 +699,7 @@ Pairs of species ID : [(1, 1), (1, 2), (2, 1), (2, 2)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Isolate the first particle in the trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># Some properties</span>
@@ -994,7 +994,7 @@ B 0.0 0.0 0.2 0.25
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying an additional field</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_masses.xyz&#39;</span><span class="p">,</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">,</span>
                   <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -1035,7 +1035,7 @@ B 0.0 0.0 0.1 0.4 0,2
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying an additional field</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_neighbors.xyz&#39;</span><span class="p">,</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_neighbors.xyz&#39;</span><span class="p">,</span>
                   <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;neighbors&#39;</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -1094,7 +1094,7 @@ Radii:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_masses.xyz&#39;</span><span class="p">,</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">,</span>
                   <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
 
 <span class="c1"># Current `mass` property</span>
@@ -1224,7 +1224,7 @@ pair of species.</p></li>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute nearest neighbors</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;fixed&quot;</span><span class="p">,</span>
                                <span class="n">cutoffs</span><span class="o">=</span><span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.075</span><span class="p">])</span>
 
@@ -1252,7 +1252,7 @@ pair of species.</p></li>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute nearest neighbors</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s2">&quot;fixed&quot;</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.075</span><span class="p">]</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">()</span>
@@ -1296,7 +1296,7 @@ pair of species.</p></li>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
 <span class="c1"># Adjust radii</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
@@ -1400,7 +1400,7 @@ pair of species.</p></li>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span>
 
 <span class="c1"># Open a trajectory file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/kalj_N150.xyz&#39;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
 <span class="c1"># Adjust radii</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
@@ -1480,7 +1480,7 @@ pair of species.</p></li>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/dislocation.xyz&#39;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/dislocation.xyz&#39;</span><span class="p">)</span>
 
 <span class="c1"># Show the first frame</span>
 <span class="c1"># Default coloring code uses the species</span>
@@ -1493,8 +1493,8 @@ pair of species.</p></li>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<div id="3dmolviewer_16663678388965278"  style="position: relative; width: 640px; height: 480px">
-        <p id="3dmolwarning_16663678388965278" style="background-color:#ffcccc;color:black">You appear to be running in JupyterLab (or JavaScript failed to load for some other reason).  You need to install the 3dmol extension: <br>
+<div id="3dmolviewer_16668961614203215"  style="position: relative; width: 640px; height: 480px">
+        <p id="3dmolwarning_16668961614203215" style="background-color:#ffcccc;color:black">You appear to be running in JupyterLab (or JavaScript failed to load for some other reason).  You need to install the 3dmol extension: <br>
         <tt>jupyter labextension install jupyterlab_3dmol</tt></p>
         </div>
 <script>
@@ -1517,44 +1517,44 @@ $3Dmolpromise = null;
   $3Dmolpromise = loadScriptAsync('https://cdn.jsdelivr.net/npm/3dmol@latest/build/3Dmol-min.min.js');
 }
 
-var viewer_16663678388965278 = null;
-var warn = document.getElementById("3dmolwarning_16663678388965278");
+var viewer_16668961614203215 = null;
+var warn = document.getElementById("3dmolwarning_16668961614203215");
 if(warn) {
     warn.parentNode.removeChild(warn);
 }
 $3Dmolpromise.then(function() {
-viewer_16663678388965278 = $3Dmol.createViewer($("#3dmolviewer_16663678388965278"),{backgroundColor:"white"});
-viewer_16663678388965278.zoomTo();
-    viewer_16663678388965278.setBackgroundColor("white");
-    viewer_16663678388965278.addSphere({"center": {"x": -0.8558697759106223, "y": -0.9649468530962736, "z": -0.8547344729254289}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.8602721518763825, "y": -0.9648737276151803, "z": 0.07381692809686763}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.9693498589008231, "y": -0.8932724529261576, "z": 1.0746978044385056}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.931003060892466, "y": 0.0906421084323454, "z": -0.9347219931645108}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.41118204395823243, "y": 0.5020889814008229, "z": 0.5287314044336557}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.870177462481879, "y": 0.05551840265243458, "z": 1.0242209579401511}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.3582105172550749, "y": 0.5497848691530429, "z": -0.48345960648419306}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.8794647092376797, "y": 1.0792744188157424, "z": 0.1473039076094796}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": -0.9189083416280903, "y": 1.0481397970631017, "z": 1.112564032055733}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.05301680314927515, "y": -0.94742785918522, "z": -0.8549464443794755}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.035559859853506105, "y": -0.9248481259320641, "z": 0.03006044024402194}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.14301474812636608, "y": -0.941787303853777, "z": 1.0613264970991187}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.11391750305127941, "y": 0.08678734589613311, "z": -0.8876543353736666}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.07491040207825587, "y": 0.035269921885601914, "z": 0.1414707503195194}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.108104060365299, "y": 0.048350815115693196, "z": 1.073786852813738}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.12185492860547649, "y": 1.1107175735832546, "z": -0.9703669149025768}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.13132859040703243, "y": 1.0514940202870073, "z": 0.07630951602117632}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 0.07016638117571933, "y": 1.1342226557565658, "z": 1.0634306782399423}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.0925840817949808, "y": -0.9847811179100662, "z": -0.9043616750186302}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.0132734377820958, "y": -0.9508336531796028, "z": 0.0390254098717825}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.0412750572714158, "y": -0.9101020887287774, "z": 1.0242910359044375}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.084215236443952, "y": 0.10752536526967194, "z": -0.9200580460168513}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.10988070397366, "y": 0.09913011275147743, "z": 0.048234301846316066}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.0270014439199402, "y": 0.07538931497658617, "z": 1.0565087011152035}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.0513188750026883, "y": 1.1457146007582395, "z": -0.9853513566331166}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.1375962924508913, "y": 1.085456784971159, "z": 0.021702114843469338}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addSphere({"center": {"x": 1.0361659497474067, "y": 1.1025921110714816, "z": 1.1065822071929692}, "radius": 0.5, "color": "#50514f"});
-    viewer_16663678388965278.addBox({"center": {"x": 0.0, "y": 0.0, "z": 0.0}, "dimensions": {"w": 3.0, "h": 3.0, "d": 3.0}, "wireframe": true, "color": "#000000"});
-viewer_16663678388965278.render();
+viewer_16668961614203215 = $3Dmol.createViewer($("#3dmolviewer_16668961614203215"),{backgroundColor:"white"});
+viewer_16668961614203215.zoomTo();
+    viewer_16668961614203215.setBackgroundColor("white");
+    viewer_16668961614203215.addSphere({"center": {"x": -0.8558697759106223, "y": -0.9649468530962736, "z": -0.8547344729254289}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.8602721518763825, "y": -0.9648737276151803, "z": 0.07381692809686763}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.9693498589008231, "y": -0.8932724529261576, "z": 1.0746978044385056}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.931003060892466, "y": 0.0906421084323454, "z": -0.9347219931645108}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.41118204395823243, "y": 0.5020889814008229, "z": 0.5287314044336557}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.870177462481879, "y": 0.05551840265243458, "z": 1.0242209579401511}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.3582105172550749, "y": 0.5497848691530429, "z": -0.48345960648419306}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.8794647092376797, "y": 1.0792744188157424, "z": 0.1473039076094796}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": -0.9189083416280903, "y": 1.0481397970631017, "z": 1.112564032055733}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.05301680314927515, "y": -0.94742785918522, "z": -0.8549464443794755}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.035559859853506105, "y": -0.9248481259320641, "z": 0.03006044024402194}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.14301474812636608, "y": -0.941787303853777, "z": 1.0613264970991187}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.11391750305127941, "y": 0.08678734589613311, "z": -0.8876543353736666}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.07491040207825587, "y": 0.035269921885601914, "z": 0.1414707503195194}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.108104060365299, "y": 0.048350815115693196, "z": 1.073786852813738}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.12185492860547649, "y": 1.1107175735832546, "z": -0.9703669149025768}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.13132859040703243, "y": 1.0514940202870073, "z": 0.07630951602117632}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 0.07016638117571933, "y": 1.1342226557565658, "z": 1.0634306782399423}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.0925840817949808, "y": -0.9847811179100662, "z": -0.9043616750186302}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.0132734377820958, "y": -0.9508336531796028, "z": 0.0390254098717825}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.0412750572714158, "y": -0.9101020887287774, "z": 1.0242910359044375}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.084215236443952, "y": 0.10752536526967194, "z": -0.9200580460168513}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.10988070397366, "y": 0.09913011275147743, "z": 0.048234301846316066}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.0270014439199402, "y": 0.07538931497658617, "z": 1.0565087011152035}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.0513188750026883, "y": 1.1457146007582395, "z": -0.9853513566331166}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.1375962924508913, "y": 1.085456784971159, "z": 0.021702114843469338}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addSphere({"center": {"x": 1.0361659497474067, "y": 1.1025921110714816, "z": 1.1065822071929692}, "radius": 0.5, "color": "#50514f"});
+    viewer_16668961614203215.addBox({"center": {"x": 0.0, "y": 0.0, "z": 0.0}, "dimensions": {"w": 3.0, "h": 3.0, "d": 3.0}, "wireframe": true, "color": "#000000"});
+viewer_16668961614203215.render();
 });
 </script></div>
 </div>
@@ -1577,8 +1577,8 @@ viewer_16663678388965278.render();
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<div id="3dmolviewer_16663678389056528"  style="position: relative; width: 640px; height: 480px">
-        <p id="3dmolwarning_16663678389056528" style="background-color:#ffcccc;color:black">You appear to be running in JupyterLab (or JavaScript failed to load for some other reason).  You need to install the 3dmol extension: <br>
+<div id="3dmolviewer_166689616142977"  style="position: relative; width: 640px; height: 480px">
+        <p id="3dmolwarning_166689616142977" style="background-color:#ffcccc;color:black">You appear to be running in JupyterLab (or JavaScript failed to load for some other reason).  You need to install the 3dmol extension: <br>
         <tt>jupyter labextension install jupyterlab_3dmol</tt></p>
         </div>
 <script>
@@ -1601,44 +1601,44 @@ $3Dmolpromise = null;
   $3Dmolpromise = loadScriptAsync('https://cdn.jsdelivr.net/npm/3dmol@latest/build/3Dmol-min.min.js');
 }
 
-var viewer_16663678389056528 = null;
-var warn = document.getElementById("3dmolwarning_16663678389056528");
+var viewer_166689616142977 = null;
+var warn = document.getElementById("3dmolwarning_166689616142977");
 if(warn) {
     warn.parentNode.removeChild(warn);
 }
 $3Dmolpromise.then(function() {
-viewer_16663678389056528 = $3Dmol.createViewer($("#3dmolviewer_16663678389056528"),{backgroundColor:"white"});
-viewer_16663678389056528.zoomTo();
-    viewer_16663678389056528.setBackgroundColor("white");
-    viewer_16663678389056528.addSphere({"center": {"x": -0.8558697759106223, "y": -0.9649468530962736, "z": -0.8547344729254289}, "radius": 0.5, "color": "red"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.8602721518763825, "y": -0.9648737276151803, "z": 0.07381692809686763}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.9693498589008231, "y": -0.8932724529261576, "z": 1.0746978044385056}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.931003060892466, "y": 0.0906421084323454, "z": -0.9347219931645108}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.41118204395823243, "y": 0.5020889814008229, "z": 0.5287314044336557}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.870177462481879, "y": 0.05551840265243458, "z": 1.0242209579401511}, "radius": 0.5, "color": "red"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.3582105172550749, "y": 0.5497848691530429, "z": -0.48345960648419306}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.8794647092376797, "y": 1.0792744188157424, "z": 0.1473039076094796}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": -0.9189083416280903, "y": 1.0481397970631017, "z": 1.112564032055733}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.05301680314927515, "y": -0.94742785918522, "z": -0.8549464443794755}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.035559859853506105, "y": -0.9248481259320641, "z": 0.03006044024402194}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.14301474812636608, "y": -0.941787303853777, "z": 1.0613264970991187}, "radius": 0.5, "color": "red"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.11391750305127941, "y": 0.08678734589613311, "z": -0.8876543353736666}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.07491040207825587, "y": 0.035269921885601914, "z": 0.1414707503195194}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.108104060365299, "y": 0.048350815115693196, "z": 1.073786852813738}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.12185492860547649, "y": 1.1107175735832546, "z": -0.9703669149025768}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.13132859040703243, "y": 1.0514940202870073, "z": 0.07630951602117632}, "radius": 0.5, "color": "red"});
-    viewer_16663678389056528.addSphere({"center": {"x": 0.07016638117571933, "y": 1.1342226557565658, "z": 1.0634306782399423}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.0925840817949808, "y": -0.9847811179100662, "z": -0.9043616750186302}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.0132734377820958, "y": -0.9508336531796028, "z": 0.0390254098717825}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.0412750572714158, "y": -0.9101020887287774, "z": 1.0242910359044375}, "radius": 0.5, "color": "red"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.084215236443952, "y": 0.10752536526967194, "z": -0.9200580460168513}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.10988070397366, "y": 0.09913011275147743, "z": 0.048234301846316066}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.0270014439199402, "y": 0.07538931497658617, "z": 1.0565087011152035}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.0513188750026883, "y": 1.1457146007582395, "z": -0.9853513566331166}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.1375962924508913, "y": 1.085456784971159, "z": 0.021702114843469338}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addSphere({"center": {"x": 1.0361659497474067, "y": 1.1025921110714816, "z": 1.1065822071929692}, "radius": 0.5, "color": "blue"});
-    viewer_16663678389056528.addBox({"center": {"x": 0.0, "y": 0.0, "z": 0.0}, "dimensions": {"w": 3.0, "h": 3.0, "d": 3.0}, "wireframe": true, "color": "#000000"});
-viewer_16663678389056528.render();
+viewer_166689616142977 = $3Dmol.createViewer($("#3dmolviewer_166689616142977"),{backgroundColor:"white"});
+viewer_166689616142977.zoomTo();
+    viewer_166689616142977.setBackgroundColor("white");
+    viewer_166689616142977.addSphere({"center": {"x": -0.8558697759106223, "y": -0.9649468530962736, "z": -0.8547344729254289}, "radius": 0.5, "color": "red"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.8602721518763825, "y": -0.9648737276151803, "z": 0.07381692809686763}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.9693498589008231, "y": -0.8932724529261576, "z": 1.0746978044385056}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.931003060892466, "y": 0.0906421084323454, "z": -0.9347219931645108}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.41118204395823243, "y": 0.5020889814008229, "z": 0.5287314044336557}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.870177462481879, "y": 0.05551840265243458, "z": 1.0242209579401511}, "radius": 0.5, "color": "red"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.3582105172550749, "y": 0.5497848691530429, "z": -0.48345960648419306}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.8794647092376797, "y": 1.0792744188157424, "z": 0.1473039076094796}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": -0.9189083416280903, "y": 1.0481397970631017, "z": 1.112564032055733}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.05301680314927515, "y": -0.94742785918522, "z": -0.8549464443794755}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.035559859853506105, "y": -0.9248481259320641, "z": 0.03006044024402194}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.14301474812636608, "y": -0.941787303853777, "z": 1.0613264970991187}, "radius": 0.5, "color": "red"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.11391750305127941, "y": 0.08678734589613311, "z": -0.8876543353736666}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.07491040207825587, "y": 0.035269921885601914, "z": 0.1414707503195194}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.108104060365299, "y": 0.048350815115693196, "z": 1.073786852813738}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.12185492860547649, "y": 1.1107175735832546, "z": -0.9703669149025768}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.13132859040703243, "y": 1.0514940202870073, "z": 0.07630951602117632}, "radius": 0.5, "color": "red"});
+    viewer_166689616142977.addSphere({"center": {"x": 0.07016638117571933, "y": 1.1342226557565658, "z": 1.0634306782399423}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.0925840817949808, "y": -0.9847811179100662, "z": -0.9043616750186302}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.0132734377820958, "y": -0.9508336531796028, "z": 0.0390254098717825}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.0412750572714158, "y": -0.9101020887287774, "z": 1.0242910359044375}, "radius": 0.5, "color": "red"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.084215236443952, "y": 0.10752536526967194, "z": -0.9200580460168513}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.10988070397366, "y": 0.09913011275147743, "z": 0.048234301846316066}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.0270014439199402, "y": 0.07538931497658617, "z": 1.0565087011152035}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.0513188750026883, "y": 1.1457146007582395, "z": -0.9853513566331166}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.1375962924508913, "y": 1.085456784971159, "z": 0.021702114843469338}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addSphere({"center": {"x": 1.0361659497474067, "y": 1.1025921110714816, "z": 1.1065822071929692}, "radius": 0.5, "color": "blue"});
+    viewer_166689616142977.addBox({"center": {"x": 0.0, "y": 0.0, "z": 0.0}, "dimensions": {"w": 3.0, "h": 3.0, "d": 3.0}, "wireframe": true, "color": "#000000"});
+viewer_166689616142977.render();
 });
 </script></div>
 </div>
@@ -1654,10 +1654,10 @@ viewer_16663678389056528.render();
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open XYZ file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_masses.xyz&#39;</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">)</span>
 
 <span class="c1"># Write the trajectory in RUMD format (as a new file)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_masses.xyz.gz&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz.gz&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1667,14 +1667,14 @@ viewer_16663678389056528.render();
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open XYZ file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_masses.xyz&#39;</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
 
 <span class="c1"># Set custom values for radii of the particles</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
 <span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
 
 <span class="c1"># Write a new file with both masses and radii</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;../data/traj_with_masses_and_radii.xyz&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">])</span>
+<span class="n">traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses_and_radii.xyz&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

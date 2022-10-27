@@ -63,7 +63,7 @@
     "from partycls.descriptors import StructuralDescriptor\n",
     "\n",
     "# Open a trajectory\n",
-    "traj = Trajectory('../data/kalj_N150.xyz', last=20)\n",
+    "traj = Trajectory('data/kalj_N150.xyz', last=20)\n",
     "\n",
     "# Create a descriptor\n",
     "D = StructuralDescriptor(traj)"
@@ -458,7 +458,7 @@
     "from partycls.descriptors import RadialDescriptor\n",
     "\n",
     "# Open a trajectory\n",
-    "traj = Trajectory('../data/kalj_N150.xyz', last=20)\n",
+    "traj = Trajectory('data/kalj_N150.xyz', last=20)\n",
     "\n",
     "# Radial descriptor between r=0 and r=2 with bin size dr=0.1\n",
     "D_r = RadialDescriptor(traj, bounds=(0,2), dr=0.1, verbose=True)\n",
@@ -621,7 +621,7 @@
    "outputs": [],
    "source": [
     "# Open a trajectory\n",
-    "traj = Trajectory(\"../data/wahn_N1000.xyz\")\n",
+    "traj = Trajectory(\"data/wahn_N1000.xyz\")\n",
     "\n",
     "# Compute the nearest neighbors\n",
     "traj.nearest_neighbors_method = 'fixed'\n",
@@ -861,7 +861,7 @@
    "outputs": [],
    "source": [
     "# Trajectory\n",
-    "traj = Trajectory('../data/wahn_N1000.xyz')\n",
+    "traj = Trajectory('data/wahn_N1000.xyz')\n",
     "\n",
     "# Change the radius sizes (for visualization purpose)\n",
     "traj.set_property('radius', 0.5, \"species == 'A'\")\n",

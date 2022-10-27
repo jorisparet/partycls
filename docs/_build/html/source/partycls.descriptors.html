@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>partycls.descriptors package &mdash; partycls 2.0.0 documentation</title>
+  <title>partycls.descriptors package &mdash; partycls 2.0.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -41,7 +41,7 @@
             <img src="../_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -80,7 +80,7 @@
           <li><a href="partycls.html">partycls package</a> &raquo;</li>
       <li>partycls.descriptors package</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/source/partycls.descriptors.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/jorisparet/partycls/edit/master/docs/source/partycls.descriptors.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -158,7 +158,7 @@ feature vector for particle <span class="math notranslate nohighlight">\(i\)</sp
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -169,7 +169,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -208,7 +208,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -221,7 +221,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -239,7 +239,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,7 +256,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -265,15 +265,16 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -316,15 +317,16 @@ and also overwrites the <code class="docutils literal notranslate"><span class="
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -372,7 +374,7 @@ The resulting feature vector for particle <span class="math notranslate nohighli
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,7 +385,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -422,7 +424,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -435,7 +437,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -453,7 +455,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -470,7 +472,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -479,10 +481,10 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>dtheta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta \theta\)</span> in degrees.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>dtheta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta \theta\)</span> in degrees.</p></li>
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -529,7 +531,7 @@ also overwrites the <code class="docutils literal notranslate"><span class="pre"
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>distribution</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Distribution to normalize.</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;sin&quot;</em>) – <p>Normalization method:</p>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;sin&quot;</em>) – <p>Normalization method:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">method='sin'</span></code>: by construction, the probability density of has a sinusoidal enveloppe in <strong>3D</strong> for uniformly distributed points on a sphere (default)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">method='pdf'</span></code> : gives a flat probability density for uniformly distributed points on a sphere ;</p></li>
@@ -538,7 +540,7 @@ also overwrites the <code class="docutils literal notranslate"><span class="pre"
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">method</span></code> is invalid.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">method</span></code> is invalid.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Normalized distribution.</p>
@@ -616,7 +618,7 @@ feature vector for particle <span class="math notranslate nohighlight">\(i\)</sp
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -627,7 +629,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -666,7 +668,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -679,7 +681,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -697,7 +699,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,7 +716,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -723,15 +725,16 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -780,15 +783,16 @@ overwrites the <code class="docutils literal notranslate"><span class="pre">feat
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -862,7 +866,7 @@ tetrahedra. The resulting feature vector for particle <span class="math notransl
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -873,7 +877,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -901,7 +905,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -914,7 +918,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -932,7 +936,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -949,7 +953,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -958,9 +962,9 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1001,9 +1005,9 @@ by construction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>i</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Index of the central particle.</p></li>
-<li><p><strong>neigh_i</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – List of neighbors of the central particles.</p></li>
-<li><p><strong>neigh_neigh_i</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – Neighbors of the neighbors of the central particle.
+<li><p><strong>i</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of the central particle.</p></li>
+<li><p><strong>neigh_i</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – List of neighbors of the central particles.</p></li>
+<li><p><strong>neigh_neigh_i</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – Neighbors of the neighbors of the central particle.
 Each element is a list.</p></li>
 </ul>
 </dd>
@@ -1028,9 +1032,9 @@ around particle <code class="docutils literal notranslate"><span class="pre">i</
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1084,7 +1088,7 @@ value).</p>
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1095,7 +1099,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1134,7 +1138,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1147,7 +1151,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1165,7 +1169,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1182,7 +1186,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1191,12 +1195,12 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>total</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – Compute the total coordination number.</p></li>
-<li><p><strong>partial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Compute the coordination number <span class="math notranslate nohighlight">\(n_{\alpha_i}\)</span> for each chemical
+<li><p><strong>total</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – Compute the total coordination number.</p></li>
+<li><p><strong>partial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Compute the coordination number <span class="math notranslate nohighlight">\(n_{\alpha_i}\)</span> for each chemical
 species <span class="math notranslate nohighlight">\(\alpha_i\)</span> separately.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1245,7 +1249,7 @@ Returns the data matrix and also overwrites the <code class="docutils literal no
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.descriptors.descriptor.StructuralDescriptor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.descriptors.descriptor.</span></span><span class="sig-name descname"><span class="pre">StructuralDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accept_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/descriptors/descriptor.html#StructuralDescriptor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.descriptor.StructuralDescriptor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for any structural descriptor.</p>
 <p>The descriptor is computed for the provided <code class="docutils literal notranslate"><span class="pre">Trajectory</span></code>.</p>
 <p>A structural descriptor <span class="math notranslate nohighlight">\(S\)</span> is a collection of <span class="math notranslate nohighlight">\(N\)</span> individual
@@ -1280,7 +1284,7 @@ called <em>groups</em>:</p>
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1291,7 +1295,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1330,7 +1334,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1343,7 +1347,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1361,7 +1365,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 2.0</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 2.0</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1378,7 +1382,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1387,9 +1391,9 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose is
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1443,7 +1447,7 @@ that respects the provided condition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>condition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – <p>The condition should have the following format:
+<li><p><strong>condition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – <p>The condition should have the following format:
 <code class="docutils literal notranslate"><span class="pre">&quot;&lt;attribute&gt;</span> <span class="pre">_operator_</span> <span class="pre">&lt;value&gt;&quot;</span></code>, where:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;attribute&gt;</span></code> is a particle property (accepts aliases)</p></li>
@@ -1451,7 +1455,7 @@ that respects the provided condition.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> is the corresponding value of <code class="docutils literal notranslate"><span class="pre">&lt;attribute&gt;</span></code> with the proper type</p></li>
 </ul>
 </p></li>
-<li><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 0</em>) – Index of the group to which the filter must be applied.</p></li>
+<li><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 0</em>) – Index of the group to which the filter must be applied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1474,7 +1478,7 @@ that respects the provided condition.</p>
 All particles are included again in this group.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 0</em>) – Index of the group for which to clear the filters.</p>
+<dd class="field-odd"><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 0</em>) – Index of the group for which to clear the filters.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>None</p>
@@ -1499,13 +1503,13 @@ All particles are included in both groups again.</p>
 <span class="sig-name descname"><span class="pre">group_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/descriptors/descriptor.html#StructuralDescriptor.group_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.descriptor.StructuralDescriptor.group_size" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Index of the group (0 or 1) for which to return the size.</p>
+<dd class="field-odd"><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of the group (0 or 1) for which to return the size.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>fraction</strong> – Number of particles in group = <code class="docutils literal notranslate"><span class="pre">group</span></code> over the whole trajectory.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1515,13 +1519,13 @@ All particles are included in both groups again.</p>
 <span class="sig-name descname"><span class="pre">group_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/descriptors/descriptor.html#StructuralDescriptor.group_fraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.descriptors.descriptor.StructuralDescriptor.group_fraction" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Index of the group (0 or 1) for which to return the fraction.</p>
+<dd class="field-odd"><p><strong>group</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Index of the group (0 or 1) for which to return the fraction.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>fraction</strong> – Fraction of particles inside group = <code class="docutils literal notranslate"><span class="pre">group</span></code> over the whole trajectory.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1534,7 +1538,7 @@ group = <code class="docutils literal notranslate"><span class="pre">group</span
 trajectory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – <p>Requested particle property. <code class="docutils literal notranslate"><span class="pre">what</span></code> must be a particle property or
+<dd class="field-odd"><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – <p>Requested particle property. <code class="docutils literal notranslate"><span class="pre">what</span></code> must be a particle property or
 an alias. The following particle aliases are accepted:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">'position'</span></code> : <code class="docutils literal notranslate"><span class="pre">'particle.position'</span></code></p></li>
@@ -1567,7 +1571,7 @@ to the number of frames in the trajectory. Each element of the list is a
 <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of the requested particle property.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -1638,9 +1642,9 @@ distribution unchanged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose is
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1701,9 +1705,9 @@ atoms.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose is
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1760,9 +1764,9 @@ distribution unchanged.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose is
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1822,7 +1826,7 @@ feature vector for particle <span class="math notranslate nohighlight">\(i\)</sp
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1833,7 +1837,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1872,7 +1876,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1885,7 +1889,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1894,15 +1898,15 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
-<li><p><strong>n_shells</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 3</em>) – Number of coordination shells (based on the <span class="math notranslate nohighlight">\(g(r)\)</span> of group=0).
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
+<li><p><strong>n_shells</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 3</em>) – Number of coordination shells (based on the <span class="math notranslate nohighlight">\(g(r)\)</span> of group=0).
 This sets the upper bound <span class="math notranslate nohighlight">\(r_\mathrm{max}\)</span> for the distance grid
 <span class="math notranslate nohighlight">\(\{d_n\}\)</span> up to which correlations are computed.</p></li>
-<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>default: None</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((r_\mathrm{min},r_\mathrm{max})\)</span> to describe
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>, </em><em>default: None</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((r_\mathrm{min},r_\mathrm{max})\)</span> to describe
 the radial correlations. If set, this has the priority over <code class="docutils literal notranslate"><span class="pre">n_shells</span></code>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -1962,7 +1966,7 @@ overwrites the <code class="docutils literal notranslate"><span class="pre">feat
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>distribution</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Distribution to normalize.</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>default: &quot;r2&quot;</em>) – <p>Normalization method:</p>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default: &quot;r2&quot;</em>) – <p>Normalization method:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">method='r2'</span></code>: returns math:<cite>r^2 times g(r)</cite> (default);</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">method='gr'</span></code> : returns the standard <span class="math notranslate nohighlight">\(g(r)\)</span> ;</p></li>
@@ -1971,7 +1975,7 @@ overwrites the <code class="docutils literal notranslate"><span class="pre">feat
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">method</span></code> is invalid.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">method</span></code> is invalid.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Normalized distribution.</p>
@@ -2041,7 +2045,7 @@ of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. Th
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2052,7 +2056,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2066,7 +2070,7 @@ It takes the form a of a list of tuples
 <code class="docutils literal notranslate"><span class="pre">[(l0,d0),</span> <span class="pre">(l0,d1),</span> <span class="pre">...,</span> <span class="pre">(ln,dn),</span> <span class="pre">...]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2094,7 +2098,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2107,7 +2111,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2125,7 +2129,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2142,7 +2146,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2151,31 +2155,32 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_m \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_m \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_m\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_m\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>1</em><em>, </em><em>1.5</em><em>)</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>1</em><em>, </em><em>1.5</em><em>)</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span>
 to define the grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>, where consecutive
 points in the the grid are separated by <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
-<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> to define the grid of distances
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> to define the grid of distances
 <span class="math notranslate nohighlight">\(\{ d_n \}\)</span> in the range
 <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span> by steps of size
 <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
-<li><p><strong>distance_grid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Manually defined grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. If different
+<li><p><strong>distance_grid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Manually defined grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. If different
 from <code class="docutils literal notranslate"><span class="pre">None</span></code>, it  overrides the linearly-spaced grid defined by
 <code class="docutils literal notranslate"><span class="pre">bounds</span></code> and <code class="docutils literal notranslate"><span class="pre">dr</span></code>.</p></li>
-<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Shell width <span class="math notranslate nohighlight">\(\delta\)</span> to probe the local density at a distances
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Shell width <span class="math notranslate nohighlight">\(\delta\)</span> to probe the local density at a distances
 <span class="math notranslate nohighlight">\(\{d_n\}\)</span> from the central particle.</p></li>
-<li><p><strong>skin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 2.5</em>) – Skin width <span class="math notranslate nohighlight">\(\sigma\)</span> (in units of <code class="docutils literal notranslate"><span class="pre">delta</span></code>) to consider neighbors
+<li><p><strong>skin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 2.5</em>) – Skin width <span class="math notranslate nohighlight">\(\sigma\)</span> (in units of <code class="docutils literal notranslate"><span class="pre">delta</span></code>) to consider neighbors
 further than the upper bound <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}}\)</span> of the grid of
 distances. Neighbors will then be  identified up to
 <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}} + \sigma \times \delta\)</span></p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -2243,31 +2248,32 @@ overwrites the <code class="docutils literal notranslate"><span class="pre">feat
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_m \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_m \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_m\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_m\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>1</em><em>, </em><em>1.5</em><em>)</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em>, </em><em>default:</em><em> (</em><em>1</em><em>, </em><em>1.5</em><em>)</em>) – Lower and upper bounds <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span>
 to define the grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>, where consecutive
 points in the the grid are separated by <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
-<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> to define the grid of distances
+<li><p><strong>dr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Grid spacing <span class="math notranslate nohighlight">\(\Delta r\)</span> to define the grid of distances
 <span class="math notranslate nohighlight">\(\{ d_n \}\)</span> in the range
 <span class="math notranslate nohighlight">\((d_{n_\mathrm{min}}, d_{n_\mathrm{max}})\)</span> by steps of size
 <span class="math notranslate nohighlight">\(\Delta r\)</span>.</p></li>
-<li><p><strong>distance_grid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Manually defined grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. If different
+<li><p><strong>distance_grid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Manually defined grid of distances <span class="math notranslate nohighlight">\(\{ d_n \}\)</span>. If different
 from <code class="docutils literal notranslate"><span class="pre">None</span></code>, it  overrides the linearly-spaced grid defined by
 <code class="docutils literal notranslate"><span class="pre">bounds</span></code> and <code class="docutils literal notranslate"><span class="pre">dr</span></code>.</p></li>
-<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Shell width <span class="math notranslate nohighlight">\(\delta\)</span> to probe the local density at a distances
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 0.1</em>) – Shell width <span class="math notranslate nohighlight">\(\delta\)</span> to probe the local density at a distances
 <span class="math notranslate nohighlight">\(\{d_n\}\)</span> from the central particle.</p></li>
-<li><p><strong>skin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 2.5</em>) – Skin width <span class="math notranslate nohighlight">\(\sigma\)</span> (in units of <code class="docutils literal notranslate"><span class="pre">delta</span></code>) to consider neighbors
+<li><p><strong>skin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 2.5</em>) – Skin width <span class="math notranslate nohighlight">\(\sigma\)</span> (in units of <code class="docutils literal notranslate"><span class="pre">delta</span></code>) to consider neighbors
 further than the upper bound <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}}\)</span> of the grid of
 distances. Neighbors will then be  identified up to
 <span class="math notranslate nohighlight">\(d_{n_\mathrm{max}} + \sigma \times \delta\)</span></p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -2329,7 +2335,7 @@ The resulting feature vector for particle <span class="math notranslate nohighli
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2340,7 +2346,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2379,7 +2385,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2392,7 +2398,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2410,7 +2416,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2427,7 +2433,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2436,16 +2442,16 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>dtheta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta \theta\)</span> in degrees.</p></li>
-<li><p><strong>cutoff_enlargement</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 1.3</em>) – Scaling factor <span class="math notranslate nohighlight">\(\xi\)</span> for the largest nearest neighbors cutoff
+<li><p><strong>dtheta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Bin width <span class="math notranslate nohighlight">\(\Delta \theta\)</span> in degrees.</p></li>
+<li><p><strong>cutoff_enlargement</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 1.3</em>) – Scaling factor <span class="math notranslate nohighlight">\(\xi\)</span> for the largest nearest neighbors cutoff
 <span class="math notranslate nohighlight">\(\max(\{ r_\mathrm{\alpha\beta}^c \})\)</span> to consider neighbors <span class="math notranslate nohighlight">\(j\)</span>
 a distance <span class="math notranslate nohighlight">\(R_\mathrm{max}^c = \xi \times \max(\{r_{\alpha\beta}^c\})\)</span>
 away from the central particle <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p><strong>exponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Exponent <span class="math notranslate nohighlight">\(\gamma\)</span> in the smoothing function
+<li><p><strong>exponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Exponent <span class="math notranslate nohighlight">\(\gamma\)</span> in the smoothing function
 <span class="math notranslate nohighlight">\(f(r_{ij},r_{ik})\)</span>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -2535,7 +2541,7 @@ feature vector for particle <span class="math notranslate nohighlight">\(i\)</sp
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2546,7 +2552,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2585,7 +2591,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2598,7 +2604,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2616,7 +2622,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2633,7 +2639,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2642,21 +2648,22 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
+<li><p><strong>lmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 1</em>) – Minimum order <span class="math notranslate nohighlight">\(l_\mathrm{min}\)</span>. This sets the lower bound of
 the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
-the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
-<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
+<li><p><strong>lmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Maximum order <span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span>. This sets the upper bound of
+the grid <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>. For numerical reasons,
+<span class="math notranslate nohighlight">\(l_\mathrm{max}\)</span> cannot be larger than 16.</p></li>
+<li><p><strong>orders</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>default: None</em>) – Sequence <span class="math notranslate nohighlight">\(\{l_n\}\)</span> of specific orders to compute, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">orders=[4,6]</span></code>. This has the priority over <code class="docutils literal notranslate"><span class="pre">lmin</span></code> and <code class="docutils literal notranslate"><span class="pre">lmax</span></code>.</p></li>
-<li><p><strong>cutoff_enlargement</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>, </em><em>default: 1.3</em>) – Scaling factor <span class="math notranslate nohighlight">\(\xi\)</span> for the nearest neighbors cutoffs
+<li><p><strong>cutoff_enlargement</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>default: 1.3</em>) – Scaling factor <span class="math notranslate nohighlight">\(\xi\)</span> for the nearest neighbors cutoffs
 <span class="math notranslate nohighlight">\(r_{\alpha\beta}^c\)</span> to consider neighbors <span class="math notranslate nohighlight">\(j\)</span> a distance
 <span class="math notranslate nohighlight">\(R_{\alpha\beta}^c = \xi \times r_{\alpha\beta}^c\)</span> away from the
 central particle <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p><strong>exponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>default: 8</em>) – Exponent <span class="math notranslate nohighlight">\(\gamma\)</span> in the smoothing function
+<li><p><strong>exponent</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default: 8</em>) – Exponent <span class="math notranslate nohighlight">\(\gamma\)</span> in the smoothing function
 <span class="math notranslate nohighlight">\(f(r_{ij})\)</span>.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -2735,7 +2742,7 @@ inherited <code class="docutils literal notranslate"><span class="pre">grid</spa
 descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2746,7 +2753,7 @@ descriptor.</p>
 <dd><p>Spatial dimension of the descriptor (2 or 3).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2774,7 +2781,7 @@ is the list of all the particles in the first frame of <code class="docutils lit
 belong to group=0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2787,7 +2794,7 @@ descriptor when verbose is <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2805,7 +2812,7 @@ attribute. This sets the value of the <code class="docutils literal notranslate"
 during the computation of the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)">float</a>, default: 1.5</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)">float</a>, default: 1.5</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2822,7 +2829,7 @@ better value. The default value is sufficient in most cases, otherwise
 this number can manually be increased <strong>before</strong> computing the descriptor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a>, default: 100</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, default: 100</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2831,9 +2838,9 @@ this number can manually be increased <strong>before</strong> computing the desc
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trajectory</strong> (<a class="reference internal" href="partycls.html#partycls.trajectory.Trajectory" title="partycls.trajectory.Trajectory"><em>Trajectory</em></a>) – Trajectory on which the structural descriptor will be computed.</p></li>
-<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
+<li><p><strong>accept_nans</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: True</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, discard any row from the array of features that contains a
 <cite>NaN</cite> element. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, keep <cite>NaN</cite> elements in the array of features.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default: False</em>) – Show progress information and warnings about the computation of the
 descriptor when verbose is <code class="docutils literal notranslate"><span class="pre">True</span></code>, and remain silent when verbose
 is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>

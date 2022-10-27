@@ -17,7 +17,7 @@ A collection of `Jupyter notebooks <https://jupyter.org/>`_, with examples and d
 4. :doc:`More advanced applications <tutorials/notebooks/4_going_further>` (:download:`download <tutorials/notebooks/4_going_further.ipynb>`)
 
 .. important::
-	If you download the notebooks, be sure to download the content of the `data <https://github.com/jorisparet/partycls/tree/master/data>`_ folder from `GitHub <https://github.com/jorisparet/partycls>`_ as well before executing them. The data folder should be placed one level above the folder containing the notebooks (*i.e.* :file:`../data/`) for the paths to remain correct.
+	If you download the notebooks, be sure to download the content of the `data <https://github.com/jorisparet/partycls/tree/master/docs/tutorials/notebooks/data>`_ folder from `GitHub <https://github.com/jorisparet/partycls>`_ as well before executing them. The data folder should be placed in the same folder as the notebooks for the paths to remain correct.
 
 .. toctree::
 	:glob:
