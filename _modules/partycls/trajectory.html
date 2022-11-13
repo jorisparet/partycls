@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>partycls.trajectory &mdash; partycls 2.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html">
+            <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Support and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing partycls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">partycls</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>partycls.trajectory</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for partycls.trajectory</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Physical trajectory.</span>
+
+<span class="sd">This class is inspired by the framework `atooms &lt;https://framagit.org/atooms/atooms&gt;`_</span>
+<span class="sd">authored by `Daniele Coslovich &lt;https://www2.units.it/daniele.coslovich/&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">System</span>
+<span class="kn">from</span> <span class="nn">.particle</span> <span class="kn">import</span> <span class="n">Particle</span><span class="p">,</span> <span class="n">aliases</span>
+<span class="kn">from</span> <span class="nn">.cell</span> <span class="kn">import</span> <span class="n">Cell</span>
+<span class="kn">from</span> <span class="nn">.core.utils</span> <span class="kn">import</span> <span class="n">tipify</span><span class="p">,</span> <span class="n">_nearest_neighbors_methods_</span>
+
+
+<div class="viewcode-block" id="Trajectory"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory">[docs]</a><span class="k">class</span> <span class="nc">Trajectory</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A trajectory is composed by one or several frames, each frame being an </span>
+<span class="sd">    instance of ``System``. ``Trajectory`` instances are iterable. By default, only</span>
+<span class="sd">    the positions and particle types are being read from the trajectory file.</span>
+<span class="sd">    Additional particle properties in the file can be read using the </span>
+<span class="sd">    ``additional_fields`` parameter.</span>
+<span class="sd">        </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Name of the original trajectory file.</span>
+<span class="sd">        </span>
+<span class="sd">    fmt : str</span>
+<span class="sd">        Format of the original trajectory file.</span>
+<span class="sd">        </span>
+<span class="sd">    backend : str</span>
+<span class="sd">        Name of the third-party package used to read the input trajectory file.</span>
+<span class="sd">        </span>
+<span class="sd">    additional_fields : list</span>
+<span class="sd">        List of additional particle properties that were extracted from the</span>
+<span class="sd">        original trajectory file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># accepted names for neighbors when reading/writing</span>
+    <span class="n">_default_neighbors_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;neighbor&#39;</span><span class="p">,</span> <span class="s1">&#39;neighbors&#39;</span><span class="p">,</span> 
+                                 <span class="s1">&#39;neighbour&#39;</span><span class="p">,</span> <span class="s1">&#39;neighbours&#39;</span><span class="p">,</span> 
+                                 <span class="s1">&#39;nearest_neighbors&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;nearest_neighbours&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">additional_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            Path to the trajectory file to read.</span>
+<span class="sd">            </span>
+<span class="sd">        fmt : str, default: &quot;xyz&quot;</span>
+<span class="sd">            Format of the trajectory. Needed when using ``&quot;atooms&quot;`` as a backend.</span>
+<span class="sd">            </span>
+<span class="sd">        backend : str, default: None</span>
+<span class="sd">            Name of a third-party package to use as backend when reading the input</span>
+<span class="sd">            trajectory. Currently supports ``&quot;atooms&quot;`` and ``&quot;mdtraj&quot;``.</span>
+<span class="sd">            </span>
+<span class="sd">        top : str, mdtraj.Trajectory, or mdtraj.Topology, defaut: None</span>
+<span class="sd">            Topology information. Needed when using ``&quot;mdtraj&quot;`` as backend on a </span>
+<span class="sd">            trajectory file whose format requires topology information. See MDTraj</span>
+<span class="sd">            documentation for more information.</span>
+<span class="sd">            </span>
+<span class="sd">        additional_fields : list, optional, default: None</span>
+<span class="sd">            Additional fields (*i.e.* particle properties) to read from the </span>
+<span class="sd">            trajectory. Not all trajectory formats allow for additional fields.</span>
+<span class="sd">            </span>
+<span class="sd">        first : int, default: 0</span>
+<span class="sd">            Index of the first frame to consider in the trajectory. Starts at zero.</span>
+<span class="sd">            </span>
+<span class="sd">        last : int, default: None</span>
+<span class="sd">            Index of the last frame to consider in the trajectory. Default is the </span>
+<span class="sd">            last frame.</span>
+<span class="sd">            </span>
+<span class="sd">        step : int, default: 1</span>
+<span class="sd">            Step between each frame to consider in the trajectory. For example,</span>
+<span class="sd">            if ``step=2``, one out of every two frames is read.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;, additional_fields=[&#39;mass&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.dat&#39;, fmt=&#39;lammps&#39;, backend=&#39;atooms&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;xyz&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">top</span>
+        <span class="k">if</span> <span class="n">additional_fields</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span> <span class="o">=</span> <span class="n">additional_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+        <span class="c1"># nearest neighbors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pairs_of_species</span><span class="p">]</span>
+
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">nearest_neighbors_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method used to identify the nearest neighbors of all the particles in</span>
+<span class="sd">        the trajectory. Should be one of ``&quot;auto&quot;``, ``&quot;fixed&quot;``, ``&quot;sann&quot;`` or </span>
+<span class="sd">        ``&quot;voronoi&quot;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span>
+
+    <span class="nd">@nearest_neighbors_method</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">nearest_neighbors_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">_nearest_neighbors_methods_</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_method</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid method for nearest neighbors. Should be one of </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_nearest_neighbors_methods_</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nearest_neighbors_cutoffs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List of cutoffs that delimit the first coordination shell. Cutoffs are </span>
+<span class="sd">        usually defined on the basis of the first minimum of the partial radial </span>
+<span class="sd">        distribution function of each pair of species, </span>
+<span class="sd">        :math:`g_{\\alpha\\beta}(r)`. The list must have the same length as the </span>
+<span class="sd">        number of pairs of species in the system (*e.g.* 2 species yield 4 </span>
+<span class="sd">        possible pairs, 3 species yield 6 pairs, etc.).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_cutoffs</span>
+
+    <span class="nd">@nearest_neighbors_cutoffs</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">nearest_neighbors_cutoffs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">n_pairs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pairs_of_species</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_pairs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Incorrect number of cutoffs: </span><span class="si">{}</span><span class="s2"> were provided while </span><span class="si">{}</span><span class="s2"> are expected.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">n_pairs</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="Trajectory.remove"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove the system at position ``frame`` from the trajectory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frame : int</span>
+<span class="sd">            Index of the frame to remove from the trajectory.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trajectory.get_property"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.get_property">[docs]</a>    <span class="k">def</span> <span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a list of numpy.ndarrays with the system property specified by </span>
+<span class="sd">        ``what``. The list size is the number of systems in the trajectory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        what : str</span>
+<span class="sd">            Requested system property. ``what`` must be of the form </span>
+<span class="sd">            ``&quot;particle.&lt;attribute&gt;&quot;`` or ``&quot;cell.&lt;attribute&gt;&quot;``.</span>
+<span class="sd">            The following particle aliases are accepted:</span>
+
+<span class="sd">            - ``&#39;position&#39;`` : ``&#39;particle.position&#39;``</span>
+<span class="sd">            - ``&#39;pos&#39;`` : ``&#39;particle.position&#39;``</span>
+<span class="sd">            - ``&#39;position[0]&#39;`` : ``&#39;particle.position[0]&#39;``</span>
+<span class="sd">            - ``&#39;pos[0]&#39;`` : ``&#39;particle.position[0]&#39;``</span>
+<span class="sd">            - ``&#39;x&#39;`` : ``&#39;particle.position[0]&#39;``</span>
+<span class="sd">            - ``&#39;position[1]&#39;`` : ``&#39;particle.position[1]&#39;``</span>
+<span class="sd">            - ``&#39;pos[1]&#39;`` : ``&#39;particle.position[1]&#39;``</span>
+<span class="sd">            - ``&#39;y&#39;`` : ``&#39;particle.position[1]&#39;``</span>
+<span class="sd">            - ``&#39;position[2]&#39;`` : ``&#39;particle.position[2]&#39;``</span>
+<span class="sd">            - ``&#39;pos[2]&#39;`` : ``&#39;particle.position[2]&#39;``</span>
+<span class="sd">            - ``&#39;z&#39;`` : ``&#39;particle.position[2]&#39;``</span>
+<span class="sd">            - ``&#39;species&#39;`` : ``&#39;particle.species&#39;``</span>
+<span class="sd">            - ``&#39;spe&#39;`` : ``&#39;particle.species&#39;``</span>
+<span class="sd">            - ``&#39;label&#39;`` : ``&#39;particle.label&#39;``</span>
+<span class="sd">            - ``&#39;mass&#39;`` : ``&#39;particle.mass&#39;``</span>
+<span class="sd">            - ``&#39;radius&#39;`` : ``&#39;particle.radius&#39;``</span>
+<span class="sd">            - ``&#39;nearest_neighbors&#39;`` : ``&#39;particle.nearest_neighbors&#39;``</span>
+<span class="sd">            - ``&#39;neighbors&#39;`` : ``particle.nearest_neighbors&#39;``</span>
+<span class="sd">            - ``&#39;neighbours&#39;`` : ``&#39;particle.nearest_neighbors&#39;``</span>
+<span class="sd">            - ``&#39;voronoi_signature&#39;`` : ``&#39;particle.voronoi_signature&#39;``</span>
+<span class="sd">            - ``&#39;signature&#39;`` : ``&#39;particle.voronoi_signature&#39;``</span>
+
+<span class="sd">        subset : str, optional, default: ``None``</span>
+<span class="sd">            Subset of particles for which the property must be dumped. Must be </span>
+<span class="sd">            of the form ``&quot;particle.&lt;attribute&gt;&quot;`` unless ``&quot;&lt;attribute&gt;&quot;`` is an </span>
+<span class="sd">            alias. The default is ``None`` (all particles will be included).</span>
+<span class="sd">            This is ignored if ```what``` is cell property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        to_dump : list</span>
+<span class="sd">            List of the requested system property with length equal to the </span>
+<span class="sd">            number of frames in the trajectory. Each element of the list is a</span>
+<span class="sd">            numpy.ndarray of the requested system property.</span>
+<span class="sd">            </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; traj = Trajectory(&#39;trajectory.xyz&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; pos = traj.get_property(&#39;position&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; spe = traj.get_property(&#39;species&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; sides = traj.get_property(&#39;cell.side&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">to_dump</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+            <span class="n">to_dump</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">to_dump</span></div>
+
+<div class="viewcode-block" id="Trajectory.dump"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Alias for the method ``get_property``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="n">subset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trajectory.set_property"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.set_property">[docs]</a>    <span class="k">def</span> <span class="nf">set_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a property ``what`` to ``value`` for all the particles in the </span>
+<span class="sd">        trajectory or for a given subset of particles specified by ``subset``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        what : str</span>
+<span class="sd">            Name of the property to set. This is considered to be a particle</span>
+<span class="sd">            property by default, unless it starts with ``&quot;cell&quot;``, *e.g.*</span>
+<span class="sd">            ``&quot;cell.side&quot;``.</span>
+<span class="sd">            </span>
+<span class="sd">        value : int, float, list, numpy.ndarray</span>
+<span class="sd">            Value(s) of the property to set. An instance of ``int`` or ``float``</span>
+<span class="sd">            will set the same value for all concerned particles. An instance</span>
+<span class="sd">            of ``list`` or ``numpy.ndarray`` will assign a specific value to each</span>
+<span class="sd">            particle. In this case, the shape of ``value`` should respect the</span>
+<span class="sd">            number of frames in the trajectory and the number of concerned</span>
+<span class="sd">            particles.</span>
+<span class="sd">            </span>
+<span class="sd">        subset : str, default: None</span>
+<span class="sd">            Particles to which the property must be set. The default is ``None``.</span>
+<span class="sd">            This is ignored if ``what`` is a cell property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; traj.set_property(&#39;mass&#39;, 1.0)</span>
+<span class="sd">        &gt;&gt;&gt; traj.set_property(&#39;radius&#39;, 0.5, subset=&quot;species == &#39;A&#39;&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; labels = [[0, 1, 0], # 2 frames, 3 particles in the subset</span>
+<span class="sd">                      [1, 1, 0]]</span>
+<span class="sd">        &gt;&gt;&gt; traj.set_property(&#39;label&#39;, labels, subset=&quot;species == &#39;B&#39;&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="n">subset</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__len__</span><span class="p">(),</span> <span class="s1">&#39;`value` should have the same length as the Trajectory.&#39;</span>
+            <span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">system</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">):</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="n">frame</span><span class="p">],</span> <span class="n">subset</span><span class="o">=</span><span class="n">subset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trajectory.compute_nearest_neighbors"><a class="viewcode-back" href="../../tutorials/descriptors/overview.html#partycls.trajectory.Trajectory.compute_nearest_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">compute_nearest_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cutoffs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the nearest neighbors for all the particles in the trajectory using</span>
+<span class="sd">        the provided method. Neighbors are stored in the ``nearest_neighbors`` particle </span>
+<span class="sd">        property. Available methods are:</span>
+
+<span class="sd">        - ``&#39;auto&#39;`` : read neighbors from the trajectory file, if explicitly requested with the ``additional_fields`` argument in the constructor.</span>
+<span class="sd">        - ``&#39;fixed&#39;`` : use fixed cutoffs for each pair of species in the trajectory.</span>
+<span class="sd">        - ``&#39;sann&#39;`` : solid-angle based nearest neighbor algorithm (see https://doi.org/10.1063/1.4729313).</span>
+<span class="sd">        - ``&#39;voronoi&#39;`` : radical Voronoi tessellation method (uses particles&#39; radii) (see https://doi.org/10.1016/0022-3093(82)90093-X)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        method : str, default: None</span>
+<span class="sd">            Method to identify the nearest neighbors. Must be one of </span>
+<span class="sd">            ``&#39;auto&#39;``, ``&#39;fixed&#39;``, ``&#39;sann&#39;``, or ``&#39;voronoi&#39;``. ``None`` defaults to ``&#39;auto&#39;``. If </span>
+<span class="sd">            method is ``&#39;auto&#39;``, neighbors are read directly from the trajectory file,</span>
+<span class="sd">            if specified with the ``additional_fields`` argument in the constructor.</span>
+<span class="sd">            If no neighbors are found, falls back to ``method=&#39;fixed&#39;`` instead.</span>
+
+<span class="sd">        cutoffs : list, default: None</span>
+<span class="sd">            List containing the cutoffs distances for each pair of species</span>
+<span class="sd">            in the trajectory (for method ``&#39;fixed&#39;`` and ``&#39;sann&#39;``). If ``None``, cutoffs</span>
+<span class="sd">            will be computed automatically. For method ``&#39;sann&#39;``, cutoffs are</span>
+<span class="sd">            required as a first guess to identify the nearest neighbors.</span>
+
+<span class="sd">        dr : float, default: 0.1</span>
+<span class="sd">            Radial grid spacing :math:`\Delta r` for computing the cutoffs on the basis</span>
+<span class="sd">            of the first minimum of each partial radial distribution function</span>
+<span class="sd">            in the trajectory, if cutoffs are not provided.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; traj.compute_nearest_neighbors(method=&#39;fixed&#39;, cutoffs=[1.5, 1.4, 1.4, 1.3])</span>
+<span class="sd">        &gt;&gt;&gt; traj.compute_nearest_neighbors(method=&#39;sann&#39;, cutoffs=[1.5, 1.4, 1.4, 1.3])</span>
+<span class="sd">        &gt;&gt;&gt; traj.compute_nearest_neighbors(method=&#39;voronoi&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Convert method to Enum</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="n">method</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid method for nearest neighbors. Should be one of </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_nearest_neighbors_methods_</span><span class="p">))</span>
+
+        <span class="c1"># Read neighbors from the trajectory file if method is &#39;auto&#39; (default)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+            <span class="n">neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;nearest_neighbors&#39;</span><span class="p">)</span> 
+            <span class="c1"># if no neighbors in the system, fallback to fixed-cutoffs method</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;fixed&#39;</span><span class="p">,</span>
+                                               <span class="n">cutoffs</span><span class="o">=</span><span class="n">cutoffs</span><span class="p">)</span>
+            <span class="k">return</span>        
+
+        <span class="c1"># Compute cutoffs if not provided (for &#39;fixed&#39; and &#39;sann&#39;)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;fixed&#39;</span><span class="p">,</span> <span class="s1">&#39;sann&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">cutoffs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">compute_nearest_neighbors_cutoffs</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="n">cutoffs</span>
+
+        <span class="c1"># Iterate over the systems</span>
+        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+            <span class="n">system</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_method</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trajectory.set_nearest_neighbors_cutoff"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.set_nearest_neighbors_cutoff">[docs]</a>    <span class="k">def</span> <span class="nf">set_nearest_neighbors_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s_a</span><span class="p">,</span> <span class="n">s_b</span><span class="p">,</span> <span class="n">rcut</span><span class="p">,</span> <span class="n">mirror</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the nearest-neighbor cutoff for the pair of species ``(s1, s2)``. The</span>
+<span class="sd">        cutoff of the mirror pair ``(s2, s1)`` is set automatically if the ``mirror`` </span>
+<span class="sd">        parameter is ``True`` (default). Writes in the ``nearest_neighbors_cutoffs`` </span>
+<span class="sd">        list attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        s_a : str</span>
+<span class="sd">            Symbol of the first species :math:`\\alpha`.</span>
+<span class="sd">        s_b : str</span>
+<span class="sd">            Symbol of the second species :math:`\\beta`.</span>
+<span class="sd">        rcut : float</span>
+<span class="sd">            Value of the cutoff for the pair :math:`(\\alpha,\\beta) r` = ``(s_a, s_b)``.</span>
+<span class="sd">        mirror : bool, default: None</span>
+<span class="sd">            Set the cutoff for the mirror pair ``(s_a, s_b)``. The default is ``True``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pairs_of_species</span>
+        <span class="n">idx_ab</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="n">s_a</span><span class="p">,</span> <span class="n">s_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">[</span><span class="n">idx_ab</span><span class="p">]</span> <span class="o">=</span> <span class="n">rcut</span>
+        <span class="k">if</span> <span class="n">mirror</span><span class="p">:</span>
+            <span class="n">idx_ba</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">index</span><span class="p">((</span><span class="n">s_b</span><span class="p">,</span> <span class="n">s_a</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">[</span><span class="n">idx_ba</span><span class="p">]</span> <span class="o">=</span> <span class="n">rcut</span></div>
+
+<div class="viewcode-block" id="Trajectory.compute_nearest_neighbors_cutoffs"><a class="viewcode-back" href="../../tutorials/descriptors/overview.html#partycls.trajectory.Trajectory.compute_nearest_neighbors_cutoffs">[docs]</a>    <span class="k">def</span> <span class="nf">compute_nearest_neighbors_cutoffs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the nearest neighbors cutoffs on the basis of the first</span>
+<span class="sd">        minimum of the partial radial distribution function </span>
+<span class="sd">        :math:`g_{\\alpha\\beta}(r)` between each pair of species </span>
+<span class="sd">        :math:`(\\alpha,\\beta)` in the trajectory. Sets the </span>
+<span class="sd">        ``nearest_neighbors_cutoffs`` list attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dr : float, default: 0.1</span>
+<span class="sd">            Bin width :math:`\Delta r` for the radial grid used to compute the partial</span>
+<span class="sd">            radial distribution functions :math:`g_{\\alpha\\beta}(r)`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.descriptors</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pairs_of_species</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">[</span><span class="n">pairs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">pair</span><span class="p">)]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">s_a</span><span class="p">,</span> <span class="n">s_b</span> <span class="o">=</span> <span class="n">pair</span>
+                <span class="c1"># use the smallest side of the smallest box in case of</span>
+                <span class="c1">#  non-constant volume trajectory</span>
+                <span class="n">L</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;cell.side&#39;</span><span class="p">))</span>
+                <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">descriptor</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dr</span><span class="o">=</span><span class="n">dr</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+                <span class="n">descriptor</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_a</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">descriptor</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_b</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">descriptor</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+                <span class="c1"># grid and average descriptor</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">descriptor</span><span class="o">.</span><span class="n">grid</span>
+                <span class="n">h_ab</span> <span class="o">=</span> <span class="n">descriptor</span><span class="o">.</span><span class="n">average</span>
+                <span class="c1"># normalized g(r)</span>
+                <span class="n">g_ab</span> <span class="o">=</span> <span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">h_ab</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;gr&quot;</span><span class="p">)</span>
+                <span class="c1"># find the first minimum of g_ab(r)</span>
+                <span class="n">first_max</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">g_ab</span><span class="p">)</span>
+                <span class="n">first_min</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">g_ab</span><span class="p">[</span><span class="n">first_max</span><span class="p">:])</span> <span class="o">+</span> <span class="n">first_max</span>
+                <span class="n">rcut</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="n">first_min</span><span class="p">]</span>
+                <span class="c1"># set the cutoff</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_nearest_neighbors_cutoff</span><span class="p">(</span><span class="n">s_a</span><span class="p">,</span> <span class="n">s_b</span><span class="p">,</span> <span class="n">rcut</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trajectory.compute_voronoi_signatures"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.compute_voronoi_signatures">[docs]</a>    <span class="k">def</span> <span class="nf">compute_voronoi_signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the Voronoi signatures of all the particles in the trajectory</span>
+<span class="sd">        using the radical Voronoi tessellation method (see </span>
+<span class="sd">        https://doi.org/10.1016/0022-3093(82)90093-X).).</span>
+<span class="sd">        </span>
+<span class="sd">        Particle radii must be set using the ``set_property`` method if the </span>
+<span class="sd">        original trajectory file does not contain such information.</span>
+
+<span class="sd">        Creates a ``voronoi_signature`` property for the particles.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+            <span class="n">system</span><span class="o">.</span><span class="n">compute_voronoi_signatures</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Trajectory.show"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show the frames on index ``frames`` of the trajectory and color particles</span>
+<span class="sd">        according to an arbitrary property, such as species, cluster label, </span>
+<span class="sd">        etc. Current visualization backends are ``&quot;matplotlib&quot;``, ``&quot;ovito&quot;``,</span>
+<span class="sd">        and ``&quot;3dmol&quot;``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frames : list, default: None</span>
+<span class="sd">            Indices of the frames to show. The default is ``None`` (shows all frames).</span>
+
+<span class="sd">        backend : str, default: &quot;matplotlib&quot;</span>
+<span class="sd">            Name of the backend to use for visualization.</span>
+
+<span class="sd">        color : str, default: &quot;species&quot;</span>
+<span class="sd">            Name of the particle property to use as basis for coloring the </span>
+<span class="sd">            particles. This property must be defined for all the particles in </span>
+<span class="sd">            the system.</span>
+
+<span class="sd">        **kwargs : additional keyworded arguments (backend-dependent).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            In case of unknown ``backend``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Backend-dependent</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; traj.show(frames=[0,1,2], color=&#39;label&#39;, backend=&#39;3dmol&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; traj.show(frames=[0,1], color=&#39;energy&#39;, backend=&#39;matplotlib&#39;, cmap=&#39;viridis&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; traj[0].show() # use the iterability of Trajectory objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># show all frames (default)</span>
+        <span class="k">if</span> <span class="n">frames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="c1"># list of figures/views returned by each system</span>
+        <span class="n">snapshots</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="n">kwargs_f</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s1">&#39;outfile&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs_f</span><span class="p">[</span><span class="s1">&#39;outfile&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{:04}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
+                                                 <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                                                 <span class="o">**</span><span class="n">kwargs_f</span><span class="p">)</span>
+            <span class="n">snapshots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">snapshots</span></div>
+
+<div class="viewcode-block" id="Trajectory.write"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write the current trajectory to a file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        output_path : str</span>
+<span class="sd">            Name of the output trajectory file.</span>
+
+<span class="sd">        fmt : str, default: &quot;xyz&quot;</span>
+<span class="sd">            Format of the output trajectory file.</span>
+
+<span class="sd">        backend : str, default: None</span>
+<span class="sd">            Name of a third-party package to use when writing the output</span>
+<span class="sd">            trajectory.</span>
+
+<span class="sd">        additional_fields : list, default: None</span>
+<span class="sd">            Additional fields (*i.e.* particle properties) to write in the output</span>
+<span class="sd">            trajectory. Not all trajectory formats allow for additional fields. </span>
+<span class="sd">            The default is to not write any additional particle property.</span>
+
+<span class="sd">        precision : int, default: 6</span>
+<span class="sd">            Number of decimals when writing the output trajectory.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            - If ``backend=None`` and ``fmt`` is not recognized natively.</span>
+<span class="sd">            - If ``backend`` is unknown.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">additional_fields</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">additional_fields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">additional_fields</span> <span class="o">=</span> <span class="n">additional_fields</span>
+
+        <span class="c1"># formats recognized by defaults</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_write_xyz</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">additional_fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;rumd&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_write_rumd</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">additional_fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot; format is not recognized natively. You may try again with a backend.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmt</span><span class="p">))</span>
+
+        <span class="c1"># atooms backend</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;atooms&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_atooms</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">additional_fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+
+        <span class="c1"># MDTraj backend</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;mdtraj&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_mdtraj</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">additional_fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+
+        <span class="c1"># wrong backend</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;backend &quot;</span><span class="si">{}</span><span class="s1">&quot; is not a recognized backend&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Trajectory.fold"><a class="viewcode-back" href="../../source/partycls.html#partycls.trajectory.Trajectory.fold">[docs]</a>    <span class="k">def</span> <span class="nf">fold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fold the particles&#39; positions into the central cell.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+            <span class="n">system</span><span class="o">.</span><span class="n">fold</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+        <span class="c1"># formats recognized by defaults</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parser_xyz</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;rumd&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parser_rumd</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot; format is not recognized natively. You may try again with a backend.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmt</span><span class="p">))</span>
+
+        <span class="c1"># atooms backend</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;atooms&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parser_atooms</span><span class="p">()</span>
+
+        <span class="c1"># MDTraj backend</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;mdtraj&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parser_mdtraj</span><span class="p">()</span>
+
+        <span class="c1"># wrong backend</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;backend &quot;</span><span class="si">{}</span><span class="s1">&quot; is not a recognized backend&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">))</span>
+
+        <span class="c1"># # Standardize the species by giving each a numeral ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_species_numeral</span><span class="p">()</span>
+
+        <span class="c1"># Sanity checks</span>
+        <span class="c1">#  constant number of particles</span>
+        <span class="n">n_particles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">particle</span><span class="p">)</span> <span class="k">for</span> <span class="n">sys</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">])</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_particles</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;the number of particles should be kept constant in the trajectory.&#39;</span>
+
+        <span class="c1"># Slice the trajectory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slice</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parser_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read the trajectory from a XYZ file and put </span>
+<span class="sd">        the different frames in a list of `System`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">_system_info</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Information on the system (dimension, fields, etc.)&quot;&quot;&quot;</span>
+            <span class="kn">import</span> <span class="nn">re</span>
+            <span class="n">default_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">]</span>
+            <span class="c1"># loop over all properties</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="c1"># search columns</span>
+                <span class="n">re_cols</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^[C|c]olumns:(.+)$&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="c1"># keep additional fields/columns for a later use</span>
+                <span class="k">if</span> <span class="n">re_cols</span><span class="p">:</span>
+                    <span class="n">fields</span> <span class="o">=</span> <span class="n">re_cols</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span> <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">default_fields</span><span class="p">]</span>
+                <span class="c1"># search cell</span>
+                <span class="n">re_cell</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^[C|c]ell:(.+)$&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">re_cell</span><span class="p">:</span>
+                    <span class="n">cell</span> <span class="o">=</span> <span class="n">re_cell</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                    <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">cell</span><span class="p">,</span> <span class="n">fields</span>
+
+        <span class="c1"># Read whole file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">trajectory</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">firstline</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="c1"># Stop if EOF</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">firstline</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="c1"># Current frame</span>
+                <span class="n">n_particles</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">firstline</span><span class="p">)</span>
+                <span class="n">frame_info</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">sides</span><span class="p">,</span> <span class="n">other_fields</span> <span class="o">=</span> <span class="n">_system_info</span><span class="p">(</span><span class="n">frame_info</span><span class="p">)</span>
+                <span class="n">cell</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">sides</span><span class="p">)</span>
+                <span class="n">system</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+                <span class="n">dimension</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sides</span><span class="p">)</span>
+
+                <span class="c1"># Look for additional fields</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span><span class="p">:</span>
+                    <span class="n">starting_idx</span> <span class="o">=</span> <span class="n">dimension</span> <span class="o">+</span> <span class="mi">1</span>
+                    
+                    <span class="c1"># community/cluster label</span>
+                    <span class="n">default_cluster_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="s1">&#39;community&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+                    <span class="n">read_cluster_field</span> <span class="o">=</span> <span class="kc">True</span> <span class="ow">in</span> <span class="p">[</span>
+                        <span class="n">cls_field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span> <span class="k">for</span> <span class="n">cls_field</span> <span class="ow">in</span> <span class="n">default_cluster_fields</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">read_cluster_field</span><span class="p">:</span>
+                        <span class="n">cluster_field_mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">cf</span> <span class="ow">in</span> <span class="n">other_fields</span> <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">default_cluster_fields</span><span class="p">]</span>
+                        <span class="n">has_cluster_field</span> <span class="o">=</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">cluster_field_mask</span>
+                        <span class="k">if</span> <span class="n">has_cluster_field</span><span class="p">:</span>
+                            <span class="n">cluster_field_name</span> <span class="o">=</span> <span class="n">default_cluster_fields</span><span class="p">[</span><span class="n">cluster_field_mask</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">True</span><span class="p">)]</span>
+                            <span class="n">cidx</span> <span class="o">=</span> <span class="n">other_fields</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cluster_field_name</span><span class="p">)</span>
+                            
+                    <span class="n">read_neigh_field</span> <span class="o">=</span> <span class="kc">True</span> <span class="ow">in</span> <span class="p">[</span>
+                        <span class="n">ngh_field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span> <span class="k">for</span> <span class="n">ngh_field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_neighbors_fields</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">read_neigh_field</span><span class="p">:</span>
+                        <span class="n">neigh_field_mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">nf</span> <span class="ow">in</span> <span class="n">other_fields</span> <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_neighbors_fields</span><span class="p">]</span>
+                        <span class="n">has_neighbors_field</span> <span class="o">=</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">neigh_field_mask</span>
+                        <span class="k">if</span> <span class="n">has_neighbors_field</span><span class="p">:</span>
+                            <span class="n">neighbors_field_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_neighbors_fields</span><span class="p">[</span><span class="n">neigh_field_mask</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">True</span><span class="p">)]</span>
+                            <span class="n">nidx</span> <span class="o">=</span> <span class="n">other_fields</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">neighbors_field_name</span><span class="p">)</span>
+                            
+                    <span class="c1"># other additional fields</span>
+                    <span class="n">fields_to_read</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">fields_to_read_idx</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">default_cluster_fields</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_neighbors_fields</span><span class="p">]:</span>
+                            <span class="n">fidx</span> <span class="o">=</span> <span class="n">other_fields</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                            <span class="n">fields_to_read</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                            <span class="n">fields_to_read_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fidx</span><span class="p">)</span>
+
+                <span class="c1"># Loop over particles</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_particles</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="c1"># particle type</span>
+                    <span class="n">p_type</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="c1"># position (2D or 3D)</span>
+                    <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">p_pos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                        <span class="n">p_pos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+                    <span class="c1"># create the Particle object</span>
+                    <span class="n">particle</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">p_pos</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">p_type</span><span class="p">)</span>
+                    <span class="n">particle</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">n</span>
+                    <span class="c1"># set the additional fields</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">read_cluster_field</span> <span class="ow">and</span> <span class="n">has_cluster_field</span><span class="p">:</span>
+                            <span class="n">particle</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">starting_idx</span> <span class="o">+</span> <span class="n">cidx</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">read_neigh_field</span> <span class="ow">and</span> <span class="n">has_neighbors_field</span><span class="p">:</span>
+                            <span class="n">particle</span><span class="o">.</span><span class="n">nearest_neighbors</span> <span class="o">=</span> <span class="n">tipify</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">starting_idx</span> <span class="o">+</span> <span class="n">nidx</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fields_to_read</span><span class="p">,</span> <span class="n">fields_to_read_idx</span><span class="p">):</span>
+                            <span class="n">val</span> <span class="o">=</span> <span class="n">tipify</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">starting_idx</span> <span class="o">+</span> <span class="n">field_idx</span><span class="p">])</span>
+                            <span class="n">particle</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+                    <span class="c1"># add the particle to the system</span>
+                    <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">particle</span><span class="p">)</span>
+
+                <span class="c1"># Add system to trajectory</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parser_rumd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read the trajectory from a RUMD file and put </span>
+<span class="sd">        the different frames in a list of `System`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">gzip</span>
+
+        <span class="k">def</span> <span class="nf">_system_info</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Information on the system (dimension, fields, etc.)&quot;&quot;&quot;</span>
+            <span class="kn">import</span> <span class="nn">re</span>
+            <span class="c1"># loop over all properties</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+                <span class="c1"># search columns</span>
+                <span class="n">re_cols</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^columns=(.+)$&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="c1"># keep fields/columns for a later use</span>
+                <span class="k">if</span> <span class="n">re_cols</span><span class="p">:</span>
+                    <span class="n">fields</span> <span class="o">=</span> <span class="n">re_cols</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="c1"># search cell</span>
+                <span class="n">re_cell</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^(sim_box|boxLengths)=(.+)$&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">re_cell</span><span class="p">:</span>
+                    <span class="n">cell</span> <span class="o">=</span> <span class="n">re_cell</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                    <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">cell</span> <span class="k">if</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()]</span>
+            <span class="c1"># look for community/cluster field</span>
+            <span class="n">cluster_field</span> <span class="o">=</span> <span class="s1">&#39;community&#39;</span> <span class="ow">in</span> <span class="n">fields</span> <span class="ow">or</span> <span class="s1">&#39;cluster&#39;</span> <span class="ow">in</span> <span class="n">fields</span>
+            <span class="k">return</span> <span class="n">cell</span><span class="p">,</span> <span class="n">cluster_field</span>
+
+        <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">trajectory</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">firstline</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="c1"># Stop if EOF</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">firstline</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="c1"># Current frame</span>
+                <span class="n">n_particles</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">firstline</span><span class="p">)</span>
+                <span class="n">frame_info</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">sides</span><span class="p">,</span> <span class="n">cluster_field</span> <span class="o">=</span> <span class="n">_system_info</span><span class="p">(</span><span class="n">frame_info</span><span class="p">)</span>
+                <span class="n">cell</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">sides</span><span class="p">)</span>
+                <span class="n">system</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+                <span class="n">dimension</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sides</span><span class="p">)</span>
+
+                <span class="c1"># Loop over particles</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_particles</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="c1"># particle type</span>
+                    <span class="n">p_type</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="c1"># position (2D or 3D)</span>
+                    <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">p_pos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                        <span class="n">p_pos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+                    <span class="c1"># community/cluster</span>
+                    <span class="k">if</span> <span class="n">cluster_field</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">p_label</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                            <span class="n">p_label</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">p_label</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="c1"># create the Particle object</span>
+                    <span class="n">particle</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">p_pos</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">p_type</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">p_label</span><span class="p">)</span>
+                    <span class="n">particle</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">n</span>
+                    <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">particle</span><span class="p">)</span>
+
+                <span class="c1"># Add system to trajectory</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parser_atooms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">atooms.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span> <span class="k">as</span> <span class="n">_Trajectory</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="s1">&#39;No `atooms` module found.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Fill the native Trajectory using atooms Trajectory</span>
+        <span class="n">atooms_traj</span> <span class="o">=</span> <span class="n">_Trajectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fmt</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">atooms_sys</span> <span class="ow">in</span> <span class="n">atooms_traj</span><span class="p">:</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">atooms_sys</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">)</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">atooms_p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atooms_sys</span><span class="o">.</span><span class="n">particle</span><span class="p">):</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">atooms_p</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">spe</span> <span class="o">=</span> <span class="n">atooms_p</span><span class="o">.</span><span class="n">species</span>
+                <span class="n">particle</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">spe</span><span class="p">)</span>
+                <span class="n">particle</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">n</span>
+                <span class="c1"># additional fields</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_fields</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_neighbors_fields</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">atooms_p</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s1">&#39;neighbors&#39;</span><span class="p">)</span>
+                        <span class="n">particle</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s1">&#39;nearest_neighbors&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">atooms_p</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                        <span class="n">particle</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">particle</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+        <span class="n">atooms_traj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_parser_mdtraj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">mdtraj</span> <span class="k">as</span> <span class="nn">md</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="s1">&#39;No `mdtraj` module found.&#39;</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">md_traj</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">md_traj</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">md_traj</span><span class="o">.</span><span class="n">n_frames</span><span class="p">):</span>
+            <span class="n">input_cell</span> <span class="o">=</span> <span class="n">md_traj</span><span class="o">.</span><span class="n">unitcell_lengths</span>
+            <span class="k">assert</span> <span class="n">input_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;cell dimensions are needed to read the trajectory&#39;</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">input_cell</span><span class="p">[</span><span class="n">frame</span><span class="p">])</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="n">System</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">md_traj</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">):</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">md_traj</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">frame</span><span class="p">,</span> <span class="n">atom</span><span class="p">]</span>
+                <span class="n">spe</span> <span class="o">=</span> <span class="n">md_traj</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span>
+                <span class="c1"># virtual site</span>
+                <span class="k">if</span> <span class="n">spe</span> <span class="o">==</span> <span class="s1">&#39;VS&#39;</span><span class="p">:</span>
+                    <span class="n">spe</span> <span class="o">=</span> <span class="n">md_traj</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">particle</span> <span class="o">=</span> <span class="n">Particle</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">spe</span><span class="p">)</span>
+                <span class="n">particle</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">atom</span>
+                <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">particle</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_write_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">additional_fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xyz&#39;</span><span class="p">):</span>
+            <span class="n">output_path</span> <span class="o">+=</span> <span class="s1">&#39;.xyz&#39;</span>
+        <span class="c1"># deal with additional fields that are aliases</span>
+        <span class="n">processed_fields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">additional_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">aliases</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">processed_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aliases</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">processed_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">)))</span>
+                <span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;columns:id,pos,&#39;</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">processed_fields</span><span class="p">:</span>
+                    <span class="n">columns</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">,&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">columns</span> <span class="o">+</span> <span class="s1">&#39; cell:</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{:.</span><span class="si">{}</span><span class="s1">f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">)))</span>
+                <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{:.</span><span class="si">{}</span><span class="s1">f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_i</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">p_i</span> <span class="ow">in</span> <span class="n">particle</span><span class="o">.</span><span class="n">position</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">processed_fields</span><span class="p">:</span>
+                        <span class="n">attribute</span> <span class="o">=</span> <span class="n">particle</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+                            <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1"># /!\ RUMD does not seem to accept additional fields</span>
+    <span class="k">def</span> <span class="nf">_write_rumd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">gzip</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xyz.gz&#39;</span><span class="p">):</span>
+            <span class="n">output_path</span> <span class="o">+=</span> <span class="s1">&#39;.xyz.gz&#39;</span>
+        <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">system</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">):</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">)))</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;ioformat=1 dt=0.001 timeStepIndex=</span><span class="si">{}</span><span class="s1"> boxLengths=</span><span class="si">{}</span><span class="s1"> &#39;</span>
+                <span class="n">dimension</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">n_dimensions</span>
+                <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;columns=type,x,y</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="k">if</span> <span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;columns=type,x,y,z</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">header</span> <span class="o">+</span> <span class="s1">&#39;numTypes=</span><span class="si">{}</span><span class="s1"> mass=</span><span class="si">{}</span><span class="s1"> &#39;</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">header</span> <span class="o">+</span> <span class="n">columns</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span>
+                                         <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{:.</span><span class="si">{}</span><span class="s1">f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">),</span>
+                                         <span class="nb">len</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">),</span>
+                                         <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">)))</span>
+                <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">species_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{:.</span><span class="si">{}</span><span class="s1">f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_i</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">p_i</span> <span class="ow">in</span> <span class="n">particle</span><span class="o">.</span><span class="n">position</span><span class="p">))</span>
+                    <span class="c1"># no additional field</span>
+                    <span class="c1"># line += &#39;{} &#39;.format(particle.label)</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_write_atooms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">atooms.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span> <span class="k">as</span> <span class="n">_Trajectory</span>
+            <span class="kn">from</span> <span class="nn">atooms.system</span> <span class="kn">import</span> <span class="n">System</span> <span class="k">as</span> <span class="n">_System</span>
+            <span class="kn">from</span> <span class="nn">atooms.system</span> <span class="kn">import</span> <span class="n">Particle</span> <span class="k">as</span> <span class="n">_Particle</span>
+            <span class="kn">from</span> <span class="nn">atooms.system</span> <span class="kn">import</span> <span class="n">Cell</span> <span class="k">as</span> <span class="n">_Cell</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No `atooms` module found.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># open an output trajectory</span>
+        <span class="n">atooms_traj</span> <span class="o">=</span> <span class="n">_Trajectory</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+        <span class="c1"># additional fields</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;particle.species&#39;</span><span class="p">,</span> <span class="s1">&#39;particle.position&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;particle.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+        <span class="n">atooms_traj</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">variables</span>
+
+        <span class="c1"># write the output trajectory</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">system</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">):</span>
+            <span class="n">new_cell</span> <span class="o">=</span> <span class="n">_Cell</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">)</span>
+            <span class="n">new_system</span> <span class="o">=</span> <span class="n">_System</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">new_cell</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">particle</span><span class="o">.</span><span class="n">position</span>
+                <span class="n">spe</span> <span class="o">=</span> <span class="n">particle</span><span class="o">.</span><span class="n">species</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">particle</span><span class="o">.</span><span class="n">label</span>
+                <span class="n">new_particle</span> <span class="o">=</span> <span class="n">_Particle</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="n">spe</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+                <span class="c1"># additional fields</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_neighbors_fields</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">particle</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="s1">&#39;nearest_neighbors&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">particle</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                    <span class="n">new_particle</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="n">new_particle</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+                <span class="n">new_system</span><span class="o">.</span><span class="n">particle</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_particle</span><span class="p">)</span>
+            <span class="n">atooms_traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_system</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">atooms_traj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_write_mdtraj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Writing output trajectories with the MDTraj backend is currently impossible&#39;</span><span class="p">)</span>
+
+    <span class="c1"># TODO: check if always working</span>
+    <span class="c1"># TODO: handle fractions</span>
+    <span class="k">def</span> <span class="nf">_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">first</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">first</span> <span class="o">&lt;</span> <span class="n">nframes</span><span class="p">),</span> <span class="s1">&#39;invalid first frame.&#39;</span>
+        <span class="k">if</span> <span class="n">last</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">last</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">last</span> <span class="o">&lt;</span> <span class="n">nframes</span><span class="p">),</span> <span class="s1">&#39;invalid last frame.&#39;</span>
+            <span class="k">assert</span><span class="p">(</span><span class="n">first</span> <span class="o">&lt;=</span> <span class="n">last</span><span class="p">),</span> <span class="s1">&#39;first frame must be inferior to last frame.&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">nframes</span>
+        <span class="c1"># Remove unwanted frames</span>
+        <span class="n">all_frames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nframes</span><span class="p">))</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="n">all_frames</span><span class="p">[</span><span class="n">first</span><span class="p">:</span><span class="n">last</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
+        <span class="n">kept_systems</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="n">kept_systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="n">frame</span><span class="p">])</span>
+        <span class="c1"># Owerwrite non-sliced list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span> <span class="o">=</span> <span class="n">kept_systems</span>
+
+    <span class="k">def</span> <span class="nf">_make_species_numeral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Standardize the names of the species to [1, ..., N_species] by</span>
+<span class="sd">        changing the attribute `particle.species_id` of each particle in</span>
+<span class="sd">        the trajectory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">:</span>
+            <span class="n">distinct_species</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">particle</span><span class="p">:</span>
+                <span class="n">particle</span><span class="o">.</span><span class="n">species_id</span> <span class="o">=</span> <span class="n">distinct_species</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">species</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_systems</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rep</span> <span class="o">=</span> <span class="s1">&#39;Trajectory(filename=&quot;</span><span class="si">{}</span><span class="s1">&quot;, number_of_frames=</span><span class="si">{}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="n">rep</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__len__</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Joris Paret.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

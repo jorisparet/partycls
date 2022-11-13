@@ -3,6 +3,5 @@ _pdoc/
 build/
 dist/
 partycls.egg-info/
-partycls/
 tests/
 .coverage
