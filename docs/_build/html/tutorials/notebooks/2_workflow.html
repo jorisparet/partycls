@@ -91,9 +91,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
-      <li><span class="section-number">2. </span>Setting and running a workflow</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Setting and running a workflow</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/notebooks/2_workflow.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -213,10 +213,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -404,10 +405,10 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Workflow</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls import Workflow
 
-<span class="n">wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
-<span class="n">wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+wf = Workflow(&#39;data/kalj_N150.xyz&#39;)
+wf.run()
 </pre></div>
 </div>
 </div>
@@ -422,9 +423,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available string aliases for descriptors:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">descriptor_db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;- &quot;</span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s1">&quot;: </span><span class="si">{</span><span class="n">desc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Available string aliases for descriptors:&quot;)
+for alias, desc in Workflow.descriptor_db.items():
+    print(f&#39;- &quot;{alias}&quot;: {desc}&#39;)
 </pre></div>
 </div>
 </div>
@@ -470,9 +471,9 @@ Available string aliases for descriptors:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available string aliases for feature scaling:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="n">scaling</span> <span class="ow">in</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">scaling_db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;- &quot;</span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s1">&quot;: </span><span class="si">{</span><span class="n">scaling</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Available string aliases for feature scaling:&quot;)
+for alias, scaling in Workflow.scaling_db.items():
+    print(f&#39;- &quot;{alias}&quot;: {scaling}&#39;)
 </pre></div>
 </div>
 </div>
@@ -499,9 +500,9 @@ Available string aliases for feature scaling:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available string aliases for dim. reduction:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="n">redux</span> <span class="ow">in</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">dim_reduction_db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;- &quot;</span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s1">&quot;: </span><span class="si">{</span><span class="n">redux</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Available string aliases for dim. reduction:&quot;)
+for alias, redux in Workflow.dim_reduction_db.items():
+    print(f&#39;- &quot;{alias}&quot;: {redux}&#39;)
 </pre></div>
 </div>
 </div>
@@ -527,9 +528,9 @@ Available string aliases for dim. reduction:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available string aliases for dim. reduction:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">clustering_db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;- &quot;</span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s1">&quot;: </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Available string aliases for dim. reduction:&quot;)
+for alias, cls in Workflow.clustering_db.items():
+    print(f&#39;- &quot;{alias}&quot;: {cls}&#39;)
 </pre></div>
 </div>
 </div>
@@ -557,25 +558,25 @@ Available string aliases for dim. reduction:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
 
-<span class="c1"># Grid and average distribution</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">grid</span>
-<span class="n">p_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">average</span>
+# Grid and average distribution
+r = wf.descriptor.grid
+p_r = wf.descriptor.average
 
-<span class="c1"># Dataset: all the individual radial distributions of the particles</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">features</span>
-<span class="c1"># Distributions of the clusters</span>
-<span class="n">pk_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">centroids</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+# Dataset: all the individual radial distributions of the particles
+data = wf.descriptor.features
+# Distributions of the clusters
+pk_r = wf.clustering.centroids(data)
 
-<span class="c1"># Plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bulk&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">pk_r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=0&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">pk_r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Unnormalized radial distributions&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Plot
+plt.plot(r, p_r, c=&#39;k&#39;, ls=&#39;--&#39;, label=&#39;bulk&#39;)
+plt.plot(r, pk_r[0], c=&#39;b&#39;, label=&#39;k=0&#39;)
+plt.plot(r, pk_r[1], c=&#39;r&#39;, label=&#39;k=1&#39;)
+plt.xlabel(&#39;r&#39;)
+plt.ylabel(&#39;Unnormalized radial distributions&#39;)
+plt.legend(frameon=False)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -602,20 +603,20 @@ Available string aliases for dim. reduction:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Normalized g(r)</span>
-<span class="n">g_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">p_r</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
-<span class="n">g0_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pk_r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
-<span class="n">g1_r</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">descriptor</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pk_r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Normalized g(r)
+g_r = wf.descriptor.normalize(p_r, method=&#39;gr&#39;)
+g0_r = wf.descriptor.normalize(pk_r[0], method=&#39;gr&#39;)
+g1_r = wf.descriptor.normalize(pk_r[1], method=&#39;gr&#39;)
 
-<span class="c1"># Plot normalized g(r)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bulk&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g0_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=0&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g1_r</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;RDF&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Plot normalized g(r)
+plt.plot(r, g_r, c=&#39;k&#39;, ls=&#39;--&#39;, label=&#39;bulk&#39;)
+plt.plot(r, g0_r, c=&#39;b&#39;, label=&#39;k=0&#39;)
+plt.plot(r, g1_r, c=&#39;r&#39;, label=&#39;k=1&#39;)
+plt.xlabel(&#39;r&#39;)
+plt.ylabel(&#39;RDF&#39;)
+plt.ylim(bottom=0)
+plt.legend(frameon=False)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -631,9 +632,9 @@ Available string aliases for dim. reduction:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Populations:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">populations</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fractions;&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">fractions</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Labels:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&#39;Populations:&#39;, wf.populations)
+print(&#39;Fractions;&#39;, wf.fractions)
+print(&#39;Labels:&#39;, wf.labels)
 </pre></div>
 </div>
 </div>
@@ -663,8 +664,8 @@ Labels: [0 0 0 ... 1 1 1]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All possible types output files</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># All possible types output files
+print(wf.output_metadata.keys())
 </pre></div>
 </div>
 </div>
@@ -681,12 +682,12 @@ dict_keys([&#39;trajectory&#39;, &#39;log&#39;, &#39;centroids&#39;, &#39;labels
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Options for the output trajectory</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All options:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="s1">&#39;trajectory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Options for the output trajectory
+print(&quot;All options:\n&quot;, wf.output_metadata[&#39;trajectory&#39;].keys())
 
-<span class="c1"># Default values of some options</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Enable output:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="s1">&#39;trajectory&#39;</span><span class="p">][</span><span class="s1">&#39;enable&#39;</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Output format:&#39;</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">output_metadata</span><span class="p">[</span><span class="s1">&#39;trajectory&#39;</span><span class="p">][</span><span class="s1">&#39;fmt&#39;</span><span class="p">])</span>
+# Default values of some options
+print(&#39;\nEnable output:&#39;, wf.output_metadata[&#39;trajectory&#39;][&#39;enable&#39;])
+print(&#39;\nOutput format:&#39;, wf.output_metadata[&#39;trajectory&#39;][&#39;fmt&#39;])
 </pre></div>
 </div>
 </div>
@@ -708,9 +709,9 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf</span><span class="o">.</span><span class="n">set_output_metadata</span><span class="p">(</span><span class="s1">&#39;trajectory&#39;</span><span class="p">,</span>
-                       <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;my_traj.xyz.gz&#39;</span><span class="p">,</span>
-                       <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>wf.set_output_metadata(&#39;trajectory&#39;,
+                       filename=&#39;my_traj.xyz.gz&#39;,
+                       fmt=&#39;rumd&#39;)
 </pre></div>
 </div>
 </div>
@@ -720,7 +721,7 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">naming_convention</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(wf.naming_convention)
 </pre></div>
 </div>
 </div>
@@ -746,7 +747,7 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf</span><span class="o">.</span><span class="n">naming_convention</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{filename}</span><span class="s2">_</span><span class="si">{clustering}</span><span class="s2">_</span><span class="si">{descriptor}</span><span class="s2">&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>wf.naming_convention = &quot;{filename}_{clustering}_{descriptor}&quot;
 </pre></div>
 </div>
 </div>
@@ -765,13 +766,13 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls import Trajectory
 
-<span class="c1"># Load the trajectory</span>
-<span class="n">xtal_traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/dislocation_N8000.xyz&#39;</span><span class="p">)</span>
+# Load the trajectory
+xtal_traj = Trajectory(&#39;data/dislocation_N8000.xyz&#39;)
 
-<span class="c1"># Visualize the first (and only) frame</span>
-<span class="n">xtal_traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">)</span>
+# Visualize the first (and only) frame
+xtal_traj[0].show(backend=&#39;ovito&#39;)
 </pre></div>
 </div>
 </div>
@@ -788,24 +789,24 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">BondAngleDescriptor</span>
-<span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">PCA</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls.descriptors import BondAngleDescriptor
+from partycls import PCA
 
-<span class="c1"># Bond-angle descriptor</span>
-<span class="n">D_ba</span> <span class="o">=</span> <span class="n">BondAngleDescriptor</span><span class="p">(</span><span class="n">xtal_traj</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+# Bond-angle descriptor
+D_ba = BondAngleDescriptor(xtal_traj)
+X = D_ba.compute()
 
-<span class="c1"># Dimensionality reduction method</span>
-<span class="n">redux</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+# Dimensionality reduction method
+redux = PCA(n_components=2)
 
-<span class="c1"># Workflow</span>
-<span class="n">xtal_wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">xtal_traj</span><span class="p">,</span>
-                   <span class="n">descriptor</span><span class="o">=</span><span class="n">D_ba</span><span class="p">,</span>
-                   <span class="n">scaling</span><span class="o">=</span><span class="s1">&#39;zscore&#39;</span><span class="p">,</span>
-                   <span class="n">dim_reduction</span><span class="o">=</span><span class="n">redux</span><span class="p">,</span>
-                   <span class="n">clustering</span><span class="o">=</span><span class="s1">&#39;kmeans&#39;</span><span class="p">)</span>
-<span class="n">xtal_wf</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">n_init</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># clustering repetitions</span>
-<span class="n">xtal_wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+# Workflow
+xtal_wf = Workflow(xtal_traj,
+                   descriptor=D_ba,
+                   scaling=&#39;zscore&#39;,
+                   dim_reduction=redux,
+                   clustering=&#39;kmeans&#39;)
+xtal_wf.clustering.n_init = 100 # clustering repetitions
+xtal_wf.run()
 </pre></div>
 </div>
 </div>
@@ -818,18 +819,18 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
 
-<span class="c1"># Features in latent space and labels</span>
-<span class="n">X_red</span> <span class="o">=</span> <span class="n">xtal_wf</span><span class="o">.</span><span class="n">reduced_features</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">xtal_wf</span><span class="o">.</span><span class="n">labels</span>
+# Features in latent space and labels
+X_red = xtal_wf.reduced_features
+labels = xtal_wf.labels
 
-<span class="c1"># Scatter plot of latent space with clusters&#39; labels</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_red</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_red</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="n">labels</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\tilde</span><span class="si">{X}</span><span class="s2">_1$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\tilde</span><span class="si">{X}</span><span class="s2">_2$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Scatter plot of latent space with clusters&#39; labels
+c = np.array([&#39;tab:blue&#39;, &#39;tab:red&#39;])
+plt.scatter(X_red[:,0], X_red[:,1], c=c[labels], alpha=0.3)
+plt.xlabel(r&quot;$\tilde{X}_1$&quot;)
+plt.ylabel(r&quot;$\tilde{X}_2$&quot;)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -845,22 +846,22 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grid and centroids</span>
-<span class="n">theta</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">grid</span>
-<span class="n">C_k</span> <span class="o">=</span> <span class="n">xtal_wf</span><span class="o">.</span><span class="n">clustering</span><span class="o">.</span><span class="n">centroids</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Grid and centroids
+theta = D_ba.grid
+C_k = xtal_wf.clustering.centroids(X)
 
-<span class="c1"># Make centroids normalized bond angle distributions</span>
-<span class="n">q_0</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">C_k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
-<span class="n">q_1</span> <span class="o">=</span> <span class="n">D_ba</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">C_k</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="p">)</span>
+# Make centroids normalized bond angle distributions
+q_0 = D_ba.normalize(C_k[0], method=&#39;pdf&#39;)
+q_1 = D_ba.normalize(C_k[1], method=&#39;pdf&#39;)
 
-<span class="c1"># Bond-angle distributions</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">q_0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=0&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">q_1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;k=1&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Bond-angle, &#39;</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;$\theta$&#39;</span> <span class="o">+</span> <span class="s1">&#39; (deg.)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Bond-angle distribution, &#39;</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;$q(\theta)$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Bond-angle distributions
+plt.plot(theta, q_0, c=&#39;tab:blue&#39;, label=&#39;k=0&#39;)
+plt.plot(theta, q_1, c=&#39;tab:red&#39;, label=&#39;k=1&#39;)
+plt.legend(frameon=False)
+plt.xlabel(&#39;Bond-angle, &#39; + r&#39;$\theta$&#39; + &#39; (deg.)&#39;)
+plt.ylabel(&#39;Bond-angle distribution, &#39; + r&#39;$q(\theta)$&#39;)
+plt.ylim(bottom=0)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -877,8 +878,8 @@ Output format: xyz
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the system with labels</span>
-<span class="n">xtal_traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Show the system with labels
+xtal_traj[0].show(backend=&#39;ovito&#39;, color=&#39;label&#39;, palette=[(0,0,1), (1,0,0)])
 </pre></div>
 </div>
 </div>

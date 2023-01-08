@@ -75,9 +75,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../api.html">API</a> &raquo;</li>
-      <li>partycls package</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active">partycls package</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/jorisparet/partycls/edit/master/docs/source/partycls.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -396,7 +396,7 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dd><p>List of lengths for the sides of the cell.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -407,7 +407,7 @@ authored by <a class="reference external" href="https://www2.units.it/daniele.co
 <dd><p>Periodicity of the cell on each axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -498,7 +498,7 @@ is assumed.</p></li>
 override this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Dataset matrix for which to compute the clusters.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Dataset matrix for which to compute the clusters.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>None</p>
@@ -533,14 +533,14 @@ arbitrary dataset <code class="docutils literal notranslate"><span class="pre">X
 dataset used for the clustering.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Array of features (dataset) for which to compute the centroids.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Array of features (dataset) for which to compute the centroids.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>C_k</strong> – Cluster centroids. <code class="docutils literal notranslate"><span class="pre">C_k[n]</span></code> is the coordinates of the n-th cluster
 center.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -573,7 +573,7 @@ The predicted labels are updated in the attribute <code class="docutils literal 
 the current instance of <code class="docutils literal notranslate"><span class="pre">KMeans</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Dataset matrix for which to compute the clusters.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Dataset matrix for which to compute the clusters.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>None</p>
@@ -609,7 +609,7 @@ Gaussians. The predicted labels are updated in the attribute <code class="docuti
 current instance of <code class="docutils literal notranslate"><span class="pre">GaussianMixture</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Dataset matrix for which to compute the clusters.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Dataset matrix for which to compute the clusters.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>None</p>
@@ -660,7 +660,7 @@ on a dataset stored in a numpy array.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.dim_reduction.PCA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.dim_reduction.</span></span><span class="sig-name descname"><span class="pre">PCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whiten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterated_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_oversamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_iteration_normalizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/dim_reduction.html#PCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.dim_reduction.PCA" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.dim_reduction.PCA.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'pca'</span></em><a class="headerlink" href="#partycls.dim_reduction.PCA.symbol" title="Permalink to this definition"></a></dt>
@@ -678,13 +678,13 @@ on a dataset stored in a numpy array.</p>
 component analysis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Features in the reduced space.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -694,7 +694,7 @@ component analysis.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.dim_reduction.TSNE">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.dim_reduction.</span></span><span class="sig-name descname"><span class="pre">TSNE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perplexity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_exaggeration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_without_progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_grad_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'barnes_hut'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">square_distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'deprecated'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/dim_reduction.html#TSNE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.dim_reduction.TSNE" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TSNE</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TSNE</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.dim_reduction.TSNE.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'tsne'</span></em><a class="headerlink" href="#partycls.dim_reduction.TSNE.symbol" title="Permalink to this definition"></a></dt>
@@ -712,13 +712,13 @@ component analysis.</p>
 stochastic neighbor embedding.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Features in the reduced space.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -728,7 +728,7 @@ stochastic neighbor embedding.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.dim_reduction.LocallyLinearEmbedding">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.dim_reduction.</span></span><span class="sig-name descname"><span class="pre">LocallyLinearEmbedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eigen_solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hessian_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbors_algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/dim_reduction.html#LocallyLinearEmbedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.dim_reduction.LocallyLinearEmbedding" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.LocallyLinearEmbedding.html#sklearn.manifold.LocallyLinearEmbedding" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LocallyLinearEmbedding</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.manifold.LocallyLinearEmbedding.html#sklearn.manifold.LocallyLinearEmbedding" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LocallyLinearEmbedding</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.dim_reduction.LocallyLinearEmbedding.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'lle'</span></em><a class="headerlink" href="#partycls.dim_reduction.LocallyLinearEmbedding.symbol" title="Permalink to this definition"></a></dt>
@@ -746,13 +746,13 @@ stochastic neighbor embedding.</p>
 linear embedding.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Features in the reduced space.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -762,7 +762,7 @@ linear embedding.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.dim_reduction.AutoEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.dim_reduction.</span></span><span class="sig-name descname"><span class="pre">AutoEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(100,</span> <span class="pre">2,</span> <span class="pre">100)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/dim_reduction.html#AutoEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.dim_reduction.AutoEncoder" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.dim_reduction.AutoEncoder.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ae'</span></em><a class="headerlink" href="#partycls.dim_reduction.AutoEncoder.symbol" title="Permalink to this definition"></a></dt>
@@ -788,13 +788,13 @@ autoencoder. The dimension of the reduced space is the number of
 nodes in the bottleneck layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Features in the original space.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Features in the reduced space.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -809,7 +809,7 @@ array.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.feature_scaling.ZScore">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.feature_scaling.</span></span><span class="sig-name descname"><span class="pre">ZScore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/feature_scaling.html#ZScore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.feature_scaling.ZScore" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardScaler</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardScaler</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.feature_scaling.ZScore.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'zscore'</span></em><a class="headerlink" href="#partycls.feature_scaling.ZScore.symbol" title="Permalink to this definition"></a></dt>
@@ -826,13 +826,13 @@ array.</p>
 <dd><p>Standardize features by removing the mean and scaling to unit variance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Original features.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Original features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Scaled features.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -842,7 +842,7 @@ array.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.feature_scaling.MinMax">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.feature_scaling.</span></span><span class="sig-name descname"><span class="pre">MinMax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/feature_scaling.html#MinMax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.feature_scaling.MinMax" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MinMaxScaler</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MinMaxScaler</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.feature_scaling.MinMax.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'minmax'</span></em><a class="headerlink" href="#partycls.feature_scaling.MinMax.symbol" title="Permalink to this definition"></a></dt>
@@ -860,13 +860,13 @@ array.</p>
 is <span class="math notranslate nohighlight">\([0,1]\)</span>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Original features.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Original features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Scaled features.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -876,7 +876,7 @@ is <span class="math notranslate nohighlight">\([0,1]\)</span>).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.feature_scaling.MaxAbs">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.feature_scaling.</span></span><span class="sig-name descname"><span class="pre">MaxAbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/feature_scaling.html#MaxAbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.feature_scaling.MaxAbs" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxAbsScaler</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxAbsScaler</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.feature_scaling.MaxAbs.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'maxabs'</span></em><a class="headerlink" href="#partycls.feature_scaling.MaxAbs.symbol" title="Permalink to this definition"></a></dt>
@@ -893,13 +893,13 @@ is <span class="math notranslate nohighlight">\([0,1]\)</span>).</p>
 <dd><p>Scale each feature by its maximum absolute value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Original features.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Original features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Scaled features.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -909,7 +909,7 @@ is <span class="math notranslate nohighlight">\([0,1]\)</span>).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="partycls.feature_scaling.Robust">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">partycls.feature_scaling.</span></span><span class="sig-name descname"><span class="pre">Robust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_centering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_scaling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantile_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(25.0,</span> <span class="pre">75.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_variance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/partycls/feature_scaling.html#Robust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#partycls.feature_scaling.Robust" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler" title="(in scikit-learn v1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobustScaler</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobustScaler</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="partycls.feature_scaling.Robust.symbol">
 <span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'robust'</span></em><a class="headerlink" href="#partycls.feature_scaling.Robust.symbol" title="Permalink to this definition"></a></dt>
@@ -926,13 +926,13 @@ is <span class="math notranslate nohighlight">\([0,1]\)</span>).</p>
 <dd><p>Scale features using statistics that are robust to outliers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Original features.</p>
+<dd class="field-odd"><p><strong>X</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Original features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Scaled features.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -964,7 +964,7 @@ be useful to measure the agreement of two independent label assignments
 strategies on the same dataset when the real ground truth is not known.</p>
 <p>Be mindful that this function is an order of magnitude slower than other
 metrics, such as the Adjusted Rand Index.</p>
-<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#mutual-info-score" title="(in scikit-learn v1.1)"><span class="xref std std-ref">User Guide</span></a>.</p>
+<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#mutual-info-score" title="(in scikit-learn v1.2)"><span class="xref std std-ref">User Guide</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1056,7 +1056,7 @@ a permutation).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#adjusted-rand-score" title="(in scikit-learn v1.1)"><span class="xref std std-ref">User Guide</span></a>.</p>
+<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#adjusted-rand-score" title="(in scikit-learn v1.2)"><span class="xref std std-ref">User Guide</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1141,7 +1141,7 @@ is 2 <code class="docutils literal notranslate"><span class="pre">&lt;=</span> <
 <p>This function returns the Silhouette Coefficient for each sample.</p>
 <p>The best value is 1 and the worst value is -1. Values near 0 indicate
 overlapping clusters.</p>
-<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#silhouette-coefficient" title="(in scikit-learn v1.1)"><span class="xref std std-ref">User Guide</span></a>.</p>
+<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#silhouette-coefficient" title="(in scikit-learn v1.2)"><span class="xref std std-ref">User Guide</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1193,7 +1193,7 @@ To obtain the values for each sample, use <a class="reference internal" href="#p
 <p>The best value is 1 and the worst value is -1. Values near 0 indicate
 overlapping clusters. Negative values generally indicate that a sample has
 been assigned to the wrong cluster, as a different cluster is more similar.</p>
-<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#silhouette-coefficient" title="(in scikit-learn v1.1)"><span class="xref std std-ref">User Guide</span></a>.</p>
+<p>Read more in the <a class="reference external" href="https://scikit-learn.org/stable/modules/clustering.html#silhouette-coefficient" title="(in scikit-learn v1.2)"><span class="xref std std-ref">User Guide</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1209,7 +1209,7 @@ If <code class="docutils literal notranslate"><span class="pre">sample_size</spa
 <li><p><strong>random_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>RandomState instance</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Determines random number generation for selecting a subset of samples.
 Used when <code class="docutils literal notranslate"><span class="pre">sample_size</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">None</span></code>.
 Pass an int for reproducible results across multiple function calls.
-See <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.1)"><span class="xref std std-term">Glossary</span></a>.</p></li>
+See <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.2)"><span class="xref std std-term">Glossary</span></a>.</p></li>
 <li><p><strong>**kwds</strong> (<em>optional keyword parameters</em>) – Any further parameters are passed directly to the distance function.
 If using a scipy.spatial.distance metric, the parameters are still
 metric dependent. See the scipy docs for usage examples.</p></li>
@@ -1263,7 +1263,7 @@ available colormaps can be found in <code class="docutils literal notranslate"><
 <dd class="field-even"><p><strong>fig</strong> – Figure of the snapshot.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.6.0)">matplotlib.figure.Figure</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.6.2)">matplotlib.figure.Figure</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1393,7 +1393,7 @@ the labeling is based on the Shannon entropy of each cluster.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – Original labels.</p></li>
-<li><p><strong>centroids</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Cluster centroids.</p></li>
+<li><p><strong>centroids</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Cluster centroids.</p></li>
 <li><p><strong>func</strong> (function, default: <code class="docutils literal notranslate"><span class="pre">shannon_entropy</span></code>) – Function used to associate a numerical value to each cluster, to be
 used as sorting criterion. This function must accept a list or a
 one dimensional array as parameter (this parameter being the
@@ -1428,7 +1428,7 @@ like a radius, a cluster label, a list of neighbors, etc.</p>
 <dd><p>The position of the particle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1666,7 +1666,7 @@ This is ignored if <code class="docutils literal notranslate"><span class="pre">
 <dd class="field-even"><p><strong>to_dump</strong> – Array of the requested system property.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -1697,7 +1697,7 @@ given subset of particles specified by <code class="docutils literal notranslate
 <li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the property to set. This is considered to be a particle
 property by default, unless it starts with “cell”, e.g.
 “cell.side”.</p></li>
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, or </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
 will set the same value for all concerned particles. An instance
 of <code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> will assign a specific value to each
 particle. In this case, the size of <code class="docutils literal notranslate"><span class="pre">value</span></code> should respect the
@@ -2008,7 +2008,7 @@ trajectory or for a given subset of particles specified by <code class="docutils
 <li><p><strong>what</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the property to set. This is considered to be a particle
 property by default, unless it starts with <code class="docutils literal notranslate"><span class="pre">&quot;cell&quot;</span></code>, <em>e.g.</em>
 <code class="docutils literal notranslate"><span class="pre">&quot;cell.side&quot;</span></code>.</p></li>
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – Value(s) of the property to set. An instance of <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">float</span></code>
 will set the same value for all concerned particles. An instance
 of <code class="docutils literal notranslate"><span class="pre">list</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> will assign a specific value to each
 particle. In this case, the shape of <code class="docutils literal notranslate"><span class="pre">value</span></code> should respect the
@@ -2297,7 +2297,7 @@ the properties of all the output files.</p>
 Initial value is <code class="docutils literal notranslate"><span class="pre">None</span></code> if features were not computed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2309,7 +2309,7 @@ Initial value is <code class="docutils literal notranslate"><span class="pre">No
 Equal to <code class="docutils literal notranslate"><span class="pre">None</span></code> if no scaling is applied to the features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2321,7 +2321,7 @@ Equal to <code class="docutils literal notranslate"><span class="pre">None</span
 technique. Equal to <code class="docutils literal notranslate"><span class="pre">None</span></code> if no reduction is applied to the features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>

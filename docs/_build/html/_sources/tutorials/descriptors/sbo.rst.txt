@@ -7,7 +7,7 @@ Smoothed bond-orientational descriptor
 Definition
 ----------
 
-This is a smooth version of the :doc:`bo`, in which the coefficients :math:`q_{lm}(i)` are multiplied by a weighting function :math:`f(r)` that depends on the radial distance :math:`r` between the central particle :math:`i` and other surrounding particles :math:`j`, where :math:`j` can be any particle in the system (*i.e.* not necessarily a nearest neighbors of :math:`i`).
+This is a smooth version of the :doc:`bo`, in which the coefficients :math:`q_{lm}(i)` are multiplied by a weighting function :math:`f(r)` that depends on the radial distance :math:`r` between the central particle :math:`i` and other surrounding particles :math:`j`, where :math:`j` can be any particle in the system (*i.e.* not necessarily a nearest neighbors of :math:`i`) :cite:`coslovich_2022`.
 
 The smoothed complex coefficients are given by
 
@@ -123,3 +123,10 @@ We now instantiate a :py:class:`SmoothedBondOrientationalDescriptor <partycls.de
 
 - ``grid`` shows the grid of orders :math:`\{ l_n \}`.
 - ``feature vectors`` shows the first three feature vectors :math:`X^\mathrm{SBO}(1)`, :math:`X^\mathrm{SBO}(2)` and :math:`X^\mathrm{SBO}(3)` corresponding to the grid.
+
+References
+----------
+
+.. bibliography:: ../../references.bib
+	:style: unsrt
+	:filter: docname in docnames

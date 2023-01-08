@@ -69,6 +69,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#demonstration">Demonstration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="labo.html">Locally averaged bond-orientational descriptor</a></li>
@@ -99,9 +100,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
-      <li>Smoothed bond-orientational descriptor</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Smoothed bond-orientational descriptor</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/descriptors/sbo.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -143,7 +144,7 @@
 </div>
 <section id="definition">
 <h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading"></a></h2>
-<p>This is a smooth version of the <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a>, in which the coefficients <span class="math notranslate nohighlight">\(q_{lm}(i)\)</span> are multiplied by a weighting function <span class="math notranslate nohighlight">\(f(r)\)</span> that depends on the radial distance <span class="math notranslate nohighlight">\(r\)</span> between the central particle <span class="math notranslate nohighlight">\(i\)</span> and other surrounding particles <span class="math notranslate nohighlight">\(j\)</span>, where <span class="math notranslate nohighlight">\(j\)</span> can be any particle in the system (<em>i.e.</em> not necessarily a nearest neighbors of <span class="math notranslate nohighlight">\(i\)</span>).</p>
+<p>This is a smooth version of the <a class="reference internal" href="bo.html"><span class="doc">Bond-orientational descriptor</span></a>, in which the coefficients <span class="math notranslate nohighlight">\(q_{lm}(i)\)</span> are multiplied by a weighting function <span class="math notranslate nohighlight">\(f(r)\)</span> that depends on the radial distance <span class="math notranslate nohighlight">\(r\)</span> between the central particle <span class="math notranslate nohighlight">\(i\)</span> and other surrounding particles <span class="math notranslate nohighlight">\(j\)</span>, where <span class="math notranslate nohighlight">\(j\)</span> can be any particle in the system (<em>i.e.</em> not necessarily a nearest neighbors of <span class="math notranslate nohighlight">\(i\)</span>) <span id="id1">[<a class="reference internal" href="#id11" title="Daniele Coslovich, Robert L. Jack, and Joris Paret. Dimensionality reduction of local structure in glassy binary mixtures. The Journal of Chemical Physics, 157(20):204503, November 2022. doi:10.1063/5.0128265.">1</a>]</span>.</p>
 <p>The smoothed complex coefficients are given by</p>
 <div class="math notranslate nohighlight">
 \[q_{lm}^{S}(i) = \frac{1}{Z(i)} \sum_{j=1}^{N} f({r}_{ij}) Y_{lm}(\hat{\mathbf{r}}_{ij}) ,\]</div>
@@ -223,8 +224,8 @@ is <code class="docutils literal notranslate"><span class="pre">False</span></co
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;manually set cuttofs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>computed cutoffs:
  [1.4500000000000004, 1.3500000000000003, 1.3500000000000003, 1.2500000000000002]
 manually set cutoffs:
@@ -258,8 +259,8 @@ manually set cutoffs:
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;feature vectors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text"><strong>Output:</strong></span><a class="headerlink" href="#id13" title="Permalink to this code"></a></div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid:
  [2 4 6 8]
 feature vectors:
@@ -273,6 +274,16 @@ feature vectors:
 <li><p><code class="docutils literal notranslate"><span class="pre">grid</span></code> shows the grid of orders <span class="math notranslate nohighlight">\(\{ l_n \}\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">feature</span> <span class="pre">vectors</span></code> shows the first three feature vectors <span class="math notranslate nohighlight">\(X^\mathrm{SBO}(1)\)</span>, <span class="math notranslate nohighlight">\(X^\mathrm{SBO}(2)\)</span> and <span class="math notranslate nohighlight">\(X^\mathrm{SBO}(3)\)</span> corresponding to the grid.</p></li>
 </ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<div class="docutils container" id="id2">
+<dl class="citation">
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Daniele Coslovich, Robert L. Jack, and Joris Paret. Dimensionality reduction of local structure in glassy binary mixtures. <em>The Journal of Chemical Physics</em>, 157(20):204503, November 2022. <a class="reference external" href="https://doi.org/10.1063/5.0128265">doi:10.1063/5.0128265</a>.</p>
+</dd>
+</dl>
+</div>
 </section>
 </section>
 

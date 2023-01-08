@@ -92,9 +92,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
-      <li><span class="section-number">3. </span>Setting and computing descriptors</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>Setting and computing descriptors</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/notebooks/3_descriptors.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -214,10 +214,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -430,14 +431,14 @@ s_N(x_0) &amp; s_N(x_1) &amp; ... &amp; s_N(x_M)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">StructuralDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls import Trajectory
+from partycls.descriptors import StructuralDescriptor
 
-<span class="c1"># Open a trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+# Open a trajectory
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, last=20)
 
-<span class="c1"># Create a descriptor</span>
-<span class="n">D</span> <span class="o">=</span> <span class="n">StructuralDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+# Create a descriptor
+D = StructuralDescriptor(traj)
 </pre></div>
 </div>
 </div>
@@ -454,8 +455,8 @@ s_N(x_0) &amp; s_N(x_1) &amp; ... &amp; s_N(x_M)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A tuple with two elements</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># A tuple with two elements
+print(len(D.groups))
 </pre></div>
 </div>
 </div>
@@ -472,11 +473,11 @@ s_N(x_0) &amp; s_N(x_1) &amp; ... &amp; s_N(x_M)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of frames in the trajectory</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of frames in the trajectory:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Number of frames in the trajectory
+print(&#39;Number of frames in the trajectory:&#39;, len(traj))
 
-<span class="c1"># Length of the groups</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Length of the groups:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+# Length of the groups
+print(&#39;Length of the groups:&#39;, len(D.groups[0]), len(D.groups[1]))
 </pre></div>
 </div>
 </div>
@@ -494,14 +495,14 @@ Length of the groups: 21 21
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The first 3 particles in the first frame of group 0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A few particles in the first frame of group 0:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># The first 3 particles in the first frame of group 0
+print(&quot;A few particles in the first frame of group 0:&quot;)
+for i in range(3):
+    print(D.groups[0][0][i])
 
-<span class="c1"># All particles are in both groups by default.</span>
-<span class="c1"># Number of particles in the groups of the first frame</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group sizes (first frame) :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+# All particles are in both groups by default.
+# Number of particles in the groups of the first frame
+print(&#39;\nGroup sizes (first frame) :&#39;, len(D.groups[0][0]), len(D.groups[1][0]))
 </pre></div>
 </div>
 </div>
@@ -523,7 +524,7 @@ Group sizes (first frame) : 150 150
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group sizes (total) :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&#39;Group sizes (total) :&#39;, D.group_size(0), D.group_size(1))
 </pre></div>
 </div>
 </div>
@@ -548,11 +549,11 @@ Group sizes (total) : 3150 3150
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a filter on group 0</span>
-<span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Add a filter on group 0
+D.add_filter(&quot;species == &#39;B&#39;&quot;, group=0)
 
-<span class="c1"># Active filters</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Active filters:&quot;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">active_filters</span><span class="p">)</span>
+# Active filters
+print(&quot;Active filters:&quot;, D.active_filters)
 </pre></div>
 </div>
 </div>
@@ -569,18 +570,18 @@ Active filters: [(&#34;particle.species == &#39;B&#39;&#34;, 0)]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Group sizes in the first frame</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group 0 :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;(first frame)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group 1 :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;(first frame)&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Group sizes in the first frame
+print(&#39;Size of group 0 :&#39;, len(D.groups[0][0]), &#39;(first frame)&#39;)
+print(&#39;Size of group 1 :&#39;, len(D.groups[1][0]), &#39;(first frame)&#39;)
 
-<span class="c1"># Group sizes over all frames</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Size of group 0 :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Size of group 1 :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
+# Group sizes over all frames
+print(&#39;\nSize of group 0 :&#39;, D.group_size(0), &#39;(total)&#39;)
+print(&#39;Size of group 1 :&#39;, D.group_size(1), &#39;(total)&#39;)
 
-<span class="c1"># Fractions of particles in the groups</span>
-<span class="c1">#  (over the whole trajectory)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group 0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group 1 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;(total)&#39;</span><span class="p">)</span>
+# Fractions of particles in the groups
+#  (over the whole trajectory)
+print(&#39;\nGroup 0 fraction :&#39;, D.group_fraction(0), &#39;(total)&#39;)
+print(&#39;Group 1 fraction :&#39;, D.group_fraction(1), &#39;(total)&#39;)
 </pre></div>
 </div>
 </div>
@@ -604,12 +605,12 @@ Group 1 fraction : 1.0 (total)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Active filters:&quot;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">active_filters</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>D.add_filter(&quot;species == &#39;A&#39;&quot;, group=1)
+print(&quot;Active filters:&quot;, D.active_filters)
 
-<span class="c1"># New fractions</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Group #0 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group #1 fraction :&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+# New fractions
+print(&#39;\nGroup #0 fraction :&#39;, D.group_fraction(0))
+print(&#39;Group #1 fraction :&#39;, D.group_fraction(1))
 </pre></div>
 </div>
 </div>
@@ -633,13 +634,13 @@ Group #1 fraction : 0.8
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove filter on group #0</span>
-<span class="n">D</span><span class="o">.</span><span class="n">clear_filters</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group 0 fraction:&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Remove filter on group #0
+D.clear_filters(0)
+print(&#39;Group 0 fraction:&#39;, D.group_fraction(0))
 
-<span class="c1"># Remove all filters (both groups #0 and #1)</span>
-<span class="n">D</span><span class="o">.</span><span class="n">clear_all_filters</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Group 1 fraction:&#39;</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">group_fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+# Remove all filters (both groups #0 and #1)
+D.clear_all_filters()
+print(&#39;Group 1 fraction:&#39;, D.group_fraction(1))
 </pre></div>
 </div>
 </div>
@@ -661,16 +662,16 @@ Group 1 fraction: 1.0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Species of the particles in group #0</span>
-<span class="n">species</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">get_group_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="c1"># 10 first particles in the first frame</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">species</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Species of the particles in group #0
+species = D.get_group_property(&#39;species&#39;, group=0)
+# 10 first particles in the first frame
+print(species[0][0:10])
 
-<span class="c1"># Keep only B particles in group #0</span>
-<span class="n">D</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
-<span class="c1"># 10 first particles in the first frame</span>
-<span class="n">species</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">get_group_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">species</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+# Keep only B particles in group #0
+D.add_filter(&quot;species == &#39;B&#39;&quot;)
+# 10 first particles in the first frame
+species = D.get_group_property(&#39;species&#39;, group=0)
+print(species[0][0:10])
 </pre></div>
 </div>
 </div>
@@ -688,14 +689,14 @@ Group 1 fraction: 1.0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positions of particles in group #0</span>
-<span class="n">pos_0</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Positions of particles in group #0
+pos_0 = D.dump(&#39;pos&#39;, 0)
 
-<span class="c1"># Radii of particles in group #1</span>
-<span class="n">rad_1</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+# Radii of particles in group #1
+rad_1 = D.dump(&#39;radius&#39;, 1)
 
-<span class="c1"># Position x of particles in group #0</span>
-<span class="n">x_0</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+# Position x of particles in group #0
+x_0 = D.dump(&#39;x&#39;, 0)
 </pre></div>
 </div>
 </div>
@@ -719,16 +720,16 @@ Group 1 fraction: 1.0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">RadialDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls.descriptors import RadialDescriptor
 
-<span class="c1"># Open a trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+# Open a trajectory
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, last=20)
 
-<span class="c1"># Radial descriptor between r=0 and r=2 with bin size dr=0.1</span>
-<span class="n">D_r</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Radial descriptor between r=0 and r=2 with bin size dr=0.1
+D_r = RadialDescriptor(traj, bounds=(0,2), dr=0.1, verbose=True)
 
-<span class="c1"># Grid</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Grid of distances:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+# Grid
+print(&#39;Grid of distances:\n&#39;, D_r.grid)
 </pre></div>
 </div>
 </div>
@@ -747,8 +748,8 @@ Grid of distances:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the features (this also sets D_r.features)</span>
-<span class="n">X_r</span> <span class="o">=</span> <span class="n">D_r</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Compute the features (this also sets D_r.features)
+X_r = D_r.compute()
 </pre></div>
 </div>
 </div>
@@ -766,14 +767,14 @@ Computing gr descriptor: 100%|████████████████�
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
 
-<span class="c1"># Plot the average descriptor</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">D_r</span><span class="o">.</span><span class="n">average</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$r$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Average&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Plot the average descriptor
+plt.plot(D_r.grid, D_r.average)
+plt.xlabel(r&quot;$r$&quot;)
+plt.ylabel(&quot;Average&quot;)
+plt.ylim(bottom=0)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -789,17 +790,17 @@ Computing gr descriptor: 100%|████████████████�
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A-A correlation</span>
-<span class="n">D_r_AA</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">D_r_AA</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">D_r_AA</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">D_r_AA</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># A-A correlation
+D_r_AA = RadialDescriptor(traj, bounds=(0,2), dr=0.1)
+D_r_AA.add_filter(&quot;species == &#39;A&#39;&quot;, 0)
+D_r_AA.add_filter(&quot;species == &#39;A&#39;&quot;, 1)
+_ = D_r_AA.compute()
 
-<span class="c1"># A-B correlation</span>
-<span class="n">D_r_AB</span> <span class="o">=</span> <span class="n">RadialDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">D_r_AB</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">D_r_AB</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">D_r_AB</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+# A-B correlation
+D_r_AB = RadialDescriptor(traj, bounds=(0,2), dr=0.1)
+D_r_AB.add_filter(&quot;species == &#39;A&#39;&quot;, 0)
+D_r_AB.add_filter(&quot;species == &#39;B&#39;&quot;, 1)
+_ = D_r_AB.compute()
 </pre></div>
 </div>
 </div>
@@ -814,20 +815,20 @@ Computing gr descriptor: 100%|████████████████�
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># /!\ Normalization depends on the descriptor in this case</span>
-<span class="n">g</span>    <span class="o">=</span> <span class="n">D_r</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
-<span class="n">g_AA</span> <span class="o">=</span> <span class="n">D_r_AA</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r_AA</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
-<span class="n">g_AB</span> <span class="o">=</span> <span class="n">D_r_AB</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">D_r_AB</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gr&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># /!\ Normalization depends on the descriptor in this case
+g    = D_r.normalize(D_r.average, method=&#39;gr&#39;)
+g_AA = D_r_AA.normalize(D_r_AA.average, method=&#39;gr&#39;)
+g_AB = D_r_AB.normalize(D_r_AB.average, method=&#39;gr&#39;)
 
-<span class="c1"># Plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r_AA</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g_AA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A-A&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_r_AB</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">g_AB</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A-B&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$r$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$g(r)$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Plot
+plt.plot(D_r.grid, g, label=&#39;total&#39;)
+plt.plot(D_r_AA.grid, g_AA, label=&#39;A-A&#39;)
+plt.plot(D_r_AB.grid, g_AB, label=&#39;A-B&#39;)
+plt.xlabel(r&quot;$r$&quot;)
+plt.ylabel(r&quot;$g(r)$&quot;)
+plt.ylim(bottom=0)
+plt.legend(frameon=False)
+plt.show()
 </pre></div>
 </div>
 </div>
@@ -848,13 +849,13 @@ Computing gr descriptor: 100%|████████████████�
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s2">&quot;data/wahn_N1000.xyz&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open a trajectory
+traj = Trajectory(&quot;data/wahn_N1000.xyz&quot;)
 
-<span class="c1"># Compute the nearest neighbors</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s1">&#39;fixed&#39;</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.425</span><span class="p">,</span> <span class="mf">1.325</span><span class="p">,</span> <span class="mf">1.325</span><span class="p">,</span> <span class="mf">1.275</span><span class="p">]</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">()</span>
+# Compute the nearest neighbors
+traj.nearest_neighbors_method = &#39;fixed&#39;
+traj.nearest_neighbors_cutoffs = [1.425, 1.325, 1.325, 1.275]
+traj.compute_nearest_neighbors()
 </pre></div>
 </div>
 </div>
@@ -867,14 +868,14 @@ Computing gr descriptor: 100%|████████████████�
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">BondOrientationalDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls.descriptors import BondOrientationalDescriptor
 
-<span class="c1"># Descriptor</span>
-<span class="n">D_bo</span> <span class="o">=</span> <span class="n">BondOrientationalDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Descriptor
+D_bo = BondOrientationalDescriptor(traj, verbose=True)
 
-<span class="c1"># Filters</span>
-<span class="n">D_bo</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">D_bo</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+# Filters
+D_bo.add_filter(&quot;species == &#39;B&#39;&quot;, group=0)
+D_bo.add_filter(&quot;species == &#39;B&#39;&quot;, group=1)
 </pre></div>
 </div>
 </div>
@@ -883,12 +884,12 @@ Computing gr descriptor: 100%|████████████████�
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grid of orders</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Grid of orders:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Grid of orders
+print(&#39;Grid of orders:\n&#39;, D_bo.grid)
 
-<span class="c1"># Use specific values instead</span>
-<span class="n">D_bo</span><span class="o">.</span><span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New grid of orders:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+# Use specific values instead
+D_bo.orders = [4,6]
+print(&#39;New grid of orders:\n&#39;, D_bo.grid)
 </pre></div>
 </div>
 </div>
@@ -908,8 +909,8 @@ New grid of orders:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the structural features</span>
-<span class="n">X_bo</span> <span class="o">=</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Compute the structural features
+X_bo = D_bo.compute()
 </pre></div>
 </div>
 </div>
@@ -943,12 +944,12 @@ Warning: found 2 NaN sample(s) in the array of features.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter out NaN elements</span>
-<span class="n">X_bo_clean</span> <span class="o">=</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">discard_nans</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Filter out NaN elements
+X_bo_clean = D_bo.discard_nans()
 
-<span class="c1"># Size of the original and filtered datasets</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of samples (unfiltered):&quot;</span><span class="p">,</span> <span class="n">X_bo</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of samples (filtered):&quot;</span><span class="p">,</span> <span class="n">X_bo_clean</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+# Size of the original and filtered datasets
+print(&quot;Number of samples (unfiltered):&quot;, X_bo.shape[0])
+print(&quot;Number of samples (filtered):&quot;, X_bo_clean.shape[0])
 </pre></div>
 </div>
 </div>
@@ -967,10 +968,10 @@ Number of samples (filtered): 498
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D_bo</span><span class="o">.</span><span class="n">accept_nans</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>D_bo.accept_nans = False
 
-<span class="c1"># Size of the array of features</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of samples:&quot;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+# Size of the array of features
+print(&quot;\nNumber of samples:&quot;, D_bo.features.shape[0])
 </pre></div>
 </div>
 </div>
@@ -994,7 +995,7 @@ Number of samples: 498
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max. number of neighbors per particle:&quot;</span><span class="p">,</span> <span class="n">D_bo</span><span class="o">.</span><span class="n">max_num_neighbors</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Max. number of neighbors per particle:&quot;, D_bo.max_num_neighbors)
 </pre></div>
 </div>
 </div>
@@ -1024,12 +1025,12 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/wahn_N1000.xyz&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Trajectory
+traj = Trajectory(&#39;data/wahn_N1000.xyz&#39;)
 
-<span class="c1"># Change the radius sizes (for visualization purpose)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
+# Change the radius sizes (for visualization purpose)
+traj.set_property(&#39;radius&#39;, 0.5, &quot;species == &#39;A&#39;&quot;)
+traj.set_property(&#39;radius&#39;, 0.4, &quot;species == &#39;B&#39;&quot;)
 </pre></div>
 </div>
 </div>
@@ -1039,20 +1040,20 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Workflow</span>
-<span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">DscribeDescriptor</span>
-<span class="kn">from</span> <span class="nn">dscribe.descriptors</span> <span class="kn">import</span> <span class="n">SOAP</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls import Workflow
+from partycls.descriptors import DscribeDescriptor
+from dscribe.descriptors import SOAP
 
-<span class="c1"># SOAP descriptor</span>
-<span class="n">D</span> <span class="o">=</span> <span class="n">DscribeDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">SOAP</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rcut</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">nmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">rbf</span><span class="o">=</span><span class="s1">&#39;gto&#39;</span><span class="p">)</span>
+# SOAP descriptor
+D = DscribeDescriptor(traj, SOAP, sigma=0.1, rcut=3.0, lmax=7, nmax=7, rbf=&#39;gto&#39;)
 
-<span class="c1"># Workflow</span>
-<span class="c1"># Z-score + PCA with 2 components (default) + K-Means</span>
-<span class="n">wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="s1">&#39;z-score&#39;</span><span class="p">,</span>
-              <span class="n">dim_reduction</span><span class="o">=</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span>
-              <span class="n">clustering</span><span class="o">=</span><span class="s1">&#39;K-means&#39;</span><span class="p">)</span>
-<span class="n">wf</span><span class="o">.</span><span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+# Workflow
+# Z-score + PCA with 2 components (default) + K-Means
+wf = Workflow(traj, D, scaling=&#39;z-score&#39;,
+              dim_reduction=&#39;PCA&#39;,
+              clustering=&#39;K-means&#39;)
+wf.n_init = 10
+wf.run()
 </pre></div>
 </div>
 </div>
@@ -1062,8 +1063,8 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First snapshot: species</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># First snapshot: species
+traj[0].show(backend=&#39;ovito&#39;, color=&#39;species&#39;)
 </pre></div>
 </div>
 </div>
@@ -1079,8 +1080,8 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Second snapshot: labels</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Second snapshot: labels
+traj[0].show(backend=&#39;ovito&#39;, color=&#39;label&#39;)
 </pre></div>
 </div>
 </div>
@@ -1105,9 +1106,9 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the name of the species</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Change the name of the species
+traj.set_property(&#39;species&#39;, &#39;C&#39;, &quot;species == &#39;A&#39;&quot;)
+traj.set_property(&#39;species&#39;, &#39;H&#39;, &quot;species == &#39;B&#39;&quot;)
 </pre></div>
 </div>
 </div>
@@ -1116,18 +1117,18 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.descriptors</span> <span class="kn">import</span> <span class="n">DscribeChemicalDescriptor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls.descriptors import DscribeChemicalDescriptor
 
-<span class="c1"># Descriptor</span>
-<span class="n">D</span> <span class="o">=</span> <span class="n">DscribeChemicalDescriptor</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">SOAP</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rcut</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">nmax</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">rbf</span><span class="o">=</span><span class="s1">&#39;gto&#39;</span><span class="p">)</span>
+# Descriptor
+D = DscribeChemicalDescriptor(traj, SOAP, sigma=0.1, rcut=3.0, lmax=7, nmax=7, rbf=&#39;gto&#39;)
 
-<span class="c1"># Workflow</span>
-<span class="c1"># Z-score + PCA with 2 components (default) + K-Means</span>
-<span class="n">wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="s1">&#39;z-score&#39;</span><span class="p">,</span>
-              <span class="n">dim_reduction</span><span class="o">=</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span>
-              <span class="n">clustering</span><span class="o">=</span><span class="s1">&#39;K-means&#39;</span><span class="p">)</span>
-<span class="n">wf</span><span class="o">.</span><span class="n">n_init</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">wf</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+# Workflow
+# Z-score + PCA with 2 components (default) + K-Means
+wf = Workflow(traj, D, scaling=&#39;z-score&#39;,
+              dim_reduction=&#39;PCA&#39;,
+              clustering=&#39;K-means&#39;)
+wf.n_init = 10
+wf.run()
 </pre></div>
 </div>
 </div>
@@ -1136,8 +1137,8 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First snapshot: species</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># First snapshot: species
+traj[0].show(backend=&#39;ovito&#39;, color=&#39;species&#39;)
 </pre></div>
 </div>
 </div>
@@ -1153,8 +1154,8 @@ Max. number of neighbors per particle: 66
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Second snapshot: labels</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Second snapshot: labels
+traj[0].show(backend=&#39;ovito&#39;, color=&#39;label&#39;)
 </pre></div>
 </div>
 </div>

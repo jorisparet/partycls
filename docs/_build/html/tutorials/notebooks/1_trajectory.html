@@ -97,9 +97,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../tutorials.html">Tutorials</a> &raquo;</li>
-      <li><span class="section-number">1. </span>Manipulating a trajectory</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../tutorials.html">Tutorials</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1. </span>Manipulating a trajectory</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/jorisparet/partycls/edit/master/docs/tutorials/notebooks/1_trajectory.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -219,10 +219,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -402,9 +403,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls import Trajectory
 
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;)
 </pre></div>
 </div>
 </div>
@@ -413,8 +414,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of frames in the trajectory</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of frames:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Number of frames in the trajectory
+print(&quot;Number of frames:&quot;, len(traj))
 </pre></div>
 </div>
 </div>
@@ -437,9 +438,9 @@ Number of frames: 101
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the 10 first frames only</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of frames:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Read the 10 first frames only
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, first=0, last=9)
+print(&quot;Number of frames:&quot;, len(traj))
 </pre></div>
 </div>
 </div>
@@ -456,7 +457,7 @@ Number of frames: 10
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(traj[0])
 </pre></div>
 </div>
 </div>
@@ -474,7 +475,7 @@ System(number_of_particles=150, species=[&#39;A&#39; &#39;B&#39;], chemical_frac
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(traj[0].cell)
 </pre></div>
 </div>
 </div>
@@ -491,11 +492,11 @@ Cell(side=[5. 5. 5.], periodic=[ True  True  True], volume=125.0)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cell</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cell</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cell = traj[0].cell
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sides:&quot;</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">side</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Periodicity:&quot;</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">periodic</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Volume:&quot;</span><span class="p">,</span> <span class="n">cell</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span>
+print(&quot;Sides:&quot;, cell.side)
+print(&quot;Periodicity:&quot;, cell.periodic)
+print(&quot;Volume:&quot;, cell.volume)
 </pre></div>
 </div>
 </div>
@@ -514,8 +515,8 @@ Volume: 125.0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dimension</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spatial dimension:&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n_dimensions</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Dimension
+print(&quot;Spatial dimension:&quot;, traj[0].n_dimensions)
 </pre></div>
 </div>
 </div>
@@ -532,9 +533,9 @@ Spatial dimension: 3
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First two particles in the system</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># First two particles in the system
+print(traj[0].particle[0])
+print(traj[0].particle[1])
 </pre></div>
 </div>
 </div>
@@ -556,16 +557,16 @@ Particle(position=[ 0.29098   1.24579  -2.495344], species=A, label=-1, radius=0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a XYZ trajectory</span>
-<span class="c1">#  default value for `fmt` is &quot;xyz&quot;</span>
-<span class="n">traj_xyz</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span>
-                      <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj_xyz</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open a XYZ trajectory
+#  default value for `fmt` is &quot;xyz&quot;
+traj_xyz = Trajectory(&#39;data/kalj_N150.xyz&#39;,
+                      fmt=&#39;xyz&#39;)
+print(traj_xyz)
 
-<span class="c1"># Open a RUMD trajectory</span>
-<span class="n">traj_rumd</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N256_rho1.185_rumd.xyz.gz&#39;</span><span class="p">,</span>
-                       <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj_rumd</span><span class="p">)</span>
+# Open a RUMD trajectory
+traj_rumd = Trajectory(&#39;data/kalj_N256_rho1.185_rumd.xyz.gz&#39;,
+                       fmt=&#39;rumd&#39;)
+print(traj_rumd)
 </pre></div>
 </div>
 </div>
@@ -591,13 +592,13 @@ Trajectory(filename=&#34;data/kalj_N256_rho1.185_rumd.xyz.gz&#34;, number_of_fra
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a LAMMPS trajectory using atooms</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/lj_N256_rho1.0.atom&#39;</span><span class="p">,</span>
-                  <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;lammps&#39;</span><span class="p">,</span>
-                  <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;atooms&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open a LAMMPS trajectory using atooms
+traj = Trajectory(&#39;data/lj_N256_rho1.0.atom&#39;,
+                  fmt=&#39;lammps&#39;,
+                  backend=&#39;atooms&#39;)
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of frames:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+print(&#39;Number of frames:&#39;, len(traj))
+print(traj[0])
 </pre></div>
 </div>
 </div>
@@ -619,12 +620,12 @@ System(number_of_particles=256, species=[&#39;1&#39;], chemical_fractions=[1.], 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a PDB trajectory using MDTraj</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/frame0.pdb&#39;</span><span class="p">,</span>
-                  <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;mdtraj&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open a PDB trajectory using MDTraj
+traj = Trajectory(&#39;data/frame0.pdb&#39;,
+                  backend=&#39;mdtraj&#39;)
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of frames:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+print(&#39;Number of frames:&#39;, len(traj))
+print(traj[0])
 </pre></div>
 </div>
 </div>
@@ -647,16 +648,16 @@ System(number_of_particles=22, species=[&#39;C&#39; &#39;H&#39; &#39;N&#39; &#39
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">sys</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, last=0)
+sys = traj[0]
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of spatial dimensions :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">n_dimensions</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of particles :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">particle</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Density :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">density</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Distinct species :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">distinct_species</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Chemical fractions :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">chemical_fractions</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pairs of species :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">pairs_of_species</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pairs of species ID :&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">pairs_of_species_id</span><span class="p">)</span>
+print(&#39;Number of spatial dimensions :&#39;, sys.n_dimensions)
+print(&#39;Number of particles :&#39;, len(sys.particle))
+print(&#39;Density :&#39;, sys.density)
+print(&#39;Distinct species :&#39;, sys.distinct_species)
+print(&#39;Chemical fractions :&#39;, sys.chemical_fractions)
+print(&#39;Pairs of species :&#39;, sys.pairs_of_species)
+print(&#39;Pairs of species ID :&#39;, sys.pairs_of_species_id)
 </pre></div>
 </div>
 </div>
@@ -698,16 +699,16 @@ Pairs of species ID : [(1, 1), (1, 2), (2, 1), (2, 2)]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Isolate the first particle in the trajectory</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Isolate the first particle in the trajectory
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, last=9)
+p = traj[0].particle[0]
 
-<span class="c1"># Some properties</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Position:&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Species:&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Radius:&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Label:&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Neighbors:&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">nearest_neighbors</span><span class="p">)</span>
+# Some properties
+print(&#39;Position:&#39;, p.position)
+print(&#39;Species:&#39;, p.species)
+print(&#39;Radius:&#39;, p.radius)
+print(&#39;Label:&#39;, p.label)
+print(&#39;Neighbors:&#39;, p.nearest_neighbors)
 </pre></div>
 </div>
 </div>
@@ -728,11 +729,11 @@ Neighbors: None
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Before:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Before:\n&quot;, p)
 
-<span class="c1"># Set a mass</span>
-<span class="n">p</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">After:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+# Set a mass
+p.mass = 0.5
+print(&quot;\nAfter:\n&quot;, p)
 </pre></div>
 </div>
 </div>
@@ -756,12 +757,12 @@ After:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positions of all the particles in the first frame</span>
-<span class="n">pos_0</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Type:&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">pos_0</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Positions of all the particles in the first frame
+pos_0 = traj[0].get_property(&#39;position&#39;)
+print(&quot;\nType:&quot;, type(pos_0), &quot;\n&quot;)
 
-<span class="c1"># Show the positions of the 5 first particles</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pos_0</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+# Show the positions of the 5 first particles
+print(pos_0[0:5])
 </pre></div>
 </div>
 </div>
@@ -787,16 +788,16 @@ Type: &lt;class &#39;numpy.ndarray&#39;&gt;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positions of all the particles in the trajectory</span>
-<span class="n">all_pos</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Type:&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">all_pos</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Positions of all the particles in the trajectory
+all_pos = traj.get_property(&#39;position&#39;)
+print(&quot;Type:&quot;, type(all_pos))
 
-<span class="c1"># `all_pos` should have length 10</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of frames:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_pos</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+# `all_pos` should have length 10
+print(&quot;\nNumber of frames:&quot;, len(all_pos), &quot;\n&quot;)
 
-<span class="c1"># Positions in the first frame is the first element of the dumped list</span>
-<span class="c1"># It must be identical to the previous cell</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">all_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+# Positions in the first frame is the first element of the dumped list
+# It must be identical to the previous cell
+print(all_pos[0][0:5])
 </pre></div>
 </div>
 </div>
@@ -821,14 +822,14 @@ Number of frames: 10
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use &quot;dump&quot; instead of &quot;get_property&quot; (equivalent)</span>
-<span class="n">pos_0</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">)</span>
-<span class="n">x_0</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="c1"># x position only</span>
-<span class="n">spe_0</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;spe&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Use &quot;dump&quot; instead of &quot;get_property&quot; (equivalent)
+pos_0 = traj[0].dump(&#39;pos&#39;)
+x_0 = traj[0].dump(&#39;x&#39;) # x position only
+spe_0 = traj[0].dump(&#39;spe&#39;)
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positions:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pos_0</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Positions (x):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">x_0</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Species:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">spe_0</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+print(&quot;Positions:\n&quot;, pos_0[0:5])
+print(&quot;\nPositions (x):\n&quot;, x_0[0:5])
+print(&quot;\nSpecies:\n&quot;, spe_0[0:5])
 </pre></div>
 </div>
 </div>
@@ -856,11 +857,11 @@ Species:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls</span> <span class="kn">import</span> <span class="n">particle_aliases</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls import particle_aliases
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available aliases:&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">particle_aliases</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;- &quot;</span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s1">&quot;: &quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+print(&quot;Available aliases:&quot;)
+for alias, prop in particle_aliases.items():
+    print(f&#39;- &quot;{alias}&quot;: &quot;{prop}&quot;&#39;)
 </pre></div>
 </div>
 </div>
@@ -907,14 +908,14 @@ Available aliases:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positions of the particles on the left side of the box (x &lt; 0.0)</span>
-<span class="n">left</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s1">&#39;particle.position[0] &lt; 0.0&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Left particles:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">left</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Positions of the particles on the left side of the box (x &lt; 0.0)
+left = traj[0].dump(&#39;pos&#39;, subset=&#39;particle.position[0] &lt; 0.0&#39;)
+print(&quot;Left particles:\n&quot;, left[0:10])
 
-<span class="c1"># Positions of the particles on the right side of the box (x &gt; 0.0)</span>
-<span class="c1">#  (use an alias for the x position)</span>
-<span class="n">right</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s1">&#39;x &gt; 0.0&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Right particles:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">right</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+# Positions of the particles on the right side of the box (x &gt; 0.0)
+#  (use an alias for the x position)
+right = traj[0].dump(&#39;pos&#39;, subset=&#39;x &gt; 0.0&#39;)
+print(&quot;\nRight particles:\n&quot;, right[0:10])
 </pre></div>
 </div>
 </div>
@@ -953,8 +954,8 @@ Right particles:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Volumes of the cells for all the frames in the trajectory</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Volumes:&#39;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;cell.volume&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Volumes of the cells for all the frames in the trajectory
+print(&#39;Volumes:&#39;, traj.dump(&#39;cell.volume&#39;))
 </pre></div>
 </div>
 </div>
@@ -993,12 +994,12 @@ B 0.0 0.0 0.2 0.25
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying an additional field</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">,</span>
-                  <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Specifying an additional field
+traj = Trajectory(&#39;data/traj_with_masses.xyz&#39;,
+                  additional_fields=[&#39;mass&#39;])
 
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Masses:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">))</span> <span class="c1"># `mass` is a valid alias</span>
+print(traj[0].particle[0])
+print(&#39;\nMasses:\n&#39;, traj.dump(&#39;mass&#39;)) # `mass` is a valid alias
 </pre></div>
 </div>
 </div>
@@ -1034,12 +1035,12 @@ B 0.0 0.0 0.1 0.4 0,2
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying an additional field</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_neighbors.xyz&#39;</span><span class="p">,</span>
-                  <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;neighbors&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Specifying an additional field
+traj = Trajectory(&#39;data/traj_with_neighbors.xyz&#39;,
+                  additional_fields=[&#39;neighbors&#39;])
 
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Neighbors:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;neighbors&#39;</span><span class="p">))</span> <span class="c1"># `neighbors` is a valid alias</span>
+print(traj[0].particle[0])
+print(&#39;\nNeighbors:\n&#39;, traj.dump(&#39;neighbors&#39;)) # `neighbors` is a valid alias
 </pre></div>
 </div>
 </div>
@@ -1065,7 +1066,7 @@ Neighbors:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Radii:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&#39;\nRadii:\n&#39;, traj.dump(&#39;radius&#39;))
 </pre></div>
 </div>
 </div>
@@ -1094,19 +1095,19 @@ Radii:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">,</span>
-                  <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>traj = Trajectory(&#39;data/traj_with_masses.xyz&#39;,
+                  additional_fields=[&#39;mass&#39;])
 
-<span class="c1"># Current `mass` property</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Masses from file:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle.mass&#39;</span><span class="p">))</span>
+# Current `mass` property
+print(&quot;Masses from file:\n&quot;, traj.dump(&#39;particle.mass&#39;))
 
-<span class="c1"># Change it for all the particles</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">New masses for all particles:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle.mass&#39;</span><span class="p">))</span>
+# Change it for all the particles
+traj.set_property(&#39;mass&#39;, 1.0)
+print(&quot;\nNew masses for all particles:\n&quot;, traj.dump(&#39;particle.mass&#39;))
 
-<span class="c1"># Change it for a given subset</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">New masses for B particles only:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle.mass&#39;</span><span class="p">))</span>
+# Change it for a given subset
+traj.set_property(&#39;mass&#39;, 0.75, subset=&quot;species == &#39;B&#39;&quot;)
+print(&quot;\nNew masses for B particles only:\n&quot;, traj.dump(&#39;particle.mass&#39;))
 </pre></div>
 </div>
 </div>
@@ -1131,18 +1132,18 @@ New masses for B particles only:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2 frames, 3 particles (same as the whole trajectory)</span>
-<span class="n">masses</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],</span>
-          <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">]]</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="n">masses</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New masses for all particles:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle.mass&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># 2 frames, 3 particles (same as the whole trajectory)
+masses = [[0.5, 0.25, 0.25],
+          [0.6, 0.35, 0.35]]
+traj.set_property(&#39;mass&#39;, masses)
+print(&quot;New masses for all particles:\n&quot;, traj.dump(&#39;particle.mass&#39;))
 
-<span class="c1"># 2 frames, 2 particles</span>
-<span class="c1">#  (because there are only B particles in the subset)</span>
-<span class="n">masses</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.23</span><span class="p">,</span> <span class="mf">0.34</span><span class="p">],</span>
-          <span class="p">[</span><span class="mf">0.56</span><span class="p">,</span> <span class="mf">0.67</span><span class="p">]]</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="n">masses</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">New masses for B particles only:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle.mass&#39;</span><span class="p">))</span>
+# 2 frames, 2 particles
+#  (because there are only B particles in the subset)
+masses = [[0.23, 0.34],
+          [0.56, 0.67]]
+traj.set_property(&#39;mass&#39;, masses, &quot;species == &#39;B&#39;&quot;)
+print(&quot;\nNew masses for B particles only:\n&quot;, traj.dump(&#39;particle.mass&#39;))
 </pre></div>
 </div>
 </div>
@@ -1163,9 +1164,9 @@ New masses for B particles only:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>traj[0].set_property(&#39;mass&#39;, 0.75)
+traj[1].set_property(&#39;mass&#39;, [0.15, 0.25, 0.35])
+print(traj.dump(&#39;mass&#39;))
 </pre></div>
 </div>
 </div>
@@ -1182,11 +1183,11 @@ New masses for B particles only:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a new property</span>
-<span class="n">energies</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.43</span><span class="p">,</span> <span class="mf">0.37</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.44</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">]]</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="n">energies</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energies:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="s1">&#39;particle.energy&#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Set a new property
+energies = [[0.51, 0.43, 0.37],
+            [0.55, 0.44, 0.41]]
+traj.set_property(&#39;energy&#39;, energies)
+print(&quot;Energies:\n&quot;, traj.dump(&#39;particle.energy&#39;))
 </pre></div>
 </div>
 </div>
@@ -1223,14 +1224,14 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute nearest neighbors</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;fixed&quot;</span><span class="p">,</span>
-                               <span class="n">cutoffs</span><span class="o">=</span><span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.075</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Compute nearest neighbors
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, last=0)
+traj.compute_nearest_neighbors(method=&quot;fixed&quot;,
+                               cutoffs=[1.45, 1.25, 1.25, 1.075])
 
-<span class="c1"># Show the nearest neighbors of the first five particles</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">nearest_neighbors</span><span class="p">)</span>
+# Show the nearest neighbors of the first five particles
+for i in range(5):
+    print(traj[0].particle[i].nearest_neighbors)
 </pre></div>
 </div>
 </div>
@@ -1251,15 +1252,15 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute nearest neighbors</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_method</span> <span class="o">=</span> <span class="s2">&quot;fixed&quot;</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">nearest_neighbors_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.075</span><span class="p">]</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">compute_nearest_neighbors</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Compute nearest neighbors
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;, last=0)
+traj.nearest_neighbors_method = &quot;fixed&quot;
+traj.nearest_neighbors_cutoffs = [1.45, 1.25, 1.25, 1.075]
+traj.compute_nearest_neighbors()
 
-<span class="c1"># Show the nearest neighbors of the first five particles</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">nearest_neighbors</span><span class="p">)</span>
+# Show the nearest neighbors of the first five particles
+for i in range(5):
+    print(traj[0].particle[i].nearest_neighbors)
 </pre></div>
 </div>
 </div>
@@ -1295,16 +1296,16 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
-<span class="c1"># Adjust radii</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open a trajectory file
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;)
+# Adjust radii
+traj.set_property(&#39;radius&#39;, 0.5, &quot;species == &#39;A&#39;&quot;)
+traj.set_property(&#39;radius&#39;, 0.4, &quot;species == &#39;B&#39;&quot;)
 
-<span class="c1"># Dhow the first three frames</span>
-<span class="c1"># (all frames are shown if `frames` is not specified)</span>
-<span class="c1"># default coloring code uses the species</span>
-<span class="n">figs</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">frames</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Dhow the first three frames
+# (all frames are shown if `frames` is not specified)
+# default coloring code uses the species
+figs = traj.show(frames=[0,1,2], backend=&#39;matplotlib&#39;, show=True)
 </pre></div>
 </div>
 </div>
@@ -1334,9 +1335,9 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the 5-th frame, change the view, use custom colors</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="s1">&#39;back&#39;</span><span class="p">,</span>
-                   <span class="n">palette</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Show the 5-th frame, change the view, use custom colors
+fig = traj[4].show(backend=&#39;matplotlib&#39;, view=&#39;back&#39;,
+                   palette=[&#39;y&#39;, &#39;g&#39;], show=True)
 </pre></div>
 </div>
 </div>
@@ -1351,13 +1352,13 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Color particles according to an arbitrary *discrete* particle property</span>
-<span class="c1"># (for the example, we randomly assign labels to the particles)</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">88</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">104</span><span class="p">,</span><span class="mi">113</span><span class="p">,</span><span class="mi">125</span><span class="p">,</span><span class="mi">137</span><span class="p">,</span><span class="mi">142</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">pi</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
-    <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Color particles according to an arbitrary *discrete* particle property
+# (for the example, we randomly assign labels to the particles)
+traj[0].set_property(&#39;label&#39;, 0)
+p = [0,15,28,37,41,56,63,72,88,90,104,113,125,137,142]
+for pi in p:
+    traj[0].particle[pi].label = 1
+fig = traj[0].show(color=&#39;label&#39;, palette=[&#39;b&#39;, &#39;r&#39;], show=True)
 </pre></div>
 </div>
 </div>
@@ -1372,13 +1373,13 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">normal</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from numpy.random import normal
 
-<span class="c1"># Color particles according to an arbitrary *continuous* particle property</span>
-<span class="c1"># (for the example, we randomly assign a random float property to the particles)</span>
-<span class="n">rn</span> <span class="o">=</span> <span class="p">[</span><span class="n">normal</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">150</span><span class="p">)]</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rn</span><span class="p">)</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Color particles according to an arbitrary *continuous* particle property
+# (for the example, we randomly assign a random float property to the particles)
+rn = [normal() for i in range(150)]
+traj[0].set_property(&#39;random&#39;, rn)
+fig = traj[0].show(color=&#39;random&#39;, cmap=&#39;viridis&#39;, show=True)
 </pre></div>
 </div>
 </div>
@@ -1397,16 +1398,16 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">partycls.trajectory</span> <span class="kn">import</span> <span class="n">Trajectory</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from partycls.trajectory import Trajectory
 
-<span class="c1"># Open a trajectory file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/kalj_N150.xyz&#39;</span><span class="p">)</span>
-<span class="c1"># Adjust radii</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
+# Open a trajectory file
+traj = Trajectory(&#39;data/kalj_N150.xyz&#39;)
+# Adjust radii
+traj.set_property(&#39;radius&#39;, 0.5, &quot;species == &#39;A&#39;&quot;)
+traj.set_property(&#39;radius&#39;, 0.4, &quot;species == &#39;B&#39;&quot;)
 
-<span class="c1"># Show the first frame</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">)</span>
+# Show the first frame
+traj[0].show(backend=&#39;ovito&#39;)
 </pre></div>
 </div>
 </div>
@@ -1422,18 +1423,18 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Color particles according to an arbitrary *discrete* particle property</span>
-<span class="c1"># (for the example, we randomly assign labels to the particles)</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">88</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">104</span><span class="p">,</span><span class="mi">113</span><span class="p">,</span><span class="mi">125</span><span class="p">,</span><span class="mi">137</span><span class="p">,</span><span class="mi">142</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">pi</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
-    <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Color particles according to an arbitrary *discrete* particle property
+# (for the example, we randomly assign labels to the particles)
+traj[0].set_property(&#39;label&#39;, 0)
+p = [0,15,28,37,41,56,63,72,88,90,104,113,125,137,142]
+for pi in p:
+    traj[0].particle[pi].label = 1
 
-<span class="c1"># /!\ Colors must be in RGB format</span>
-<span class="n">ovito_colors</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.2</span><span class="p">)]</span>
+# /!\ Colors must be in RGB format
+ovito_colors = [(0.1,0.25,0.9), (0.8,0.15,0.2)]
 
-<span class="c1"># Show the first frame</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">ovito_colors</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+# Show the first frame
+traj[0].show(color=&#39;label&#39;, backend=&#39;ovito&#39;, palette=ovito_colors, view=&#39;bottom&#39;)
 </pre></div>
 </div>
 </div>
@@ -1449,13 +1450,13 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">normal</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from numpy.random import normal
 
-<span class="c1"># color particles according to an arbitrary *continuous* particle property</span>
-<span class="c1"># (for the example, we randomly assign a random float property to the particles)</span>
-<span class="n">rn</span> <span class="o">=</span> <span class="p">[</span><span class="n">normal</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">150</span><span class="p">)]</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rn</span><span class="p">)</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;ovito&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">)</span>
+# color particles according to an arbitrary *continuous* particle property
+# (for the example, we randomly assign a random float property to the particles)
+rn = [normal() for i in range(150)]
+traj[0].set_property(&#39;random&#39;, rn)
+traj[0].show(color=&#39;random&#39;, backend=&#39;ovito&#39;, cmap=&#39;plasma&#39;)
 </pre></div>
 </div>
 </div>
@@ -1479,13 +1480,13 @@ pair of species.</p></li>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open a trajectory file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/dislocation.xyz&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open a trajectory file
+traj = Trajectory(&#39;data/dislocation.xyz&#39;)
 
-<span class="c1"># Show the first frame</span>
-<span class="c1"># Default coloring code uses the species</span>
-<span class="n">view</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;3dmol&#39;</span><span class="p">)</span>
-<span class="n">view</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+# Show the first frame
+# Default coloring code uses the species
+view = traj[0].show(backend=&#39;3dmol&#39;)
+view.show()
 </pre></div>
 </div>
 </div>
@@ -1562,14 +1563,14 @@ viewer_16668961614203215.render();
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Color particles according to an arbitrary *discrete* particle property</span>
-<span class="c1"># (for the example, we randomly assign labels to the particles)</span>
-<span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">20</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">pi</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
-    <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">particle</span><span class="p">[</span><span class="n">pi</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">view</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;3dmol&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">])</span>
-<span class="n">view</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Color particles according to an arbitrary *discrete* particle property
+# (for the example, we randomly assign labels to the particles)
+traj[0].set_property(&#39;label&#39;, 0)
+p = [0,5,11,16,20]
+for pi in p:
+    traj[0].particle[pi].label = 1
+view = traj[0].show(backend=&#39;3dmol&#39;, color=&#39;label&#39;, palette=[&#39;blue&#39;, &#39;red&#39;])
+view.show()
 </pre></div>
 </div>
 </div>
@@ -1653,11 +1654,11 @@ viewer_166689616142977.render();
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open XYZ file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open XYZ file
+traj = Trajectory(&#39;data/traj_with_masses.xyz&#39;)
 
-<span class="c1"># Write the trajectory in RUMD format (as a new file)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz.gz&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;rumd&#39;</span><span class="p">)</span>
+# Write the trajectory in RUMD format (as a new file)
+traj.write(&#39;data/traj_with_masses.xyz.gz&#39;, fmt=&#39;rumd&#39;)
 </pre></div>
 </div>
 </div>
@@ -1666,15 +1667,15 @@ viewer_166689616142977.render();
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open XYZ file</span>
-<span class="n">traj</span> <span class="o">=</span> <span class="n">Trajectory</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses.xyz&#39;</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Open XYZ file
+traj = Trajectory(&#39;data/traj_with_masses.xyz&#39;, additional_fields=[&#39;mass&#39;])
 
-<span class="c1"># Set custom values for radii of the particles</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;species == &#39;A&#39;&quot;</span><span class="p">)</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;species == &#39;B&#39;&quot;</span><span class="p">)</span>
+# Set custom values for radii of the particles
+traj.set_property(&#39;radius&#39;, 0.5, &quot;species == &#39;A&#39;&quot;)
+traj.set_property(&#39;radius&#39;, 0.4, &quot;species == &#39;B&#39;&quot;)
 
-<span class="c1"># Write a new file with both masses and radii</span>
-<span class="n">traj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;data/traj_with_masses_and_radii.xyz&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">additional_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">])</span>
+# Write a new file with both masses and radii
+traj.write(&#39;data/traj_with_masses_and_radii.xyz&#39;, fmt=&#39;xyz&#39;, additional_fields=[&#39;mass&#39;, &#39;radius&#39;])
 </pre></div>
 </div>
 </div>
