@@ -109,6 +109,13 @@ class System:
         return numpy.array(sorted(set(self.get_property('species'))))
 
     @property
+    def distinct_species_id(self):
+        """
+        Sorted ``numpy.ndarray`` of all the distinct species indices in the system.
+        """
+        return numpy.array(sorted(set(self.get_property('species_id'))))
+
+    @property
     def pairs_of_species(self):
         """
         List of all the possible pairs of species.
