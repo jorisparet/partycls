@@ -13,4 +13,5 @@ from .radial_bo import RadialBondOrientationalDescriptor, BoattiniDescriptor
 from .tetrahedrality import TetrahedralDescriptor
 from .compactness import CompactnessDescriptor, TongTanakaDescriptor
 from .coordination import CoordinationDescriptor
+from .physics_inspired import PhysicsInspiredDescriptor, JungDescriptor
 from .dscribe import DscribeDescriptor, DscribeChemicalDescriptor

@@ -906,5 +906,259 @@ CONTAINS
   END SUBROUTINE compactness
 
   
+  ! !!!!!!!!!! PHYSICS-INSPIRED DESCRIPTOR !!!!!!!!!!
+  ! SUBROUTINE physics_inspired_all(L, neigh, neigh_number, &
+  !                                 pos_0, pos_all, &
+  !                                 spe_0, spe_all, spe_target, use_all, &
+  !                                 epot_0, epot_all, &
+  !                                 perimeter_0, perimeter_all, &
+  !                                 M, box, S)
+  !   ! parameters
+  !   INTEGER(8), INTENT(in) :: neigh(:,:), neigh_number(:), M
+  !   INTEGER(8), INTENT(in) :: spe_0(:), spe_all(:), spe_target
+  !   REAL(8), INTENT(in)    :: L, pos_0(:,:), pos_all(:,:)
+  !   REAL(8), INTENT(in)    :: epot_0(:), epot_all(:)
+  !   REAL(8), INTENT(in)    :: perimeter_0(:), perimeter_all(:), box(:)
+  !   LOGICAL(8), INTENT(in) :: use_all
+  !   REAL(8), INTENT(out)   :: S(SIZE(pos_0,2), 4)
+  !   ! variables
+  !   REAL(8)                :: hbox(SIZE(box)), r_ij(SIZE(box)), d_ij, Lm, exp_ij, exp_j(M+1)
+  !   REAL(8)                :: rho_i, epot_i, epot_j(M+1), perimeter_i, var_epot_i !epot_j(MAXVAL(neigh_number)),
+  !   INTEGER(8)             :: i, nn_i, j, nj, idx_j, spe_j
+  !   ! computation
+  !   hbox = box / 2.0
+  !   Lm = MAX(L, TINY(Lm))
+  !   S = 0.0
+  !   DO i=1,SIZE(spe_0)
+  !     nn_i = neigh_number(i)
+  !     rho_i = 0.0
+  !     epot_i = 0.0
+  !     perimeter_i = 0.0
+  !     var_epot_i = 0.0
+  !     epot_j = 0.0
+  !     ! loop over neighboring particles
+  !     nj = 0
+  !     DO j=1,nn_i
+  !       idx_j = neigh(i,j) + 1 ! python index shift
+  !       spe_j = spe_all(idx_j)
+  !       IF (spe_j == spe_target .OR. use_all) THEN
+  !         nj = nj + 1
+  !         r_ij(:) = pos_0(:,i) - pos_all(:,idx_j)
+  !         CALL pbc(r_ij, box, hbox)
+  !         d_ij = SQRT(SUM(r_ij**2))
+  !         exp_ij = EXP(-d_ij / Lm)
+  !         rho_i = rho_i + exp_ij
+  !         epot_i = epot_i + epot_all(idx_j) * exp_ij
+  !         perimeter_i = perimeter_i + perimeter_all(idx_j) * exp_ij
+  !         epot_j(nj) = epot_all(idx_j)
+  !         exp_j(nj) = exp_ij
+  !       END IF
+  !     END DO
+  !     ! include or exclude `i` based on its species
+  !     IF (spe_0(i) == spe_target .OR. use_all) THEN
+  !       nj = nj + 1
+  !       epot_j(nj) = epot_0(i)
+  !       exp_j(nj) = 1.0
+  !       rho_i = rho_i + 1.0
+  !       epot_i = epot_i + epot_0(i)
+  !       perimeter_i = perimeter_i + perimeter_0(i)
+  !     END IF
+  !     ! normalize
+  !     epot_i = epot_i / rho_i
+  !     perimeter_i = perimeter_i / rho_i
+  !     var_epot_i = SUM( (epot_j(1:nj) - epot_i)**2.0 * exp_j(1:nj) ) / rho_i
+  !     ! fill S
+  !     S(i,1) = rho_i
+  !     S(i,2) = epot_i
+  !     S(i,3) = perimeter_i
+  !     S(i,4) = var_epot_i
+  !   END DO
+  ! END SUBROUTINE physics_inspired_all
+
+
+  ! !!!!!!!!!! PHYSICS-INSPIRED DESCRIPTOR !!!!!!!!!!
+  ! SUBROUTINE physics_inspired(lengths, pos_0, pos_1, &
+  !                             spe_1, distinct_spe, &
+  !                             epot_1, &
+  !                             cell_1, &
+  !                             box, Sk_i)
+  !   ! parameters
+  !   REAL(8), INTENT(in)    :: lengths(:), pos_0(:,:), pos_1(:,:), box(:)
+  !   INTEGER(8), INTENT(in) :: spe_1(:), distinct_spe(:)
+  !   REAL(8), INTENT(in)    :: epot_1(:), cell_1(:)
+  !   REAL(8), INTENT(out)   :: Sk_i( SIZE(pos_0,2), 4 * SIZE(lengths) * (SIZE(distinct_spe) + 1) )
+  !   ! variables
+  !   REAL(8) :: hbox(SIZE(box)), rho_i(SIZE(lengths))
+  !   REAL(8) :: epot_i(SIZE(lengths)*SIZE(distinct_spe))
+  !   REAL(8) :: cell_i(SIZE(lengths)*SIZE(distinct_spe))
+  !   REAL(8) :: var_epot_i(SIZE(lengths)*SIZE(distinct_spe))
+  !   REAL(8) :: exp_j(SIZE(spe_1))
+  !   REAL(8) :: r_ij(SIZE(pos_0,1)), d_ij, exp_ij(SIZE(lengths))
+  !   INTEGER(8) :: n_L, i, j, spe_j, b, beta, sl, sh
+  !   ! computation
+  !   hbox = box / 2.0
+  !   n_L = SIZE(lengths)
+  !   !Lm = MAX(lengths, TINY(1.0_8))
+  !   Sk_i = 0.0
+  !   ! loop over central particles
+  !   DO i=1,SIZE(pos_0,2)
+  !     rho_i = 0.0
+  !     epot_i = 0.0
+  !     cell_i = 0.0
+  !     var_epot_i = 0.0
+  !     ! loop over all particles
+  !     DO j=1, SIZE(spe_1)
+  !       r_ij(:) = pos_0(:,i) - pos_1(:,j)
+  !       CALL pbc(r_ij, box, hbox)
+  !       d_ij = SQRT(SUM(r_ij**2))
+  !       exp_ij = EXP(-d_ij / lengths)
+  !       spe_j = spe_1(j)
+  !       ! loop over all species
+  !       DO b=1, SIZE(distinct_spe)
+  !         beta = distinct_spe(b)
+  !         sl = b * n_L
+  !         sh = sl + n_L
+  !         IF (spe_j == beta .OR. beta == 0) THEN
+  !           rho_i(sl:sh) = rho_i(sl:sh) + exp_ij
+  !           epot_i(sl:sh) = epot_i(sl:sh) + epot_1(j) * exp_ij
+  !           cell_i(sl:sh) = cell_i(sl:sh) + cell_1(j) * exp_ij
+  !         END IF
+  !       END DO
+  !     END DO
+  !     ! normalization
+  !     DO b=1, SIZE(distinct_spe)
+  !       sl = b * n_L
+  !       sh = sl + n_L
+  !       epot_i(sl:sh) = epot_i(sl:sh) / rho_i(sl:sh)
+  !       cell_i(sl:sh) = cell_i(sl:sh) / rho_i(sl:sh)
+  !       mask = (spe_1 == b .OR. beta == 0)
+  !       var_epot_i(sl:sh) = SUM(spe_1, MASK=mask)
+  !     END DO
+  !     ! fill S_k      
+  !   END DO
+  ! END SUBROUTINE physics_inspired
+
+  !!!!!!!!!! PHYSICS-INSPIRED DESCRIPTOR !!!!!!!!!!
+  SUBROUTINE physics_inspired_all(L, pos_0, pos_1, spe_1, beta, epot_1, cell_1, box, Sk_i)
+    ! parameters
+    REAL(8), INTENT(in)    :: L(:), pos_0(:,:), pos_1(:,:), box(:)
+    INTEGER(8), INTENT(in) :: spe_1(:), beta
+    REAL(8), INTENT(in)    :: epot_1(:), cell_1(:)
+    REAL(8), INTENT(out)   :: Sk_i( SIZE(pos_0,2), 4 * SIZE(L) )
+    ! variables
+    REAL(8) :: hbox(SIZE(box)), rho_i(SIZE(L)), L_m(SIZE(L)), rho_i_m
+    REAL(8) :: epot_i(SIZE(L))
+    REAL(8) :: cell_i(SIZE(L))
+    REAL(8) :: var_epot_i(SIZE(L))
+    REAL(8) :: epot_j(SIZE(spe_1)), exp_j(SIZE(spe_1), SIZE(L))
+    REAL(8) :: r_ij(SIZE(pos_0,1)), d_ij, exp_ij(SIZE(L))
+    INTEGER(8) :: n, n_L, i, j, nj, spe_j
+    LOGICAL    :: use_all
+    ! ensure L=0 does not cause an error
+    n_L = SIZE(L)
+    DO n=1, n_L
+      L_m(n) = MAX(L(n), TINY(1.0_8))
+    END DO
+    ! computation
+    hbox = box / 2.0
+    use_all = (beta == -1)
+    Sk_i = 0.0
+    ! loop over central particles
+    DO i=1,SIZE(pos_0,2)
+      rho_i = 0.0
+      epot_i = 0.0
+      cell_i = 0.0
+      var_epot_i = 0.0
+      ! loop over all particles and vectorize on L
+      nj = 0
+      DO j=1, SIZE(spe_1)
+        spe_j = spe_1(j)
+        IF (spe_j == beta .OR. use_all) THEN
+          r_ij(:) = pos_0(:,i) - pos_1(:,j)
+          CALL pbc(r_ij, box, hbox)
+          d_ij = SQRT(SUM(r_ij**2))
+          exp_ij = EXP(-d_ij / L_m)
+          ! store for later for the variance
+          nj = nj + 1
+          epot_j(nj) = epot_1(j)
+          exp_j(nj, :) = exp_ij
+          ! compute the observables
+          rho_i = rho_i + exp_ij
+          epot_i = epot_i + epot_1(j) * exp_ij
+          cell_i = cell_i + cell_1(j) * exp_ij
+        END IF
+      END DO
+      ! normalization
+      ! not vectorized because one must account
+      ! for rho_i = 0 case
+      DO n=1,n_L
+        rho_i_m = MAX(rho_i(n), TINY(1.0_8))
+        epot_i(n) = epot_i(n) / rho_i_m
+        cell_i(n) = cell_i(n) / rho_i_m
+        var_epot_i(n) = SUM( (epot_j(1:nj) - epot_i(n))**2.0 * exp_j(1:nj, n) ) / rho_i_m
+      END DO
+      ! fill S_k
+      Sk_i(i,       1:1*n_L) = rho_i
+      Sk_i(i, 1*n_L+1:2*n_L) = epot_i
+      Sk_i(i, 2*n_L+1:3*n_L) = cell_i
+      Sk_i(i, 3*n_L+1:4*n_L) = var_epot_i
+    END DO
+  END SUBROUTINE physics_inspired_all
+
+  ! SUBROUTINE fuck(L, pos_0, pos_1, spe_1, epot_1, cell_1, beta, box, Sk_i)
+  !   ! parameters
+  !   REAL(8), INTENT(in)    :: L, pos_0(:,:), pos_1(:,:), box(:)
+  !   INTEGER(8), INTENT(in) :: spe_1(:), distinct_spe(:)
+  !   REAL(8), INTENT(in)    :: epot_1(:), cell_1(:)
+  !   REAL(8), INTENT(out)   :: Sk_i( SIZE(pos_0,2), 4 * SIZE(lengths) * (SIZE(distinct_spe) + 1) )
+  !   ! variables
+  !   REAL(8) :: hbox(SIZE(box)), rho_i(SIZE(lengths))
+  !   REAL(8) :: epot_i(SIZE(lengths)*SIZE(distinct_spe))
+  !   REAL(8) :: cell_i(SIZE(lengths)*SIZE(distinct_spe))
+  !   REAL(8) :: var_epot_i(SIZE(lengths)*SIZE(distinct_spe))
+  !   REAL(8) :: exp_j(SIZE(spe_1))
+  !   REAL(8) :: r_ij(SIZE(pos_0,1)), d_ij, exp_ij(SIZE(lengths))
+  !   INTEGER(8) :: n_L, i, j, spe_j, b, beta, sl, sh
+  !   ! computation
+  !   hbox = box / 2.0
+  !   n_L = SIZE(lengths)
+  !   !Lm = MAX(lengths, TINY(1.0_8))
+  !   Sk_i = 0.0
+  !   ! loop over central particles
+  !   DO i=1,SIZE(pos_0,2)
+  !     rho_i = 0.0
+  !     epot_i = 0.0
+  !     cell_i = 0.0
+  !     var_epot_i = 0.0
+  !     ! loop over all particles
+  !     DO j=1, SIZE(spe_1)
+  !       r_ij(:) = pos_0(:,i) - pos_1(:,j)
+  !       CALL pbc(r_ij, box, hbox)
+  !       d_ij = SQRT(SUM(r_ij**2))
+  !       exp_ij = EXP(-d_ij / lengths)
+  !       spe_j = spe_1(j)
+  !       ! loop over all species
+  !       DO b=1, SIZE(distinct_spe)
+  !         beta = distinct_spe(b)
+  !         sl = b * n_L
+  !         sh = sl + n_L
+  !         IF (spe_j == beta .OR. beta == 0) THEN
+  !           rho_i(sl:sh) = rho_i(sl:sh) + exp_ij
+  !           epot_i(sl:sh) = epot_i(sl:sh) + epot_1(j) * exp_ij
+  !           cell_i(sl:sh) = cell_i(sl:sh) + cell_1(j) * exp_ij
+  !         END IF
+  !       END DO
+  !     END DO
+  !     ! normalization
+  !     DO b=1, SIZE(distinct_spe)
+  !       sl = b * n_L
+  !       sh = sl + n_L
+  !       epot_i(sl:sh) = epot_i(sl:sh) / rho_i(sl:sh)
+  !       cell_i(sl:sh) = cell_i(sl:sh) / rho_i(sl:sh)
+  !     END DO
+  !     ! fill S_k
+  !   END DO
+  ! END SUBROUTINE fuck
+
 END MODULE compute
 
