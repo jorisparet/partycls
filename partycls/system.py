@@ -284,7 +284,7 @@ class System:
 
         # Set the same scalar value to each selected particle/cell
         if not isinstance(value, (list, numpy.ndarray)):
-            if what.startswith('cell'):
+            if what.startswith('cell.'):
                 what = what.split('.')[-1]
                 regexp = re.search('(\w+)\[(\w+)\]', what)
                 # cell iterable property
@@ -295,7 +295,7 @@ class System:
                 else:
                     setattr(self.cell, what, value)
             else:
-                if what.startswith('particle'):
+                if what.startswith('particle.'):
                     what = what.split('.')[-1]
                 for particle in self.particle:
                     if eval(condition):
@@ -303,11 +303,11 @@ class System:
 
         # Set a specific value to each particle/cell with a list/array
         else:
-            if what.startswith('cell'):
+            if what.startswith('cell.'):
                 what = what.split('.')[-1]
                 setattr(self.cell, what, value)
             else:
-                if what.startswith('particle'):
+                if what.startswith('particle.'):
                     what = what.split('.')[-1]
                 c = 0
                 for particle in self.particle:
