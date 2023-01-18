@@ -8,3 +8,4 @@ __pycache__
 *.so
 .coverage
 docs/_build/doctrees
+*.mod
