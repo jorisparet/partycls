@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'partycls'
-copyright = '2022, Joris Paret'
+copyright = '2023, Joris Paret'
 author = 'Joris Paret, Daniele Coslovich'
 
 # The full version, including alpha/beta/rc tags

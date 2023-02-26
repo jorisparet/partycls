@@ -11,7 +11,7 @@ class SmoothedBondOrientationalDescriptor(BondOrientationalDescriptor):
     :math:`f(r)` that depends on the radial distance :math:`r` between the central 
     particle :math:`i` and other surrounding particles :math:`j`, where :math:`j` 
     can be any particle in the system (*i.e.* not necessarily a nearest neighbors 
-    of :math:`i`).
+    of :math:`i`) :cite:`coslovich_2022`.
 
     The smoothed complex coefficients are given by
 
