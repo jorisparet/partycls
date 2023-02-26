@@ -5,14 +5,63 @@ from .realspace_wrap import compute
 class PhysicsInspiredDescriptor(StructuralDescriptor):
     """
 
-    Physics-informed descriptor.
+    Physics-inspired descriptor.
     
-    ...
-    ...
-    ...
+    The physics-inspired descriptor is a collection of established structural
+    order parameters (observables), first introduced by *Jung et al.* 
+    :cite:`jung_2023` to train *GlassMLP*, a deep neural network used to predict
+    the long-time dynamics in deeply supercooled liquids.
+
+    For each particle :math:`i`, four distinct observables are computed and 
+    coarse-grained over a set of lengthscales :math:`\{L_n\}`:
+
+    1. Local density: 
 
     .. math::
-        X^\mathrm{P}(i) = (\: \:) .
+        \\bar{\\rho}_i(L_n;\\beta_m) = \sum_{j \in N_{\\beta_m}^i} \exp(-\\frac{r_{ij}}{L_n}) ,
+
+    where the sum runs over all :math:`N_{\\beta_m}^i` particles of type
+    :math:`\\beta_m` within distance :math:`r_{ij} < R_c` from particle :math:`i`
+    (including :math:`i` itself if its type is :math:`\\beta_m`). Particles :math:`j`
+    beyond the cutoff distance :math:`R_c` will be ignored for efficiency reasons.
+
+    2. Potential energy:
+
+    .. math::
+        \\bar{E}_i(L_n;\\beta_m) = \\frac{1}{\\bar{\\rho}_i(L_n;\\beta_m)} \sum_{j \in N_{\\beta_m}^i} E_j \exp(-\\frac{r_{ij}}{L_n}) ,
+        
+    where :math:`E_j` is extracted from the pair potential :math:`V(r)`,
+    such that :math:`E_j = \sum_{j \\neq k} V(r_{jk})`.
+
+    3. Perimeter or surface of the Voronoi cell centered on particle :math:`i`
+    (2- and 3-dimensional cases, respectively):
+
+    .. math::
+        \\bar{\mathcal{C}}_i(L_n;\\beta_m) = \\frac{1}{\\bar{\\rho}_i(L_n;\\beta_m)} \sum_{j \in N_{\\beta_m}^i} \mathcal{C}_j \exp(- \\frac{r_{ij}}{L_n}) .
+
+    4. Local variance of the potential energy:
+
+    .. math::
+        \mathrm{Var}( \\bar{E}_i(L_n;\\beta_m) ) = \\frac{1}{\\bar{\\rho}_i(L_n;\\beta_m)} \sum_{j \in N_{\\beta_m}^i} \left( E_j - \\bar{E}_i(L_n;\\beta_m) \\right)^2 \exp(-\\frac{r_{ij}}{L_n}) .
+
+    The prefactor :math:`\\frac{1}{\\bar{\\rho}_i(L_n;\\beta_m)}` is used for
+    normalization purposes. These four observables are then arranged in
+
+    .. math::
+        \\bar{S}_i(L_n;\\beta_m) = \{ \\bar{\\rho}_i(L_n;\\beta_m), \\bar{E}_i(L_n;\\beta_m), \\bar{\mathcal{C}}_i(L_n;\\beta_m),  \mathrm{Var}( \\bar{E}_i(L_n;\\beta_m) )\}
+        
+    and computed for each distance in :math:`\{ L_n \}` and for each particle
+    type in :math:`\{ \\beta_m \}`, including one additional
+    computation where **all** particles are considered at once regardless of
+    their type. The total number :math:`M` of features produced is given by
+    :math:`M = 4 \\times N_L \\times (N_\\beta + 1)`, where :math:`N_L` is the total
+    number of coarse-graining lengths and :math:`N_\\beta` is the total number of
+    distinct particle types in the system.
+
+    The resulting feature vector for particle :math:`i` is given by
+
+    .. math::
+        X^\mathrm{P}(i) = (\: \\bar{S}_i(L_1;\\beta_1) \;\; \dots \;\; \\bar{S}_i(L_n;\\beta_m) \;\; \dots \;\;  \\bar{S}_i(L_{N_L};\\beta_{N_{\\beta}+1} ) \:) .
     
     See the tutorials for more details.
 
@@ -59,14 +108,14 @@ class PhysicsInspiredDescriptor(StructuralDescriptor):
         Parameters
         ----------
         bounds : tuple, default: (1, 2)
-            Lower and upper bounds :math:`(d_{n_\mathrm{min}}, d_{n_\mathrm{max}})`
+            Lower and upper bounds :math:`(L_\mathrm{min}, L_\mathrm{max})`
             to define the grid of distances :math:`\{ L_n \}`, where consecutive 
             points in the the grid are separated by :math:`\Delta r`.
             
         dr : float, default: 0.5
             Grid spacing :math:`\Delta r` to define the grid of distances 
             :math:`\{ L_n \}` in the range 
-            :math:`(L_{n_\mathrm{min}}, d_{L_\mathrm{max}})` by steps of size 
+            :math:`(L_\mathrm{min}, L_\mathrm{max})` by steps of size 
             :math:`\Delta r`.
             
         distance_grid : list, default: None
@@ -75,7 +124,7 @@ class PhysicsInspiredDescriptor(StructuralDescriptor):
             ``bounds`` and ``dr``.
 
         cutoff : float, default: None
-            Distance up to which the particles contribute to the coarse-grained
+            Distance :math:`R_c` up to which the particles contribute to the coarse-grained
             average of the central particle. Particles beyond this cutoff distance
             will be ignored, for efficiency reasons. This distance should be larger
             than the largest distance in the grid :math:`\{ L_n \}` (large enough not to
@@ -83,12 +132,12 @@ class PhysicsInspiredDescriptor(StructuralDescriptor):
             be chosen to be half the side of the simulation cell.
 
         energy_field : str, default: "potential_energy"
-            Name of the particle property used to store the potential energy.
+            Name of the particle property used to store the potential energy :math:`E_i`.
 
         cell_field : str, default: "cell_surface"
             Name of the particle property used to store the appropriate Voronoi
-            cell metric (*i.e.* the cell perimeter in 2D and the cell surface in
-            3D).
+            cell metric :math:`\mathcal{C}_i` (*i.e.* the cell perimeter in 2D and the cell
+            surface in 3D).
 
         accept_nans: bool, default: True
             If ``False``, discard any row from the array of features that contains a 
@@ -231,7 +280,7 @@ class PhysicsInspiredDescriptor(StructuralDescriptor):
         self._set_grid()
 
     def _set_grid(self):
-        observables = ['DEN', 'EPOT', 'PERI', 'EPOT_VAR2']
+        observables = ['DEN', 'EPOT', 'CELL', 'VAR_EPOT']
         species = list(self.trajectory[0].distinct_species) + ['ALL']
         grid = []
         for L in self._distance_grid:

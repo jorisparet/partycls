@@ -110,7 +110,7 @@ We now instantiate a :py:class:`CompactnessDescriptor <partycls.descriptors.comp
 	# print the first three feature vectors
 	print("feature vectors:\n", X[0:3])
 
-.. code-block:: literal
+.. code-block:: none
 	:caption: **Output:**
 
 	feature vectors:

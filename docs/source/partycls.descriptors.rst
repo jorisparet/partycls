@@ -65,6 +65,14 @@ partycls.descriptors.dscribe module
    :undoc-members:
    :show-inheritance:
 
+partycls.descriptors.physics\_inspired module
+---------------------------------------------
+
+.. automodule:: partycls.descriptors.physics_inspired
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 partycls.descriptors.radial module
 ----------------------------------
 

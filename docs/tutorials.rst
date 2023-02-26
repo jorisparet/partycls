@@ -43,7 +43,8 @@ An overview and a detailed presentation of the built-in structural descriptors:
 - :doc:`tutorials/descriptors/rbo`
 - :doc:`tutorials/descriptors/compact`
 - :doc:`tutorials/descriptors/coord`
-
+- :doc:`tutorials/descriptors/phins`
+  
 You can also check out the API of the :py:mod:`partycls.descriptors` subpackage.
 
 .. toctree::
