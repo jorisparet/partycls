@@ -331,7 +331,7 @@ CONTAINS
     ! Computation
     hbox = box / 2.0
     n_neigh_i = SIZE(neigh_i)
-    costheta_tetra = -0.333806859233771 ! cos(109.5°)
+    costheta_tetra = -0.333806859233771 ! cos(109.5)
     N_ba = 0
     tetra = 0.0
     ! First neighbor: j
@@ -383,7 +383,7 @@ CONTAINS
     REAL(8)    :: dotprod, prod, costheta_kij, costheta_tetra
     ! Computation
     hbox = box / 2.0
-    costheta_tetra = -0.333806859233771 ! cos(109.5°)
+    costheta_tetra = -0.333806859233771 ! cos(109.5)
     tetra = 0.0
     DO i=1,SIZE(idx_0)
       idx_i = idx_0(i) + 1 ! python index shift
