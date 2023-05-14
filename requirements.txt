@@ -1,5 +1,5 @@
 numpy
-sklearn
+scikit-learn
 dscribe # optional
 atooms # optional
 mdtraj # optional

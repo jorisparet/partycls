@@ -29,7 +29,7 @@ args = dict(name='partycls',
             packages=['partycls',
                       'partycls/core',
                       'partycls/descriptors'],
-            install_requires=['numpy', 'sklearn'],
+            install_requires=['numpy', 'scikit-learn'],
             license='GPLv3',
             setup_requires = ['numpy'],
             classifiers=[
