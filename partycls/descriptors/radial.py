@@ -210,7 +210,7 @@ class RadialDescriptor(StructuralDescriptor):
             b_min = numpy.floor(self._bounds[0] / self.dr)  # if r_min != 0
             for m in range(self.n_features):
                 b = b_min + m + 1
-                wb = (b**3 - (b - 1)**3)
+                wb = (b**self.dimension - (b - 1)**self.dimension)
                 g_b[m] = distribution[m] / wb
             return g_b / const
         else:
